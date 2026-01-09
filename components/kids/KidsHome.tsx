@@ -336,6 +336,10 @@ interface ActivityProps {
   onEarnStar: () => void;
 }
 
+// Version query to bust stale PWA/service-worker caches for static kids assets
+const ASSET_VERSION = '2026-01-09c';
+const assetUrl = (path: string) => `${path}?v=${ASSET_VERSION}`;
+
 // Arabic Alphabet Data
 const ARABIC_LETTERS = [
   { id: 'alif', letter: 'ا', name: 'Alif', example: 'أسد', exampleMeaning: 'Lion', emoji: '🦁' },
@@ -368,9 +372,6 @@ const ARABIC_LETTERS = [
   { id: 'yaa', letter: 'ي', name: 'Yaa', example: 'يد', exampleMeaning: 'Hand', emoji: '✋' },
 ];
 
-// Cache-bust audio fetches to avoid stale service worker assets in production
-const LETTER_AUDIO_VERSION = '2026-01-09b';
-
 const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   const [selectedLetter, setSelectedLetter] = useState<typeof ARABIC_LETTERS[0] | null>(null);
   const [playedLetters, setPlayedLetters] = useState<Set<string>>(new Set());
@@ -400,7 +401,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 
     try {
       // Try to load pre-generated audio file
-      const audioUrl = `/assets/kids/audio/letters/letter-${letter.id}-example.mp3?v=${LETTER_AUDIO_VERSION}`;
+      const audioUrl = assetUrl(`/assets/kids/audio/letters/letter-${letter.id}-example.mp3`);
       let audioBuffer: AudioBuffer | null = null;
       let usedPreGenerated = false;
 
@@ -1103,7 +1104,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   const playSceneAudio = async () => {
     if (!selectedStory) return;
     const scene = selectedStory.scenes[currentScene];
-    const audioUrl = `/assets/kids/audio/story-${selectedStory.id}-scene-${currentScene}.mp3`;
+    const audioUrl = assetUrl(`/assets/kids/audio/story-${selectedStory.id}-scene-${currentScene}.mp3`);
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -1187,7 +1188,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           {/* Story Illustration */}
           <div className="w-full max-w-sm aspect-square mb-4 rounded-3xl overflow-hidden shadow-2xl bg-white/10">
             <img
-              src={`/assets/kids/illustrations/story-${selectedStory.id}-${currentScene}.png`}
+              src={assetUrl(`/assets/kids/illustrations/story-${selectedStory.id}-${currentScene}.png`)}
               alt={`${selectedStory.title} - Scene ${currentScene + 1}`}
               className="w-full h-full object-cover"
               onError={(e) => {
@@ -1273,7 +1274,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               {/* Thumbnail from first scene */}
               <div className="aspect-square relative">
                 <img
-                  src={`/assets/kids/illustrations/story-${story.id}-0.png`}
+                  src={assetUrl(`/assets/kids/illustrations/story-${story.id}-0.png`)}
                   alt={story.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
