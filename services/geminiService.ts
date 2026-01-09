@@ -2,8 +2,23 @@ import { GoogleGenAI, Modality, Type } from "@google/genai";
 import { VisualConfig, VoiceSearchResult, RecitationResult, RecitationWord } from "../types";
 import { base64ToUint8Array, decodeAudioData, uint8ArrayToBase64 } from "./audioUtils";
 
+// Resolve Gemini API key from Vite env (preferred) or fallback to build-time process.env
+export const getGeminiApiKey = () => {
+  const key =
+    import.meta.env?.VITE_GEMINI_API_KEY ||
+    import.meta.env?.GEMINI_API_KEY ||
+    process.env.GEMINI_API_KEY ||
+    process.env.API_KEY;
+
+  if (!key) {
+    throw new Error('Missing Gemini API key. Set VITE_GEMINI_API_KEY in your environment.');
+  }
+
+  return key;
+};
+
 // Initialize AI instance helper
-const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAI = () => new GoogleGenAI({ apiKey: getGeminiApiKey() });
 
 // Helper for API calls that require paid keys or might 404/403 due to key issues
 const callWithRetry = async <T>(fn: () => Promise<T>): Promise<T> => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeAudioData } from '../services/audioUtils';
+import { getGeminiApiKey } from '../services/geminiService';
 
 // Tutoring Mode Types
 type TutoringMode = 'conversation' | 'tajweed' | 'memorization' | 'tafsir';
@@ -208,7 +209,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
             addLog("Connecting to Gemini...");
 
             const connectToGemini = async () => {
-                const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+                const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
                 const systemPrompt = buildSystemPrompt();
                 const voiceName = VOICE_OPTIONS[selectedMode];
 

@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+    const geminiKey = env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY;
     return {
       server: {
         port: 3000,
@@ -27,16 +28,10 @@ export default defineConfig(({ mode }) => {
             start_url: '/',
             icons: [
               {
-                src: '/icons/icon-192x192.png',
-                sizes: '192x192',
-                type: 'image/png',
-                purpose: 'maskable any'
-              },
-              {
-                src: '/icons/icon-512x512.png',
-                sizes: '512x512',
-                type: 'image/png',
-                purpose: 'maskable any'
+                src: '/icons/icon.svg',
+                sizes: 'any',
+                type: 'image/svg+xml',
+                purpose: 'any maskable'
               }
             ]
           },
@@ -151,8 +146,8 @@ export default defineConfig(({ mode }) => {
         })
       ],
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'process.env.API_KEY': JSON.stringify(geminiKey),
+        'process.env.GEMINI_API_KEY': JSON.stringify(geminiKey)
       },
       resolve: {
         alias: {
