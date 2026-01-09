@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9f1239;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7f1d1d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGradient)"/>
+
+  <!-- Decorative border -->
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="url(#goldGradient)" stroke-width="4" opacity="0.3"/>
+
+  <!-- Open Book / Quran Symbol -->
+  <g transform="translate(256, 256)">
+    <!-- Left page -->
+    <path d="M-20 -80 Q-120 -70 -140 0 Q-120 70 -20 80 L-20 -80"
+          fill="white" opacity="0.95"/>
+    <!-- Right page -->
+    <path d="M20 -80 Q120 -70 140 0 Q120 70 20 80 L20 -80"
+          fill="white" opacity="0.95"/>
+    <!-- Spine -->
+    <rect x="-20" y="-80" width="40" height="160" fill="url(#goldGradient)" opacity="0.9"/>
+
+    <!-- Text lines on left page -->
+    <g fill="url(#bgGradient)" opacity="0.4">
+      <rect x="-110" y="-50" width="70" height="6" rx="3"/>
+      <rect x="-100" y="-35" width="60" height="6" rx="3"/>
+      <rect x="-110" y="-20" width="70" height="6" rx="3"/>
+      <rect x="-95" y="-5" width="55" height="6" rx="3"/>
+      <rect x="-110" y="10" width="70" height="6" rx="3"/>
+      <rect x="-105" y="25" width="65" height="6" rx="3"/>
+      <rect x="-110" y="40" width="70" height="6" rx="3"/>
+    </g>
+
+    <!-- Text lines on right page -->
+    <g fill="url(#bgGradient)" opacity="0.4">
+      <rect x="40" y="-50" width="70" height="6" rx="3"/>
+      <rect x="45" y="-35" width="60" height="6" rx="3"/>
+      <rect x="40" y="-20" width="70" height="6" rx="3"/>
+      <rect x="50" y="-5" width="55" height="6" rx="3"/>
+      <rect x="40" y="10" width="70" height="6" rx="3"/>
+      <rect x="45" y="25" width="65" height="6" rx="3"/>
+      <rect x="40" y="40" width="70" height="6" rx="3"/>
+    </g>
+
+    <!-- Star/Light emanating (wisdom symbol) -->
+    <g fill="url(#goldGradient)">
+      <circle cx="0" cy="-120" r="20"/>
+      <path d="M0 -145 L5 -125 L0 -100 L-5 -125 Z" opacity="0.8"/>
+      <path d="M-20 -120 L0 -115 L20 -120 L0 -125 Z" opacity="0.8"/>
+    </g>
+  </g>
+
+  <!-- Hikma text at bottom -->
+  <text x="256" y="440" text-anchor="middle" font-family="Georgia, serif" font-size="48" fill="white" font-weight="bold" opacity="0.9">HIKMA</text>
+</svg>

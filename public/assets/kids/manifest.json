@@ -1,0 +1,82 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-01-09",
+  "narrations": {
+    "stories": {
+      "adam": {
+        "scenes": [
+          "story-adam-scene-0.txt",
+          "story-adam-scene-1.txt",
+          "story-adam-scene-2.txt",
+          "story-adam-scene-3.txt"
+        ],
+        "lesson": "story-adam-lesson.txt"
+      },
+      "nuh": {
+        "scenes": [
+          "story-nuh-scene-0.txt",
+          "story-nuh-scene-1.txt",
+          "story-nuh-scene-2.txt",
+          "story-nuh-scene-3.txt"
+        ],
+        "lesson": "story-nuh-lesson.txt"
+      },
+      "ibrahim": {
+        "scenes": [
+          "story-ibrahim-scene-0.txt",
+          "story-ibrahim-scene-1.txt",
+          "story-ibrahim-scene-2.txt",
+          "story-ibrahim-scene-3.txt"
+        ],
+        "lesson": "story-ibrahim-lesson.txt"
+      },
+      "musa": {
+        "scenes": [
+          "story-musa-scene-0.txt",
+          "story-musa-scene-1.txt",
+          "story-musa-scene-2.txt",
+          "story-musa-scene-3.txt"
+        ],
+        "lesson": "story-musa-lesson.txt"
+      },
+      "yusuf": {
+        "scenes": [
+          "story-yusuf-scene-0.txt",
+          "story-yusuf-scene-1.txt",
+          "story-yusuf-scene-2.txt",
+          "story-yusuf-scene-3.txt"
+        ],
+        "lesson": "story-yusuf-lesson.txt"
+      }
+    },
+    "celebrations": [
+      "celebration-0.txt",
+      "celebration-1.txt",
+      "celebration-2.txt",
+      "celebration-3.txt",
+      "celebration-4.txt",
+      "celebration-5.txt"
+    ],
+    "encouragements": [
+      "encouragement-0.txt",
+      "encouragement-1.txt",
+      "encouragement-2.txt",
+      "encouragement-3.txt"
+    ]
+  },
+  "illustrations": {
+    "status": "complete",
+    "stories": {
+      "adam": ["story-adam-0.png", "story-adam-1.png"],
+      "nuh": ["story-nuh-0.png", "story-nuh-1.png"],
+      "ibrahim": ["story-ibrahim-0.png", "story-ibrahim-1.png"],
+      "musa": ["story-musa-0.png", "story-musa-1.png"],
+      "yusuf": ["story-yusuf-0.png", "story-yusuf-1.png"]
+    }
+  },
+  "quranAudio": {
+    "source": "Islamic Network CDN",
+    "baseUrl": "https://cdn.islamic.network/quran/audio/128/ar.alafasy/",
+    "note": "Fetched on-demand from CDN, cached by service worker"
+  }
+}

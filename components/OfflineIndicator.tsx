@@ -1,0 +1,256 @@
+import React, { useState, useEffect } from 'react';
+import { registerSW } from 'virtual:pwa-register';
+
+interface OfflineIndicatorProps {
+  onDownloadClick?: () => void;
+}
+
+export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadClick }) => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [showOfflineBanner, setShowOfflineBanner] = useState(false);
+  const [showUpdateBanner, setShowUpdateBanner] = useState(false);
+  const [updateSW, setUpdateSW] = useState<(() => Promise<void>) | null>(null);
+
+  useEffect(() => {
+    // Register service worker and handle updates
+    const updateServiceWorker = registerSW({
+      onNeedRefresh() {
+        setShowUpdateBanner(true);
+      },
+      onOfflineReady() {
+        console.log('App ready for offline use');
+      },
+    });
+
+    setUpdateSW(() => updateServiceWorker);
+
+    // Online/Offline detection
+    const handleOnline = () => {
+      setIsOnline(true);
+      setShowOfflineBanner(false);
+    };
+
+    const handleOffline = () => {
+      setIsOnline(false);
+      setShowOfflineBanner(true);
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Initial check
+    if (!navigator.onLine) {
+      setShowOfflineBanner(true);
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  const handleUpdate = async () => {
+    if (updateSW) {
+      await updateSW();
+      setShowUpdateBanner(false);
+    }
+  };
+
+  return (
+    <>
+      {/* Offline Banner */}
+      {showOfflineBanner && (
+        <div className="fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 py-2 z-50 flex items-center justify-between shadow-lg">
+          <div className="flex items-center gap-2">
+            <i className="fas fa-wifi-slash"></i>
+            <span className="text-sm font-medium">You're offline</span>
+            <span className="text-xs opacity-80">- Cached content is available</span>
+          </div>
+          {onDownloadClick && (
+            <button
+              onClick={onDownloadClick}
+              className="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition-colors"
+            >
+              Manage Downloads
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Update Available Banner */}
+      {showUpdateBanner && (
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-blue-600 text-white rounded-xl shadow-2xl p-4 z-50 animate-slide-up">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i className="fas fa-arrow-up"></i>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-semibold">Update Available</h4>
+              <p className="text-sm text-blue-100 mb-3">
+                A new version of Hikma is ready!
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleUpdate}
+                  className="bg-white text-blue-600 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors"
+                >
+                  Update Now
+                </button>
+                <button
+                  onClick={() => setShowUpdateBanner(false)}
+                  className="text-white/80 hover:text-white px-3 py-1.5 text-sm transition-colors"
+                >
+                  Later
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Online/Offline Status Indicator (subtle) */}
+      <div
+        className={`fixed bottom-4 right-4 w-3 h-3 rounded-full transition-all duration-300 z-40 ${
+          isOnline ? 'bg-green-500' : 'bg-amber-500 animate-pulse'
+        }`}
+        title={isOnline ? 'Online' : 'Offline'}
+      />
+    </>
+  );
+};
+
+// PWA Install Prompt Component
+interface InstallPromptProps {
+  onInstall?: () => void;
+}
+
+export const PWAInstallPrompt: React.FC<InstallPromptProps> = ({ onInstall }) => {
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+
+  useEffect(() => {
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+      return;
+    }
+
+    // Listen for install prompt
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+
+      // Show prompt after a delay (don't be too aggressive)
+      const dismissed = localStorage.getItem('pwa-install-dismissed');
+      const dismissedAt = dismissed ? parseInt(dismissed) : 0;
+      const daysSinceDismissed = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
+
+      if (!dismissed || daysSinceDismissed > 7) {
+        setTimeout(() => setShowPrompt(true), 30000); // Show after 30 seconds
+      }
+    };
+
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setShowPrompt(false);
+      setDeferredPrompt(null);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === 'accepted') {
+      onInstall?.();
+    }
+
+    setDeferredPrompt(null);
+    setShowPrompt(false);
+  };
+
+  const handleDismiss = () => {
+    setShowPrompt(false);
+    localStorage.setItem('pwa-install-dismissed', Date.now().toString());
+  };
+
+  if (isInstalled || !showPrompt) return null;
+
+  return (
+    <div className="fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-gradient-to-r from-rose-700 to-rose-800 text-white rounded-2xl shadow-2xl p-5 z-50 animate-slide-up">
+      <button
+        onClick={handleDismiss}
+        className="absolute top-3 right-3 text-white/60 hover:text-white"
+      >
+        <i className="fas fa-times"></i>
+      </button>
+
+      <div className="flex items-start gap-4">
+        <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+          <img
+            src="/icons/icon.svg"
+            alt="Hikma"
+            className="w-10 h-10"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
+        </div>
+        <div className="flex-1">
+          <h3 className="font-bold text-lg mb-1">Install Hikma</h3>
+          <p className="text-rose-200 text-sm mb-4">
+            Add to your home screen for quick access and offline reading
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={handleInstall}
+              className="bg-white text-rose-700 px-5 py-2 rounded-lg font-semibold hover:bg-rose-50 transition-colors flex items-center gap-2"
+            >
+              <i className="fas fa-plus"></i>
+              Install
+            </button>
+            <button
+              onClick={handleDismiss}
+              className="text-white/80 hover:text-white px-4 py-2 transition-colors"
+            >
+              Not now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Feature highlights */}
+      <div className="mt-4 pt-4 border-t border-white/20 flex justify-around text-center">
+        <div>
+          <i className="fas fa-bolt text-amber-300 mb-1"></i>
+          <p className="text-xs text-rose-200">Fast</p>
+        </div>
+        <div>
+          <i className="fas fa-wifi-slash text-amber-300 mb-1"></i>
+          <p className="text-xs text-rose-200">Offline</p>
+        </div>
+        <div>
+          <i className="fas fa-bell text-amber-300 mb-1"></i>
+          <p className="text-xs text-rose-200">Reminders</p>
+        </div>
+        <div>
+          <i className="fas fa-moon text-amber-300 mb-1"></i>
+          <p className="text-xs text-rose-200">Full Screen</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OfflineIndicator;

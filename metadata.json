@@ -1,0 +1,8 @@
+{
+  "name": "Hikma: Quran Storyteller",
+  "description": "A storytelling experience bringing Quranic stories to life with narrations, visualizations, and real-time conversation.",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation"
+  ]
+}

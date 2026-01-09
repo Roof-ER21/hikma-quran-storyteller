@@ -1,0 +1,163 @@
+import path from 'path';
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, '.', '');
+    return {
+      server: {
+        port: 3000,
+        host: '0.0.0.0',
+      },
+      plugins: [
+        react(),
+        VitePWA({
+          registerType: 'autoUpdate',
+          includeAssets: ['icons/*.svg', 'icons/*.png'],
+          manifest: {
+            name: 'Hikma - Quran Companion',
+            short_name: 'Hikma',
+            description: 'AI-powered Quran companion with storytelling, recitation practice, voice search, and memorization tools',
+            theme_color: '#9f1239',
+            background_color: '#1e293b',
+            display: 'standalone',
+            orientation: 'portrait',
+            scope: '/',
+            start_url: '/',
+            icons: [
+              {
+                src: '/icons/icon-192x192.png',
+                sizes: '192x192',
+                type: 'image/png',
+                purpose: 'maskable any'
+              },
+              {
+                src: '/icons/icon-512x512.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'maskable any'
+              }
+            ]
+          },
+          workbox: {
+            // Cache strategies
+            runtimeCaching: [
+              {
+                // App Shell - Cache First
+                urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'google-fonts-cache',
+                  expiration: {
+                    maxEntries: 10,
+                    maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200]
+                  }
+                }
+              },
+              {
+                // Quran API - Cache First (30 days)
+                urlPattern: /^https:\/\/api\.alquran\.cloud\/.*/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'quran-api-cache',
+                  expiration: {
+                    maxEntries: 200,
+                    maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200]
+                  }
+                }
+              },
+              {
+                // Audio files - Cache on Download (Stale While Revalidate)
+                urlPattern: /^https:\/\/cdn\.islamic\.network\/quran\/audio\/.*/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'quran-audio-cache',
+                  expiration: {
+                    maxEntries: 500,
+                    maxAgeSeconds: 60 * 60 * 24 * 90 // 90 days
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200]
+                  },
+                  rangeRequests: true
+                }
+              },
+              {
+                // CDN assets (Tailwind, Font Awesome, etc.)
+                urlPattern: /^https:\/\/cdn\.tailwindcss\.com\/.*/i,
+                handler: 'StaleWhileRevalidate',
+                options: {
+                  cacheName: 'cdn-cache',
+                  expiration: {
+                    maxEntries: 50,
+                    maxAgeSeconds: 60 * 60 * 24 * 7 // 7 days
+                  }
+                }
+              },
+              {
+                // Font Awesome CDN
+                urlPattern: /^https:\/\/cdnjs\.cloudflare\.com\/.*/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'fontawesome-cache',
+                  expiration: {
+                    maxEntries: 20,
+                    maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                  }
+                }
+              },
+              {
+                // Gemini AI API - Network First (always need fresh)
+                urlPattern: /^https:\/\/generativelanguage\.googleapis\.com\/.*/i,
+                handler: 'NetworkFirst',
+                options: {
+                  cacheName: 'gemini-api-cache',
+                  networkTimeoutSeconds: 10,
+                  expiration: {
+                    maxEntries: 50,
+                    maxAgeSeconds: 60 * 60 // 1 hour
+                  }
+                }
+              },
+              {
+                // Images - Cache First
+                urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'images-cache',
+                  expiration: {
+                    maxEntries: 100,
+                    maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+                  }
+                }
+              }
+            ],
+            // Pre-cache essential files
+            globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+            // Skip waiting for faster updates
+            skipWaiting: true,
+            clientsClaim: true
+          },
+          devOptions: {
+            enabled: true // Enable PWA in development for testing
+          }
+        })
+      ],
+      define: {
+        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, '.'),
+        }
+      }
+    };
+});
