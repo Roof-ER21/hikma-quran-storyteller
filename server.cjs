@@ -1,65 +1,109 @@
-const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { Pool } = require('pg');
 
 const PORT = process.env.PORT || 3000;
 const DIST_DIR = path.join(__dirname, 'dist');
+const JWT_SECRET = process.env.SESSION_SECRET || 'change-me';
+const DATABASE_URL = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
-const MIME_TYPES = {
-  '.html': 'text/html',
-  '.js': 'application/javascript',
-  '.css': 'text/css',
-  '.json': 'application/json',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.gif': 'image/gif',
-  '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon',
-  '.webp': 'image/webp',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.ttf': 'font/ttf',
-  '.txt': 'text/plain',
-  '.webmanifest': 'application/manifest+json',
-};
+const app = express();
+app.use(express.json());
 
-const server = http.createServer((req, res) => {
-  // Runtime env injection for client
-  if (req.url === '/env.js') {
-    const key = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || process.env.API_KEY || '';
-    const body = `window.__ENV = { VITE_GEMINI_API_KEY: ${JSON.stringify(key)} };`;
-    res.writeHead(200, { 'Content-Type': 'application/javascript' });
-    res.end(body);
-    return;
-  }
+// Runtime env injection for client
+app.get('/env.js', (_req, res) => {
+  const key = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || process.env.API_KEY || '';
+  const body = `window.__ENV = { VITE_GEMINI_API_KEY: ${JSON.stringify(key)} };`;
+  res.type('application/javascript').send(body);
+});
 
-  let urlPath = req.url.split('?')[0];
-  let filePath = path.join(DIST_DIR, urlPath === '/' ? 'index.html' : urlPath);
+let pool = null;
+if (DATABASE_URL) {
+  pool = new Pool({ connectionString: DATABASE_URL, ssl: DATABASE_URL.includes('railway') ? { rejectUnauthorized: false } : undefined });
+}
 
-  // Check if file exists
-  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-    filePath = path.join(DIST_DIR, 'index.html');
-  }
+async function initDb() {
+  if (!pool) return;
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS parents (
+      id SERIAL PRIMARY KEY,
+      name TEXT UNIQUE NOT NULL,
+      pin_hash TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
+  `);
+}
 
+initDb().catch(err => console.error('DB init error:', err));
+
+function signToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+}
+
+function authMiddleware(req, res, next) {
+  const auth = req.headers.authorization || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token) return res.status(401).json({ error: 'unauthorized' });
   try {
-    const content = fs.readFileSync(filePath);
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+    req.user = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (e) {
+    res.status(401).json({ error: 'unauthorized' });
+  }
+}
 
-    res.writeHead(200, { 'Content-Type': contentType });
-    res.end(content);
-  } catch (err) {
-    try {
-      const content = fs.readFileSync(path.join(DIST_DIR, 'index.html'));
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(content);
-    } catch (e) {
-      res.writeHead(500);
-      res.end('Server Error');
-    }
+// Auth routes
+app.post('/api/parent/signup', async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const { name, pin } = req.body || {};
+    if (!name || !pin || String(pin).length < 4) return res.status(400).json({ error: 'name and 4+ digit pin required' });
+    const hash = await bcrypt.hash(String(pin), 10);
+    const result = await pool.query(
+      `INSERT INTO parents (name, pin_hash) VALUES ($1, $2)
+       ON CONFLICT (name) DO UPDATE SET pin_hash = EXCLUDED.pin_hash
+       RETURNING id, name;`,
+      [name.trim(), hash]
+    );
+    const token = signToken({ id: result.rows[0].id, name: result.rows[0].name });
+    res.json({ token, parent: result.rows[0] });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'signup failed' });
   }
 });
 
-server.listen(PORT, '0.0.0.0', () => {
+app.post('/api/parent/login', async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const { name, pin } = req.body || {};
+    if (!name || !pin) return res.status(400).json({ error: 'name and pin required' });
+    const result = await pool.query(`SELECT id, name, pin_hash FROM parents WHERE name = $1 LIMIT 1`, [name.trim()]);
+    const row = result.rows[0];
+    if (!row) return res.status(401).json({ error: 'invalid credentials' });
+    const ok = await bcrypt.compare(String(pin), row.pin_hash);
+    if (!ok) return res.status(401).json({ error: 'invalid credentials' });
+    const token = signToken({ id: row.id, name: row.name });
+    res.json({ token, parent: { id: row.id, name: row.name } });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'login failed' });
+  }
+});
+
+app.get('/api/parent/me', authMiddleware, (req, res) => {
+  res.json({ parent: req.user });
+});
+
+// Static assets
+app.use(express.static(DIST_DIR));
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(DIST_DIR, 'index.html'));
+});
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

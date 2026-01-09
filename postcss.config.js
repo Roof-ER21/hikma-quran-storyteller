@@ -1,2 +1,6 @@
-// Empty PostCSS config - Tailwind is loaded via CDN
-export default {};
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};

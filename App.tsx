@@ -8,6 +8,7 @@ import MediaGenerator from './components/kids/MediaGenerator';
 import DownloadManager from './components/DownloadManager';
 import { OfflineIndicator, PWAInstallPrompt } from './components/OfflineIndicator';
 import { transcribeAudio } from './services/geminiService';
+import ParentGate from './components/ParentGate';
 
 const PROPHETS = [
   "Adam", "Nuh (Noah)", "Ibrahim (Abraham)", "Yusuf (Joseph)", "Musa (Moses)", "Isa (Jesus)", "Muhammad"
@@ -25,6 +26,8 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showDownloadManager, setShowDownloadManager] = useState(false);
   const [showMediaGenerator, setShowMediaGenerator] = useState(false);
+  const [showParentGate, setShowParentGate] = useState(false);
+  const [parentName, setParentName] = useState<string | null>(null);
 
   // Check for admin mode via URL query parameter
   useEffect(() => {
@@ -32,7 +35,18 @@ function App() {
     if (params.get('admin') === 'media') {
       setShowMediaGenerator(true);
     }
+    const storedToken = localStorage.getItem('hikma_parent_token');
+    const storedName = localStorage.getItem('hikma_parent_name');
+    if (storedToken && storedName) {
+      setParentName(storedName);
+    }
   }, []);
+
+  const handleParentAuthed = (token: string, name: string) => {
+    localStorage.setItem('hikma_parent_token', token);
+    localStorage.setItem('hikma_parent_name', name);
+    setParentName(name);
+  };
 
   const handleStartStory = () => {
     if (selectedProphet) setView('story');
@@ -76,6 +90,11 @@ function App() {
       <DownloadManager
         isOpen={showDownloadManager}
         onClose={() => setShowDownloadManager(false)}
+      />
+      <ParentGate
+        isOpen={showParentGate}
+        onClose={() => setShowParentGate(false)}
+        onAuthed={handleParentAuthed}
       />
 
       {/* Navbar */}
@@ -122,6 +141,13 @@ function App() {
                 title="Offline Downloads"
             >
                 <i className="fas fa-download"></i>
+            </button>
+            <button
+                onClick={() => setShowParentGate(true)}
+                className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-2"
+            >
+                <i className="fas fa-user-shield"></i>
+                <span className="hidden md:inline">{parentName ? `Hi, ${parentName}` : 'Parent'}</span>
             </button>
         </div>
       </nav>
