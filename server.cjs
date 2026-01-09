@@ -24,6 +24,15 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
+  // Runtime env injection for client
+  if (req.url === '/env.js') {
+    const key = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || process.env.API_KEY || '';
+    const body = `window.__ENV = { VITE_GEMINI_API_KEY: ${JSON.stringify(key)} };`;
+    res.writeHead(200, { 'Content-Type': 'application/javascript' });
+    res.end(body);
+    return;
+  }
+
   let urlPath = req.url.split('?')[0];
   let filePath = path.join(DIST_DIR, urlPath === '/' ? 'index.html' : urlPath);
 

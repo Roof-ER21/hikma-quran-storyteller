@@ -7,6 +7,7 @@ export const getGeminiApiKey = () => {
   const key =
     import.meta.env?.VITE_GEMINI_API_KEY ||
     import.meta.env?.GEMINI_API_KEY ||
+    (typeof window !== 'undefined' && (window as any).__ENV?.VITE_GEMINI_API_KEY) ||
     process.env.GEMINI_API_KEY ||
     process.env.API_KEY;
 
