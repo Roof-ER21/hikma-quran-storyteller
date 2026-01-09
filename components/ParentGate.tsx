@@ -5,7 +5,7 @@ type Mode = 'login' | 'signup';
 interface ParentGateProps {
   isOpen: boolean;
   onClose: () => void;
-  onAuthed: (token: string, parentName: string) => void;
+  onAuthed: (token: string, parentName: string, remember: boolean) => void;
 }
 
 const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) => {
@@ -14,6 +14,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [remember, setRemember] = useState(true);
 
   if (!isOpen) return null;
 
@@ -28,7 +29,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Failed');
-      onAuthed(data.token, data.parent?.name || name);
+      onAuthed(data.token, data.parent?.name || name, remember);
       onClose();
     } catch (e: any) {
       setError(e.message || 'Failed');
@@ -69,6 +70,16 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
             maxLength={8}
           />
         </div>
+
+        <label className="flex items-center gap-2 text-sm text-stone-600">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="w-4 h-4 text-rose-600 rounded border-stone-300"
+          />
+          Remember me on this device
+        </label>
 
         {error && <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</div>}
 

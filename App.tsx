@@ -21,6 +21,7 @@ const TOPICS = [
 
 function App() {
   const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids'>('home');
+  const [mode, setMode] = useState<'gate' | 'kid' | 'parent'>('gate');
   const [selectedProphet, setSelectedProphet] = useState<string>("");
   const [selectedTopic, setSelectedTopic] = useState<string>("General Life");
   const [transcribing, setTranscribing] = useState(false);
@@ -29,6 +30,7 @@ function App() {
   const [showMediaGenerator, setShowMediaGenerator] = useState(false);
   const [showParentGate, setShowParentGate] = useState(false);
   const [parentName, setParentName] = useState<string | null>(null);
+  const [parentToken, setParentToken] = useState<string | null>(null);
 
   // Check for admin mode via URL query parameter
   useEffect(() => {
@@ -40,16 +42,24 @@ function App() {
     const storedName = localStorage.getItem('hikma_parent_name');
     if (storedToken && storedName) {
       setParentName(storedName);
+      setParentToken(storedToken);
+      setMode('parent');
     }
   }, []);
 
-  const handleParentAuthed = (token: string, name: string) => {
-    localStorage.setItem('hikma_parent_token', token);
-    localStorage.setItem('hikma_parent_name', name);
+  const handleParentAuthed = (token: string, name: string, remember: boolean) => {
+    if (remember) {
+      localStorage.setItem('hikma_parent_token', token);
+      localStorage.setItem('hikma_parent_name', name);
+    }
     setParentName(name);
+    setParentToken(token);
+    setMode('parent');
+    setView('home');
   };
 
   const handleStartStory = () => {
+    if (mode === 'kid') return; // locked for kids
     if (selectedProphet) setView('story');
   };
 
@@ -83,6 +93,74 @@ function App() {
     }
   };
 
+  const enterKids = () => {
+    setMode('kid');
+    setView('kids');
+  };
+
+  const isLocked = (target: typeof view) => {
+    if (mode === 'kid' && target !== 'kids' && target !== 'quran') {
+      return true;
+    }
+    return false;
+  };
+
+  const renderGate = () => (
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 flex flex-col items-center justify-center p-6">
+      <div className="max-w-4xl w-full text-center space-y-10">
+        <div className="space-y-4">
+          <p className="text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold">Bismillah</p>
+          <h1 className="text-4xl md:text-5xl font-serif text-rose-900 leading-tight">
+            Choose your path into <span className="text-amber-600">Hikma</span>
+          </h1>
+          <p className="text-stone-600 max-w-2xl mx-auto">
+            A calm space for families: kids go straight to their stories, parents can unlock everything with a PIN.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <button
+            onClick={enterKids}
+            className="rounded-3xl bg-amber-500 text-white py-8 px-6 shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-all flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-center gap-3 text-2xl font-bold">
+              <i className="fas fa-rocket"></i> Kids Mode
+            </div>
+            <p className="text-sm text-white/90">Jump right into stories, songs, and Quran—no login needed.</p>
+          </button>
+          <div className="rounded-3xl bg-white border border-stone-100 py-8 px-6 shadow-lg flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div className="text-left">
+                <p className="text-xs uppercase text-stone-500 font-semibold">Parents</p>
+                <p className="text-2xl font-bold text-rose-900">Unlock everything</p>
+              </div>
+              <i className="fas fa-user-shield text-rose-600 text-2xl"></i>
+            </div>
+            <p className="text-sm text-stone-600">Enter your name + PIN to manage settings, AI tutor, and full stories.</p>
+            <button
+              onClick={() => setShowParentGate(true)}
+              className="w-full rounded-2xl bg-rose-900 text-white py-3 font-semibold hover:bg-rose-800 transition-colors"
+            >
+              I’m a Parent
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (mode === 'gate') {
+    return (
+      <>
+        {renderGate()}
+        <ParentGate
+          isOpen={showParentGate}
+          onClose={() => setShowParentGate(false)}
+          onAuthed={handleParentAuthed}
+        />
+      </>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col text-stone-800">
       {/* PWA Components */}
@@ -108,8 +186,9 @@ function App() {
         </div>
         <div className="flex gap-2 md:gap-4 text-sm font-medium overflow-x-auto items-center">
             <button
-                onClick={() => setView('home')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'home' || view === 'story' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'}`}
+                onClick={() => !isLocked('home') && setView('home')}
+                disabled={isLocked('home')}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'home' || view === 'story' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'} ${isLocked('home') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-book-open md:mr-2"></i>
                 <span className="hidden md:inline">Stories</span>
@@ -122,8 +201,9 @@ function App() {
                 <span className="hidden md:inline">The Quran</span>
             </button>
             <button
-                onClick={() => setView('live')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'live' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'}`}
+                onClick={() => !isLocked('live') && setView('live')}
+                disabled={isLocked('live')}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'live' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'} ${isLocked('live') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-microphone md:mr-2"></i>
                 <span className="hidden md:inline">AI Tutor</span>
@@ -155,8 +235,8 @@ function App() {
 
       {/* Main Content */}
       <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
-        {view === 'home' && (
-          <div className="grid md:grid-cols-2 gap-12 items-center h-full animate-in fade-in duration-500">
+        {view === 'home' && mode !== 'kid' && (
+            <div className="grid md:grid-cols-2 gap-12 items-center h-full animate-in fade-in duration-500">
             <div className="space-y-8">
               <div className="space-y-4">
                 <h2 className="text-4xl md:text-5xl font-serif text-rose-950 leading-tight">
