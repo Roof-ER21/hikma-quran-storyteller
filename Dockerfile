@@ -18,7 +18,9 @@ ENV PORT=8080
 
 # Only copy what we need to serve the app
 COPY --from=build /app/dist ./dist
-COPY server.cjs package*.json ./
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/node_modules ./node_modules
+COPY server.cjs ./
 
 EXPOSE 8080
 CMD ["node", "server.cjs"]
