@@ -70,12 +70,22 @@ export async function loadEncouragement(): Promise<string> {
 /**
  * Speak text using Web Speech API (fallback for when Gemini TTS is unavailable)
  */
-export function speakWithWebSpeech(text: string, rate: number = 0.9): Promise<void> {
+export function speakWithWebSpeech(text: string, langOrRate: string | number = 0.9): Promise<void> {
   return new Promise((resolve, reject) => {
     if (!('speechSynthesis' in window)) {
       console.warn('Web Speech API not supported');
       reject(new Error('Web Speech API not supported'));
       return;
+    }
+
+    // Parse parameters - can be language string or rate number
+    let rate = 0.9;
+    let lang = 'en-US';
+
+    if (typeof langOrRate === 'string') {
+      lang = langOrRate;
+    } else if (typeof langOrRate === 'number' && isFinite(langOrRate)) {
+      rate = langOrRate;
     }
 
     // Cancel any ongoing speech
@@ -85,12 +95,12 @@ export function speakWithWebSpeech(text: string, rate: number = 0.9): Promise<vo
     utterance.rate = rate;
     utterance.pitch = 1.1; // Slightly higher for kids-friendly tone
     utterance.volume = 1.0;
+    utterance.lang = lang;
 
-    // Try to find a good English voice
+    // Try to find a matching voice for the language
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoices = voices.filter(v =>
-      v.lang.startsWith('en') && (v.name.includes('Female') || v.name.includes('Samantha'))
-    );
+    const langPrefix = lang.split('-')[0];
+    const preferredVoices = voices.filter(v => v.lang.startsWith(langPrefix));
     if (preferredVoices.length > 0) {
       utterance.voice = preferredVoices[0];
     }

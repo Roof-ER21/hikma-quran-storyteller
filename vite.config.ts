@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
           includeAssets: [
             'icons/*.svg',
             'icons/*.png',
-            'assets/kids/audio/*.mp3',
+            'assets/kids/audio/**/*.mp3',
             'assets/quran/offline/**/*.mp3',
             'assets/adult/audio/*.mp3'
           ],
