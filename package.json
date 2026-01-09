@@ -12,7 +12,9 @@
     "preview": "vite preview",
     "start": "serve dist -s -l tcp://0.0.0.0:$PORT",
     "serve": "serve dist -s",
-    "build:css": "tailwindcss -i ./src/styles/tailwind.css -o ./src/styles/generated.css --minify"
+    "build:css": "tailwindcss -i ./src/styles/tailwind.css -o ./src/styles/generated.css --minify",
+    "prebake:kids": "node scripts/prebake-kids-audio.mjs",
+    "prebake:all": "node scripts/prebake-audio.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.35.0",

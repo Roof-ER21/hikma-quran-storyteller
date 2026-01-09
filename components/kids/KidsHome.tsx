@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getKidsProgress, addKidsStars } from '../../services/offlineDatabase';
 import kidsStories from '../../data/kidsStories';
 import { speakWithWebSpeech } from '../../services/kidsAssetLoader';
+import { speakArabicLetter, speakArabicLetterWithExample } from '../../services/geminiService';
 
 // Kids-friendly color palette
 const KIDS_COLORS = {
@@ -317,32 +318,75 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
     return () => audioContextRef.current?.close();
   }, []);
 
-  // Simple tone for letter sound (placeholder - would use TTS in production)
-  const playLetterSound = (letter: typeof ARABIC_LETTERS[0]) => {
-    if (!audioContextRef.current) return;
-    const ctx = audioContextRef.current;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const currentAudioSourceRef = useRef<AudioBufferSourceNode | null>(null);
 
-    // Play a pleasant tone
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+  // Play Arabic letter sound using Gemini TTS
+  const playLetterSound = async (letter: typeof ARABIC_LETTERS[0]) => {
+    if (isPlaying) return; // Prevent overlapping audio
+    setIsPlaying(true);
 
-    // Different frequency for each letter position
-    const index = ARABIC_LETTERS.findIndex(l => l.id === letter.id);
-    osc.frequency.value = 300 + (index * 20);
-    osc.type = 'sine';
+    try {
+      // Use Gemini TTS for Arabic pronunciation
+      const audioBuffer = await speakArabicLetterWithExample(
+        letter.letter,
+        letter.example,
+        letter.exampleMeaning
+      );
 
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+      if (audioBuffer && audioContextRef.current) {
+        // Stop any currently playing audio
+        if (currentAudioSourceRef.current) {
+          try {
+            currentAudioSourceRef.current.stop();
+          } catch (e) {
+            // Ignore if already stopped
+          }
+        }
 
-    osc.start();
-    osc.stop(ctx.currentTime + 0.5);
+        const source = audioContextRef.current.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(audioContextRef.current.destination);
+        currentAudioSourceRef.current = source;
 
-    // Track played letters
-    if (!playedLetters.has(letter.id)) {
-      setPlayedLetters(prev => new Set([...prev, letter.id]));
-      onEarnStar();
+        source.onended = () => {
+          setIsPlaying(false);
+          currentAudioSourceRef.current = null;
+        };
+
+        source.start();
+
+        // Track played letters and earn star
+        if (!playedLetters.has(letter.id)) {
+          setPlayedLetters(prev => new Set([...prev, letter.id]));
+          onEarnStar();
+        }
+      } else {
+        // Fallback to Web Speech API if Gemini fails
+        console.log('Gemini TTS failed, falling back to Web Speech');
+        await speakWithWebSpeech(`${letter.name}. ${letter.letter}`, 'ar-SA');
+        setIsPlaying(false);
+
+        if (!playedLetters.has(letter.id)) {
+          setPlayedLetters(prev => new Set([...prev, letter.id]));
+          onEarnStar();
+        }
+      }
+    } catch (error) {
+      console.error('Error playing letter sound:', error);
+      // Fallback to Web Speech API
+      try {
+        await speakWithWebSpeech(`${letter.name}. ${letter.letter}`, 'ar-SA');
+      } catch (e) {
+        console.error('Web Speech fallback also failed:', e);
+      }
+      setIsPlaying(false);
+
+      // Still track and earn star even on error
+      if (!playedLetters.has(letter.id)) {
+        setPlayedLetters(prev => new Set([...prev, letter.id]));
+        onEarnStar();
+      }
     }
   };
 

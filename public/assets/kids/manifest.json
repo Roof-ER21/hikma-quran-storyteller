@@ -67,11 +67,15 @@
   "illustrations": {
     "status": "complete",
     "stories": {
-      "adam": ["story-adam-0.png", "story-adam-1.png"],
-      "nuh": ["story-nuh-0.png", "story-nuh-1.png"],
-      "ibrahim": ["story-ibrahim-0.png", "story-ibrahim-1.png"],
-      "musa": ["story-musa-0.png", "story-musa-1.png"],
-      "yusuf": ["story-yusuf-0.png", "story-yusuf-1.png"]
+      "adam": ["story-adam-0.png", "story-adam-1.png", "story-adam-2.png", "story-adam-3.png"],
+      "nuh": ["story-nuh-0.png", "story-nuh-1.png", "story-nuh-2.png", "story-nuh-3.png"],
+      "ibrahim": ["story-ibrahim-0.png", "story-ibrahim-1.png", "story-ibrahim-2.png", "story-ibrahim-3.png"],
+      "musa": ["story-musa-0.png", "story-musa-1.png", "story-musa-2.png", "story-musa-3.png"],
+      "yusuf": ["story-yusuf-0.png", "story-yusuf-1.png", "story-yusuf-2.png", "story-yusuf-3.png"]
+    },
+    "kidsAssets": {
+      "friendsGroup": "kids-friends-group.png",
+      "mosqueScene": "kids-mosque-scene.png"
     }
   },
   "audio": {

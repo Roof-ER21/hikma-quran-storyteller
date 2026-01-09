@@ -431,21 +431,114 @@ export const generateStoryImage = async (prompt: string, config: VisualConfig) =
 };
 
 /**
- * TTS Generation
+ * TTS Voice options
  */
-export const speakText = async (text: string): Promise<AudioBuffer | null> => {
+export type TTSVoice = 'Fenrir' | 'Aoede' | 'Kore' | 'Puck' | 'Charon';
+export type TTSLanguage = 'en' | 'ar';
+
+export interface TTSOptions {
+  voice?: TTSVoice;
+  language?: TTSLanguage;
+}
+
+/**
+ * TTS Generation with language and voice support
+ */
+export const speakText = async (text: string, options: TTSOptions = {}): Promise<AudioBuffer | null> => {
+  const { voice = 'Fenrir', language = 'en' } = options;
+
   return callWithRetry(async () => {
     const ai = getAI();
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: text.slice(0, 500) }] }], // Limit length for demo responsiveness
+      contents: [{ parts: [{ text: text.slice(0, 500) }] }],
       config: {
         responseModalities: [Modality.AUDIO],
         speechConfig: {
           voiceConfig: {
-            // Fenrir: Deep, resonant, authoritative narrator voice.
-            prebuiltVoiceConfig: { voiceName: 'Fenrir' },
+            prebuiltVoiceConfig: { voiceName: voice },
           },
+          languageCode: language === 'ar' ? 'ar-XA' : 'en-US',
+        },
+      },
+    });
+
+    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    if (!base64Audio) return null;
+
+    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});
+    const audioBuffer = await decodeAudioData(
+      base64ToUint8Array(base64Audio),
+      audioCtx,
+      24000,
+      1
+    );
+    return audioBuffer;
+  });
+};
+
+/**
+ * Speak Arabic letter with proper Arabic pronunciation
+ * Uses Aoede voice with Arabic language setting
+ */
+export const speakArabicLetter = async (letter: string, letterName: string): Promise<AudioBuffer | null> => {
+  // Create a clear Arabic pronunciation prompt
+  const arabicText = `${letter}`;  // Just the letter for clear pronunciation
+
+  return callWithRetry(async () => {
+    const ai = getAI();
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-preview-tts",
+      contents: [{ parts: [{ text: arabicText }] }],
+      config: {
+        responseModalities: [Modality.AUDIO],
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: { voiceName: 'Aoede' },
+          },
+          languageCode: 'ar-XA',  // Arabic language code
+        },
+      },
+    });
+
+    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    if (!base64Audio) return null;
+
+    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});
+    const audioBuffer = await decodeAudioData(
+      base64ToUint8Array(base64Audio),
+      audioCtx,
+      24000,
+      1
+    );
+    return audioBuffer;
+  });
+};
+
+/**
+ * Speak Arabic letter with example word
+ * Pronounces: letter, then "like in" + example word
+ */
+export const speakArabicLetterWithExample = async (
+  letter: string,
+  example: string,
+  englishExplanation: string
+): Promise<AudioBuffer | null> => {
+  // First say the letter in Arabic, then the example in Arabic
+  const arabicText = `${letter}... ${example}`;
+
+  return callWithRetry(async () => {
+    const ai = getAI();
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-preview-tts",
+      contents: [{ parts: [{ text: arabicText }] }],
+      config: {
+        responseModalities: [Modality.AUDIO],
+        speechConfig: {
+          voiceConfig: {
+            prebuiltVoiceConfig: { voiceName: 'Aoede' },
+          },
+          languageCode: 'ar-XA',
         },
       },
     });
