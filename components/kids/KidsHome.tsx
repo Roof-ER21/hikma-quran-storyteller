@@ -1177,8 +1177,21 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-          <div className="text-8xl mb-6 animate-bounce">{scene.emoji}</div>
-          <p className="text-2xl text-white font-medium max-w-xs leading-relaxed">
+          {/* Story Illustration */}
+          <div className="w-full max-w-sm aspect-square mb-4 rounded-3xl overflow-hidden shadow-2xl bg-white/10">
+            <img
+              src={`/assets/kids/illustrations/story-${selectedStory.id}-${currentScene}.png`}
+              alt={`${selectedStory.title} - Scene ${currentScene + 1}`}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to emoji if image not found
+                (e.target as HTMLImageElement).style.display = 'none';
+                (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+            <div className="hidden text-8xl flex items-center justify-center h-full">{scene.emoji}</div>
+          </div>
+          <p className="text-xl text-white font-medium max-w-xs leading-relaxed">
             {scene.text}
           </p>
           <button
@@ -1246,17 +1259,38 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             <button
               key={story.id}
               onClick={() => setSelectedStory(story)}
-              className={`aspect-square rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
+              className={`rounded-2xl overflow-hidden shadow-lg hover:scale-105 active:scale-95 transition-transform ${
                 completedStories.has(story.id) ? 'ring-4 ring-green-400' : ''
               }`}
-              style={{ backgroundColor: KIDS_COLORS[story.colorKey] }}
             >
-              <span className="text-5xl mb-2">{story.emoji}</span>
-              <h3 className="text-lg font-bold text-white">{story.prophet}</h3>
-              <p className="text-2xl font-arabic text-white/90">{story.prophetArabic}</p>
-              {completedStories.has(story.id) && (
-                <span className="text-xl mt-1">⭐</span>
-              )}
+              {/* Thumbnail from first scene */}
+              <div className="aspect-square relative">
+                <img
+                  src={`/assets/kids/illustrations/story-${story.id}-0.png`}
+                  alt={story.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback to colored background with emoji
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                {/* Gradient overlay for text readability */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"
+                />
+                {/* Completion badge */}
+                {completedStories.has(story.id) && (
+                  <div className="absolute top-2 right-2 text-2xl">⭐</div>
+                )}
+              </div>
+              {/* Story info */}
+              <div
+                className="p-3 text-center"
+                style={{ backgroundColor: KIDS_COLORS[story.colorKey] }}
+              >
+                <h3 className="text-lg font-bold text-white">{story.prophet}</h3>
+                <p className="text-xl font-arabic text-white/90">{story.prophetArabic}</p>
+              </div>
             </button>
           ))}
         </div>
