@@ -10,8 +10,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "serve dist -s -l ${PORT:-3000}",
-    "serve": "serve dist -s -l ${PORT:-3000}"
+    "start": "serve dist -s -l tcp://0.0.0.0:$PORT",
+    "serve": "serve dist -s"
   },
   "dependencies": {
     "@google/genai": "^1.35.0",
