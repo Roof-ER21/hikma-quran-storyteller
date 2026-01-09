@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { offlineAssetManifest } from '../data/offlineAssets';
 import {
   db,
   getStorageInfo,
@@ -75,6 +76,11 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
     total: number;
     status: string;
   } | null>(null);
+  const [offlinePackProgress, setOfflinePackProgress] = useState<{
+    current: number;
+    total: number;
+    status: string;
+  } | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
@@ -97,6 +103,31 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
   const loadStats = async () => {
     const info = await getEnhancedStorageInfo();
     setStats(info);
+  };
+
+  const downloadOfflinePack = async () => {
+    setOfflinePackProgress({ current: 0, total: offlineAssetManifest.length, status: 'Caching assets...' });
+    try {
+      const cache = await caches.open('hikma-offline');
+      let done = 0;
+      for (const asset of offlineAssetManifest) {
+        try {
+          await cache.add(asset);
+        } catch {
+          // ignore missing assets (partial reciter coverage)
+        }
+        done++;
+        setOfflinePackProgress({
+          current: done,
+          total: offlineAssetManifest.length,
+          status: `Cached ${done}/${offlineAssetManifest.length}`
+        });
+      }
+      setOfflinePackProgress({ current: offlineAssetManifest.length, total: offlineAssetManifest.length, status: 'Offline pack ready' });
+      setTimeout(() => setOfflinePackProgress(null), 1500);
+    } catch {
+      setOfflinePackProgress({ current: 0, total: offlineAssetManifest.length, status: 'Failed to cache offline pack' });
+    }
   };
 
   // Download all stories (7 prophets × 7 topics × 2 languages = 98 stories)
@@ -404,6 +435,32 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
               </div>
             </div>
           )}
+
+          <div className="bg-amber-50 rounded-xl p-4 mb-4 border border-amber-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-amber-800 font-semibold">Offline Pack</p>
+                <p className="text-sm text-amber-700">Kids narrations + short surahs (multiple reciters) + Seerah audio.</p>
+              </div>
+              <button
+                onClick={downloadOfflinePack}
+                className="px-3 py-2 rounded-xl bg-amber-600 text-white text-sm shadow hover:bg-amber-700"
+              >
+                Download
+              </button>
+            </div>
+            {offlinePackProgress && (
+              <div className="text-sm text-amber-800 mt-2">
+                {offlinePackProgress.status} ({offlinePackProgress.current}/{offlinePackProgress.total})
+                <div className="w-full bg-white rounded-full h-2 mt-1">
+                  <div
+                    className="h-2 bg-amber-500 rounded-full"
+                    style={{ width: `${(offlinePackProgress.current / offlineAssetManifest.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Download Progress */}
           {downloadProgress && (

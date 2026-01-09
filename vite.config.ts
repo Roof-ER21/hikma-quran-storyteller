@@ -19,7 +19,8 @@ export default defineConfig(({ mode }) => {
             'icons/*.svg',
             'icons/*.png',
             'assets/kids/audio/*.mp3',
-            'assets/quran/offline/**/*.mp3'
+            'assets/quran/offline/**/*.mp3',
+            'assets/adult/audio/*.mp3'
           ],
           manifest: {
             name: 'Hikma - Quran Companion',

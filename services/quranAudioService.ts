@@ -12,6 +12,7 @@ import { getGlobalVerseNumber } from './quranDataService';
 // Audio CDN Base URL
 const AUDIO_CDN = 'https://cdn.islamic.network/quran/audio';
 const OFFLINE_SURAHS = new Set([105, 106, 107, 108, 109, 110, 111, 112, 113, 114]);
+const OFFLINE_RECITERS = new Set(['ar.alafasy', 'ar.husary', 'ar.minshawimujawwad']);
 
 // Available reciters with their identifiers
 export const RECITERS: Reciter[] = [
@@ -114,9 +115,15 @@ class AudioManager {
    * Get the audio URL for a specific verse
    */
   getAudioUrl(surahNumber: number, verseNumber: number, reciterId: string = this.reciter): string {
+    if (OFFLINE_SURAHS.has(surahNumber) && OFFLINE_RECITERS.has(reciterId)) {
+      this.lastSourceOffline = true;
+      // Prefer reciter-specific offline path, then default legacy path
+      const reciterPath = `/assets/quran/offline/${reciterId}/${surahNumber}/${verseNumber}.mp3`;
+      return reciterPath;
+    }
     if (OFFLINE_SURAHS.has(surahNumber) && reciterId === DEFAULT_RECITER) {
       this.lastSourceOffline = true;
-      return `/assets/quran/offline/${surahNumber}/${verseNumber}.mp3`;
+      return `/assets/quran/offline/${surahNumber}/${verseNumber}.mp3`; // legacy path for default
     }
     this.lastSourceOffline = false;
     return this.buildRemoteUrl(surahNumber, verseNumber, reciterId);

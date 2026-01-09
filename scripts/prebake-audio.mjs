@@ -25,6 +25,7 @@ if (!GEMINI_KEY) {
 const genai = new GoogleGenAI({ apiKey: GEMINI_KEY });
 
 const OFFLINE_SURAHS = [105, 106, 107, 108, 109, 110, 111, 112, 113, 114];
+const OFFLINE_RECITERS = ['ar.alafasy', 'ar.husary', 'ar.minshawimujawwad'];
 const VERSE_COUNTS = [
   0, 7, 286, 200, 176, 120, 165, 206, 75, 129, 109, 123, 111, 43, 52, 99, 128, 111,
   110, 98, 135, 112, 78, 118, 64, 77, 227, 93, 88, 69, 60, 34, 30, 73, 54, 45, 83,
@@ -87,31 +88,44 @@ async function generateKidsAudio() {
   }
 }
 
+async function generateAdultAudio() {
+  console.log('🎙️  Generating adult stories audio...');
+  const dataPath = path.join(root, 'data', 'adultStories.json');
+  const stories = JSON.parse(await fs.readFile(dataPath, 'utf-8'));
+  for (const story of stories) {
+    const out = path.join(root, 'public', 'assets', 'adult', 'audio', `${story.id}.mp3`);
+    await ttsToFile(story.text, out, 'Fenrir');
+    console.log(`  ✅ adult story -> ${path.basename(out)}`);
+  }
+}
+
 async function downloadShortSurahs() {
   console.log('📥 Downloading short surahs (105-114) for offline...');
   const bitrate = '128';
-  const reciter = 'ar.alafasy';
-  for (const surah of OFFLINE_SURAHS) {
-    const totalVerses = VERSE_COUNTS[surah];
-    for (let verse = 1; verse <= totalVerses; verse++) {
-      const global = getGlobalVerseNumber(surah, verse);
-      const url = `https://cdn.islamic.network/quran/audio/${bitrate}/${reciter}/${global}.mp3`;
-      const res = await fetch(url);
-      if (!res.ok) {
-        console.warn(`  ⚠️  Failed ${url}`);
-        continue;
+  for (const reciter of OFFLINE_RECITERS) {
+    for (const surah of OFFLINE_SURAHS) {
+      const totalVerses = VERSE_COUNTS[surah];
+      for (let verse = 1; verse <= totalVerses; verse++) {
+        const global = getGlobalVerseNumber(surah, verse);
+        const url = `https://cdn.islamic.network/quran/audio/${bitrate}/${reciter}/${global}.mp3`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          console.warn(`  ⚠️  Failed ${url}`);
+          continue;
+        }
+        const buf = Buffer.from(await res.arrayBuffer());
+        const out = path.join(root, 'public', 'assets', 'quran', 'offline', reciter, `${surah}`, `${verse}.mp3`);
+        await ensureDir(path.dirname(out));
+        await fs.writeFile(out, buf);
       }
-      const buf = Buffer.from(await res.arrayBuffer());
-      const out = path.join(root, 'public', 'assets', 'quran', 'offline', `${surah}`, `${verse}.mp3`);
-      await ensureDir(path.dirname(out));
-      await fs.writeFile(out, buf);
+      console.log(`  ✅ ${reciter} Surah ${surah} (${totalVerses} verses) downloaded`);
     }
-    console.log(`  ✅ Surah ${surah} (${totalVerses} verses) downloaded`);
   }
 }
 
 async function main() {
   await generateKidsAudio();
+  await generateAdultAudio();
   await downloadShortSurahs();
   console.log('Done.');
 }

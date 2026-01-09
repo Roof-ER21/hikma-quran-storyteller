@@ -9,6 +9,7 @@ import DownloadManager from './components/DownloadManager';
 import { OfflineIndicator, PWAInstallPrompt } from './components/OfflineIndicator';
 import { transcribeAudio } from './services/geminiService';
 import ParentGate from './components/ParentGate';
+import AdultAudioStories from './components/AdultAudioStories';
 
 const PROPHETS = [
   "Adam", "Nuh (Noah)", "Ibrahim (Abraham)", "Yusuf (Joseph)", "Musa (Moses)", "Isa (Jesus)", "Muhammad"
@@ -247,6 +248,10 @@ function App() {
                     />
                   ))}
                 </div>
+              </div>
+
+              <div className="mt-10">
+                <AdultAudioStories />
               </div>
             </div>
 
