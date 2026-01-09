@@ -208,7 +208,7 @@ export const PWAInstallPrompt: React.FC<InstallPromptProps> = ({ onInstall }) =>
           />
         </div>
         <div className="flex-1">
-          <h3 className="font-bold text-lg mb-1">Install Hikma</h3>
+          <h3 className="font-bold text-lg mb-1">Install Noor Soad</h3>
           <p className="text-rose-200 text-sm mb-4">
             Add to your home screen for quick access and offline reading
           </p>

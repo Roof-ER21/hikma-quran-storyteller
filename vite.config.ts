@@ -23,8 +23,8 @@ export default defineConfig(({ mode }) => {
             'assets/adult/audio/*.mp3'
           ],
           manifest: {
-            name: 'Hikma - Quran Companion',
-            short_name: 'Hikma',
+            name: 'Noor Soad - Quran Companion',
+            short_name: 'Noor Soad',
             description: 'AI-powered Quran companion with storytelling, recitation practice, voice search, and memorization tools',
             theme_color: '#9f1239',
             background_color: '#1e293b',
