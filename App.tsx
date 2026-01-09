@@ -111,7 +111,7 @@ function App() {
         <div className="space-y-4">
           <p className="text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold">Bismillah</p>
           <h1 className="text-4xl md:text-5xl font-serif text-rose-900 leading-tight">
-            Choose your path into <span className="text-amber-600">Hikma</span>
+            Choose your path into <span className="text-amber-600">Noor Soad</span>
           </h1>
           <p className="text-stone-600 max-w-2xl mx-auto">
             A calm space for families: kids go straight to their stories, parents can unlock everything with a PIN.
@@ -182,7 +182,7 @@ function App() {
           <div className="w-10 h-10 bg-rose-700 rounded-lg flex items-center justify-center text-white text-xl">
             <i className="fas fa-quran"></i>
           </div>
-          <h1 className="text-2xl font-serif font-bold text-rose-900 tracking-wide">Hikma</h1>
+          <h1 className="text-2xl font-serif font-bold text-rose-900 tracking-wide">Noor Soad</h1>
         </div>
         <div className="flex gap-2 md:gap-4 text-sm font-medium overflow-x-auto items-center">
             <button
