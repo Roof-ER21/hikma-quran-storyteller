@@ -1223,3 +1223,94 @@ export async function resetAllKidsProgress(): Promise<void> {
     console.error('Error resetting kids progress:', error);
   }
 }
+
+// ============================================
+// Badge System
+// ============================================
+
+// Badge definitions
+export const BADGES = [
+  { id: 'letter-explorer', name: 'Letter Explorer', emoji: '🔤', requirement: 'Learn first letter' },
+  { id: 'alphabet-champion', name: 'Alphabet Champion', emoji: '🏆', requirement: 'Learn 10 letters' },
+  { id: 'quran-listener', name: 'Quran Listener', emoji: '🎧', requirement: 'Complete first surah' },
+  { id: 'fatiha-star', name: 'Fatiha Star', emoji: '⭐', requirement: 'Complete Al-Fatiha' },
+  { id: 'story-lover', name: 'Story Lover', emoji: '📖', requirement: 'Complete 3 stories' },
+  { id: 'streak-3', name: '3-Day Streak', emoji: '🔥', requirement: 'Play 3 days in a row' },
+  { id: 'star-collector', name: 'Star Collector', emoji: '🌟', requirement: 'Earn 50 stars' },
+];
+
+/**
+ * Get all badges earned by the kid
+ */
+export async function getKidsBadges(): Promise<string[]> {
+  try {
+    const progress = await getKidsProgress();
+    return progress.badges || [];
+  } catch (error) {
+    console.error('Error getting kids badges:', error);
+    return [];
+  }
+}
+
+/**
+ * Unlock a badge for the kid
+ * @returns true if the badge was newly unlocked, false if already unlocked
+ */
+export async function unlockBadge(badgeId: string): Promise<boolean> {
+  try {
+    const progress = await getKidsProgress();
+    if (!progress.badges.includes(badgeId)) {
+      await updateKidsProgress({
+        badges: [...progress.badges, badgeId]
+      });
+      return true; // Newly unlocked
+    }
+    return false; // Already unlocked
+  } catch (error) {
+    console.error('Error unlocking badge:', error);
+    return false;
+  }
+}
+
+/**
+ * Check stats and automatically unlock eligible badges
+ * @param stats Current stats for letters, surahs, stories, stars, and streak
+ * @returns Array of newly unlocked badge IDs
+ */
+export async function checkAndUnlockBadges(stats: {
+  letters: number;
+  surahs: number;
+  stories: number;
+  stars: number;
+  streak: number;
+  hasFatiha?: boolean;
+}): Promise<string[]> {
+  try {
+    const newlyUnlocked: string[] = [];
+
+    // Check each badge condition
+    const checks = [
+      { condition: stats.letters >= 1, badgeId: 'letter-explorer' },
+      { condition: stats.letters >= 10, badgeId: 'alphabet-champion' },
+      { condition: stats.surahs >= 1, badgeId: 'quran-listener' },
+      { condition: stats.hasFatiha === true, badgeId: 'fatiha-star' },
+      { condition: stats.stories >= 3, badgeId: 'story-lover' },
+      { condition: stats.streak >= 3, badgeId: 'streak-3' },
+      { condition: stats.stars >= 50, badgeId: 'star-collector' },
+    ];
+
+    for (const check of checks) {
+      if (check.condition) {
+        const wasNewlyUnlocked = await unlockBadge(check.badgeId);
+        if (wasNewlyUnlocked) {
+          newlyUnlocked.push(check.badgeId);
+        }
+      }
+    }
+
+    return newlyUnlocked;
+  } catch (error) {
+    console.error('Error checking and unlocking badges:', error);
+    return [];
+  }
+}

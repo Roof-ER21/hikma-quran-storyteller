@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { getKidsProgress, addKidsStars } from '../../services/offlineDatabase';
+import { getKidsProgress, addKidsStars, BADGES, getKidsBadges } from '../../services/offlineDatabase';
 import kidsStories from '../../data/kidsStories';
 import { speakWithWebSpeech } from '../../services/kidsAssetLoader';
 import { speakArabicLetter, speakArabicLetterWithExample } from '../../services/geminiService';
+import CelebrationOverlay from './CelebrationOverlay';
 
 // Kids-friendly color palette
 const KIDS_COLORS = {
@@ -62,6 +63,9 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
   const [totalStars, setTotalStars] = useState(0);
   const [level, setLevel] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [celebrationType, setCelebrationType] = useState<'star' | 'badge' | 'complete'>('star');
+  const [celebrationMessage, setCelebrationMessage] = useState<string>('');
   const audioContextRef = useRef<AudioContext | null>(null);
 
   // Load progress from database on mount
@@ -80,20 +84,36 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
     loadProgress();
   }, []);
 
+  // Trigger celebration overlay
+  const triggerCelebration = useCallback((type: 'star' | 'badge' | 'complete', message?: string) => {
+    setCelebrationType(type);
+    setCelebrationMessage(message || '');
+    setShowCelebration(true);
+  }, []);
+
   // Earn a star and persist to database
-  const earnStar = useCallback(async () => {
+  const earnStar = useCallback(async (showAnimation = true) => {
     try {
       const newTotal = await addKidsStars(1);
       setTotalStars(newTotal);
       // Update level based on new total
       const newLevel = newTotal >= 100 ? 5 : newTotal >= 50 ? 4 : newTotal >= 25 ? 3 : newTotal >= 10 ? 2 : 1;
       setLevel(newLevel);
+
+      // Show celebration for milestones
+      if (showAnimation) {
+        if (newTotal === 10 || newTotal === 25 || newTotal === 50 || newTotal === 100) {
+          triggerCelebration('complete', `${newTotal} Stars! 🌟`);
+        } else if (newTotal % 5 === 0) {
+          triggerCelebration('star');
+        }
+      }
     } catch (error) {
       console.error('Failed to save star:', error);
       // Fallback to local state only
       setTotalStars(s => s + 1);
     }
-  }, []);
+  }, [triggerCelebration]);
 
   // Initialize audio context for feedback sounds
   useEffect(() => {
@@ -219,6 +239,14 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
             </div>
           </div>
         )}
+
+        {/* Celebration Overlay */}
+        <CelebrationOverlay
+          isVisible={showCelebration}
+          onComplete={() => setShowCelebration(false)}
+          type={celebrationType}
+          message={celebrationMessage}
+        />
       </div>
     );
   }
@@ -226,41 +254,73 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
   // Alphabet Learning Activity
   if (activity === 'alphabet') {
     return (
-      <AlphabetActivity
-        onBack={() => setActivity('home')}
-        onEarnStar={earnStar}
-      />
+      <>
+        <AlphabetActivity
+          onBack={() => setActivity('home')}
+          onEarnStar={earnStar}
+        />
+        <CelebrationOverlay
+          isVisible={showCelebration}
+          onComplete={() => setShowCelebration(false)}
+          type={celebrationType}
+          message={celebrationMessage}
+        />
+      </>
     );
   }
 
   // Surah Memorization Activity
   if (activity === 'quran') {
     return (
-      <SurahActivity
-        onBack={() => setActivity('home')}
-        onEarnStar={earnStar}
-      />
+      <>
+        <SurahActivity
+          onBack={() => setActivity('home')}
+          onEarnStar={earnStar}
+        />
+        <CelebrationOverlay
+          isVisible={showCelebration}
+          onComplete={() => setShowCelebration(false)}
+          type={celebrationType}
+          message={celebrationMessage}
+        />
+      </>
     );
   }
 
   // Prophet Stories Activity
   if (activity === 'stories') {
     return (
-      <StoriesActivity
-        onBack={() => setActivity('home')}
-        onEarnStar={earnStar}
-      />
+      <>
+        <StoriesActivity
+          onBack={() => setActivity('home')}
+          onEarnStar={earnStar}
+        />
+        <CelebrationOverlay
+          isVisible={showCelebration}
+          onComplete={() => setShowCelebration(false)}
+          type={celebrationType}
+          message={celebrationMessage}
+        />
+      </>
     );
   }
 
   // Rewards/Progress Activity
   if (activity === 'rewards') {
     return (
-      <RewardsActivity
-        onBack={() => setActivity('home')}
-        totalStars={totalStars}
-        level={level}
-      />
+      <>
+        <RewardsActivity
+          onBack={() => setActivity('home')}
+          totalStars={totalStars}
+          level={level}
+        />
+        <CelebrationOverlay
+          isVisible={showCelebration}
+          onComplete={() => setShowCelebration(false)}
+          type={celebrationType}
+          message={celebrationMessage}
+        />
+      </>
     );
   }
 
@@ -311,7 +371,14 @@ const ARABIC_LETTERS = [
 const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   const [selectedLetter, setSelectedLetter] = useState<typeof ARABIC_LETTERS[0] | null>(null);
   const [playedLetters, setPlayedLetters] = useState<Set<string>>(new Set());
+  const [tracedLetters, setTracedLetters] = useState<Set<string>>(new Set());
+  const [showTracing, setShowTracing] = useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [strokeLength, setStrokeLength] = useState(0);
+  const [showSuccess, setShowSuccess] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -418,8 +485,209 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
     }
   };
 
+  // Initialize canvas for letter tracing
+  useEffect(() => {
+    if (showTracing && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Set canvas size
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * 2; // High DPI
+      canvas.height = rect.height * 2;
+      ctx.scale(2, 2);
+
+      // Configure drawing style
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = 12;
+      ctx.strokeStyle = KIDS_COLORS.coral;
+
+      contextRef.current = ctx;
+
+      // Draw the letter guide in background
+      if (selectedLetter) {
+        ctx.save();
+        ctx.font = '200px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.fillText(selectedLetter.letter, rect.width / 2, rect.height / 2);
+        ctx.restore();
+      }
+    }
+  }, [showTracing, selectedLetter]);
+
+  // Drawing handlers
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!contextRef.current || !canvasRef.current) return;
+    setIsDrawing(true);
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = ('touches' in e) ? e.touches[0].clientX - rect.left : e.nativeEvent.offsetX;
+    const y = ('touches' in e) ? e.touches[0].clientY - rect.top : e.nativeEvent.offsetY;
+
+    contextRef.current.beginPath();
+    contextRef.current.moveTo(x, y);
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing || !contextRef.current || !canvasRef.current) return;
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = ('touches' in e) ? e.touches[0].clientX - rect.left : e.nativeEvent.offsetX;
+    const y = ('touches' in e) ? e.touches[0].clientY - rect.top : e.nativeEvent.offsetY;
+
+    contextRef.current.lineTo(x, y);
+    contextRef.current.stroke();
+
+    // Track stroke length
+    setStrokeLength(prev => prev + 1);
+  };
+
+  const stopDrawing = () => {
+    if (!isDrawing) return;
+    setIsDrawing(false);
+    if (contextRef.current) {
+      contextRef.current.closePath();
+    }
+  };
+
+  // Clear canvas
+  const clearCanvas = () => {
+    if (!canvasRef.current || !contextRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = contextRef.current;
+    const rect = canvas.getBoundingClientRect();
+
+    // Clear all
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    // Redraw guide letter
+    if (selectedLetter) {
+      ctx.save();
+      ctx.font = '200px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillText(selectedLetter.letter, rect.width / 2, rect.height / 2);
+      ctx.restore();
+    }
+
+    setStrokeLength(0);
+  };
+
+  // Submit tracing (simple validation)
+  const submitTracing = () => {
+    // Simple validation: check if enough drawing was done
+    const minStrokeLength = 30; // Kid-friendly threshold
+
+    if (strokeLength >= minStrokeLength) {
+      // Success!
+      setShowSuccess(true);
+
+      // Award star if first time tracing this letter
+      if (selectedLetter && !tracedLetters.has(selectedLetter.id)) {
+        setTracedLetters(prev => new Set([...prev, selectedLetter.id]));
+        onEarnStar();
+      }
+
+      // Celebrate with animation
+      setTimeout(() => {
+        setShowSuccess(false);
+        setShowTracing(false);
+        clearCanvas();
+        setStrokeLength(0);
+      }, 2000);
+    } else {
+      // Encourage to try more
+      speakWithWebSpeech("Keep going! Draw more!", 'en-US');
+    }
+  };
+
   // Letter detail view
   if (selectedLetter) {
+    // Tracing mode
+    if (showTracing) {
+      return (
+        <div
+          className="min-h-full flex flex-col"
+          style={{ backgroundColor: KIDS_COLORS.cream }}
+        >
+          {/* Header */}
+          <div className="p-4 flex items-center justify-between">
+            <button
+              onClick={() => {
+                setShowTracing(false);
+                clearCanvas();
+                setStrokeLength(0);
+              }}
+              className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+            >
+              <i className="fas fa-arrow-left text-xl"></i>
+            </button>
+            <h2 className="text-2xl font-bold text-stone-700">Trace the Letter!</h2>
+            <div className="w-14"></div>
+          </div>
+
+          {/* Canvas Area */}
+          <div className="flex-1 flex flex-col items-center justify-center p-6">
+            <div className="relative">
+              <canvas
+                ref={canvasRef}
+                onMouseDown={startDrawing}
+                onMouseMove={draw}
+                onMouseUp={stopDrawing}
+                onMouseLeave={stopDrawing}
+                onTouchStart={startDrawing}
+                onTouchMove={draw}
+                onTouchEnd={stopDrawing}
+                className="border-4 border-white rounded-3xl shadow-xl bg-stone-50 cursor-crosshair touch-none"
+                style={{ width: '350px', height: '350px' }}
+              />
+
+              {/* Success overlay */}
+              {showSuccess && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white/90 rounded-3xl">
+                  <div className="text-center animate-bounce">
+                    <div className="text-8xl mb-4">⭐</div>
+                    <p className="text-3xl font-bold text-stone-700">Amazing!</p>
+                    <p className="text-xl text-stone-500">You did it!</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Instruction */}
+            <p className="mt-4 text-lg text-stone-600 text-center max-w-sm">
+              Use your finger to trace the letter <span className="text-3xl font-arabic">{selectedLetter.letter}</span>
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="p-6 flex gap-4 justify-center">
+            <button
+              onClick={clearCanvas}
+              className="px-8 py-4 rounded-2xl bg-white shadow-lg text-stone-600 font-bold text-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
+            >
+              <i className="fas fa-redo"></i>
+              Clear
+            </button>
+            <button
+              onClick={submitTracing}
+              className="px-8 py-4 rounded-2xl shadow-lg text-white font-bold text-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
+              style={{ backgroundColor: KIDS_COLORS.green }}
+            >
+              <i className="fas fa-check"></i>
+              Done!
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Letter detail view (existing)
     return (
       <div
         className="min-h-full flex flex-col"
@@ -479,6 +747,17 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               {isLoadingAudio ? 'Loading audio...' : isPlaying ? 'Playing...' : 'Tap the letter to hear it!'}
             </span>
           </div>
+
+          {/* Trace Letter Button */}
+          <button
+            onClick={() => setShowTracing(true)}
+            className="mt-6 px-8 py-4 rounded-2xl shadow-lg text-white font-bold text-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-3"
+            style={{ backgroundColor: tracedLetters.has(selectedLetter.id) ? KIDS_COLORS.green : KIDS_COLORS.purple }}
+          >
+            {tracedLetters.has(selectedLetter.id) && <span className="text-2xl">⭐</span>}
+            <i className="fas fa-pencil-alt"></i>
+            <span>Trace the Letter!</span>
+          </button>
         </div>
       </div>
     );
@@ -507,18 +786,29 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
       {/* Letter Grid */}
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="grid grid-cols-4 gap-3 max-w-lg mx-auto">
-          {ARABIC_LETTERS.map((letter) => (
-            <button
-              key={letter.id}
-              onClick={() => setSelectedLetter(letter)}
-              className={`aspect-square rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
-                playedLetters.has(letter.id) ? 'ring-4 ring-green-400' : ''
-              }`}
-              style={{ backgroundColor: playedLetters.has(letter.id) ? KIDS_COLORS.green : KIDS_COLORS.coral }}
-            >
-              <span className="text-4xl text-white font-arabic">{letter.letter}</span>
-            </button>
-          ))}
+          {ARABIC_LETTERS.map((letter) => {
+            const hasPlayed = playedLetters.has(letter.id);
+            const hasTraced = tracedLetters.has(letter.id);
+            const isComplete = hasPlayed && hasTraced;
+
+            return (
+              <button
+                key={letter.id}
+                onClick={() => setSelectedLetter(letter)}
+                className={`aspect-square rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform relative ${
+                  isComplete ? 'ring-4 ring-green-400' : ''
+                }`}
+                style={{
+                  backgroundColor: isComplete ? KIDS_COLORS.green : hasPlayed || hasTraced ? KIDS_COLORS.yellow : KIDS_COLORS.coral
+                }}
+              >
+                <span className="text-4xl text-white font-arabic">{letter.letter}</span>
+                {isComplete && (
+                  <span className="absolute -top-1 -right-1 text-xl">⭐</span>
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -985,16 +1275,22 @@ interface RewardsProps {
   level: number;
 }
 
-const BADGES = [
-  { id: 'first-letter', name: 'Letter Explorer', emoji: '🔤', requirement: 'Learn 1 letter', unlocked: false },
-  { id: 'alphabet-10', name: 'Alphabet Star', emoji: '🏆', requirement: 'Learn 10 letters', unlocked: false },
-  { id: 'first-surah', name: 'Quran Listener', emoji: '🎧', requirement: 'Listen to 1 surah', unlocked: false },
-  { id: 'first-story', name: 'Story Lover', emoji: '📖', requirement: 'Read 1 story', unlocked: false },
-  { id: 'star-10', name: 'Star Collector', emoji: '🌟', requirement: 'Earn 10 stars', unlocked: false },
-  { id: 'star-50', name: 'Super Star', emoji: '✨', requirement: 'Earn 50 stars', unlocked: false },
-];
-
 const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) => {
+  const [earnedBadges, setEarnedBadges] = useState<string[]>([]);
+  const [selectedBadge, setSelectedBadge] = useState<typeof BADGES[0] | null>(null);
+
+  // Load earned badges from database
+  useEffect(() => {
+    const loadBadges = async () => {
+      try {
+        const badges = await getKidsBadges();
+        setEarnedBadges(badges);
+      } catch (error) {
+        console.error('Failed to load badges:', error);
+      }
+    };
+    loadBadges();
+  }, []);
   const LEVELS = [
     { level: 1, name: 'Seedling', emoji: '🌱', starsRequired: 0 },
     { level: 2, name: 'Sprout', emoji: '🌿', starsRequired: 10 },
@@ -1010,13 +1306,58 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
 
   const currentLevel = LEVELS.find(l => l.level === level) || LEVELS[0];
 
-  // Unlock badges based on stars
-  const unlockedBadges = BADGES.map(badge => ({
+  // Check which badges are unlocked
+  const badgesWithStatus = BADGES.map(badge => ({
     ...badge,
-    unlocked: (badge.id === 'star-10' && totalStars >= 10) ||
-              (badge.id === 'star-50' && totalStars >= 50) ||
-              badge.unlocked
+    unlocked: earnedBadges.includes(badge.id)
   }));
+
+  // Badge detail modal
+  if (selectedBadge) {
+    const isUnlocked = earnedBadges.includes(selectedBadge.id);
+    return (
+      <div
+        className="min-h-full flex flex-col"
+        style={{ backgroundColor: KIDS_COLORS.cream }}
+      >
+        <div className="p-4 flex items-center justify-between">
+          <button
+            onClick={() => setSelectedBadge(null)}
+            className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+          >
+            <i className="fas fa-arrow-left text-xl"></i>
+          </button>
+          <h1 className="text-xl font-bold text-stone-700">Badge Details</h1>
+          <div className="w-14"></div>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center p-6">
+          <div className={`w-48 h-48 rounded-full shadow-xl flex items-center justify-center mb-6 ${
+            isUnlocked ? 'bg-amber-100' : 'bg-stone-100'
+          }`}>
+            <span className={`text-8xl ${isUnlocked ? '' : 'grayscale opacity-30'}`}>
+              {selectedBadge.emoji}
+            </span>
+          </div>
+
+          <h2 className="text-3xl font-bold text-stone-700 mb-2">{selectedBadge.name}</h2>
+          <p className="text-lg text-stone-500 text-center mb-4">{selectedBadge.requirement}</p>
+
+          {isUnlocked ? (
+            <div className="bg-green-100 text-green-700 px-6 py-3 rounded-full shadow-md flex items-center gap-2">
+              <i className="fas fa-check-circle"></i>
+              <span className="font-bold">Unlocked!</span>
+            </div>
+          ) : (
+            <div className="bg-stone-100 text-stone-500 px-6 py-3 rounded-full shadow-md flex items-center gap-2">
+              <i className="fas fa-lock"></i>
+              <span className="font-bold">Keep playing to unlock!</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -1069,21 +1410,34 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
         <div>
           <h3 className="text-lg font-bold text-stone-600 mb-3">My Badges</h3>
           <div className="grid grid-cols-3 gap-3">
-            {unlockedBadges.map((badge) => (
-              <div
+            {badgesWithStatus.map((badge) => (
+              <button
                 key={badge.id}
-                className={`p-3 rounded-xl text-center shadow-md ${
+                onClick={() => setSelectedBadge(badge)}
+                className={`p-3 rounded-xl text-center shadow-md hover:scale-105 active:scale-95 transition-transform relative ${
                   badge.unlocked ? 'bg-amber-100' : 'bg-stone-100'
                 }`}
               >
+                {!badge.unlocked && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <i className="fas fa-lock text-2xl text-stone-300"></i>
+                  </div>
+                )}
                 <span className={`text-3xl ${badge.unlocked ? '' : 'grayscale opacity-30'}`}>
                   {badge.emoji}
                 </span>
                 <p className={`text-xs mt-1 ${badge.unlocked ? 'text-stone-700' : 'text-stone-400'}`}>
                   {badge.name}
                 </p>
-              </div>
+              </button>
             ))}
+          </div>
+
+          {/* Badge Stats */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-stone-500">
+              <span className="font-bold text-amber-500">{earnedBadges.length}</span> of <span className="font-bold">{BADGES.length}</span> badges unlocked
+            </p>
           </div>
         </div>
       </div>
