@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getKidsProgress, addKidsStars } from '../../services/offlineDatabase';
+import kidsStories from '../../data/kidsStories';
+import { speakWithWebSpeech } from '../../services/kidsAssetLoader';
 
 // Kids-friendly color palette
 const KIDS_COLORS = {
@@ -693,84 +695,55 @@ const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 // STORIES ACTIVITY COMPONENT
 // ============================================
 
-const KIDS_STORIES = [
-  {
-    id: 'adam',
-    prophet: 'Adam',
-    prophetArabic: 'آدم',
-    title: 'The First Person',
-    emoji: '🌍',
-    color: KIDS_COLORS.green,
-    scenes: [
-      { text: 'Allah made the first person. His name was Adam.', emoji: '🌍' },
-      { text: 'Adam lived in a beautiful garden called Jannah.', emoji: '🌸' },
-      { text: 'The angels said "Salam" to Adam!', emoji: '👼' },
-    ],
-    lesson: 'Allah created us with love!',
-  },
-  {
-    id: 'nuh',
-    prophet: 'Nuh',
-    prophetArabic: 'نوح',
-    title: 'The Big Boat',
-    emoji: '🚢',
-    color: KIDS_COLORS.teal,
-    scenes: [
-      { text: 'Prophet Nuh loved Allah very much.', emoji: '❤️' },
-      { text: 'Allah asked Nuh to build a big, big boat!', emoji: '🚢' },
-      { text: 'Animals came two by two - lions, birds, and elephants!', emoji: '🦁🐦🐘' },
-      { text: 'Allah kept everyone on the boat safe!', emoji: '✨' },
-    ],
-    lesson: 'Allah keeps us safe when we listen to Him.',
-  },
-  {
-    id: 'ibrahim',
-    prophet: 'Ibrahim',
-    prophetArabic: 'إبراهيم',
-    title: 'The Brave Friend',
-    emoji: '⭐',
-    color: KIDS_COLORS.yellow,
-    scenes: [
-      { text: 'Ibrahim loved looking at the stars and moon.', emoji: '🌙' },
-      { text: 'He knew Allah made everything beautiful!', emoji: '✨' },
-      { text: 'Allah called Ibrahim His friend!', emoji: '🤝' },
-    ],
-    lesson: 'We can be friends with Allah too!',
-  },
-  {
-    id: 'musa',
-    prophet: 'Musa',
-    prophetArabic: 'موسى',
-    title: 'The Brave Baby',
-    emoji: '🌊',
-    color: KIDS_COLORS.coral,
-    scenes: [
-      { text: 'Baby Musa floated in a basket on the river.', emoji: '🧺' },
-      { text: 'A princess found him and took care of him!', emoji: '👸' },
-      { text: 'Allah had a special plan for Musa!', emoji: '⭐' },
-    ],
-    lesson: 'Allah always has a plan for us!',
-  },
-  {
-    id: 'yusuf',
-    prophet: 'Yusuf',
-    prophetArabic: 'يوسف',
-    title: 'The Dreamer',
-    emoji: '🌙',
-    color: KIDS_COLORS.purple,
-    scenes: [
-      { text: 'Yusuf had special dreams from Allah.', emoji: '💭' },
-      { text: 'Even when things were hard, Yusuf was patient.', emoji: '💪' },
-      { text: 'Allah helped Yusuf and made him a leader!', emoji: '👑' },
-    ],
-    lesson: 'Be patient and trust Allah!',
-  },
-];
-
 const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
-  const [selectedStory, setSelectedStory] = useState<typeof KIDS_STORIES[0] | null>(null);
+  const [selectedStory, setSelectedStory] = useState<typeof kidsStories[0] | null>(null);
   const [currentScene, setCurrentScene] = useState(0);
   const [completedStories, setCompletedStories] = useState<Set<string>>(new Set());
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isNarrating, setIsNarrating] = useState(false);
+
+  useEffect(() => {
+    audioRef.current = new Audio();
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      }
+    };
+  }, []);
+
+  const playSceneAudio = async () => {
+    if (!selectedStory) return;
+    const scene = selectedStory.scenes[currentScene];
+    const audioUrl = `/assets/kids/audio/story-${selectedStory.id}-scene-${currentScene}.mp3`;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    setIsNarrating(true);
+    let fallbackUsed = false;
+
+    const playFallback = async () => {
+      fallbackUsed = true;
+      await speakWithWebSpeech(scene.text, 0.95);
+      setIsNarrating(false);
+    };
+
+    audio.onended = () => setIsNarrating(false);
+    audio.onerror = async () => {
+      if (!fallbackUsed) {
+        await playFallback();
+      }
+    };
+
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.src = audioUrl;
+      await audio.play();
+    } catch (e) {
+      await playFallback();
+    }
+  };
 
   const handleNextScene = () => {
     if (!selectedStory) return;
@@ -799,7 +772,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
     return (
       <div
         className="min-h-full flex flex-col"
-        style={{ backgroundColor: selectedStory.color }}
+        style={{ backgroundColor: KIDS_COLORS[selectedStory.colorKey] }}
       >
         <div className="p-4 flex items-center justify-between">
           <button
@@ -827,6 +800,13 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           <p className="text-2xl text-white font-medium max-w-xs leading-relaxed">
             {scene.text}
           </p>
+          <button
+            onClick={playSceneAudio}
+            className="mt-4 px-4 py-2 rounded-full bg-white text-stone-700 shadow-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
+          >
+            <i className={`fas ${isNarrating ? 'fa-stop' : 'fa-play'} text-sm`}></i>
+            <span>{isNarrating ? 'Playing...' : 'Play narration'}</span>
+          </button>
 
           {isLastScene && (
             <div className="mt-8 bg-white/20 rounded-2xl p-4">
@@ -853,7 +833,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             onClick={handleNextScene}
             className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
           >
-            <i className={`fas ${isLastScene ? 'fa-check' : 'fa-arrow-right'} text-2xl`} style={{ color: selectedStory.color }}></i>
+            <i className={`fas ${isLastScene ? 'fa-check' : 'fa-arrow-right'} text-2xl`} style={{ color: KIDS_COLORS[selectedStory.colorKey] }}></i>
           </button>
         </div>
       </div>
@@ -881,14 +861,14 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-          {KIDS_STORIES.map((story) => (
+          {kidsStories.map((story) => (
             <button
               key={story.id}
               onClick={() => setSelectedStory(story)}
               className={`aspect-square rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform ${
                 completedStories.has(story.id) ? 'ring-4 ring-green-400' : ''
               }`}
-              style={{ backgroundColor: story.color }}
+              style={{ backgroundColor: KIDS_COLORS[story.colorKey] }}
             >
               <span className="text-5xl mb-2">{story.emoji}</span>
               <h3 className="text-lg font-bold text-white">{story.prophet}</h3>

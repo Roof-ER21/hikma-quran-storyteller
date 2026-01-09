@@ -15,7 +15,12 @@ export default defineConfig(({ mode }) => {
         react(),
         VitePWA({
           registerType: 'autoUpdate',
-          includeAssets: ['icons/*.svg', 'icons/*.png'],
+          includeAssets: [
+            'icons/*.svg',
+            'icons/*.png',
+            'assets/kids/audio/*.mp3',
+            'assets/quran/offline/**/*.mp3'
+          ],
           manifest: {
             name: 'Hikma - Quran Companion',
             short_name: 'Hikma',

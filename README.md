@@ -23,3 +23,4 @@ View your app in AI Studio: https://ai.studio/apps/drive/1ONOeqL4POixX9yagULO0SZ
 
 - Railway will use the provided `Dockerfile` so only the Node static server runs (avoids Caddy binding the same port).
 - Build and test the image locally: `docker build -t hikma-storyteller . && docker run -p 8080:8080 --env PORT=8080 --env VITE_GEMINI_API_KEY=your_key hikma-storyteller`.
+- Prebake offline audio (kids stories + short surahs) before deploy: `VITE_GEMINI_API_KEY=your_key node scripts/prebake-audio.mjs`.

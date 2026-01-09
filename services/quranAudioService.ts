@@ -11,6 +11,7 @@ import { getGlobalVerseNumber } from './quranDataService';
 
 // Audio CDN Base URL
 const AUDIO_CDN = 'https://cdn.islamic.network/quran/audio';
+const OFFLINE_SURAHS = new Set([105, 106, 107, 108, 109, 110, 111, 112, 113, 114]);
 
 // Available reciters with their identifiers
 export const RECITERS: Reciter[] = [
@@ -56,6 +57,7 @@ class AudioManager {
   private currentVerse: { surah: number; verse: number } | null = null;
   private reciter: string = DEFAULT_RECITER;
   private isPlaying: boolean = false;
+  private lastSourceOffline: boolean = false;
   private onEndedCallback: (() => void) | null = null;
   private onTimeUpdateCallback: ((currentTime: number, duration: number) => void) | null = null;
   private onVerseChangeCallback: ((surah: number, verse: number) => void) | null = null;
@@ -88,8 +90,22 @@ class AudioManager {
       }
     });
 
-    this.audio.addEventListener('error', (e) => {
+    this.audio.addEventListener('error', async (e) => {
       console.error('Audio playback error:', e);
+      // If offline asset failed, retry with CDN
+      if (this.lastSourceOffline && this.currentVerse) {
+        const { surah, verse } = this.currentVerse;
+        const remoteUrl = this.buildRemoteUrl(surah, verse);
+        this.lastSourceOffline = false;
+        try {
+          this.audio!.src = remoteUrl;
+          await this.audio!.play();
+          this.isPlaying = true;
+          return;
+        } catch (err) {
+          console.error('Fallback to CDN failed:', err);
+        }
+      }
       this.isPlaying = false;
     });
   }
@@ -98,6 +114,15 @@ class AudioManager {
    * Get the audio URL for a specific verse
    */
   getAudioUrl(surahNumber: number, verseNumber: number, reciterId: string = this.reciter): string {
+    if (OFFLINE_SURAHS.has(surahNumber) && reciterId === DEFAULT_RECITER) {
+      this.lastSourceOffline = true;
+      return `/assets/quran/offline/${surahNumber}/${verseNumber}.mp3`;
+    }
+    this.lastSourceOffline = false;
+    return this.buildRemoteUrl(surahNumber, verseNumber, reciterId);
+  }
+
+  private buildRemoteUrl(surahNumber: number, verseNumber: number, reciterId: string = this.reciter): string {
     const globalVerseNumber = getGlobalVerseNumber(surahNumber, verseNumber);
     const reciter = RECITERS.find(r => r.identifier === reciterId) || RECITERS[0];
     return `${AUDIO_CDN}/${reciter.bitrate}/${reciter.identifier}/${globalVerseNumber}.mp3`;

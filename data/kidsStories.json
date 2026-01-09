@@ -1,0 +1,73 @@
+[
+  {
+    "id": "adam",
+    "prophet": "Adam",
+    "prophetArabic": "آدم",
+    "title": "The First Person",
+    "emoji": "🌍",
+    "colorKey": "green",
+    "scenes": [
+      { "text": "Allah made the first person. His name was Adam.", "emoji": "🌍" },
+      { "text": "Adam lived in a beautiful garden called Jannah.", "emoji": "🌸" },
+      { "text": "The angels said \"Salam\" to Adam!", "emoji": "👼" }
+    ],
+    "lesson": "Allah created us with love!"
+  },
+  {
+    "id": "nuh",
+    "prophet": "Nuh",
+    "prophetArabic": "نوح",
+    "title": "The Big Boat",
+    "emoji": "🚢",
+    "colorKey": "teal",
+    "scenes": [
+      { "text": "Prophet Nuh loved Allah very much.", "emoji": "❤️" },
+      { "text": "Allah asked Nuh to build a big, big boat!", "emoji": "🚢" },
+      { "text": "Animals came two by two - lions, birds, and elephants!", "emoji": "🦁🐦🐘" },
+      { "text": "Allah kept everyone on the boat safe!", "emoji": "✨" }
+    ],
+    "lesson": "Allah keeps us safe when we listen to Him."
+  },
+  {
+    "id": "ibrahim",
+    "prophet": "Ibrahim",
+    "prophetArabic": "إبراهيم",
+    "title": "The Brave Friend",
+    "emoji": "⭐",
+    "colorKey": "yellow",
+    "scenes": [
+      { "text": "Ibrahim loved looking at the stars and moon.", "emoji": "🌙" },
+      { "text": "He knew Allah made everything beautiful!", "emoji": "✨" },
+      { "text": "Allah called Ibrahim His friend!", "emoji": "🤝" }
+    ],
+    "lesson": "We can be friends with Allah too!"
+  },
+  {
+    "id": "musa",
+    "prophet": "Musa",
+    "prophetArabic": "موسى",
+    "title": "The Brave Baby",
+    "emoji": "🌊",
+    "colorKey": "coral",
+    "scenes": [
+      { "text": "Baby Musa floated in a basket on the river.", "emoji": "🧺" },
+      { "text": "A princess found him and took care of him!", "emoji": "👸" },
+      { "text": "Allah had a special plan for Musa!", "emoji": "⭐" }
+    ],
+    "lesson": "Allah always has a plan for us!"
+  },
+  {
+    "id": "yusuf",
+    "prophet": "Yusuf",
+    "prophetArabic": "يوسف",
+    "title": "The Dreamer",
+    "emoji": "🌙",
+    "colorKey": "purple",
+    "scenes": [
+      { "text": "Yusuf had special dreams from Allah.", "emoji": "💭" },
+      { "text": "Even when things were hard, Yusuf was patient.", "emoji": "💪" },
+      { "text": "Allah helped Yusuf and made him a leader!", "emoji": "👑" }
+    ],
+    "lesson": "Be patient and trust Allah!"
+  }
+]

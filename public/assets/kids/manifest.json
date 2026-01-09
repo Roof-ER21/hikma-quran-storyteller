@@ -74,6 +74,10 @@
       "yusuf": ["story-yusuf-0.png", "story-yusuf-1.png"]
     }
   },
+  "audio": {
+    "kidsStories": "prebaked mp3 in /assets/kids/audio",
+    "quranOfflineSurahs": [105, 106, 107, 108, 109, 110, 111, 112, 113, 114]
+  },
   "quranAudio": {
     "source": "Islamic Network CDN",
     "baseUrl": "https://cdn.islamic.network/quran/audio/128/ar.alafasy/",
