@@ -319,20 +319,46 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   }, []);
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const currentAudioSourceRef = useRef<AudioBufferSourceNode | null>(null);
 
-  // Play Arabic letter sound using Gemini TTS
+  // Play Arabic letter sound - Try pre-generated audio first, fallback to Gemini TTS
   const playLetterSound = async (letter: typeof ARABIC_LETTERS[0]) => {
     if (isPlaying) return; // Prevent overlapping audio
     setIsPlaying(true);
+    setIsLoadingAudio(true);
 
     try {
-      // Use Gemini TTS for Arabic pronunciation
-      const audioBuffer = await speakArabicLetterWithExample(
-        letter.letter,
-        letter.example,
-        letter.exampleMeaning
-      );
+      // Try to load pre-generated audio file
+      const audioUrl = `/assets/kids/audio/letters/letter-${letter.id}-example.mp3`;
+      let audioBuffer: AudioBuffer | null = null;
+      let usedPreGenerated = false;
+
+      try {
+        const response = await fetch(audioUrl);
+        if (response.ok) {
+          const arrayBuffer = await response.arrayBuffer();
+          if (audioContextRef.current) {
+            audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+            usedPreGenerated = true;
+            console.log(`Loaded pre-generated audio for letter: ${letter.id}`);
+          }
+        }
+      } catch (fetchError) {
+        console.log(`Pre-generated audio not found for ${letter.id}, falling back to Gemini TTS`);
+      }
+
+      // Fallback to Gemini TTS if pre-generated audio not available
+      if (!audioBuffer) {
+        console.log(`Using Gemini TTS for letter: ${letter.id}`);
+        audioBuffer = await speakArabicLetterWithExample(
+          letter.letter,
+          letter.example,
+          letter.exampleMeaning
+        );
+      }
+
+      setIsLoadingAudio(false);
 
       if (audioBuffer && audioContextRef.current) {
         // Stop any currently playing audio
@@ -362,8 +388,9 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           onEarnStar();
         }
       } else {
-        // Fallback to Web Speech API if Gemini fails
-        console.log('Gemini TTS failed, falling back to Web Speech');
+        // Final fallback to Web Speech API if both pre-generated and Gemini fail
+        console.log('Both pre-generated and Gemini TTS failed, falling back to Web Speech');
+        setIsLoadingAudio(false);
         await speakWithWebSpeech(`${letter.name}. ${letter.letter}`, 'ar-SA');
         setIsPlaying(false);
 
@@ -374,7 +401,8 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
       }
     } catch (error) {
       console.error('Error playing letter sound:', error);
-      // Fallback to Web Speech API
+      setIsLoadingAudio(false);
+      // Final fallback to Web Speech API
       try {
         await speakWithWebSpeech(`${letter.name}. ${letter.letter}`, 'ar-SA');
       } catch (e) {
@@ -412,10 +440,27 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         <div className="flex-1 flex flex-col items-center justify-center p-6">
           <button
             onClick={() => playLetterSound(selectedLetter)}
-            className="w-48 h-48 rounded-3xl shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-transform mb-6"
-            style={{ backgroundColor: KIDS_COLORS.coral }}
+            disabled={isPlaying || isLoadingAudio}
+            className="w-48 h-48 rounded-3xl shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-transform mb-6 relative"
+            style={{
+              backgroundColor: KIDS_COLORS.coral,
+              opacity: (isPlaying || isLoadingAudio) ? 0.7 : 1
+            }}
           >
-            <span className="text-9xl text-white font-arabic">{selectedLetter.letter}</span>
+            {isLoadingAudio ? (
+              <div className="flex flex-col items-center gap-2">
+                <i className="fas fa-spinner fa-spin text-5xl text-white"></i>
+                <span className="text-sm text-white">Loading...</span>
+              </div>
+            ) : isPlaying ? (
+              <div className="flex gap-1">
+                <div className="w-3 h-16 bg-white rounded animate-pulse"></div>
+                <div className="w-3 h-20 bg-white rounded animate-pulse" style={{ animationDelay: '0.1s' }}></div>
+                <div className="w-3 h-16 bg-white rounded animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+              </div>
+            ) : (
+              <span className="text-9xl text-white font-arabic">{selectedLetter.letter}</span>
+            )}
           </button>
 
           <h2 className="text-3xl font-bold text-stone-700 mb-2">{selectedLetter.name}</h2>
@@ -429,8 +474,10 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 
           {/* Tap to hear instruction */}
           <div className="mt-6 flex items-center gap-2 text-stone-500">
-            <i className="fas fa-hand-pointer animate-bounce"></i>
-            <span>Tap the letter to hear it!</span>
+            <i className={`fas ${isLoadingAudio ? 'fa-spinner fa-spin' : isPlaying ? 'fa-volume-up' : 'fa-hand-pointer animate-bounce'}`}></i>
+            <span>
+              {isLoadingAudio ? 'Loading audio...' : isPlaying ? 'Playing...' : 'Tap the letter to hear it!'}
+            </span>
           </div>
         </div>
       </div>

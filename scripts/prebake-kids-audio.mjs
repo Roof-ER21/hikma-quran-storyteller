@@ -70,8 +70,10 @@ const ARABIC_LETTERS = [
   { id: 'yaa', letter: 'ي', name: 'Yaa', example: 'يد', exampleMeaning: 'Hand' },
 ];
 
-// Rate limiting helper
+// Rate limiting helper - Gemini TTS has 10 requests/minute limit
+// Use 7 second delay to stay under limit (8-9 requests per minute)
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const RATE_LIMIT_DELAY = 7000; // 7 seconds between requests
 
 // Ensure directory exists
 async function ensureDir(dir) {
@@ -148,7 +150,7 @@ async function generateLetterAudio() {
     }
 
     // Rate limit: wait 1 second between requests
-    await delay(1000);
+    await delay(RATE_LIMIT_DELAY);
 
     // 2. Generate letter with example word
     const examplePath = path.join(lettersDir, `letter-${letter.id}-example.mp3`);
@@ -172,7 +174,7 @@ async function generateLetterAudio() {
     }
 
     // Rate limit: wait 1 second between requests
-    await delay(1000);
+    await delay(RATE_LIMIT_DELAY);
   }
 
   console.log(`\n📊 Letter audio generation complete:`);
@@ -224,7 +226,7 @@ async function generateStoriesAudio() {
       }
 
       // Rate limit: wait 1 second between requests
-      await delay(1000);
+      await delay(RATE_LIMIT_DELAY);
     }
 
     // Generate audio for lesson
@@ -247,7 +249,7 @@ async function generateStoriesAudio() {
     }
 
     // Rate limit: wait 1 second between stories
-    await delay(1000);
+    await delay(RATE_LIMIT_DELAY);
   }
 
   console.log(`\n📊 Story audio generation complete:`);
