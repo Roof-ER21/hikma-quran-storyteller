@@ -135,7 +135,7 @@ function App() {
               </div>
               <i className="fas fa-user-shield text-rose-600 text-2xl"></i>
             </div>
-            <p className="text-sm text-stone-600">Enter your name + PIN to manage settings, AI tutor, and full stories.</p>
+            <p className="text-sm text-stone-600">Enter your name + PIN to manage settings, Learn with Soso, and full stories.</p>
             <button
               onClick={() => setShowParentGate(true)}
               className="w-full rounded-2xl bg-rose-900 text-white py-3 font-semibold hover:bg-rose-800 transition-colors"
@@ -206,7 +206,7 @@ function App() {
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'live' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'} ${isLocked('live') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-microphone md:mr-2"></i>
-                <span className="hidden md:inline">AI Tutor</span>
+                <span className="hidden md:inline">Learn with Soso</span>
             </button>
             <button
                 onClick={() => setView('kids')}

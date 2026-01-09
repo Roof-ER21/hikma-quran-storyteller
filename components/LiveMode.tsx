@@ -359,7 +359,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
         return (
             <div className="h-full flex flex-col p-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white rounded-lg overflow-y-auto">
                 <div className="text-center mb-6">
-                    <h2 className="text-3xl font-serif mb-2">AI Tutor</h2>
+                    <h2 className="text-3xl font-serif mb-2">Learn with Soso</h2>
                     <p className="text-slate-400">Choose your learning mode</p>
                 </div>
 
