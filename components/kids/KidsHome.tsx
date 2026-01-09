@@ -368,6 +368,9 @@ const ARABIC_LETTERS = [
   { id: 'yaa', letter: 'ي', name: 'Yaa', example: 'يد', exampleMeaning: 'Hand', emoji: '✋' },
 ];
 
+// Cache-bust audio fetches to avoid stale service worker assets in production
+const LETTER_AUDIO_VERSION = '2026-01-09b';
+
 const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   const [selectedLetter, setSelectedLetter] = useState<typeof ARABIC_LETTERS[0] | null>(null);
   const [playedLetters, setPlayedLetters] = useState<Set<string>>(new Set());
@@ -397,7 +400,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 
     try {
       // Try to load pre-generated audio file
-      const audioUrl = `/assets/kids/audio/letters/letter-${letter.id}-example.mp3`;
+      const audioUrl = `/assets/kids/audio/letters/letter-${letter.id}-example.mp3?v=${LETTER_AUDIO_VERSION}`;
       let audioBuffer: AudioBuffer | null = null;
       let usedPreGenerated = false;
 
