@@ -402,17 +402,21 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
       let usedPreGenerated = false;
 
       try {
-        const response = await fetch(audioUrl);
+        const response = await fetch(audioUrl, { cache: 'no-cache' });
+        console.log(`Fetching ${audioUrl}: status=${response.status}`);
         if (response.ok) {
           const arrayBuffer = await response.arrayBuffer();
+          console.log(`Got audio data: ${arrayBuffer.byteLength} bytes`);
           if (audioContextRef.current) {
             audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
             usedPreGenerated = true;
-            console.log(`Loaded pre-generated audio for letter: ${letter.id}`);
+            console.log(`✅ Loaded pre-generated audio for letter: ${letter.id}`);
           }
+        } else {
+          console.log(`❌ Audio file not found (${response.status}): ${audioUrl}`);
         }
       } catch (fetchError) {
-        console.log(`Pre-generated audio not found for ${letter.id}, falling back to Gemini TTS`);
+        console.log(`❌ Fetch error for ${letter.id}:`, fetchError);
       }
 
       // Fallback to Gemini TTS if pre-generated audio not available
