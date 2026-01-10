@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
 import stories from '../data/adultStories.json';
 
+const ADULT_AUDIO_VERSION = '2026-01-10c';
+
 const AdultAudioStories: React.FC = () => {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const play = (id: string) => {
-    const src = `/assets/adult/audio/${id}.mp3`;
+    const src = `/assets/adult/audio/${id}.mp3?v=${ADULT_AUDIO_VERSION}`;
     if (!audioRef.current) {
       audioRef.current = new Audio(src);
     } else {

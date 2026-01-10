@@ -161,6 +161,19 @@ class AudioManager {
           throw err2;
         }
       }
+      // If the chosen reciter/URL fails (404/NotSupported), fallback to default reciter
+      if (this.reciter !== DEFAULT_RECITER) {
+        try {
+          const fallbackUrl = this.buildRemoteUrl(surahNumber, verseNumber, DEFAULT_RECITER);
+          this.audio.src = fallbackUrl;
+          this.reciter = DEFAULT_RECITER;
+          await this.audio.play();
+          this.isPlaying = true;
+          return;
+        } catch (err3) {
+          console.error('Fallback to default reciter failed:', err3);
+        }
+      }
       console.error('Failed to play audio:', error);
       throw error;
     }
