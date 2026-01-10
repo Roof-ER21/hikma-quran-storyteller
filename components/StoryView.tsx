@@ -15,7 +15,8 @@ import {
 import {
   getAdultStoryByName,
   AdultStory,
-  formatStoryForDisplay
+  formatStoryForDisplay,
+  getProphetImagePath
 } from '../services/adultStoryService';
 import {
   saveStoryReadingPosition,
@@ -1114,26 +1115,41 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
       )}
 
       {/* Hero Image with Parallax Effect */}
-      {!immersiveMode && images.length > 0 && (
+      {!immersiveMode && (images.length > 0 || (storyMode === 'preloaded' && preloadedStory)) && (
           <div
             className="h-72 w-full parallax-container group cursor-pointer"
             onClick={() => {
-              setLightboxIndex(0);
-              setLightboxOpen(true);
+              if (images.length > 0) {
+                setLightboxIndex(0);
+                setLightboxOpen(true);
+              }
             }}
           >
               <img
                 ref={heroImageRef}
-                src={images[0]}
+                src={images.length > 0 ? images[0] : getProphetImagePath(preloadedStory?.id || prophet)}
                 className="parallax-image transition-transform duration-100"
                 style={{ transform: `translateY(${parallaxOffset}px)` }}
-                alt="Hero"
+                alt={preloadedStory?.title || "Story Scene"}
+                onError={(e) => {
+                  // Fallback if preloaded image doesn't exist yet
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-50 via-transparent to-transparent"></div>
-              {/* Expand icon on hover */}
-              <div className="absolute top-4 right-4 w-10 h-10 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <i className="fas fa-expand text-white"></i>
-              </div>
+              {/* Expand icon on hover - only show if AI images exist */}
+              {images.length > 0 && (
+                <div className="absolute top-4 right-4 w-10 h-10 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <i className="fas fa-expand text-white"></i>
+                </div>
+              )}
+              {/* Preloaded image badge */}
+              {images.length === 0 && storyMode === 'preloaded' && (
+                <div className="absolute top-4 left-4 px-3 py-1 bg-emerald-600/80 text-white text-xs rounded-full backdrop-blur-sm">
+                  <i className="fas fa-image mr-1"></i>
+                  {preloadedStory?.title || "Preloaded Scene"}
+                </div>
+              )}
               {/* Decorative overlay pattern */}
               <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none opacity-30">
                 <svg className="w-full h-full" viewBox="0 0 100 20" preserveAspectRatio="none">

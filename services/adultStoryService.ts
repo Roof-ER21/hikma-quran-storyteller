@@ -185,3 +185,89 @@ export const getProphetNames = (): { name: string; arabic: string; id: string }[
     id: story.id
   }));
 };
+
+/**
+ * Get the preloaded image path for a prophet story
+ * Returns the path to the abstract/environmental image (no human figures)
+ */
+export const getProphetImagePath = (prophetId: string): string => {
+  // Normalize the ID (handle variations)
+  const normalizedId = prophetId.toLowerCase()
+    .replace(/[()]/g, '')
+    .split(' ')[0]
+    .trim();
+
+  // Map common variations to image file names
+  const idMap: Record<string, string> = {
+    'adam': 'adam',
+    'idris': 'idris',
+    'nuh': 'nuh',
+    'noah': 'nuh',
+    'hud': 'hud',
+    'saleh': 'saleh',
+    'ibrahim': 'ibrahim',
+    'abraham': 'ibrahim',
+    'lut': 'lut',
+    'lot': 'lut',
+    'ismail': 'ismail',
+    'ishmael': 'ismail',
+    'ishaq': 'ishaq',
+    'isaac': 'ishaq',
+    'yaqub': 'yaqub',
+    'jacob': 'yaqub',
+    'yusuf': 'yusuf',
+    'joseph': 'yusuf',
+    'ayyub': 'ayyub',
+    'job': 'ayyub',
+    "shu'aib": 'shuaib',
+    'shuaib': 'shuaib',
+    'musa': 'musa',
+    'moses': 'musa',
+    'harun': 'harun',
+    'aaron': 'harun',
+    'dhul-kifl': 'dhulkifl',
+    'dhulkifl': 'dhulkifl',
+    'dawud': 'dawud',
+    'david': 'dawud',
+    'sulaiman': 'sulaiman',
+    'solomon': 'sulaiman',
+    'ilyas': 'ilyas',
+    'elijah': 'ilyas',
+    'al-yasa': 'alyasa',
+    'alyasa': 'alyasa',
+    'elisha': 'alyasa',
+    'yunus': 'yunus',
+    'jonah': 'yunus',
+    'zakariya': 'zakariya',
+    'zakariyah': 'zakariya',
+    'zechariah': 'zakariya',
+    'yahya': 'yahya',
+    'john': 'yahya',
+    'isa': 'isa',
+    'jesus': 'isa',
+  };
+
+  const imageId = idMap[normalizedId] || normalizedId;
+  return `/images/prophets/${imageId}.png`;
+};
+
+/**
+ * Check if a preloaded image exists for a prophet
+ */
+export const hasProphetImage = (prophetId: string): boolean => {
+  // In production, we can't check if file exists client-side
+  // This is a simple check based on known prophets
+  const knownProphets = [
+    'adam', 'idris', 'nuh', 'hud', 'saleh', 'ibrahim', 'lut', 'ismail',
+    'ishaq', 'yaqub', 'yusuf', 'ayyub', 'shuaib', 'musa', 'harun',
+    'dhulkifl', 'dawud', 'sulaiman', 'ilyas', 'alyasa', 'yunus',
+    'zakariya', 'yahya', 'isa'
+  ];
+
+  const normalizedId = prophetId.toLowerCase()
+    .replace(/[()]/g, '')
+    .split(' ')[0]
+    .trim();
+
+  return knownProphets.includes(normalizedId);
+};
