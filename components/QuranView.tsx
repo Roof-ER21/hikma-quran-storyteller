@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { generateSurahStory, speakText, generateStoryImage } from '../services/geminiService';
 import { getSurahWithTranslation, TRANSLATIONS } from '../services/quranDataService';
 import { audioManager, RECITERS, DEFAULT_RECITER } from '../services/quranAudioService';
+import { getVerseWordBreakdown, getPosColor, getGrammarLabel, getUniqueRoots, getGrammarStats, VerseWordBreakdown, WordMorphology } from '../services/quranWordService';
 import { VerseDisplay } from './VerseDisplay';
 import { AudioPlayer, FloatingAudioPlayer } from './AudioPlayer';
 import { TranslationSelector, ReciterSelector, FontSizeSelector } from './TranslationSelector';
@@ -266,6 +267,13 @@ const QuranView: React.FC = () => {
   const [practiceMode, setPracticeMode] = useState<'recitation' | 'memorization'>('recitation');
   const [practiceVerse, setPracticeVerse] = useState<Verse | null>(null);
 
+  // Study tab state
+  const [studyMode, setStudyMode] = useState<'word-by-word' | 'grammar' | 'roots'>('word-by-word');
+  const [selectedStudyVerse, setSelectedStudyVerse] = useState<number | null>(null);
+  const [wordBreakdown, setWordBreakdown] = useState<VerseWordBreakdown | null>(null);
+  const [loadingStudy, setLoadingStudy] = useState(false);
+  const [selectedWord, setSelectedWord] = useState<WordMorphology | null>(null);
+
   const filteredSurahs = SURAHS.filter(s =>
     s.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
     s.nameAr.includes(searchTerm) ||
@@ -315,6 +323,34 @@ const QuranView: React.FC = () => {
     };
     loadStory();
   }, [selectedSurah, activeTab, language]);
+
+  // Load word-by-word data when study tab is active and verse is selected
+  useEffect(() => {
+    if (!selectedSurah || activeTab !== 'study' || !selectedStudyVerse) return;
+
+    const loadWordData = async () => {
+      setLoadingStudy(true);
+      setWordBreakdown(null);
+      setSelectedWord(null);
+      try {
+        const data = await getVerseWordBreakdown(selectedSurah.number, selectedStudyVerse);
+        setWordBreakdown(data);
+      } catch (e) {
+        console.error('Failed to load word breakdown:', e);
+      } finally {
+        setLoadingStudy(false);
+      }
+    };
+
+    loadWordData();
+  }, [selectedSurah, activeTab, selectedStudyVerse]);
+
+  // Reset study verse when surah changes
+  useEffect(() => {
+    setSelectedStudyVerse(null);
+    setWordBreakdown(null);
+    setSelectedWord(null);
+  }, [selectedSurah]);
 
   // Set up audio manager callbacks
   useEffect(() => {
@@ -569,36 +605,320 @@ const QuranView: React.FC = () => {
   };
 
   const renderStudyTab = () => {
-    return (
-      <div className="max-w-2xl mx-auto text-center py-12">
-        <div className="bg-amber-50 rounded-2xl p-8 border border-amber-200">
-          <i className="fas fa-book-reader text-5xl text-amber-600 mb-4"></i>
-          <h3 className="text-xl font-semibold text-amber-800 mb-2">Word-by-Word Study</h3>
-          <p className="text-amber-700">
-            Deep dive into each word's meaning, root, and grammar.
-            This feature is coming soon!
-          </p>
-          <div className="mt-6 flex justify-center gap-4">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <i className="fas fa-language text-amber-600"></i>
-              </div>
-              <p className="text-xs text-amber-600">Translation</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <i className="fas fa-tree text-amber-600"></i>
-              </div>
-              <p className="text-xs text-amber-600">Root Words</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <i className="fas fa-graduation-cap text-amber-600"></i>
-              </div>
-              <p className="text-xs text-amber-600">Grammar</p>
+    // Verse selector when no verse is selected
+    if (!selectedStudyVerse) {
+      return (
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-stone-100">
+            <h3 className="font-semibold text-stone-800 mb-4 flex items-center gap-2">
+              <i className="fas fa-list text-rose-600"></i>
+              Select a Verse to Study
+            </h3>
+            <p className="text-stone-500 text-sm mb-4">
+              Choose a verse from {selectedSurah?.nameEn} to analyze word-by-word
+            </p>
+            <div className="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-14 gap-2 max-h-64 overflow-y-auto p-2">
+              {surahData?.verses.map((verse) => (
+                <button
+                  key={verse.numberInSurah}
+                  onClick={() => setSelectedStudyVerse(verse.numberInSurah)}
+                  className="w-9 h-9 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium transition-all hover:scale-105 flex items-center justify-center text-sm"
+                >
+                  {verse.numberInSurah}
+                </button>
+              ))}
             </div>
           </div>
         </div>
+      );
+    }
+
+    // Loading state
+    if (loadingStudy) {
+      return (
+        <div className={`flex flex-col items-center justify-center h-64 ${themeStyles.loadingIcon} animate-pulse`}>
+          <i className="fas fa-book text-4xl mb-4"></i>
+          <p className="text-xl font-serif">Analyzing verse...</p>
+        </div>
+      );
+    }
+
+    // Get current verse data
+    const currentVerse = surahData?.verses.find(v => v.numberInSurah === selectedStudyVerse);
+
+    return (
+      <div className="max-w-4xl mx-auto">
+        {/* Verse Navigation & Info */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-stone-100 mb-4">
+          <div className="flex items-center justify-between mb-3">
+            <button
+              onClick={() => setSelectedStudyVerse(null)}
+              className="text-stone-500 hover:text-rose-600 transition-colors flex items-center gap-2"
+            >
+              <i className="fas fa-arrow-left"></i>
+              <span className="text-sm">All Verses</span>
+            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setSelectedStudyVerse(Math.max(1, selectedStudyVerse - 1))}
+                disabled={selectedStudyVerse <= 1}
+                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                <i className="fas fa-chevron-left text-xs"></i>
+              </button>
+              <span className="px-3 py-1 bg-rose-100 text-rose-700 rounded-full font-medium">
+                Verse {selectedStudyVerse}
+              </span>
+              <button
+                onClick={() => setSelectedStudyVerse(Math.min(surahData?.verses.length || 1, selectedStudyVerse + 1))}
+                disabled={selectedStudyVerse >= (surahData?.verses.length || 1)}
+                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                <i className="fas fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          {/* Full verse display */}
+          {currentVerse && (
+            <div className="space-y-2">
+              <p className="text-2xl font-amiri text-right leading-loose text-stone-800" dir="rtl">
+                {currentVerse.arabic}
+              </p>
+              {currentVerse.translation && (
+                <p className="text-stone-600 text-sm italic">
+                  {currentVerse.translation}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Study Mode Tabs */}
+        <div className="flex bg-stone-100 rounded-xl p-1 mb-4">
+          <button
+            onClick={() => setStudyMode('word-by-word')}
+            className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-sm ${
+              studyMode === 'word-by-word'
+                ? 'bg-white shadow-md text-rose-700'
+                : 'text-stone-500 hover:text-stone-700'
+            }`}
+          >
+            <i className="fas fa-align-right"></i>
+            Word-by-Word
+          </button>
+          <button
+            onClick={() => setStudyMode('grammar')}
+            className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-sm ${
+              studyMode === 'grammar'
+                ? 'bg-white shadow-md text-rose-700'
+                : 'text-stone-500 hover:text-stone-700'
+            }`}
+          >
+            <i className="fas fa-graduation-cap"></i>
+            Grammar
+          </button>
+          <button
+            onClick={() => setStudyMode('roots')}
+            className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 text-sm ${
+              studyMode === 'roots'
+                ? 'bg-white shadow-md text-rose-700'
+                : 'text-stone-500 hover:text-stone-700'
+            }`}
+          >
+            <i className="fas fa-tree"></i>
+            Root Words
+          </button>
+        </div>
+
+        {/* Content based on study mode */}
+        {wordBreakdown ? (
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-stone-100">
+            {studyMode === 'word-by-word' && (
+              <div>
+                <h4 className="text-sm font-medium text-stone-500 mb-4 flex items-center gap-2">
+                  <i className="fas fa-info-circle"></i>
+                  Tap a word for details • {wordBreakdown.totalWords} words
+                </h4>
+                <div className="flex flex-wrap gap-3 justify-center" dir="rtl">
+                  {wordBreakdown.words.map((word, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedWord(selectedWord?.position === word.position ? null : word)}
+                      className={`bg-gradient-to-b from-stone-50 to-stone-100 rounded-xl p-3 text-center shadow-sm hover:shadow-md transition-all min-w-[90px] border-2 ${
+                        selectedWord?.position === word.position
+                          ? 'border-rose-400 ring-2 ring-rose-200'
+                          : 'border-transparent hover:border-rose-200'
+                      }`}
+                    >
+                      <p className="text-2xl font-amiri text-stone-800 mb-1">{word.arabic}</p>
+                      <p className="text-xs text-rose-600 mb-0.5">{word.transliteration}</p>
+                      <p className="text-xs text-stone-600">{word.translation}</p>
+                      <span className={`inline-block mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium ${getPosColor(word.partOfSpeech)}`}>
+                        {getGrammarLabel(word.partOfSpeech)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Selected word detail panel */}
+                {selectedWord && (
+                  <div className="mt-6 p-4 bg-rose-50 rounded-xl border border-rose-200">
+                    <div className="flex items-start justify-between mb-3">
+                      <h4 className="font-semibold text-rose-800 flex items-center gap-2">
+                        <i className="fas fa-search"></i>
+                        Word Details
+                      </h4>
+                      <button
+                        onClick={() => setSelectedWord(null)}
+                        className="text-rose-400 hover:text-rose-600"
+                      >
+                        <i className="fas fa-times"></i>
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className="text-2xl font-amiri text-stone-800">{selectedWord.arabic}</p>
+                        <p className="text-xs text-stone-500 mt-1">Arabic</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className="text-lg text-rose-700">{selectedWord.transliteration}</p>
+                        <p className="text-xs text-stone-500 mt-1">Transliteration</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className="text-lg text-stone-700">{selectedWord.translation}</p>
+                        <p className="text-xs text-stone-500 mt-1">Translation</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className={`inline-block px-2 py-1 rounded-full text-sm font-medium ${getPosColor(selectedWord.partOfSpeech)}`}>
+                          {getGrammarLabel(selectedWord.partOfSpeech)}
+                        </p>
+                        <p className="text-xs text-stone-500 mt-1">Part of Speech</p>
+                      </div>
+                    </div>
+                    {selectedWord.rootWord && (
+                      <div className="mt-3 p-3 bg-white rounded-lg">
+                        <div className="flex items-center gap-2 text-stone-600">
+                          <i className="fas fa-tree text-green-600"></i>
+                          <span className="text-sm">Root:</span>
+                          <span className="font-amiri text-lg text-stone-800">{selectedWord.rootArabic}</span>
+                          <span className="text-stone-500">({selectedWord.rootWord})</span>
+                        </div>
+                      </div>
+                    )}
+                    {selectedWord.grammaticalTags.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {selectedWord.grammaticalTags.map((tag, i) => (
+                          <span key={i} className="px-2 py-1 bg-white rounded-full text-xs text-stone-600">
+                            {getGrammarLabel(tag)} ({selectedWord.grammaticalTagsArabic[i]})
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {studyMode === 'grammar' && (
+              <div>
+                <h4 className="text-sm font-medium text-stone-500 mb-4 flex items-center gap-2">
+                  <i className="fas fa-chart-pie"></i>
+                  Grammar Analysis
+                </h4>
+                {/* Grammar stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  {getGrammarStats(wordBreakdown).map((stat, index) => (
+                    <div key={index} className="bg-stone-50 rounded-xl p-3 text-center">
+                      <p className="text-2xl font-bold text-stone-700">{stat.count}</p>
+                      <p className={`inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium ${stat.color}`}>
+                        {stat.pos}
+                      </p>
+                      <p className="text-xs text-stone-400 mt-1 font-amiri">{stat.posArabic}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Word list with grammar */}
+                <div className="space-y-2">
+                  {wordBreakdown.words.map((word, index) => (
+                    <div key={index} className="flex items-center gap-3 p-3 bg-stone-50 rounded-lg">
+                      <span className="w-6 h-6 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-medium">
+                        {word.position}
+                      </span>
+                      <span className="font-amiri text-xl text-stone-800 min-w-[80px] text-right" dir="rtl">
+                        {word.arabic}
+                      </span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPosColor(word.partOfSpeech)}`}>
+                        {getGrammarLabel(word.partOfSpeech)}
+                      </span>
+                      <span className="text-stone-500 text-sm flex-1">{word.translation}</span>
+                      {word.grammaticalTags.length > 0 && (
+                        <div className="hidden md:flex gap-1">
+                          {word.grammaticalTags.slice(0, 3).map((tag, i) => (
+                            <span key={i} className="px-1.5 py-0.5 bg-stone-200 rounded text-[10px] text-stone-600">
+                              {getGrammarLabel(tag)}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {studyMode === 'roots' && (
+              <div>
+                <h4 className="text-sm font-medium text-stone-500 mb-4 flex items-center gap-2">
+                  <i className="fas fa-tree"></i>
+                  Root Word Analysis
+                </h4>
+                {getUniqueRoots(wordBreakdown).length > 0 ? (
+                  <div className="space-y-4">
+                    {getUniqueRoots(wordBreakdown).map((rootInfo, index) => (
+                      <div key={index} className="bg-green-50 rounded-xl p-4 border border-green-200">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                            <span className="font-amiri text-xl text-green-700">{rootInfo.rootArabic}</span>
+                          </div>
+                          <div>
+                            <p className="font-medium text-green-800">{rootInfo.root}</p>
+                            <p className="text-sm text-green-600">{rootInfo.words.length} word(s) from this root</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {rootInfo.words.map((word, i) => (
+                            <div key={i} className="bg-white rounded-lg px-3 py-2 text-center">
+                              <p className="font-amiri text-lg text-stone-800">{word.arabic}</p>
+                              <p className="text-xs text-stone-500">{word.translation}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-stone-500">
+                    <i className="fas fa-tree text-4xl mb-3 opacity-30"></i>
+                    <p>Root word data not available for this verse</p>
+                    <p className="text-sm mt-1">Try Al-Fatiha (Surah 1) for complete root analysis</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="bg-amber-50 rounded-2xl p-8 text-center border border-amber-200">
+            <i className="fas fa-exclamation-circle text-4xl text-amber-500 mb-3"></i>
+            <h4 className="font-semibold text-amber-800 mb-2">Word Analysis Unavailable</h4>
+            <p className="text-amber-700 text-sm">
+              Word-by-word data is currently available for Al-Fatiha (Surah 1).
+              <br />
+              More surahs coming soon!
+            </p>
+          </div>
+        )}
       </div>
     );
   };
