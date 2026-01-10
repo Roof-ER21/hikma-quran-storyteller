@@ -1,0 +1,195 @@
+[
+  {
+    "id": "adam",
+    "prophetName": "Adam",
+    "arabicName": "آدم عليه السلام",
+    "era": "Beginning of Humanity",
+    "period": "Pre-history",
+    "location": "Garden of Eden, then Earth",
+    "summary": "The first human created by Allah, father of humanity, who was taught the names of all things and appointed as vicegerent on Earth.",
+    "keyLessons": [
+      "Human beings are honored with knowledge and free will",
+      "Repentance and seeking forgiveness are always accepted by Allah",
+      "Shaytan's enmity towards humanity began from the beginning",
+      "Every human is responsible for their own actions"
+    ],
+    "sections": [
+      {
+        "id": "adam-creation",
+        "title": "Creation and Knowledge",
+        "content": "Allah created Adam with His own hands, breathed into him from His spirit, and taught him the names of all things. When the angels were commanded to prostrate to Adam, all obeyed except Iblis, who refused out of pride and arrogance.\n\nThis moment established humanity's special status in creation and demonstrated the danger of arrogance and pride.",
+        "verses": [
+          {
+            "surah": 2,
+            "verse": 31,
+            "arabic": "وَعَلَّمَ آدَمَ الْأَسْمَاءَ كُلَّهَا ثُمَّ عَرَضَهُمْ عَلَى الْمَلَائِكَةِ فَقَالَ أَنبِئُونِي بِأَسْمَاءِ هَـٰؤُلَاءِ إِن كُنتُمْ صَادِقِينَ",
+            "transliteration": "Wa 'allama Adama al-asma'a kullaha thumma 'aradahum 'ala al-mala'ikati faqala anbi'uni bi-asma'i ha'ula'i in kuntum sadiqin",
+            "translation": "And He taught Adam the names - all of them. Then He showed them to the angels and said, 'Inform Me of the names of these, if you are truthful.'"
+          }
+        ]
+      },
+      {
+        "id": "adam-fall",
+        "title": "The Test and Fall from Paradise",
+        "content": "Adam and Hawwa (Eve) were granted Paradise but warned not to approach a certain tree. Shaytan deceived them, causing them to eat from the forbidden tree. They realized their mistake and immediately sought Allah's forgiveness.\n\nThis teaches us that making mistakes is part of human nature, but sincere repentance is always accepted.",
+        "verses": [
+          {
+            "surah": 7,
+            "verse": 23,
+            "arabic": "قَالَا رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ",
+            "transliteration": "Qala rabbana zalamna anfusana wa-il lam taghfir lana wa-tarhamna lanakoonanna mina al-khasireen",
+            "translation": "They said, 'Our Lord, we have wronged ourselves, and if You do not forgive us and have mercy upon us, we will surely be among the losers.'"
+          }
+        ]
+      },
+      {
+        "id": "adam-earth",
+        "title": "Life on Earth and Legacy",
+        "content": "After being sent to Earth, Adam became the first prophet, teaching his descendants to worship Allah alone. He lived for many years, establishing the foundation for human civilization and monotheism.\n\nHis legacy continues through all of humanity, as we are all his descendants.",
+        "hadiths": [
+          {
+            "source": "Sahih Bukhari",
+            "book": "Book 60",
+            "number": "3340",
+            "text": "Adam and Moses argued. Moses said to Adam, 'You are Adam whose mistake expelled you from Paradise.' Adam said to him, 'You are Moses whom Allah selected as His Messenger and spoke to directly; yet you blame me for a thing which had already been written in my fate before my creation?'",
+            "grade": "Sahih"
+          }
+        ]
+      }
+    ],
+    "relatedProphets": ["nuh", "idris"],
+    "historicalNotes": "According to Islamic tradition, Adam lived for 960 years. He was buried in Mecca according to some narrations, though the exact location remains unknown. The Quran emphasizes that all humans descend from Adam and Eve, making all of humanity equal in origin regardless of race or ethnicity."
+  },
+  {
+    "id": "nuh",
+    "prophetName": "Nuh (Noah)",
+    "arabicName": "نوح عليه السلام",
+    "era": "Pre-Flood Era",
+    "period": "Approximately 950 years of preaching",
+    "location": "Mesopotamia",
+    "summary": "A patient prophet who preached for 950 years, built the Ark, and survived the Great Flood with the believers.",
+    "keyLessons": [
+      "Patience in calling people to truth, even when rejected",
+      "Family ties don't guarantee salvation without faith",
+      "Allah's promise always comes to pass",
+      "Divine help comes to those who persist in righteousness"
+    ],
+    "sections": [
+      {
+        "id": "nuh-dawah",
+        "title": "Nine Hundred and Fifty Years of Calling",
+        "content": "Prophet Nuh called his people day and night, publicly and privately, using every method to guide them to monotheism. Despite his tireless efforts, most people rejected his message and mocked him.\n\nHis patience stands as one of the greatest examples in prophetic history.",
+        "verses": [
+          {
+            "surah": 71,
+            "verse": 5,
+            "arabic": "قَالَ رَبِّ إِنِّي دَعَوْتُ قَوْمِي لَيْلًا وَنَهَارًا",
+            "transliteration": "Qala rabbi inni da'awtu qawmi laylan wa nahara",
+            "translation": "He said, 'My Lord, indeed I invited my people [to truth] night and day.'"
+          }
+        ]
+      },
+      {
+        "id": "nuh-ark",
+        "title": "Building the Ark",
+        "content": "By Allah's command, Nuh built a massive ark while enduring mockery from his people. He was instructed to take aboard a pair of every species and those who believed.\n\nThe construction of the Ark was itself a test of faith and obedience.",
+        "verses": [
+          {
+            "surah": 11,
+            "verse": 38,
+            "arabic": "وَيَصْنَعُ الْفُلْكَ وَكُلَّمَا مَرَّ عَلَيْهِ مَلَأٌ مِّن قَوْمِهِ سَخِرُوا مِنْهُ",
+            "transliteration": "Wayasna'u al-fulka wa-kullama marra 'alayhi mala'un min qawmihi sakhiru minhu",
+            "translation": "And he constructed the ship, and whenever an assembly of the eminent of his people passed by him, they ridiculed him."
+          }
+        ]
+      },
+      {
+        "id": "nuh-flood",
+        "title": "The Great Flood and New Beginning",
+        "content": "When the flood came, it covered the earth entirely. Even Nuh's own son refused to board the ark and perished. After the waters receded, Nuh and the believers established a new community based on faith.\n\nThis demonstrates that salvation comes through faith, not lineage.",
+        "verses": [
+          {
+            "surah": 11,
+            "verse": 43,
+            "arabic": "قَالَ سَآوِي إِلَىٰ جَبَلٍ يَعْصِمُنِي مِنَ الْمَاءِ ۚ قَالَ لَا عَاصِمَ الْيَوْمَ مِنْ أَمْرِ اللَّهِ إِلَّا مَن رَّحِمَ",
+            "transliteration": "Qala sa'awi ila jabalin ya'simuni mina al-ma'i qala la 'asima al-yawma min amri Allahi illa man rahima",
+            "translation": "[His son] said, 'I will take refuge on a mountain to protect me from the water.' [Noah] said, 'There is no protector today from the decree of Allah, except for whom He gives mercy.'"
+          }
+        ],
+        "hadiths": [
+          {
+            "source": "Sahih Muslim",
+            "book": "Book 1",
+            "number": "242",
+            "text": "The Prophet Muhammad said: 'On the Day of Resurrection, Nuh will be called and he will say: At Your service, our Lord! and welcome! Allah will say: Did you convey the message? He will say: Yes. Then his people will be asked: Did he convey the message to you? They will say: No warner came to us. Allah will say: Who will bear witness for you? He will say: Muhammad and his Ummah.'",
+            "grade": "Sahih"
+          }
+        ]
+      }
+    ],
+    "relatedProphets": ["adam", "idris", "hud"],
+    "historicalNotes": "The story of Nuh is one of the most detailed in the Quran, appearing in multiple surahs. Archaeological evidence of ancient flood narratives exists across many civilizations. The Quran emphasizes that Nuh's mission was universal for his time."
+  },
+  {
+    "id": "ibrahim",
+    "prophetName": "Ibrahim (Abraham)",
+    "arabicName": "إبراهيم عليه السلام",
+    "era": "Patriarchal Period",
+    "period": "Approximately 2000 BCE",
+    "location": "Ur (Iraq), Canaan, Egypt, Mecca",
+    "summary": "The father of prophets, known for his unwavering faith, who rebuilt the Ka'bah and established the rites of Hajj. Called 'Khalilullah' (Friend of Allah).",
+    "keyLessons": [
+      "Complete submission to Allah's will",
+      "Breaking free from ancestral traditions when they oppose truth",
+      "The value of sacrifice in the path of Allah",
+      "Hospitality and kindness to guests",
+      "Trust in Allah's plan even when it seems impossible"
+    ],
+    "sections": [
+      {
+        "id": "ibrahim-youth",
+        "title": "Questioning Idolatry",
+        "content": "Born into a family of idol-makers, Ibrahim questioned his father and people about their worship of carved stones. Using reason and reflection, he arrived at the recognition of Allah as the one true God.\n\nHis journey shows the importance of critical thinking and seeking truth.",
+        "verses": [
+          {
+            "surah": 6,
+            "verse": 76,
+            "arabic": "فَلَمَّا جَنَّ عَلَيْهِ اللَّيْلُ رَأَىٰ كَوْكَبًا ۖ قَالَ هَـٰذَا رَبِّي ۖ فَلَمَّا أَفَلَ قَالَ لَا أُحِبُّ الْآفِلِينَ",
+            "transliteration": "Falamma janna 'alayhi al-laylu ra'a kawkaban qala hadha rabbi falamma afala qala la uhibbu al-afilin",
+            "translation": "So when the night covered him, he saw a star. He said, 'This is my lord.' But when it set, he said, 'I like not those that set.'"
+          }
+        ]
+      },
+      {
+        "id": "ibrahim-sacrifice",
+        "title": "The Ultimate Test of Faith",
+        "content": "Ibrahim was commanded in a dream to sacrifice his beloved son Ismail. Both father and son submitted to Allah's will completely. Just as Ibrahim was about to fulfill the command, Allah replaced Ismail with a ram, honoring their submission.\n\nThis event is commemorated annually during Eid al-Adha.",
+        "verses": [
+          {
+            "surah": 37,
+            "verse": 102,
+            "arabic": "فَلَمَّا بَلَغَ مَعَهُ السَّعْيَ قَالَ يَا بُنَيَّ إِنِّي أَرَىٰ فِي الْمَنَامِ أَنِّي أَذْبَحُكَ فَانظُرْ مَاذَا تَرَىٰ ۚ قَالَ يَا أَبَتِ افْعَلْ مَا تُؤْمَرُ ۖ سَتَجِدُنِي إِن شَاءَ اللَّهُ مِنَ الصَّابِرِينَ",
+            "transliteration": "Falamma balagha ma'ahu al-sa'ya qala ya bunayya inni ara fi al-manami anni adhbahuka fanthur madha tara qala ya abati if'al ma tu'maru satajiduni in sha'a Allahu mina al-sabirin",
+            "translation": "And when he reached with him [the age of] exertion, he said, 'O my son, indeed I have seen in a dream that I [must] sacrifice you, so see what you think.' He said, 'O my father, do as you are commanded. You will find me, if Allah wills, of the steadfast.'"
+          }
+        ]
+      },
+      {
+        "id": "ibrahim-kaaba",
+        "title": "Building the Ka'bah",
+        "content": "Ibrahim and his son Ismail rebuilt the Ka'bah in Mecca, the house of monotheistic worship. They prayed for a prophet to arise from their descendants, a prayer answered centuries later with Muhammad ﷺ.\n\nThe Ka'bah remains the focal point of Islamic worship to this day.",
+        "verses": [
+          {
+            "surah": 2,
+            "verse": 127,
+            "arabic": "وَإِذْ يَرْفَعُ إِبْرَاهِيمُ الْقَوَاعِدَ مِنَ الْبَيْتِ وَإِسْمَاعِيلُ رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ",
+            "transliteration": "Wa-idh yarfa'u Ibrahimu al-qawa'ida mina al-bayti wa-Isma'ilu rabbana taqabbal minna innaka anta al-sami'u al-'alim",
+            "translation": "And [mention] when Abraham was raising the foundations of the House and [with him] Ishmael, [saying], 'Our Lord, accept [this] from us. Indeed You are the Hearing, the Knowing.'"
+          }
+        ]
+      }
+    ],
+    "relatedProphets": ["ismail", "ishaq", "lut", "yaqub"],
+    "historicalNotes": "Ibrahim is revered in Islam, Christianity, and Judaism as a patriarch. His legacy includes the establishment of Hajj rituals still performed by millions today. His title 'Khalilullah' (Friend of Allah) appears in the Quran, marking his exceptional status."
+  }
+]

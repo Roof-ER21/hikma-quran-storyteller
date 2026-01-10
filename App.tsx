@@ -10,6 +10,7 @@ import { OfflineIndicator, PWAInstallPrompt } from './components/OfflineIndicato
 import { transcribeAudio } from './services/geminiService';
 import ParentGate from './components/ParentGate';
 import AdultAudioStories from './components/AdultAudioStories';
+import ProphetStoriesLibrary from './components/ProphetStoriesLibrary';
 
 const PROPHETS = [
   "Adam", "Nuh (Noah)", "Ibrahim (Abraham)", "Yusuf (Joseph)", "Musa (Moses)", "Isa (Jesus)", "Muhammad"
@@ -20,7 +21,7 @@ const TOPICS = [
 ];
 
 function App() {
-  const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids'>('home');
+  const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library'>('home');
   const [mode, setMode] = useState<'gate' | 'kid' | 'parent'>('gate');
   const [selectedProphet, setSelectedProphet] = useState<string>("");
   const [selectedTopic, setSelectedTopic] = useState<string>("General Life");
@@ -99,7 +100,7 @@ function App() {
   };
 
   const isLocked = (target: typeof view) => {
-    if (mode === 'kid' && target !== 'kids' && target !== 'quran') {
+    if (mode === 'kid' && target !== 'kids' && target !== 'quran' && target !== 'library') {
       return true;
     }
     return false;
@@ -214,6 +215,14 @@ function App() {
             >
                 <i className="fas fa-child md:mr-2"></i>
                 <span className="hidden md:inline">Kids</span>
+            </button>
+            <button
+                onClick={() => !isLocked('library') && setView('library')}
+                disabled={isLocked('library')}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'library' ? 'bg-emerald-100 text-emerald-800' : 'text-stone-500 hover:text-emerald-600'} ${isLocked('library') ? 'opacity-40 cursor-not-allowed' : ''}`}
+            >
+                <i className="fas fa-book-reader md:mr-2"></i>
+                <span className="hidden md:inline">Library</span>
             </button>
             {/* Download Manager Button */}
             <button
@@ -376,6 +385,12 @@ function App() {
         {view === 'kids' && (
             <div className="h-[calc(100vh-140px)]">
                 <KidsHome onBack={() => setView('home')} />
+            </div>
+        )}
+
+        {view === 'library' && (
+            <div className="h-[calc(100vh-140px)] overflow-auto">
+                <ProphetStoriesLibrary />
             </div>
         )}
 

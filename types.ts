@@ -193,5 +193,47 @@ declare global {
   }
 }
 
+// ============================================
+// Prophet Stories Library Types (Adults)
+// ============================================
+
+export interface QuranVerse {
+  surah: number;
+  verse: number;
+  arabic: string;
+  transliteration: string;
+  translation: string;
+}
+
+export interface HadithReference {
+  source: string;
+  book: string;
+  number: string;
+  text: string;
+  grade?: string;
+}
+
+export interface StorySection {
+  id: string;
+  title: string;
+  content: string;
+  verses?: QuranVerse[];
+  hadiths?: HadithReference[];
+}
+
+export interface AdultProphetStory {
+  id: string;
+  prophetName: string;
+  arabicName: string;
+  era: string;
+  period: string;
+  location: string;
+  summary: string;
+  keyLessons: string[];
+  sections: StorySection[];
+  relatedProphets?: string[];
+  historicalNotes?: string;
+}
+
 // This export makes this file a module
 export {};
