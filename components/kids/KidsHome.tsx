@@ -337,7 +337,7 @@ interface ActivityProps {
 }
 
 // Version query to bust stale PWA/service-worker caches for static kids assets
-const ASSET_VERSION = '2026-01-09c';
+const ASSET_VERSION = '2026-01-10a';
 const assetUrl = (path: string) => `${path}?v=${ASSET_VERSION}`;
 
 // Arabic Alphabet Data
