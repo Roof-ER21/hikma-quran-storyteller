@@ -35,7 +35,7 @@ const LanguageSelectorModal: React.FC<LanguageSelectorModalProps> = ({ isOpen, o
             Alaya & Soad's Gift
           </h1>
           <h2 className="text-2xl font-arabic text-amber-200">
-            هدية عليا و سعاد
+            هدية علية و سعاد
           </h2>
           <p className="text-white/60 text-sm">
             Stories from Jannah | قصص من الجنة
