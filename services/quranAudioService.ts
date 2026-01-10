@@ -11,8 +11,14 @@ import { getGlobalVerseNumber } from './quranDataService';
 
 // Audio CDN Base URL
 const AUDIO_CDN = 'https://cdn.islamic.network/quran/audio';
-const OFFLINE_SURAHS = new Set([105, 106, 107, 108, 109, 110, 111, 112, 113, 114]);
+// Surahs available offline: Popular surahs (1, 36, 67) and last 10 surahs (105-114)
+// Note: Surah 2 only has verse 255 (Ayat al-Kursi) available offline
+const OFFLINE_SURAHS = new Set([1, 36, 67, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114]);
 const OFFLINE_RECITERS = new Set(['ar.alafasy', 'ar.husary', 'ar.minshawimujawwad']);
+// Special case: Only specific verses available offline for these surahs
+const PARTIAL_OFFLINE_SURAHS = new Map([
+  [2, new Set([255])] // Ayat al-Kursi only
+]);
 
 // Available reciters with their identifiers
 export const RECITERS: Reciter[] = [
@@ -115,13 +121,19 @@ class AudioManager {
    * Get the audio URL for a specific verse
    */
   getAudioUrl(surahNumber: number, verseNumber: number, reciterId: string = this.reciter): string {
-    if (OFFLINE_SURAHS.has(surahNumber) && OFFLINE_RECITERS.has(reciterId)) {
+    // Check if this specific verse is available offline
+    const isFullyOffline = OFFLINE_SURAHS.has(surahNumber);
+    const isPartiallyOffline = PARTIAL_OFFLINE_SURAHS.has(surahNumber) &&
+                               PARTIAL_OFFLINE_SURAHS.get(surahNumber)?.has(verseNumber);
+    const hasOfflineReciter = OFFLINE_RECITERS.has(reciterId);
+
+    if ((isFullyOffline || isPartiallyOffline) && hasOfflineReciter) {
       this.lastSourceOffline = true;
       // Prefer reciter-specific offline path, then default legacy path
       const reciterPath = `/assets/quran/offline/${reciterId}/${surahNumber}/${verseNumber}.mp3`;
       return reciterPath;
     }
-    if (OFFLINE_SURAHS.has(surahNumber) && reciterId === DEFAULT_RECITER) {
+    if ((isFullyOffline || isPartiallyOffline) && reciterId === DEFAULT_RECITER) {
       this.lastSourceOffline = true;
       return `/assets/quran/offline/${surahNumber}/${verseNumber}.mp3`; // legacy path for default
     }

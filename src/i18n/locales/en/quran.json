@@ -63,7 +63,7 @@
   },
   "study": {
     "title": "Word-by-Word Study",
-    "description": "Deep dive into each word's meaning, root, and grammar. This feature is coming soon!",
+    "description": "Deep dive into each word with Arabic text, transliteration, translation, grammar analysis, and root word exploration.",
     "translation": "Translation",
     "rootWords": "Root Words",
     "grammar": "Grammar"

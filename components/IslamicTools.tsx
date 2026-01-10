@@ -50,10 +50,34 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
   // Islamic date state
   const [islamicDate, setIslamicDate] = useState<IslamicDate | null>(null);
 
-  // Notification state
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  // Notification state - load from localStorage
+  const [notificationsEnabled, setNotificationsEnabled] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const saved = localStorage.getItem('islamic_tools_notifications_enabled');
+    return saved === 'true';
+  });
   const [notificationTimers, setNotificationTimers] = useState<NodeJS.Timeout[]>([]);
-  const [notifyMinutesBefore, setNotifyMinutesBefore] = useState(10);
+  const [notifyMinutesBefore, setNotifyMinutesBefore] = useState(() => {
+    if (typeof window === 'undefined') return 10;
+    const saved = localStorage.getItem('islamic_tools_notify_minutes');
+    return saved ? parseInt(saved, 10) : 10;
+  });
+
+  // Check notification permission on mount and restore state if previously granted
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+
+    const savedEnabled = localStorage.getItem('islamic_tools_notifications_enabled');
+
+    // If user previously enabled notifications and permission is still granted, keep them enabled
+    if (savedEnabled === 'true' && Notification.permission === 'granted') {
+      setNotificationsEnabled(true);
+    } else if (savedEnabled === 'true' && Notification.permission !== 'granted') {
+      // Permission was revoked, update state and localStorage
+      setNotificationsEnabled(false);
+      localStorage.setItem('islamic_tools_notifications_enabled', 'false');
+    }
+  }, []);
 
   // Get user location on mount
   useEffect(() => {
@@ -117,6 +141,12 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
     };
   }, [prayerTimes, notificationsEnabled, notifyMinutesBefore]);
 
+  // Save notification minutes preference to localStorage when it changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('islamic_tools_notify_minutes', notifyMinutesBefore.toString());
+  }, [notifyMinutesBefore]);
+
   // Handle notification toggle
   const handleNotificationToggle = async () => {
     if (notificationsEnabled) {
@@ -124,11 +154,13 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
       clearPrayerNotifications(notificationTimers);
       setNotificationTimers([]);
       setNotificationsEnabled(false);
+      localStorage.setItem('islamic_tools_notifications_enabled', 'false');
     } else {
       // Request permission and enable
       const granted = await requestNotificationPermission();
       if (granted) {
         setNotificationsEnabled(true);
+        localStorage.setItem('islamic_tools_notifications_enabled', 'true');
       } else {
         alert('Notification permission denied. Please enable notifications in your browser settings.');
       }
