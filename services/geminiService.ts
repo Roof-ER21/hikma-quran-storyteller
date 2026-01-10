@@ -2,20 +2,58 @@ import { GoogleGenAI, Modality, Type } from "@google/genai";
 import { VisualConfig, VoiceSearchResult, RecitationResult, RecitationWord } from "../types";
 import { base64ToUint8Array, decodeAudioData, uint8ArrayToBase64 } from "./audioUtils";
 
+// Track which API key to use (primary or backup)
+let useBackupKey = false;
+let lastKeySwitch = 0;
+const KEY_SWITCH_COOLDOWN = 60000; // 1 minute before trying primary again
+
 // Resolve Gemini API key from Vite env (preferred) or fallback to build-time process.env
 export const getGeminiApiKey = () => {
-  const key =
+  const primaryKey =
     import.meta.env?.VITE_GEMINI_API_KEY ||
     import.meta.env?.GEMINI_API_KEY ||
     (typeof window !== 'undefined' && (window as any).__ENV?.VITE_GEMINI_API_KEY) ||
     process.env.GEMINI_API_KEY ||
     process.env.API_KEY;
 
-  if (!key) {
+  const backupKey =
+    import.meta.env?.VITE_GEMINI_API_KEY_2 ||
+    import.meta.env?.GEMINI_API_KEY_2 ||
+    (typeof window !== 'undefined' && (window as any).__ENV?.VITE_GEMINI_API_KEY_2) ||
+    process.env.GEMINI_API_KEY_2;
+
+  // Check if we should try primary again after cooldown
+  if (useBackupKey && Date.now() - lastKeySwitch > KEY_SWITCH_COOLDOWN) {
+    useBackupKey = false;
+  }
+
+  // Use backup if flagged and available
+  if (useBackupKey && backupKey) {
+    return backupKey;
+  }
+
+  if (!primaryKey) {
     throw new Error('Missing Gemini API key. Set VITE_GEMINI_API_KEY in your environment.');
   }
 
-  return key;
+  return primaryKey;
+};
+
+// Switch to backup key when rate limited
+export const switchToBackupKey = () => {
+  const backupKey =
+    import.meta.env?.VITE_GEMINI_API_KEY_2 ||
+    import.meta.env?.GEMINI_API_KEY_2 ||
+    (typeof window !== 'undefined' && (window as any).__ENV?.VITE_GEMINI_API_KEY_2) ||
+    process.env.GEMINI_API_KEY_2;
+
+  if (backupKey) {
+    console.log('🔄 Switching to backup Gemini API key');
+    useBackupKey = true;
+    lastKeySwitch = Date.now();
+    return true;
+  }
+  return false;
 };
 
 // Initialize AI instance helper
@@ -28,7 +66,17 @@ const callWithRetry = async <T>(fn: () => Promise<T>): Promise<T> => {
   } catch (e: any) {
     const msg = e.toString().toLowerCase();
     const isAuthError = msg.includes("404") || msg.includes("not found") || msg.includes("403") || msg.includes("permission denied");
-    
+    const isRateLimited = msg.includes("429") || msg.includes("rate") || msg.includes("quota") || msg.includes("resource exhausted");
+
+    // Try backup key on rate limit
+    if (isRateLimited) {
+      console.warn("Rate limited, attempting to switch to backup key...");
+      if (switchToBackupKey()) {
+        // Retry with backup key
+        return await fn();
+      }
+    }
+
     if (window.aistudio && isAuthError) {
       console.log("API Error detected, prompting for key selection...");
       await window.aistudio.openSelectKey();
