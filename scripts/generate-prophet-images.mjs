@@ -17,7 +17,7 @@ import WebSocket from 'ws';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ComfyUI settings
-const COMFYUI_URL = 'http://127.0.0.1:8188';
+const COMFYUI_URL = 'http://127.0.0.1:8000';
 const MODEL = 'dreamshaper8.safetensors'; // Artistic style
 const IMAGE_WIDTH = 768;
 const IMAGE_HEIGHT = 432; // 16:9 aspect ratio for story headers
@@ -30,122 +30,122 @@ const PROPHET_IMAGE_PROMPTS = {
   adam: {
     title: "The Garden of Eden",
     prompt: "ethereal garden paradise, lush green trees, golden sunlight streaming through leaves, crystal clear stream, vibrant flowers, peaceful atmosphere, divine light rays, soft clouds, masterpiece, highly detailed, fantasy art style",
-    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   idris: {
     title: "Celestial Ascension",
     prompt: "majestic night sky with countless stars, celestial stairway of light ascending to heavens, aurora borealis, cosmic nebula, divine radiance, mystical atmosphere, ethereal glow, masterpiece, highly detailed",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   nuh: {
     title: "The Great Ark",
-    prompt: "massive wooden ark on stormy seas, dramatic thunderclouds, lightning in distance, rain falling, turbulent waves, rainbow breaking through clouds, hope amidst storm, cinematic, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    prompt: "massive wooden ark on stormy seas, dramatic thunderclouds, lightning in distance, rain falling, turbulent waves, divine light breaking through clouds, hope amidst storm, cinematic, masterpiece",
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   hud: {
     title: "Ancient City of 'Ad",
     prompt: "ancient magnificent sandstone city ruins in vast desert, towering pillars, golden sand dunes, dramatic sunset, wind-swept desert landscape, archaeological wonder, mysterious atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   saleh: {
     title: "The Sacred Mountain",
     prompt: "majestic rocky mountain in Arabian desert, ancient carved stone dwellings, dramatic cliffs, golden hour lighting, peaceful valley below, desert flowers, masterpiece, highly detailed",
-    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   ibrahim: {
     title: "The Sacred House",
     prompt: "ancient stone structure in desert valley, sacred shrine, golden sunrise, mountains in background, peaceful atmosphere, divine light from above, spiritual ambiance, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   lut: {
     title: "Cities of the Plain",
     prompt: "dramatic landscape of ancient ruined cities, Dead Sea at dawn, salt formations, desolate beauty, morning mist, dramatic sky, somber atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   ismail: {
     title: "The Well of Zamzam",
     prompt: "sacred spring emerging from desert sand, Mecca valley landscape, rocky hills, clear blue water, divine light, oasis in desert, peaceful atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   ishaq: {
     title: "Land of Promise",
     prompt: "fertile green valleys of ancient Canaan, olive groves, rolling hills, shepherd's pastures, golden wheat fields, peaceful landscape, soft morning light, masterpiece",
-    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   yaqub: {
     title: "Journey Through Lands",
     prompt: "ancient caravan trail through desert at twilight, distant oasis, star-filled sky, campfire light, peaceful night scene, travel through wilderness, masterpiece",
-    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   yusuf: {
     title: "Palace of Egypt",
     prompt: "magnificent ancient Egyptian palace interior, golden columns, hieroglyphic walls, Nile view through windows, luxurious throne room, torchlight, masterpiece, highly detailed",
-    negative: "people, humans, figures, faces, bodies, statues, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, statues, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   ayyub: {
     title: "Land of Patience",
     prompt: "humble dwelling in lush oasis, healing spring waters, olive trees recovering, morning dew, rainbow after rain, renewal and hope, peaceful atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   shuaib: {
     title: "Madyan Marketplace",
     prompt: "ancient Middle Eastern marketplace at dawn, empty merchant stalls, scales and measures, date palms, morning light through fabric awnings, peaceful atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   musa: {
     title: "Mount Sinai",
     prompt: "majestic Mount Sinai at sunrise, divine light emanating from peak, dramatic clouds, sacred mountain, golden rays, burning bush glow, spiritual atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   harun: {
     title: "The Tabernacle",
     prompt: "sacred tent sanctuary in desert, golden lampstand light, incense smoke rising, curtains of fine fabric, holy vessels, divine presence, peaceful interior, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   dhulkifl: {
     title: "Steadfast Guardian",
     prompt: "ancient watchtower overlooking peaceful valley, guardian's lamp burning bright, starry night sky, protective walls, faithful vigil, serene atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   dawud: {
     title: "Kingdom of Faith",
     prompt: "Jerusalem ancient city at golden hour, stone walls and towers, harp resting on palace balcony, olive trees, peaceful kingdom, divine light, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   sulaiman: {
     title: "Temple of Wisdom",
     prompt: "magnificent ancient temple with golden dome, ornate columns, throne room with gems, elaborate architecture, sunlight through windows, royal splendor, masterpiece",
-    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, animals, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   ilyas: {
     title: "Mount Carmel",
     prompt: "dramatic mountain peak with altar of stones, rain clouds gathering, lightning in sky, dramatic weather, spiritual atmosphere, ancient Israel landscape, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   alyasa: {
     title: "Healing Waters",
     prompt: "Jordan River at peaceful dawn, healing waters flowing, lush riverbanks, morning mist, olive groves, sacred atmosphere, gentle light, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   yunus: {
     title: "Depths of Mercy",
     prompt: "deep ocean underwater scene, rays of divine light penetrating depths, peaceful blue waters, coral and sea life, hope in darkness, beautiful underwater world, masterpiece",
-    negative: "people, humans, figures, faces, bodies, whale, fish, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, whale, fish, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   zakariya: {
     title: "Temple Sanctuary",
     prompt: "ancient temple inner sanctuary, golden menorah burning, incense altar, curtains of blue and purple, sacred vessels, peaceful prayer chamber, divine light, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   yahya: {
     title: "Jordan Wilderness",
     prompt: "wild Jordan River valley, rocky wilderness, date palms by water, sunrise over desert hills, locusts and wild honey, prophetic landscape, masterpiece",
-    negative: "people, humans, figures, faces, bodies, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   },
   isa: {
     title: "Galilee at Dawn",
     prompt: "Sea of Galilee at peaceful sunrise, fishing boats on still water, hills of Nazareth in distance, olive groves, divine light breaking through clouds, spiritual atmosphere, masterpiece",
-    negative: "people, humans, figures, faces, bodies, cross, text, watermark, signature"
+    negative: "people, humans, figures, faces, bodies, cross, text, watermark, signature, nsfw, flag, flags, banner, inappropriate, rainbow flag"
   }
 };
 
@@ -240,7 +240,7 @@ async function queuePrompt(workflow) {
 
   // Wait for completion via WebSocket
   return new Promise((resolve, reject) => {
-    const ws = new WebSocket(`ws://127.0.0.1:8188/ws?clientId=${clientId}`);
+    const ws = new WebSocket(`ws://127.0.0.1:8000/ws?clientId=${clientId}`);
 
     ws.on('message', (data) => {
       const message = JSON.parse(data.toString());
