@@ -23,9 +23,9 @@ export default defineConfig(({ mode }) => {
             'assets/adult/audio/*.mp3'
           ],
           manifest: {
-            name: 'Noor Soad - Quran Companion',
-            short_name: 'Noor Soad',
-            description: 'AI-powered Quran companion with storytelling, recitation practice, voice search, and memorization tools',
+            name: "Alaya & Soad's Gift: Stories from Jannah",
+            short_name: "Alaya & Soad",
+            description: "A loving tribute bringing Quranic stories to life - in memory of Alaya & Soad",
             theme_color: '#9f1239',
             background_color: '#1e293b',
             display: 'standalone',

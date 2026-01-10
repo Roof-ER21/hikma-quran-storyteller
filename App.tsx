@@ -432,54 +432,54 @@ function App() {
             >
                 <i className="fas fa-download"></i>
             </button>
-            {/* Parent Button with Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => parentName ? setShowParentMenu(!showParentMenu) : setShowParentGate(true)}
-                className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-2"
-              >
-                <i className="fas fa-user-shield"></i>
-                <span className="hidden md:inline">{parentName ? `Hi, ${parentName}` : 'Parent'}</span>
-                {parentName && <i className={`fas fa-chevron-${showParentMenu ? 'up' : 'down'} text-xs`}></i>}
-              </button>
-              {/* Parent Dropdown Menu */}
-              {showParentMenu && parentName && (
-                <>
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setShowParentMenu(false)}
-                  />
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-stone-200 py-2 z-50">
-                    <div className="px-4 py-2 border-b border-stone-100">
-                      <p className="text-sm font-medium text-stone-800">{parentName}</p>
-                      <p className="text-xs text-stone-500">Parent Account</p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setShowParentMenu(false);
-                        setShowParentProfile(true);
-                      }}
-                      className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
-                    >
-                      <i className="fas fa-user-circle w-4"></i>
-                      Profile & Settings
-                    </button>
-                    <ShareButton
-                      type="app"
-                      className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
-                    />
-                    <hr className="my-2 border-stone-100" />
-                    <button
-                      onClick={handleLogout}
-                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
-                    >
-                      <i className="fas fa-sign-out-alt w-4"></i>
-                      Logout
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+        </div>
+        {/* Parent Button with Dropdown - Outside overflow container */}
+        <div className="relative ml-2">
+          <button
+            onClick={() => parentName ? setShowParentMenu(!showParentMenu) : setShowParentGate(true)}
+            className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-2 text-sm font-medium"
+          >
+            <i className="fas fa-user-shield"></i>
+            <span className="hidden md:inline">{parentName ? `Hi, ${parentName}` : 'Parent'}</span>
+            {parentName && <i className={`fas fa-chevron-${showParentMenu ? 'up' : 'down'} text-xs`}></i>}
+          </button>
+          {/* Parent Dropdown Menu */}
+          {showParentMenu && parentName && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setShowParentMenu(false)}
+              />
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-stone-200 py-2 z-50">
+                <div className="px-4 py-2 border-b border-stone-100">
+                  <p className="text-sm font-medium text-stone-800">{parentName}</p>
+                  <p className="text-xs text-stone-500">Parent Account</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowParentMenu(false);
+                    setShowParentProfile(true);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
+                >
+                  <i className="fas fa-user-circle w-4"></i>
+                  Profile & Settings
+                </button>
+                <ShareButton
+                  type="app"
+                  className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
+                />
+                <hr className="my-2 border-stone-100" />
+                <button
+                  onClick={handleLogout}
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                >
+                  <i className="fas fa-sign-out-alt w-4"></i>
+                  Logout
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </nav>
 
