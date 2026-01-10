@@ -11,6 +11,7 @@ import { transcribeAudio } from './services/geminiService';
 import ParentGate from './components/ParentGate';
 import AdultAudioStories from './components/AdultAudioStories';
 import ProphetStoriesLibrary from './components/ProphetStoriesLibrary';
+import DedicationPage from './components/DedicationPage';
 
 const PROPHETS = [
   "Adam", "Nuh (Noah)", "Ibrahim (Abraham)", "Yusuf (Joseph)", "Musa (Moses)", "Isa (Jesus)", "Muhammad"
@@ -21,7 +22,7 @@ const TOPICS = [
 ];
 
 function App() {
-  const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library'>('home');
+  const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library' | 'dedication'>('home');
   const [mode, setMode] = useState<'gate' | 'kid' | 'parent'>('gate');
   const [selectedProphet, setSelectedProphet] = useState<string>("");
   const [selectedTopic, setSelectedTopic] = useState<string>("General Life");
@@ -39,8 +40,21 @@ function App() {
     if (params.get('admin') === 'media') {
       setShowMediaGenerator(true);
     }
-    const storedToken = localStorage.getItem('hikma_parent_token');
-    const storedName = localStorage.getItem('hikma_parent_name');
+
+    // Migrate from old localStorage keys to new ones
+    const oldToken = localStorage.getItem('hikma_parent_token');
+    const oldName = localStorage.getItem('hikma_parent_name');
+    if (oldToken) {
+      localStorage.setItem('alayasoad_parent_token', oldToken);
+      localStorage.removeItem('hikma_parent_token');
+    }
+    if (oldName) {
+      localStorage.setItem('alayasoad_parent_name', oldName);
+      localStorage.removeItem('hikma_parent_name');
+    }
+
+    const storedToken = localStorage.getItem('alayasoad_parent_token');
+    const storedName = localStorage.getItem('alayasoad_parent_name');
     if (storedToken && storedName) {
       setParentName(storedName);
       setParentToken(storedToken);
@@ -50,8 +64,8 @@ function App() {
 
   const handleParentAuthed = (token: string, name: string, remember: boolean) => {
     if (remember) {
-      localStorage.setItem('hikma_parent_token', token);
-      localStorage.setItem('hikma_parent_name', name);
+      localStorage.setItem('alayasoad_parent_token', token);
+      localStorage.setItem('alayasoad_parent_name', name);
     }
     setParentName(name);
     setParentToken(token);
@@ -100,7 +114,7 @@ function App() {
   };
 
   const isLocked = (target: typeof view) => {
-    if (mode === 'kid' && target !== 'kids' && target !== 'quran' && target !== 'library') {
+    if (mode === 'kid' && target !== 'kids' && target !== 'quran' && target !== 'library' && target !== 'dedication') {
       return true;
     }
     return false;
@@ -112,7 +126,7 @@ function App() {
         <div className="space-y-4">
           <p className="text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold">Bismillah</p>
           <h1 className="text-4xl md:text-5xl font-serif text-rose-900 leading-tight">
-            Choose your path into <span className="text-amber-600">Noor Soad</span>
+            Welcome to <span className="text-amber-600">Alaya & Soad's Gift</span>
           </h1>
           <p className="text-stone-600 max-w-2xl mx-auto">
             A calm space for families: kids go straight to their stories, parents can unlock everything with a PIN.
@@ -180,10 +194,14 @@ function App() {
       {/* Navbar */}
       <nav className="bg-white border-b border-stone-200 px-6 py-4 flex justify-between items-center shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-rose-700 rounded-lg flex items-center justify-center text-white text-xl">
-            <i className="fas fa-quran"></i>
-          </div>
-          <h1 className="text-2xl font-serif font-bold text-rose-900 tracking-wide">Noor Soad</h1>
+          <button
+            onClick={() => setView('dedication')}
+            className="w-10 h-10 bg-rose-700 rounded-lg flex items-center justify-center text-white text-xl hover:bg-rose-600 transition-colors"
+            title="In Loving Memory"
+          >
+            <i className="fas fa-heart"></i>
+          </button>
+          <h1 className="text-xl md:text-2xl font-serif font-bold text-rose-900 tracking-wide">Alaya & Soad's Gift</h1>
         </div>
         <div className="flex gap-2 md:gap-4 text-sm font-medium overflow-x-auto items-center">
             <button
@@ -391,6 +409,12 @@ function App() {
         {view === 'library' && (
             <div className="h-[calc(100vh-140px)] overflow-auto">
                 <ProphetStoriesLibrary />
+            </div>
+        )}
+
+        {view === 'dedication' && (
+            <div className="fixed inset-0 z-40">
+                <DedicationPage onClose={() => setView('home')} />
             </div>
         )}
 

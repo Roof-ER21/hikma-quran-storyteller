@@ -1,6 +1,6 @@
 {
-  "name": "Noor Soad: Quran Storyteller",
-  "description": "A storytelling experience bringing Quranic stories to life with narrations, visualizations, and real-time conversation.",
+  "name": "Alaya & Soad's Gift: Stories from Jannah",
+  "description": "A loving tribute bringing Quranic stories to life - in memory of Alaya & Soad, their gift of knowledge for the next generation.",
   "requestFramePermissions": [
     "microphone",
     "geolocation"
