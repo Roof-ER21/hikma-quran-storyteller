@@ -16,6 +16,9 @@ import DedicationPage from './components/DedicationPage';
 import IslamicTools from './components/IslamicTools';
 import RTLProvider from './src/components/RTLProvider';
 import LanguageSelectorModal from './src/i18n/LanguageSelectorModal';
+import ShareButton from './components/ShareButton';
+import ParentProfile from './components/ParentProfile';
+import { initProgressSync, cleanupProgressSync } from './services/progressSyncService';
 import { isLanguageSelected, isArabic } from './src/i18n';
 
 const PROPHETS = [
@@ -61,10 +64,45 @@ function App() {
   const [showDownloadManager, setShowDownloadManager] = useState(false);
   const [showMediaGenerator, setShowMediaGenerator] = useState(false);
   const [showParentGate, setShowParentGate] = useState(false);
+  const [showParentMenu, setShowParentMenu] = useState(false);
+  const [showParentProfile, setShowParentProfile] = useState(false);
   const [parentName, setParentName] = useState<string | null>(null);
   const [parentToken, setParentToken] = useState<string | null>(null);
+  // Deep link state
+  const [initialDeepLink, setInitialDeepLink] = useState<{ type: string; data: any } | null>(null);
 
-  // Check for admin mode via URL query parameter
+  // Parse deep links from URL hash
+  const parseDeepLink = () => {
+    const hash = window.location.hash;
+    if (!hash || hash === '#') return null;
+
+    // #/story/{prophetName}
+    const storyMatch = hash.match(/^#\/story\/(.+)$/);
+    if (storyMatch) {
+      return { type: 'story', data: { prophet: decodeURIComponent(storyMatch[1]) } };
+    }
+
+    // #/verse/{surah}:{verse}
+    const verseMatch = hash.match(/^#\/verse\/(\d+):(\d+)$/);
+    if (verseMatch) {
+      return { type: 'verse', data: { surah: parseInt(verseMatch[1]), verse: parseInt(verseMatch[2]) } };
+    }
+
+    // #/quran/{surahNumber}
+    const quranMatch = hash.match(/^#\/quran\/(\d+)$/);
+    if (quranMatch) {
+      return { type: 'quran', data: { surah: parseInt(quranMatch[1]) } };
+    }
+
+    // #/kids
+    if (hash === '#/kids') {
+      return { type: 'kids', data: {} };
+    }
+
+    return null;
+  };
+
+  // Check for admin mode via URL query parameter and handle deep links
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('admin') === 'media') {
@@ -90,7 +128,57 @@ function App() {
       setParentToken(storedToken);
       setMode('parent');
     }
+
+    // Handle deep links
+    const deepLink = parseDeepLink();
+    if (deepLink) {
+      setInitialDeepLink(deepLink);
+      // Auto-enter parent mode for deep links to allow access
+      if (!storedToken) {
+        setMode('parent'); // Allow viewing shared content without login
+      }
+
+      switch (deepLink.type) {
+        case 'story':
+          setSelectedProphet(deepLink.data.prophet);
+          setView('story');
+          break;
+        case 'verse':
+        case 'quran':
+          setView('quran');
+          // The QuranView will need to handle the initial surah/verse from initialDeepLink
+          break;
+        case 'kids':
+          setMode('kid');
+          setView('kids');
+          break;
+      }
+    }
   }, []);
+
+  // Initialize progress sync when parent is logged in
+  useEffect(() => {
+    if (parentToken) {
+      const cleanup = initProgressSync();
+      return cleanup;
+    }
+  }, [parentToken]);
+
+  // Update URL hash when view changes
+  useEffect(() => {
+    if (view === 'story' && selectedProphet) {
+      window.history.replaceState(null, '', `#/story/${encodeURIComponent(selectedProphet)}`);
+    } else if (view === 'quran') {
+      // QuranView will manage its own hash updates for specific surahs/verses
+      if (!window.location.hash.startsWith('#/verse/') && !window.location.hash.startsWith('#/quran/')) {
+        window.history.replaceState(null, '', '#/quran');
+      }
+    } else if (view === 'kids') {
+      window.history.replaceState(null, '', '#/kids');
+    } else if (view === 'home') {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, [view, selectedProphet]);
 
   const handleParentAuthed = (token: string, name: string, remember: boolean) => {
     if (remember) {
@@ -101,6 +189,16 @@ function App() {
     setParentToken(token);
     setMode('parent');
     setView('home');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('alayasoad_parent_token');
+    localStorage.removeItem('alayasoad_parent_name');
+    setParentName(null);
+    setParentToken(null);
+    setMode('gate');
+    setView('home');
+    setShowParentMenu(false);
   };
 
   const handleStartStory = () => {
@@ -248,6 +346,12 @@ function App() {
         onClose={() => setShowParentGate(false)}
         onAuthed={handleParentAuthed}
       />
+      <ParentProfile
+        isOpen={showParentProfile}
+        onClose={() => setShowParentProfile(false)}
+        parentName={parentName || ''}
+        onLogout={handleLogout}
+      />
 
       {/* Navbar */}
       <nav className="bg-white border-b border-stone-200 px-6 py-4 flex justify-between items-center shadow-sm">
@@ -328,13 +432,54 @@ function App() {
             >
                 <i className="fas fa-download"></i>
             </button>
-            <button
-                onClick={() => setShowParentGate(true)}
+            {/* Parent Button with Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => parentName ? setShowParentMenu(!showParentMenu) : setShowParentGate(true)}
                 className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-2"
-            >
+              >
                 <i className="fas fa-user-shield"></i>
                 <span className="hidden md:inline">{parentName ? `Hi, ${parentName}` : 'Parent'}</span>
-            </button>
+                {parentName && <i className={`fas fa-chevron-${showParentMenu ? 'up' : 'down'} text-xs`}></i>}
+              </button>
+              {/* Parent Dropdown Menu */}
+              {showParentMenu && parentName && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowParentMenu(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-stone-200 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-stone-100">
+                      <p className="text-sm font-medium text-stone-800">{parentName}</p>
+                      <p className="text-xs text-stone-500">Parent Account</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setShowParentMenu(false);
+                        setShowParentProfile(true);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
+                    >
+                      <i className="fas fa-user-circle w-4"></i>
+                      Profile & Settings
+                    </button>
+                    <ShareButton
+                      type="app"
+                      className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
+                    />
+                    <hr className="my-2 border-stone-100" />
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                    >
+                      <i className="fas fa-sign-out-alt w-4"></i>
+                      Logout
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
         </div>
       </nav>
 
@@ -480,7 +625,10 @@ function App() {
 
         {view === 'quran' && (
             <div className="h-[calc(100vh-140px)]">
-                <QuranView />
+                <QuranView
+                  initialSurah={initialDeepLink?.type === 'verse' || initialDeepLink?.type === 'quran' ? initialDeepLink.data.surah : undefined}
+                  initialVerse={initialDeepLink?.type === 'verse' ? initialDeepLink.data.verse : undefined}
+                />
             </div>
         )}
 

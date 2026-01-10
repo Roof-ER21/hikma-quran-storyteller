@@ -10,6 +10,7 @@ import { TranslationSelector, ReciterSelector, FontSizeSelector } from './Transl
 import VoiceSearch from './VoiceSearch';
 import RecitationChecker from './RecitationChecker';
 import MemorizationMode from './MemorizationMode';
+import ShareButton from './ShareButton';
 import { Verse, Surah as SurahType, VisualConfig } from '../types';
 
 interface SurahDef {
@@ -223,12 +224,22 @@ const SURAHS: SurahDef[] = [
   { number: 114, nameEn: "An-Nas", nameAr: "الناس", meaning: "Mankind", verses: 6, revelationType: "Meccan" }
 ];
 
-const QuranView: React.FC = () => {
+interface QuranViewProps {
+  initialSurah?: number;
+  initialVerse?: number;
+}
+
+const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => {
   const { t, i18n } = useTranslation('quran');
   const isArabic = i18n.language === 'ar-EG';
 
-  // Surah selection state
-  const [selectedSurah, setSelectedSurah] = useState<SurahDef | null>(null);
+  // Surah selection state - use initialSurah if provided
+  const [selectedSurah, setSelectedSurah] = useState<SurahDef | null>(() => {
+    if (initialSurah) {
+      return SURAHS.find(s => s.number === initialSurah) || null;
+    }
+    return null;
+  });
   const [searchTerm, setSearchTerm] = useState("");
   const [theme, setTheme] = useState<ThemeType>('classic');
 
@@ -301,6 +312,14 @@ const QuranView: React.FC = () => {
 
     loadQuranData();
   }, [selectedSurah, selectedTranslation]);
+
+  // Handle deep link to specific verse
+  useEffect(() => {
+    if (initialVerse && surahData && surahData.verses.some(v => v.numberInSurah === initialVerse)) {
+      setActiveTab('study');
+      setSelectedStudyVerse(initialVerse);
+    }
+  }, [initialVerse, surahData]);
 
   // Load story when story tab is active
   useEffect(() => {
@@ -676,6 +695,15 @@ const QuranView: React.FC = () => {
               >
                 <i className="fas fa-chevron-right text-xs"></i>
               </button>
+              {/* Share Verse Button */}
+              <ShareButton
+                type="verse"
+                surah={selectedSurah?.number}
+                verse={selectedStudyVerse}
+                verseText={currentVerse?.translation}
+                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-rose-100 text-stone-500 hover:text-rose-600 flex items-center justify-center transition-colors"
+                iconOnly
+              />
             </div>
           </div>
 

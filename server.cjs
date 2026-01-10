@@ -27,12 +27,75 @@ if (DATABASE_URL) {
 
 async function initDb() {
   if (!pool) return;
+
+  // Parents table
   await pool.query(`
     CREATE TABLE IF NOT EXISTS parents (
       id SERIAL PRIMARY KEY,
       name TEXT UNIQUE NOT NULL,
       pin_hash TEXT NOT NULL,
       created_at TIMESTAMPTZ DEFAULT NOW()
+    );
+  `);
+
+  // Kids progress - main summary linked to parent
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS kids_progress (
+      id SERIAL PRIMARY KEY,
+      parent_id INTEGER NOT NULL REFERENCES parents(id) ON DELETE CASCADE,
+      child_name TEXT,
+      total_stars INTEGER DEFAULT 0,
+      level INTEGER DEFAULT 1,
+      badges TEXT[] DEFAULT '{}',
+      current_streak INTEGER DEFAULT 0,
+      last_play_date DATE,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(parent_id)
+    );
+  `);
+
+  // Kids letter progress
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS kids_letter_progress (
+      id SERIAL PRIMARY KEY,
+      parent_id INTEGER NOT NULL REFERENCES parents(id) ON DELETE CASCADE,
+      letter_id TEXT NOT NULL,
+      letter_arabic TEXT NOT NULL,
+      times_played INTEGER DEFAULT 0,
+      mastered BOOLEAN DEFAULT FALSE,
+      stars_earned INTEGER DEFAULT 0,
+      last_practiced TIMESTAMPTZ,
+      UNIQUE(parent_id, letter_id)
+    );
+  `);
+
+  // Kids surah progress
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS kids_surah_progress (
+      id SERIAL PRIMARY KEY,
+      parent_id INTEGER NOT NULL REFERENCES parents(id) ON DELETE CASCADE,
+      surah_number INTEGER NOT NULL,
+      verses_heard INTEGER[] DEFAULT '{}',
+      completed BOOLEAN DEFAULT FALSE,
+      stars_earned INTEGER DEFAULT 0,
+      total_listens INTEGER DEFAULT 0,
+      last_practiced TIMESTAMPTZ,
+      UNIQUE(parent_id, surah_number)
+    );
+  `);
+
+  // Kids story progress
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS kids_story_progress (
+      id SERIAL PRIMARY KEY,
+      parent_id INTEGER NOT NULL REFERENCES parents(id) ON DELETE CASCADE,
+      story_id TEXT NOT NULL,
+      times_viewed INTEGER DEFAULT 0,
+      completed BOOLEAN DEFAULT FALSE,
+      stars_earned INTEGER DEFAULT 0,
+      last_viewed TIMESTAMPTZ,
+      UNIQUE(parent_id, story_id)
     );
   `);
 }
@@ -96,6 +159,228 @@ app.post('/api/parent/login', async (req, res) => {
 
 app.get('/api/parent/me', authMiddleware, (req, res) => {
   res.json({ parent: req.user });
+});
+
+// Get parent profile with progress summary
+app.get('/api/parent/profile', authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const parentId = req.user.id;
+
+    // Get main progress
+    const progressResult = await pool.query(
+      `SELECT * FROM kids_progress WHERE parent_id = $1 LIMIT 1`,
+      [parentId]
+    );
+
+    // Get counts for summary
+    const letterCount = await pool.query(
+      `SELECT COUNT(*) as mastered FROM kids_letter_progress WHERE parent_id = $1 AND mastered = true`,
+      [parentId]
+    );
+
+    const surahCount = await pool.query(
+      `SELECT COUNT(*) as completed FROM kids_surah_progress WHERE parent_id = $1 AND completed = true`,
+      [parentId]
+    );
+
+    const storyCount = await pool.query(
+      `SELECT COUNT(*) as completed FROM kids_story_progress WHERE parent_id = $1 AND completed = true`,
+      [parentId]
+    );
+
+    const progress = progressResult.rows[0] || {
+      total_stars: 0,
+      level: 1,
+      badges: [],
+      current_streak: 0,
+      last_play_date: null
+    };
+
+    res.json({
+      parent: req.user,
+      progress: {
+        totalStars: progress.total_stars,
+        level: progress.level,
+        badges: progress.badges || [],
+        currentStreak: progress.current_streak,
+        lastPlayDate: progress.last_play_date
+      },
+      summary: {
+        lettersMastered: parseInt(letterCount.rows[0].mastered) || 0,
+        surahsCompleted: parseInt(surahCount.rows[0].completed) || 0,
+        storiesCompleted: parseInt(storyCount.rows[0].completed) || 0
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to get profile' });
+  }
+});
+
+// Change PIN
+app.put('/api/parent/pin', authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const { currentPin, newPin } = req.body || {};
+    const parentId = req.user.id;
+
+    if (!currentPin || !newPin || String(newPin).length < 4) {
+      return res.status(400).json({ error: 'current pin and new 4+ digit pin required' });
+    }
+
+    // Verify current PIN
+    const result = await pool.query(`SELECT pin_hash FROM parents WHERE id = $1 LIMIT 1`, [parentId]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'parent not found' });
+
+    const ok = await bcrypt.compare(String(currentPin), result.rows[0].pin_hash);
+    if (!ok) return res.status(401).json({ error: 'invalid current pin' });
+
+    // Update PIN
+    const hash = await bcrypt.hash(String(newPin), 10);
+    await pool.query(`UPDATE parents SET pin_hash = $1 WHERE id = $2`, [hash, parentId]);
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to update pin' });
+  }
+});
+
+// Get full kids progress from server
+app.get('/api/parent/kids-progress', authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const parentId = req.user.id;
+
+    const [progress, letters, surahs, stories] = await Promise.all([
+      pool.query(`SELECT * FROM kids_progress WHERE parent_id = $1 LIMIT 1`, [parentId]),
+      pool.query(`SELECT * FROM kids_letter_progress WHERE parent_id = $1`, [parentId]),
+      pool.query(`SELECT * FROM kids_surah_progress WHERE parent_id = $1`, [parentId]),
+      pool.query(`SELECT * FROM kids_story_progress WHERE parent_id = $1`, [parentId])
+    ]);
+
+    res.json({
+      progress: progress.rows[0] || null,
+      letters: letters.rows,
+      surahs: surahs.rows,
+      stories: stories.rows
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to get progress' });
+  }
+});
+
+// Sync kids progress to server (upsert)
+app.post('/api/parent/kids-progress/sync', authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const parentId = req.user.id;
+    const { progress, letters, surahs, stories } = req.body || {};
+
+    // Upsert main progress
+    if (progress) {
+      await pool.query(`
+        INSERT INTO kids_progress (parent_id, child_name, total_stars, level, badges, current_streak, last_play_date, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+        ON CONFLICT (parent_id) DO UPDATE SET
+          child_name = COALESCE(EXCLUDED.child_name, kids_progress.child_name),
+          total_stars = GREATEST(EXCLUDED.total_stars, kids_progress.total_stars),
+          level = GREATEST(EXCLUDED.level, kids_progress.level),
+          badges = (
+            SELECT ARRAY(SELECT DISTINCT unnest(kids_progress.badges || EXCLUDED.badges))
+          ),
+          current_streak = GREATEST(EXCLUDED.current_streak, kids_progress.current_streak),
+          last_play_date = GREATEST(EXCLUDED.last_play_date, kids_progress.last_play_date),
+          updated_at = NOW()
+      `, [
+        parentId,
+        progress.childName || null,
+        progress.totalStars || 0,
+        progress.level || 1,
+        progress.badges || [],
+        progress.currentStreak || 0,
+        progress.lastPlayDate || null
+      ]);
+    }
+
+    // Upsert letter progress
+    if (letters && letters.length > 0) {
+      for (const letter of letters) {
+        await pool.query(`
+          INSERT INTO kids_letter_progress (parent_id, letter_id, letter_arabic, times_played, mastered, stars_earned, last_practiced)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
+          ON CONFLICT (parent_id, letter_id) DO UPDATE SET
+            times_played = GREATEST(EXCLUDED.times_played, kids_letter_progress.times_played),
+            mastered = EXCLUDED.mastered OR kids_letter_progress.mastered,
+            stars_earned = GREATEST(EXCLUDED.stars_earned, kids_letter_progress.stars_earned),
+            last_practiced = GREATEST(EXCLUDED.last_practiced, kids_letter_progress.last_practiced)
+        `, [
+          parentId,
+          letter.letterId || letter.id,
+          letter.letterArabic,
+          letter.timesPlayed || 0,
+          letter.mastered || false,
+          letter.starsEarned || 0,
+          letter.lastPracticed ? new Date(letter.lastPracticed) : null
+        ]);
+      }
+    }
+
+    // Upsert surah progress
+    if (surahs && surahs.length > 0) {
+      for (const surah of surahs) {
+        await pool.query(`
+          INSERT INTO kids_surah_progress (parent_id, surah_number, verses_heard, completed, stars_earned, total_listens, last_practiced)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
+          ON CONFLICT (parent_id, surah_number) DO UPDATE SET
+            verses_heard = (
+              SELECT ARRAY(SELECT DISTINCT unnest(kids_surah_progress.verses_heard || EXCLUDED.verses_heard))
+            ),
+            completed = EXCLUDED.completed OR kids_surah_progress.completed,
+            stars_earned = GREATEST(EXCLUDED.stars_earned, kids_surah_progress.stars_earned),
+            total_listens = GREATEST(EXCLUDED.total_listens, kids_surah_progress.total_listens),
+            last_practiced = GREATEST(EXCLUDED.last_practiced, kids_surah_progress.last_practiced)
+        `, [
+          parentId,
+          surah.surahNumber,
+          surah.versesHeard || [],
+          surah.completed || false,
+          surah.starsEarned || 0,
+          surah.totalListens || 0,
+          surah.lastPracticed ? new Date(surah.lastPracticed) : null
+        ]);
+      }
+    }
+
+    // Upsert story progress
+    if (stories && stories.length > 0) {
+      for (const story of stories) {
+        await pool.query(`
+          INSERT INTO kids_story_progress (parent_id, story_id, times_viewed, completed, stars_earned, last_viewed)
+          VALUES ($1, $2, $3, $4, $5, $6)
+          ON CONFLICT (parent_id, story_id) DO UPDATE SET
+            times_viewed = GREATEST(EXCLUDED.times_viewed, kids_story_progress.times_viewed),
+            completed = EXCLUDED.completed OR kids_story_progress.completed,
+            stars_earned = GREATEST(EXCLUDED.stars_earned, kids_story_progress.stars_earned),
+            last_viewed = GREATEST(EXCLUDED.last_viewed, kids_story_progress.last_viewed)
+        `, [
+          parentId,
+          story.storyId || story.id,
+          story.timesViewed || 0,
+          story.completed || false,
+          story.starsEarned || 0,
+          story.lastViewed ? new Date(story.lastViewed) : null
+        ]);
+      }
+    }
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to sync progress' });
+  }
 });
 
 // Static assets

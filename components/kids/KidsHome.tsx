@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getKidsProgress, addKidsStars, BADGES, getKidsBadges } from '../../services/offlineDatabase';
+import { debouncedSync } from '../../services/progressSyncService';
 import kidsStories from '../../data/kidsStories';
 import { speakWithWebSpeech } from '../../services/kidsAssetLoader';
 import { speakArabicLetter, speakArabicLetterWithExample } from '../../services/geminiService';
@@ -103,6 +104,9 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
       // Update level based on new total
       const newLevel = newTotal >= 100 ? 5 : newTotal >= 50 ? 4 : newTotal >= 25 ? 3 : newTotal >= 10 ? 2 : 1;
       setLevel(newLevel);
+
+      // Sync progress to server (debounced)
+      debouncedSync();
 
       // Show celebration for milestones
       if (showAnimation) {

@@ -25,6 +25,7 @@ import {
 } from '../services/offlineDatabase';
 import { VisualConfig } from '../types';
 import ImageLightbox from './ImageLightbox';
+import ShareButton from './ShareButton';
 
 // CSS for animations - inject into document
 const injectAnimationStyles = () => {
@@ -1042,13 +1043,24 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
                 ))}
            </div>
 
-           <button 
-             onClick={() => setImmersiveMode(!immersiveMode)} 
+           <button
+             onClick={() => setImmersiveMode(!immersiveMode)}
              className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10 text-rose-400' : 'hover:bg-stone-100 text-stone-400'}`}
              title="Cinematic Mode"
            >
              <i className="fas fa-expand"></i>
            </button>
+
+           {/* Share Button */}
+           {!immersiveMode && (
+             <ShareButton
+               type="story"
+               storyId={prophet}
+               storyTitle={`Story of Prophet ${prophet}`}
+               className={`p-2 rounded-full transition-colors hover:bg-stone-100 text-stone-400 hover:text-rose-600`}
+               iconOnly
+             />
+           )}
 
            <div className="relative">
                <button
