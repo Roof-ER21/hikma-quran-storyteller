@@ -28,7 +28,8 @@ import { getGlobalVerseNumber } from './quranDataService';
 const AUDIO_CDN = 'https://cdn.islamic.network/quran/audio';
 const SCHOLAR_VOICE = 'Charon'; // Calm, scholarly voice
 const TRANSITION_DELAY = 800; // ms between audio segments
-const TTS_RATE_LIMIT_DELAY = 1000; // ms delay before TTS calls to avoid rate limits
+const TTS_RATE_LIMIT_DELAY = 1500; // ms delay before TTS calls to avoid rate limits
+const TTS_MAX_RETRIES = 3; // Retry TTS on failure
 const PREBAKED_BASE_PATH = '/assets/prophets/audio';
 
 // ============================================
@@ -419,10 +420,11 @@ class ProphetNarrationService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  private async playTTS(text: string): Promise<void> {
+  private async playTTS(text: string, retryCount: number = 0): Promise<void> {
     try {
-      // Add delay before TTS to avoid rate limits
-      await this.sleep(TTS_RATE_LIMIT_DELAY);
+      // Add delay before TTS to avoid rate limits (longer on retries)
+      const delay = TTS_RATE_LIMIT_DELAY * (retryCount + 1);
+      await this.sleep(delay);
 
       const { speakText } = await import('./geminiService');
 
@@ -435,18 +437,25 @@ class ProphetNarrationService {
       // Truncate long text for TTS (API limit)
       const truncatedText = processedText.length > 500 ? processedText.slice(0, 497) + '...' : processedText;
 
-      console.log('[ProphetNarration] Calling TTS for:', truncatedText.slice(0, 40) + '...');
+      console.log('[ProphetNarration] Calling TTS for:', truncatedText.slice(0, 40) + '...', retryCount > 0 ? `(retry ${retryCount})` : '');
       const audioBuffer = await speakText(truncatedText, { voice: SCHOLAR_VOICE });
 
       if (!audioBuffer) {
-        throw new Error('TTS returned no audio - check API key configuration');
+        throw new Error('TTS returned no audio');
       }
 
       // Convert AudioBuffer to playable audio
       await this.playAudioBuffer(audioBuffer);
     } catch (error) {
       console.error('TTS error:', error);
-      this.updateState({ error: 'Voice narration unavailable - check API settings' });
+
+      // Retry on failure
+      if (retryCount < TTS_MAX_RETRIES) {
+        console.log(`[ProphetNarration] Retrying TTS (${retryCount + 1}/${TTS_MAX_RETRIES})...`);
+        return this.playTTS(text, retryCount + 1);
+      }
+
+      this.updateState({ error: 'Voice narration temporarily unavailable' });
       throw error;
     }
   }
