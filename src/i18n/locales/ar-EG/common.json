@@ -50,12 +50,12 @@
     "cachedAvailable": "المحتوى المحفوظ متاح",
     "manageDownloads": "إدارة التحميلات",
     "updateAvailable": "في تحديث جديد",
-    "updateMessage": "نسخة جديدة من حكمة جاهزة!",
+    "updateMessage": "نسخة جديدة جاهزة!",
     "updateNow": "حدّث دلوقتي",
     "later": "بعدين"
   },
   "pwa": {
-    "installTitle": "نزّل نور سعاد",
+    "installTitle": "نزّل هدية علية وسعاد",
     "installMessage": "حطها على الشاشة الرئيسية عشان تفتحها بسرعة وتقراها من غير نت",
     "install": "نزّل",
     "notNow": "مش دلوقتي",

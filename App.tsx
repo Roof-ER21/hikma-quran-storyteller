@@ -645,7 +645,7 @@ function App() {
         )}
 
         {view === 'dedication' && (
-            <div className="fixed inset-0 z-40">
+            <div className="fixed inset-0 z-40 overflow-y-auto">
                 <DedicationPage onClose={() => setView('home')} />
             </div>
         )}

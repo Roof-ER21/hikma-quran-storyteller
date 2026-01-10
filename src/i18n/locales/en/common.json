@@ -50,12 +50,12 @@
     "cachedAvailable": "Cached content is available",
     "manageDownloads": "Manage Downloads",
     "updateAvailable": "Update Available",
-    "updateMessage": "A new version of Hikma is ready!",
+    "updateMessage": "A new version is ready!",
     "updateNow": "Update Now",
     "later": "Later"
   },
   "pwa": {
-    "installTitle": "Install Noor Soad",
+    "installTitle": "Install Alaya & Soad's Gift",
     "installMessage": "Add to your home screen for quick access and offline reading",
     "install": "Install",
     "notNow": "Not now",
