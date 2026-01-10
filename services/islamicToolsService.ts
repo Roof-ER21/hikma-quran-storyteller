@@ -200,25 +200,115 @@ export async function getPrayerTimes(
 }
 
 /**
- * Get location name from coordinates using reverse geocoding
+ * Get location name from timezone string
+ * (Nominatim has CORS issues, so we extract from Aladhan's timezone)
  */
-export async function getLocationName(lat: number, lng: number): Promise<string> {
-  try {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10`
-    );
+export function getLocationFromTimezone(timezone: string): string {
+  if (!timezone) return 'Unknown Location';
 
-    if (!response.ok) {
-      return 'Unknown Location';
+  // Extract city name from timezone like "America/New_York" -> "New York"
+  const parts = timezone.split('/');
+  if (parts.length >= 2) {
+    return parts[parts.length - 1].replace(/_/g, ' ');
+  }
+  return timezone;
+}
+
+/**
+ * Request notification permission
+ */
+export async function requestNotificationPermission(): Promise<boolean> {
+  if (!('Notification' in window)) {
+    console.log('Notifications not supported');
+    return false;
+  }
+
+  if (Notification.permission === 'granted') {
+    return true;
+  }
+
+  if (Notification.permission !== 'denied') {
+    const permission = await Notification.requestPermission();
+    return permission === 'granted';
+  }
+
+  return false;
+}
+
+/**
+ * Schedule a prayer notification
+ */
+export function schedulePrayerNotification(
+  prayerName: string,
+  prayerNameAr: string,
+  prayerTime: string,
+  minutesBefore: number = 10
+): NodeJS.Timeout | null {
+  if (!('Notification' in window) || Notification.permission !== 'granted') {
+    return null;
+  }
+
+  const now = new Date();
+  const [hours, minutes] = prayerTime.split(':').map(Number);
+
+  const prayerDate = new Date();
+  prayerDate.setHours(hours, minutes, 0, 0);
+
+  // Subtract minutes before
+  const notifyTime = new Date(prayerDate.getTime() - minutesBefore * 60 * 1000);
+
+  // If notification time is in the past, skip
+  if (notifyTime <= now) {
+    return null;
+  }
+
+  const delay = notifyTime.getTime() - now.getTime();
+
+  return setTimeout(() => {
+    new Notification(`${prayerName} Prayer (${prayerNameAr})`, {
+      body: minutesBefore > 0
+        ? `${prayerName} prayer in ${minutesBefore} minutes at ${prayerTime}`
+        : `Time for ${prayerName} prayer`,
+      icon: '/icons/icon-192.png',
+      tag: `prayer-${prayerName}`,
+      requireInteraction: true,
+    });
+  }, delay);
+}
+
+/**
+ * Schedule all prayer notifications for the day
+ */
+export function scheduleAllPrayerNotifications(
+  prayerTimes: PrayerTimes,
+  minutesBefore: number = 10
+): NodeJS.Timeout[] {
+  const timers: NodeJS.Timeout[] = [];
+
+  const prayers = [
+    { name: 'Fajr', nameAr: 'الفجر', time: prayerTimes.fajr },
+    { name: 'Dhuhr', nameAr: 'الظهر', time: prayerTimes.dhuhr },
+    { name: 'Asr', nameAr: 'العصر', time: prayerTimes.asr },
+    { name: 'Maghrib', nameAr: 'المغرب', time: prayerTimes.maghrib },
+    { name: 'Isha', nameAr: 'العشاء', time: prayerTimes.isha },
+  ];
+
+  for (const prayer of prayers) {
+    const timer = schedulePrayerNotification(prayer.name, prayer.nameAr, prayer.time, minutesBefore);
+    if (timer) {
+      timers.push(timer);
     }
+  }
 
-    const data = await response.json();
-    const city = data.address?.city || data.address?.town || data.address?.village || '';
-    const country = data.address?.country || '';
+  return timers;
+}
 
-    return city && country ? `${city}, ${country}` : country || 'Unknown Location';
-  } catch {
-    return 'Unknown Location';
+/**
+ * Clear all scheduled notifications
+ */
+export function clearPrayerNotifications(timers: NodeJS.Timeout[]): void {
+  for (const timer of timers) {
+    clearTimeout(timer);
   }
 }
 

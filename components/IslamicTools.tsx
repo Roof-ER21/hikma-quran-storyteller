@@ -12,12 +12,15 @@ import {
   getUserLocation,
   calculateQiblaDirection,
   getPrayerTimes,
-  getLocationName,
+  getLocationFromTimezone,
   getIslamicDate,
   getNextPrayer,
   getTimeUntilPrayer,
   watchCompassHeading,
   CALCULATION_METHODS,
+  requestNotificationPermission,
+  scheduleAllPrayerNotifications,
+  clearPrayerNotifications,
 } from '../services/islamicToolsService';
 
 type TabType = 'prayer' | 'qibla' | 'calendar';
@@ -47,6 +50,11 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
   // Islamic date state
   const [islamicDate, setIslamicDate] = useState<IslamicDate | null>(null);
 
+  // Notification state
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [notificationTimers, setNotificationTimers] = useState<NodeJS.Timeout[]>([]);
+  const [notifyMinutesBefore, setNotifyMinutesBefore] = useState(10);
+
   // Get user location on mount
   useEffect(() => {
     async function fetchLocation() {
@@ -65,11 +73,6 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         return;
       }
 
-      // Get location name (non-blocking)
-      getLocationName(loc.lat, loc.lng)
-        .then(name => setLocationName(name))
-        .catch(() => setLocationName('Unknown Location'));
-
       // Calculate Qibla direction (local calculation, won't fail)
       const qibla = calculateQiblaDirection(loc.lat, loc.lng);
       setQiblaDirection(qibla);
@@ -78,9 +81,11 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
       try {
         const prayers = await getPrayerTimes(loc.lat, loc.lng, calculationMethod);
         setPrayerTimes(prayers);
+        // Get location name from timezone (avoids CORS issues with Nominatim)
+        setLocationName(getLocationFromTimezone(prayers.timezone));
       } catch (err) {
         console.error('Error getting prayer times:', err);
-        // Don't set error - other features can still work
+        setLocationName('Unknown Location');
       }
 
       // Get Islamic date (non-blocking, has fallback)
@@ -88,7 +93,6 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         .then(hijri => setIslamicDate(hijri))
         .catch(err => {
           console.error('Error getting Islamic date:', err);
-          // The service now has fallback calculation
         });
 
       setLoading(false);
@@ -96,6 +100,40 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
 
     fetchLocation();
   }, [calculationMethod]);
+
+  // Schedule notifications when prayer times change and notifications are enabled
+  useEffect(() => {
+    if (!prayerTimes || !notificationsEnabled) return;
+
+    // Clear existing timers
+    clearPrayerNotifications(notificationTimers);
+
+    // Schedule new notifications
+    const timers = scheduleAllPrayerNotifications(prayerTimes, notifyMinutesBefore);
+    setNotificationTimers(timers);
+
+    return () => {
+      clearPrayerNotifications(timers);
+    };
+  }, [prayerTimes, notificationsEnabled, notifyMinutesBefore]);
+
+  // Handle notification toggle
+  const handleNotificationToggle = async () => {
+    if (notificationsEnabled) {
+      // Disable notifications
+      clearPrayerNotifications(notificationTimers);
+      setNotificationTimers([]);
+      setNotificationsEnabled(false);
+    } else {
+      // Request permission and enable
+      const granted = await requestNotificationPermission();
+      if (granted) {
+        setNotificationsEnabled(true);
+      } else {
+        alert('Notification permission denied. Please enable notifications in your browser settings.');
+      }
+    }
+  };
 
   // Update next prayer and countdown
   useEffect(() => {
@@ -224,6 +262,57 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Prayer Notifications */}
+        <div className="bg-white rounded-xl p-4 shadow-md border border-stone-100">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                notificationsEnabled ? 'bg-green-100' : 'bg-stone-100'
+              }`}>
+                <i className={`fas fa-bell ${notificationsEnabled ? 'text-green-600' : 'text-stone-400'}`}></i>
+              </div>
+              <div>
+                <p className="font-medium text-stone-800">Prayer Notifications</p>
+                <p className="text-xs text-stone-500">Get reminded before each prayer</p>
+              </div>
+            </div>
+            <button
+              onClick={handleNotificationToggle}
+              className={`relative w-14 h-8 rounded-full transition-colors ${
+                notificationsEnabled ? 'bg-green-500' : 'bg-stone-300'
+              }`}
+            >
+              <div className={`absolute w-6 h-6 bg-white rounded-full top-1 transition-transform shadow ${
+                notificationsEnabled ? 'translate-x-7' : 'translate-x-1'
+              }`}></div>
+            </button>
+          </div>
+          {notificationsEnabled && (
+            <div className="mt-3 pt-3 border-t border-stone-100">
+              <label className="text-xs text-stone-500 mb-2 block">Notify me before prayer</label>
+              <select
+                value={notifyMinutesBefore}
+                onChange={(e) => setNotifyMinutesBefore(Number(e.target.value))}
+                className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value={5}>5 minutes before</option>
+                <option value={10}>10 minutes before</option>
+                <option value={15}>15 minutes before</option>
+                <option value={30}>30 minutes before</option>
+                <option value={0}>At prayer time</option>
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Timezone Info */}
+        <div className="bg-blue-50 rounded-xl p-3 border border-blue-100">
+          <div className="flex items-center gap-2 text-blue-700 text-sm">
+            <i className="fas fa-clock"></i>
+            <span>Times shown in your local timezone: <strong>{prayerTimes.timezone}</strong></span>
+          </div>
         </div>
 
         {/* Prayer Times Grid */}
