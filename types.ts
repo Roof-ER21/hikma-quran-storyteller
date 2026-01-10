@@ -235,5 +235,49 @@ export interface AdultProphetStory {
   historicalNotes?: string;
 }
 
+// ============================================
+// Prophet Narration Types
+// ============================================
+
+export interface NarrationQueueItem {
+  type: 'tts' | 'quran-recitation' | 'prebaked';
+  content: string;
+  surah?: number;
+  verse?: number;
+  duration?: number;
+  metadata?: {
+    isTranslation?: boolean;
+    isHadith?: boolean;
+    source?: string;
+    sectionId?: string;
+    sectionTitle?: string;
+  };
+}
+
+export interface NarrationState {
+  isPlaying: boolean;
+  isPaused: boolean;
+  isLoading: boolean;
+  currentItem: NarrationQueueItem | null;
+  currentIndex: number;
+  totalItems: number;
+  progress: number;
+  duration: number;
+  currentTime: number;
+  currentSectionId?: string;
+  currentStoryId?: string;
+  currentProphetName?: string;
+  error?: string;
+}
+
+export interface ProphetNarrationProgress {
+  id: string;
+  storyId: string;
+  currentSectionIndex: number;
+  currentQueueIndex: number;
+  timestamp: number;
+  lastPlayedAt: number;
+}
+
 // This export makes this file a module
 export {};

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AdultProphetStory, StorySection } from '../types';
+import { AdultProphetStory, StorySection, NarrationState } from '../types';
 import { loadProphetStories, searchProphetStories } from '../services/prophetService';
+import { prophetNarrationService, RECITERS, DEFAULT_RECITER } from '../services/prophetNarrationService';
+import SectionNarrationButton from './SectionNarrationButton';
+import ProphetAudioPlayer from './ProphetAudioPlayer';
 
 const ProphetStoriesLibrary: React.FC = () => {
   const [stories, setStories] = useState<AdultProphetStory[]>([]);
@@ -11,6 +14,11 @@ const ProphetStoriesLibrary: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'location' | 'era'>('all');
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Narration state
+  const [narrationState, setNarrationState] = useState<NarrationState | null>(null);
+  const [currentReciter, setCurrentReciter] = useState(DEFAULT_RECITER);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
 
   // Load stories on mount
   useEffect(() => {
@@ -39,6 +47,67 @@ const ProphetStoriesLibrary: React.FC = () => {
     const debounce = setTimeout(performSearch, 300);
     return () => clearTimeout(debounce);
   }, [searchQuery, stories]);
+
+  // Subscribe to narration state changes
+  useEffect(() => {
+    const unsubscribe = prophetNarrationService.subscribe((state) => {
+      setNarrationState(state);
+    });
+    return unsubscribe;
+  }, []);
+
+  // Narration handlers
+  const handlePlayFullStory = async () => {
+    if (!selectedStory) return;
+    if (narrationState?.isPlaying) {
+      prophetNarrationService.pause();
+    } else if (narrationState?.isPaused && narrationState.currentStoryId === selectedStory.id) {
+      await prophetNarrationService.resume();
+    } else {
+      await prophetNarrationService.narrateFullStory(selectedStory);
+    }
+  };
+
+  const handlePlaySection = async (section: StorySection) => {
+    if (!selectedStory) return;
+    await prophetNarrationService.narrateSection(section, selectedStory);
+  };
+
+  const handlePauseNarration = () => {
+    prophetNarrationService.pause();
+  };
+
+  const handleResumeNarration = async () => {
+    await prophetNarrationService.resume();
+  };
+
+  const handleStopNarration = () => {
+    prophetNarrationService.stop();
+  };
+
+  const handleSkipForward = async () => {
+    await prophetNarrationService.skipToNext();
+  };
+
+  const handleSkipBack = async () => {
+    await prophetNarrationService.skipToPrevious();
+  };
+
+  const handleSpeedChange = (speed: number) => {
+    setPlaybackSpeed(speed);
+    prophetNarrationService.setSpeed(speed);
+  };
+
+  const handleReciterChange = (reciterId: string) => {
+    setCurrentReciter(reciterId);
+    prophetNarrationService.setReciter(reciterId);
+  };
+
+  // Estimate story duration
+  const getEstimatedDuration = (story: AdultProphetStory): string => {
+    const minutes = prophetNarrationService.estimateStoryDuration(story);
+    return prophetNarrationService.formatDuration(minutes);
+  };
 
   // Toggle section expansion
   const toggleSection = (sectionId: string) => {
@@ -281,6 +350,26 @@ const ProphetStoriesLibrary: React.FC = () => {
                     <p className="text-xl leading-relaxed text-rose-50">
                       {selectedStory.summary}
                     </p>
+
+                    {/* Listen to Full Story Button */}
+                    <div className="mt-6 flex items-center gap-4">
+                      <button
+                        onClick={handlePlayFullStory}
+                        className="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl flex items-center gap-3 transition-colors border border-white/20"
+                      >
+                        <i className={`fas ${narrationState?.isPlaying && narrationState?.currentStoryId === selectedStory.id ? 'fa-pause' : 'fa-headphones'}`}></i>
+                        <span>
+                          {narrationState?.isPlaying && narrationState?.currentStoryId === selectedStory.id
+                            ? 'Pause Narration'
+                            : narrationState?.isPaused && narrationState?.currentStoryId === selectedStory.id
+                              ? 'Resume Narration'
+                              : 'Listen to Full Story'}
+                        </span>
+                        <span className="text-sm text-rose-200">
+                          ({getEstimatedDuration(selectedStory)})
+                        </span>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="hidden md:block w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
@@ -340,12 +429,16 @@ const ProphetStoriesLibrary: React.FC = () => {
             {/* Story Sections */}
             <div className="space-y-4">
               {selectedStory.sections.map((section, idx) => (
-                <StorySection
+                <StorySectionComponent
                   key={section.id}
                   section={section}
                   index={idx}
                   isExpanded={expandedSections.has(section.id)}
                   onToggle={() => toggleSection(section.id)}
+                  narrationState={narrationState}
+                  onPlaySection={() => handlePlaySection(section)}
+                  onPauseSection={handlePauseNarration}
+                  onResumeSection={handleResumeNarration}
                 />
               ))}
             </div>
@@ -399,6 +492,27 @@ const ProphetStoriesLibrary: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Floating Audio Player */}
+      {narrationState && (narrationState.isPlaying || narrationState.isPaused || narrationState.isLoading) && (
+        <ProphetAudioPlayer
+          narrationState={narrationState}
+          onPlay={handleResumeNarration}
+          onPause={handlePauseNarration}
+          onStop={handleStopNarration}
+          onSkipForward={handleSkipForward}
+          onSkipBack={handleSkipBack}
+          onSpeedChange={handleSpeedChange}
+          onReciterChange={handleReciterChange}
+          currentSpeed={playbackSpeed}
+          currentReciter={currentReciter}
+        />
+      )}
+
+      {/* Bottom padding when player is visible */}
+      {narrationState && (narrationState.isPlaying || narrationState.isPaused) && (
+        <div className="h-24"></div>
+      )}
     </div>
   );
 };
@@ -409,26 +523,50 @@ interface StorySectionProps {
   index: number;
   isExpanded: boolean;
   onToggle: () => void;
+  narrationState: NarrationState | null;
+  onPlaySection: () => void;
+  onPauseSection: () => void;
+  onResumeSection: () => void;
 }
 
-const StorySection: React.FC<StorySectionProps> = ({ section, index, isExpanded, onToggle }) => {
+const StorySectionComponent: React.FC<StorySectionProps> = ({
+  section,
+  index,
+  isExpanded,
+  onToggle,
+  narrationState,
+  onPlaySection,
+  onPauseSection,
+  onResumeSection,
+}) => {
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-stone-200 transition-all duration-300">
       {/* Section Header */}
-      <button
-        onClick={onToggle}
-        className="w-full p-6 flex items-center justify-between hover:bg-stone-50 transition-colors"
-      >
-        <div className="flex items-center gap-4">
+      <div className="p-6 flex items-center justify-between hover:bg-stone-50 transition-colors">
+        <button
+          onClick={onToggle}
+          className="flex items-center gap-4 flex-1 text-left"
+        >
           <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-lg">
             {index + 1}
           </div>
-          <h4 className="text-xl font-serif font-bold text-rose-900 text-left">
+          <h4 className="text-xl font-serif font-bold text-rose-900">
             {section.title}
           </h4>
+        </button>
+        <div className="flex items-center gap-3">
+          <SectionNarrationButton
+            sectionId={section.id}
+            narrationState={narrationState}
+            onPlay={onPlaySection}
+            onPause={onPauseSection}
+            onResume={onResumeSection}
+          />
+          <button onClick={onToggle} className="w-8 h-8 flex items-center justify-center">
+            <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'} text-stone-400 transition-transform`}></i>
+          </button>
         </div>
-        <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'} text-stone-400 transition-transform`}></i>
-      </button>
+      </div>
 
       {/* Section Content */}
       {isExpanded && (
