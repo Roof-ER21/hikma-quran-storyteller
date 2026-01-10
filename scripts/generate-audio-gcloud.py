@@ -20,8 +20,12 @@ OUTPUT_DIR = PROJECT_ROOT / "public" / "assets" / "kids" / "audio" / "letters"
 # Ensure output directory exists
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Google Cloud TTS API
-API_KEY = os.environ.get("GOOGLE_CLOUD_TTS_KEY") or "AIzaSyBXQKzQgehDabr28nf1yUaB4dnQmHtM1cY"
+# Google Cloud TTS API - requires GOOGLE_CLOUD_TTS_KEY environment variable
+API_KEY = os.environ.get("GOOGLE_CLOUD_TTS_KEY")
+if not API_KEY:
+    print("❌ Missing GOOGLE_CLOUD_TTS_KEY environment variable")
+    print("   Set it with: export GOOGLE_CLOUD_TTS_KEY=your_key_here")
+    sys.exit(1)
 TTS_URL = f"https://texttospeech.googleapis.com/v1/text:synthesize?key={API_KEY}"
 
 # Arabic alphabet data (matching KidsHome.tsx ARABIC_LETTERS)
