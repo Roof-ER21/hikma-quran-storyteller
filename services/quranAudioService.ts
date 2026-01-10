@@ -149,7 +149,18 @@ class AudioManager {
     try {
       await this.audio.play();
       this.isPlaying = true;
-    } catch (error) {
+    } catch (error: any) {
+      // Some browsers throw AbortError if play is interrupted; retry once
+      if (error?.name === 'AbortError') {
+        try {
+          await this.audio.play();
+          this.isPlaying = true;
+          return;
+        } catch (err2) {
+          console.error('Failed to play audio after retry:', err2);
+          throw err2;
+        }
+      }
       console.error('Failed to play audio:', error);
       throw error;
     }
