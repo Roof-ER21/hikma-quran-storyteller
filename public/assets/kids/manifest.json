@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "generatedAt": "2026-01-09",
   "narrations": {
     "stories": {
@@ -7,8 +7,7 @@
         "scenes": [
           "story-adam-scene-0.txt",
           "story-adam-scene-1.txt",
-          "story-adam-scene-2.txt",
-          "story-adam-scene-3.txt"
+          "story-adam-scene-2.txt"
         ],
         "lesson": "story-adam-lesson.txt"
       },
@@ -17,7 +16,13 @@
           "story-nuh-scene-0.txt",
           "story-nuh-scene-1.txt",
           "story-nuh-scene-2.txt",
-          "story-nuh-scene-3.txt"
+          "story-nuh-scene-3.txt",
+          "story-nuh-scene-4.txt",
+          "story-nuh-scene-5.txt",
+          "story-nuh-scene-6.txt",
+          "story-nuh-scene-7.txt",
+          "story-nuh-scene-8.txt",
+          "story-nuh-scene-9.txt"
         ],
         "lesson": "story-nuh-lesson.txt"
       },
@@ -26,7 +31,13 @@
           "story-ibrahim-scene-0.txt",
           "story-ibrahim-scene-1.txt",
           "story-ibrahim-scene-2.txt",
-          "story-ibrahim-scene-3.txt"
+          "story-ibrahim-scene-3.txt",
+          "story-ibrahim-scene-4.txt",
+          "story-ibrahim-scene-5.txt",
+          "story-ibrahim-scene-6.txt",
+          "story-ibrahim-scene-7.txt",
+          "story-ibrahim-scene-8.txt",
+          "story-ibrahim-scene-9.txt"
         ],
         "lesson": "story-ibrahim-lesson.txt"
       },
@@ -34,8 +45,7 @@
         "scenes": [
           "story-musa-scene-0.txt",
           "story-musa-scene-1.txt",
-          "story-musa-scene-2.txt",
-          "story-musa-scene-3.txt"
+          "story-musa-scene-2.txt"
         ],
         "lesson": "story-musa-lesson.txt"
       },
@@ -43,8 +53,7 @@
         "scenes": [
           "story-yusuf-scene-0.txt",
           "story-yusuf-scene-1.txt",
-          "story-yusuf-scene-2.txt",
-          "story-yusuf-scene-3.txt"
+          "story-yusuf-scene-2.txt"
         ],
         "lesson": "story-yusuf-lesson.txt"
       }
@@ -67,11 +76,17 @@
   "illustrations": {
     "status": "complete",
     "stories": {
-      "adam": ["story-adam-0.png", "story-adam-1.png", "story-adam-2.png", "story-adam-3.png"],
-      "nuh": ["story-nuh-0.png", "story-nuh-1.png", "story-nuh-2.png", "story-nuh-3.png"],
-      "ibrahim": ["story-ibrahim-0.png", "story-ibrahim-1.png", "story-ibrahim-2.png", "story-ibrahim-3.png"],
-      "musa": ["story-musa-0.png", "story-musa-1.png", "story-musa-2.png", "story-musa-3.png"],
-      "yusuf": ["story-yusuf-0.png", "story-yusuf-1.png", "story-yusuf-2.png", "story-yusuf-3.png"]
+      "adam": ["story-adam-0.png", "story-adam-1.png", "story-adam-2.png"],
+      "nuh": [
+        "story-nuh-0.png", "story-nuh-1.png", "story-nuh-2.png", "story-nuh-3.png", "story-nuh-4.png",
+        "story-nuh-5.png", "story-nuh-6.png", "story-nuh-7.png", "story-nuh-8.png", "story-nuh-9.png"
+      ],
+      "ibrahim": [
+        "story-ibrahim-0.png", "story-ibrahim-1.png", "story-ibrahim-2.png", "story-ibrahim-3.png", "story-ibrahim-4.png",
+        "story-ibrahim-5.png", "story-ibrahim-6.png", "story-ibrahim-7.png", "story-ibrahim-8.png", "story-ibrahim-9.png"
+      ],
+      "musa": ["story-musa-0.png", "story-musa-1.png", "story-musa-2.png"],
+      "yusuf": ["story-yusuf-0.png", "story-yusuf-1.png", "story-yusuf-2.png"]
     },
     "kidsAssets": {
       "friendsGroup": "kids-friends-group.png",
