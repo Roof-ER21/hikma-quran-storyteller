@@ -231,7 +231,7 @@ export async function getIslamicDate(date?: Date): Promise<IslamicDate> {
 
   try {
     const response = await fetch(
-      `https://api.aladhan.com/v1/gpisoToHijri/${dateStr}`
+      `https://api.aladhan.com/v1/gToH/${dateStr}`
     );
 
     if (!response.ok) {
@@ -256,8 +256,39 @@ export async function getIslamicDate(date?: Date): Promise<IslamicDate> {
     };
   } catch (error) {
     console.error('Error fetching Islamic date:', error);
-    throw error;
+    // Return fallback date calculation if API fails
+    return calculateHijriDateFallback(targetDate);
   }
+}
+
+/**
+ * Fallback Hijri date calculation (approximate)
+ */
+function calculateHijriDateFallback(date: Date): IslamicDate {
+  // Approximate conversion: Hijri epoch is July 16, 622 CE
+  const hijriEpoch = new Date(622, 6, 16);
+  const daysSinceEpoch = Math.floor((date.getTime() - hijriEpoch.getTime()) / (1000 * 60 * 60 * 24));
+
+  // Average Hijri year is 354.36667 days
+  const hijriYear = Math.floor(daysSinceEpoch / 354.36667) + 1;
+  const daysInCurrentYear = daysSinceEpoch % 354.36667;
+
+  // Approximate month (29.5 days average)
+  const hijriMonth = Math.floor(daysInCurrentYear / 29.5) + 1;
+  const hijriDay = Math.floor(daysInCurrentYear % 29.5) + 1;
+
+  const monthIndex = Math.min(hijriMonth - 1, 11);
+  const holidays = getIslamicHolidays(hijriDay, hijriMonth);
+
+  return {
+    day: hijriDay,
+    month: hijriMonth,
+    monthName: ISLAMIC_MONTHS[monthIndex].en,
+    monthNameAr: ISLAMIC_MONTHS[monthIndex].ar,
+    year: hijriYear,
+    designation: 'AH',
+    holidays,
+  };
 }
 
 /**

@@ -50,34 +50,48 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
   // Get user location on mount
   useEffect(() => {
     async function fetchLocation() {
+      setLoading(true);
+      setError(null);
+
+      // First, try to get location - this is required
+      let loc: { lat: number; lng: number };
       try {
-        setLoading(true);
-        setError(null);
-        const loc = await getUserLocation();
+        loc = await getUserLocation();
         setLocation(loc);
-
-        // Get location name
-        const name = await getLocationName(loc.lat, loc.lng);
-        setLocationName(name);
-
-        // Calculate Qibla direction
-        const qibla = calculateQiblaDirection(loc.lat, loc.lng);
-        setQiblaDirection(qibla);
-
-        // Get prayer times
-        const prayers = await getPrayerTimes(loc.lat, loc.lng, calculationMethod);
-        setPrayerTimes(prayers);
-
-        // Get Islamic date
-        const hijri = await getIslamicDate();
-        setIslamicDate(hijri);
-
-        setLoading(false);
       } catch (err) {
         console.error('Error getting location:', err);
         setError('Unable to get your location. Please enable location services and try again.');
         setLoading(false);
+        return;
       }
+
+      // Get location name (non-blocking)
+      getLocationName(loc.lat, loc.lng)
+        .then(name => setLocationName(name))
+        .catch(() => setLocationName('Unknown Location'));
+
+      // Calculate Qibla direction (local calculation, won't fail)
+      const qibla = calculateQiblaDirection(loc.lat, loc.lng);
+      setQiblaDirection(qibla);
+
+      // Get prayer times
+      try {
+        const prayers = await getPrayerTimes(loc.lat, loc.lng, calculationMethod);
+        setPrayerTimes(prayers);
+      } catch (err) {
+        console.error('Error getting prayer times:', err);
+        // Don't set error - other features can still work
+      }
+
+      // Get Islamic date (non-blocking, has fallback)
+      getIslamicDate()
+        .then(hijri => setIslamicDate(hijri))
+        .catch(err => {
+          console.error('Error getting Islamic date:', err);
+          // The service now has fallback calculation
+        });
+
+      setLoading(false);
     }
 
     fetchLocation();
