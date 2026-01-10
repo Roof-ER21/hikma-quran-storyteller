@@ -31,6 +31,16 @@ let storiesCache: AdultStory[] | null = null;
 let storiesByIdCache: Map<string, AdultStory> | null = null;
 let storiesByNameCache: Map<string, AdultStory> | null = null;
 
+// Normalize common spelling variants so clicks always map to preloaded stories
+const normalizeProphetName = (name: string): string => {
+  const normalized = name.toLowerCase().trim();
+  const aliases: Record<string, string> = {
+    zakariyah: 'zakariya',
+    zakariyya: 'zakariya',
+  };
+  return aliases[normalized] || normalized;
+};
+
 /**
  * Get all preloaded adult stories
  */
@@ -48,10 +58,10 @@ export const getAdultStoryById = (id: string): AdultStory | null => {
   if (!storiesByIdCache) {
     storiesByIdCache = new Map();
     getAllAdultStories().forEach(story => {
-      storiesByIdCache!.set(story.id.toLowerCase(), story);
+      storiesByIdCache!.set(normalizeProphetName(story.id), story);
     });
   }
-  return storiesByIdCache.get(id.toLowerCase()) || null;
+  return storiesByIdCache.get(normalizeProphetName(id)) || null;
 };
 
 /**
@@ -61,28 +71,31 @@ export const getAdultStoryByName = (prophetName: string): AdultStory | null => {
   if (!storiesByNameCache) {
     storiesByNameCache = new Map();
     getAllAdultStories().forEach(story => {
+      const addNameKey = (name: string) => {
+        storiesByNameCache!.set(normalizeProphetName(name), story);
+      };
+
       // Map various name formats to the same story
-      const name = story.prophet.toLowerCase();
-      storiesByNameCache!.set(name, story);
+      addNameKey(story.prophet);
 
       // Also map by ID
-      storiesByNameCache!.set(story.id.toLowerCase(), story);
+      addNameKey(story.id);
 
       // Extract name without parenthetical (e.g., "Musa" from "Musa (Moses)")
-      const baseName = name.split('(')[0].trim();
-      if (baseName !== name) {
-        storiesByNameCache!.set(baseName, story);
+      const baseName = story.prophet.split('(')[0].trim();
+      if (baseName !== story.prophet) {
+        addNameKey(baseName);
       }
 
       // Extract English name from parenthetical (e.g., "Moses" from "Musa (Moses)")
-      const match = name.match(/\(([^)]+)\)/);
+      const match = story.prophet.match(/\(([^)]+)\)/);
       if (match) {
-        storiesByNameCache!.set(match[1].toLowerCase(), story);
+        addNameKey(match[1]);
       }
     });
   }
 
-  const searchName = prophetName.toLowerCase().trim();
+  const searchName = normalizeProphetName(prophetName);
 
   // Try exact match first
   if (storiesByNameCache.has(searchName)) {
@@ -90,15 +103,16 @@ export const getAdultStoryByName = (prophetName: string): AdultStory | null => {
   }
 
   // Try extracting base name from input
-  const baseName = searchName.split('(')[0].trim();
+  const baseName = normalizeProphetName(prophetName.split('(')[0]);
   if (storiesByNameCache.has(baseName)) {
     return storiesByNameCache.get(baseName)!;
   }
 
   // Try extracting parenthetical from input
-  const match = searchName.match(/\(([^)]+)\)/);
-  if (match && storiesByNameCache.has(match[1].toLowerCase())) {
-    return storiesByNameCache.get(match[1].toLowerCase())!;
+  const match = prophetName.match(/\(([^)]+)\)/);
+  const parenthetical = match ? normalizeProphetName(match[1]) : null;
+  if (parenthetical && storiesByNameCache.has(parenthetical)) {
+    return storiesByNameCache.get(parenthetical)!;
   }
 
   return null;

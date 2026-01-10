@@ -77,6 +77,19 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300">
       <div className="bg-gradient-to-r from-rose-900 via-rose-800 to-amber-900 text-white shadow-2xl">
+        {isLoading && (
+          <div className="border-b border-amber-200/30 bg-amber-500/15 backdrop-blur-sm">
+            <div className="max-w-7xl mx-auto px-4 py-2 flex items-center gap-3 text-amber-50">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-300 animate-pulse"></span>
+              <div className="leading-tight">
+                <p className="text-sm font-semibold">Preparing narration audio...</p>
+                <p className="text-xs text-amber-100/80">
+                  Loading the next section and Quran recitation. This can take a few seconds.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Progress bar */}
         <div className="h-1 bg-white/20">
           <div

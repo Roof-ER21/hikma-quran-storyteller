@@ -23,6 +23,13 @@ const SectionNarrationButton: React.FC<SectionNarrationButtonProps> = ({
   const isPaused = isThisSection && narrationState?.isPaused;
   const isLoading = isThisSection && narrationState?.isLoading;
   const progress = isThisSection ? narrationState?.progress || 0 : 0;
+  const tooltip = isLoading
+    ? 'Preparing narration...'
+    : isPlaying
+      ? 'Pause narration'
+      : isPaused
+        ? 'Resume narration'
+        : 'Listen to this section';
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent section expand/collapse
@@ -59,7 +66,10 @@ const SectionNarrationButton: React.FC<SectionNarrationButtonProps> = ({
         }
         ${isLoading ? 'cursor-wait opacity-70' : 'cursor-pointer'}
       `}
-      title={isPlaying ? 'Pause narration' : isPaused ? 'Resume narration' : 'Listen to this section'}
+      title={tooltip}
+      aria-busy={isLoading}
+      aria-live="polite"
+      aria-label={tooltip}
     >
       {/* Progress ring */}
       {(isPlaying || isPaused) && progress > 0 && (
