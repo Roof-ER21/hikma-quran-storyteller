@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { registerSW } from 'virtual:pwa-register';
+import { useTranslation } from 'react-i18next';
 
 interface OfflineIndicatorProps {
   onDownloadClick?: () => void;
 }
 
 export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadClick }) => {
+  const { t, i18n } = useTranslation('common');
+  const isArabic = i18n.language === 'ar-EG';
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [showOfflineBanner, setShowOfflineBanner] = useState(false);
   const [showUpdateBanner, setShowUpdateBanner] = useState(false);
@@ -60,18 +63,18 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
     <>
       {/* Offline Banner */}
       {showOfflineBanner && (
-        <div className="fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 py-2 z-50 flex items-center justify-between shadow-lg">
-          <div className="flex items-center gap-2">
+        <div className={`fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 py-2 z-50 flex items-center justify-between shadow-lg ${isArabic ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <i className="fas fa-wifi-slash"></i>
-            <span className="text-sm font-medium">You're offline</span>
-            <span className="text-xs opacity-80">- Cached content is available</span>
+            <span className="text-sm font-medium">{t('status.offline')}</span>
+            <span className="text-xs opacity-80">- {t('offline.cachedAvailable')}</span>
           </div>
           {onDownloadClick && (
             <button
               onClick={onDownloadClick}
               className="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition-colors"
             >
-              Manage Downloads
+              {t('offline.manageDownloads')}
             </button>
           )}
         </div>
@@ -79,28 +82,28 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
 
       {/* Update Available Banner */}
       {showUpdateBanner && (
-        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-blue-600 text-white rounded-xl shadow-2xl p-4 z-50 animate-slide-up">
-          <div className="flex items-start gap-3">
+        <div className={`fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-blue-600 text-white rounded-xl shadow-2xl p-4 z-50 animate-slide-up ${isArabic ? 'text-right' : ''}`}>
+          <div className={`flex items-start gap-3 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <i className="fas fa-arrow-up"></i>
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold">Update Available</h4>
+              <h4 className="font-semibold">{t('offline.updateAvailable')}</h4>
               <p className="text-sm text-blue-100 mb-3">
-                A new version of Hikma is ready!
+                {t('offline.updateMessage')}
               </p>
-              <div className="flex gap-2">
+              <div className={`flex gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
                 <button
                   onClick={handleUpdate}
                   className="bg-white text-blue-600 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors"
                 >
-                  Update Now
+                  {t('offline.updateNow')}
                 </button>
                 <button
                   onClick={() => setShowUpdateBanner(false)}
                   className="text-white/80 hover:text-white px-3 py-1.5 text-sm transition-colors"
                 >
-                  Later
+                  {t('offline.later')}
                 </button>
               </div>
             </div>
@@ -113,7 +116,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
         className={`fixed bottom-4 right-4 w-3 h-3 rounded-full transition-all duration-300 z-40 ${
           isOnline ? 'bg-green-500' : 'bg-amber-500 animate-pulse'
         }`}
-        title={isOnline ? 'Online' : 'Offline'}
+        title={isOnline ? t('status.online') : t('status.offline')}
       />
     </>
   );
@@ -125,6 +128,8 @@ interface InstallPromptProps {
 }
 
 export const PWAInstallPrompt: React.FC<InstallPromptProps> = ({ onInstall }) => {
+  const { t, i18n } = useTranslation('common');
+  const isArabic = i18n.language === 'ar-EG';
   const [showPrompt, setShowPrompt] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -188,15 +193,15 @@ export const PWAInstallPrompt: React.FC<InstallPromptProps> = ({ onInstall }) =>
   if (isInstalled || !showPrompt) return null;
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-gradient-to-r from-rose-700 to-rose-800 text-white rounded-2xl shadow-2xl p-5 z-50 animate-slide-up">
+    <div className={`fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-gradient-to-r from-rose-700 to-rose-800 text-white rounded-2xl shadow-2xl p-5 z-50 animate-slide-up ${isArabic ? 'text-right' : ''}`}>
       <button
         onClick={handleDismiss}
-        className="absolute top-3 right-3 text-white/60 hover:text-white"
+        className={`absolute top-3 ${isArabic ? 'left-3' : 'right-3'} text-white/60 hover:text-white`}
       >
         <i className="fas fa-times"></i>
       </button>
 
-      <div className="flex items-start gap-4">
+      <div className={`flex items-start gap-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
         <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
           <img
             src="/icons/icon.svg"
@@ -208,23 +213,23 @@ export const PWAInstallPrompt: React.FC<InstallPromptProps> = ({ onInstall }) =>
           />
         </div>
         <div className="flex-1">
-          <h3 className="font-bold text-lg mb-1">Install Noor Soad</h3>
+          <h3 className="font-bold text-lg mb-1">{t('pwa.installTitle')}</h3>
           <p className="text-rose-200 text-sm mb-4">
-            Add to your home screen for quick access and offline reading
+            {t('pwa.installMessage')}
           </p>
-          <div className="flex gap-3">
+          <div className={`flex gap-3 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <button
               onClick={handleInstall}
-              className="bg-white text-rose-700 px-5 py-2 rounded-lg font-semibold hover:bg-rose-50 transition-colors flex items-center gap-2"
+              className={`bg-white text-rose-700 px-5 py-2 rounded-lg font-semibold hover:bg-rose-50 transition-colors flex items-center gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}
             >
               <i className="fas fa-plus"></i>
-              Install
+              {t('pwa.install')}
             </button>
             <button
               onClick={handleDismiss}
               className="text-white/80 hover:text-white px-4 py-2 transition-colors"
             >
-              Not now
+              {t('pwa.notNow')}
             </button>
           </div>
         </div>
@@ -234,19 +239,19 @@ export const PWAInstallPrompt: React.FC<InstallPromptProps> = ({ onInstall }) =>
       <div className="mt-4 pt-4 border-t border-white/20 flex justify-around text-center">
         <div>
           <i className="fas fa-bolt text-amber-300 mb-1"></i>
-          <p className="text-xs text-rose-200">Fast</p>
+          <p className="text-xs text-rose-200">{t('pwa.features.fast')}</p>
         </div>
         <div>
           <i className="fas fa-wifi-slash text-amber-300 mb-1"></i>
-          <p className="text-xs text-rose-200">Offline</p>
+          <p className="text-xs text-rose-200">{t('pwa.features.offline')}</p>
         </div>
         <div>
           <i className="fas fa-bell text-amber-300 mb-1"></i>
-          <p className="text-xs text-rose-200">Reminders</p>
+          <p className="text-xs text-rose-200">{t('pwa.features.reminders')}</p>
         </div>
         <div>
           <i className="fas fa-moon text-amber-300 mb-1"></i>
-          <p className="text-xs text-rose-200">Full Screen</p>
+          <p className="text-xs text-rose-200">{t('pwa.features.fullScreen')}</p>
         </div>
       </div>
     </div>

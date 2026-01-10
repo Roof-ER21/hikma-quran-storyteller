@@ -35,5 +35,34 @@
     "error": "Something went wrong",
     "offline": "You're offline",
     "online": "Online"
+  },
+  "storyCard": {
+    "availableOffline": "Available offline",
+    "readTime": "{{minutes}} min read",
+    "languages": {
+      "english": "EN",
+      "arabic": "فصحى",
+      "egyptian": "مصري"
+    }
+  },
+  "offline": {
+    "cachedAvailable": "Cached content is available",
+    "manageDownloads": "Manage Downloads",
+    "updateAvailable": "Update Available",
+    "updateMessage": "A new version of Hikma is ready!",
+    "updateNow": "Update Now",
+    "later": "Later"
+  },
+  "pwa": {
+    "installTitle": "Install Noor Soad",
+    "installMessage": "Add to your home screen for quick access and offline reading",
+    "install": "Install",
+    "notNow": "Not now",
+    "features": {
+      "fast": "Fast",
+      "offline": "Offline",
+      "reminders": "Reminders",
+      "fullScreen": "Full Screen"
+    }
   }
 }

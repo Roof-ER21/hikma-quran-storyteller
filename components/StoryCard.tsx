@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   getStoryReadingPosition,
   getCachedStory,
@@ -63,6 +64,8 @@ const StoryCard: React.FC<StoryCardProps> = ({
   onSelect,
   isSelected = false
 }) => {
+  const { t, i18n } = useTranslation('common');
+  const isArabic = i18n.language === 'ar-EG';
   const [readingPosition, setReadingPosition] = useState<StoryReadingPosition | null>(null);
   const [isCached, setIsCached] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -125,7 +128,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
           <div className="flex gap-2">
             {/* Cached indicator */}
             {isCached && (
-              <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm" title="Available offline">
+              <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm" title={t('storyCard.availableOffline')}>
                 <i className="fas fa-download text-xs"></i>
               </div>
             )}
@@ -156,14 +159,14 @@ const StoryCard: React.FC<StoryCardProps> = ({
         </div>
 
         {/* Footer - Read time & Language */}
-        <div className="flex items-center justify-between text-white/70 text-xs">
-          <div className="flex items-center gap-1">
+        <div className={`flex items-center justify-between text-white/70 text-xs ${isArabic ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center gap-1 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <i className="fas fa-clock"></i>
-            <span>{estimatedReadTime} min read</span>
+            <span>{t('storyCard.readTime', { minutes: estimatedReadTime })}</span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className={`flex items-center gap-1 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <i className="fas fa-language"></i>
-            <span>{language === 'english' ? 'EN' : language === 'arabic' ? 'فصحى' : 'مصري'}</span>
+            <span>{language === 'english' ? t('storyCard.languages.english') : language === 'arabic' ? t('storyCard.languages.arabic') : t('storyCard.languages.egyptian')}</span>
           </div>
         </div>
 

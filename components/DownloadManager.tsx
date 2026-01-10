@@ -39,8 +39,11 @@ type DownloadType = 'all-text' | 'juz' | 'surah' | 'stories';
 
 // Story generation configuration
 const PROPHETS = [
-  "Adam", "Nuh (Noah)", "Ibrahim (Abraham)", "Yusuf (Joseph)",
-  "Musa (Moses)", "Isa (Jesus)", "Muhammad"
+  "Adam", "Idris", "Nuh (Noah)", "Hud", "Saleh",
+  "Ibrahim (Abraham)", "Lut (Lot)", "Ishmael", "Ishaq (Isaac)", "Yaqub (Jacob)",
+  "Yusuf (Joseph)", "Ayyub (Job)", "Shu'aib", "Musa (Moses)", "Harun (Aaron)",
+  "Dhul-Kifl", "Dawud (David)", "Sulaiman (Solomon)", "Ilyas (Elijah)", "Al-Yasa (Elisha)",
+  "Yunus (Jonah)", "Zakariyah", "Yahya (John)", "Isa (Jesus)"
 ];
 
 const TOPICS = [
@@ -130,7 +133,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
     }
   };
 
-  // Download all stories (7 prophets × 7 topics × 2 languages = 98 stories)
+  // Download all stories (24 prophets × 7 topics × 2 languages = 336 stories)
   const downloadAllStories = async () => {
     if (!isOnline) {
       alert('You need to be online to download stories.');
@@ -541,7 +544,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                   <div className="flex-1">
                     <h4 className="font-semibold text-amber-900">Prophet Stories</h4>
                     <p className="text-sm text-amber-700 mb-2">
-                      Download 98 stories (7 prophets × 7 topics × 2 languages)
+                      Download 336 stories (24 prophets × 7 topics × 2 languages)
                     </p>
                     <div className="flex flex-wrap gap-1 mb-3">
                       <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">English</span>
