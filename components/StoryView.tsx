@@ -188,6 +188,19 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
     injectAnimationStyles();
   }, []);
 
+  // Soft Islamic-inspired background for non-immersive mode
+  const storyBackgroundStyle = immersiveMode
+    ? undefined
+    : {
+        backgroundImage: `
+          radial-gradient(circle at 20% 20%, rgba(190, 24, 93, 0.06) 0, rgba(190, 24, 93, 0.06) 12px, transparent 12px),
+          radial-gradient(circle at 80% 0%, rgba(234, 179, 8, 0.06) 0, rgba(234, 179, 8, 0.06) 14px, transparent 18px),
+          linear-gradient(180deg, #f9f7f4 0%, #fdfaf6 28%, #f6f1e9 100%)
+        `,
+        backgroundSize: '180px 180px, 240px 240px, cover',
+        backgroundAttachment: 'fixed, fixed, fixed',
+      };
+
   // Scroll handler for reading progress and parallax
   const handleScroll = useCallback(() => {
     if (!contentRef.current) return;
@@ -1097,6 +1110,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
       <div
         ref={contentRef}
         className={`flex-1 overflow-y-auto ${immersiveMode ? 'bg-stone-900 p-8 md:p-20 pt-24' : 'p-6 md:p-10'} scroll-smooth`}
+        style={storyBackgroundStyle}
       >
         {activeTab === 'read' && (
             <div className={`mx-auto transition-all duration-500 ${immersiveMode ? 'max-w-2xl text-stone-300' : 'max-w-3xl text-stone-800'}`}>
