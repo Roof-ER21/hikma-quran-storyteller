@@ -48,6 +48,7 @@ class ProphetNarrationService {
   private playbackSpeed: number = 1.0;
   private stateListeners: Set<StateListener> = new Set();
   private isInitialized: boolean = false;
+  private ttsInProgress: boolean = false; // Lock to prevent concurrent TTS calls
 
   private state: NarrationState = {
     isPlaying: false,
@@ -421,6 +422,14 @@ class ProphetNarrationService {
   }
 
   private async playTTS(text: string, retryCount: number = 0): Promise<void> {
+    // Wait if another TTS call is in progress
+    while (this.ttsInProgress) {
+      console.log('[ProphetNarration] Waiting for previous TTS to complete...');
+      await this.sleep(500);
+    }
+
+    this.ttsInProgress = true;
+
     try {
       // Add delay before TTS to avoid rate limits (longer on retries)
       const delay = TTS_RATE_LIMIT_DELAY * (retryCount + 1);
@@ -451,13 +460,17 @@ class ProphetNarrationService {
 
       // Retry on failure
       if (retryCount < TTS_MAX_RETRIES) {
+        this.ttsInProgress = false; // Release lock before retry
         console.log(`[ProphetNarration] Retrying TTS (${retryCount + 1}/${TTS_MAX_RETRIES})...`);
         return this.playTTS(text, retryCount + 1);
       }
 
+      this.ttsInProgress = false; // Release lock on final failure
       this.updateState({ error: 'Voice narration temporarily unavailable' });
       throw error;
     }
+
+    // Note: Lock is released in playAudioBuffer when audio ends
   }
 
   private async playTTSFallback(item: NarrationQueueItem): Promise<void> {
@@ -519,6 +532,7 @@ class ProphetNarrationService {
     };
 
     this.currentSource.onended = () => {
+      this.ttsInProgress = false; // Release TTS lock
       this.updateState({ isLoading: false });
       this.onItemEnded();
     };
@@ -571,6 +585,7 @@ class ProphetNarrationService {
   }
 
   stop(): void {
+    this.ttsInProgress = false; // Release TTS lock
     if (this.audio) {
       this.audio.pause();
       this.audio.currentTime = 0;
