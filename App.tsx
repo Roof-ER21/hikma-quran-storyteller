@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import StoryView from './components/StoryView';
 import StoryCard from './components/StoryCard';
 import LiveMode from './components/LiveMode';
@@ -12,9 +13,35 @@ import ParentGate from './components/ParentGate';
 import AdultAudioStories from './components/AdultAudioStories';
 import ProphetStoriesLibrary from './components/ProphetStoriesLibrary';
 import DedicationPage from './components/DedicationPage';
+import RTLProvider from './src/components/RTLProvider';
+import LanguageSelectorModal from './src/i18n/LanguageSelectorModal';
+import { isLanguageSelected, isArabic } from './src/i18n';
 
 const PROPHETS = [
-  "Adam", "Nuh (Noah)", "Ibrahim (Abraham)", "Yusuf (Joseph)", "Musa (Moses)", "Isa (Jesus)", "Muhammad"
+  { name: 'Adam', arabicName: 'آدم' },
+  { name: 'Idris', arabicName: 'إدريس' },
+  { name: 'Nuh (Noah)', arabicName: 'نوح' },
+  { name: 'Hud', arabicName: 'هود' },
+  { name: 'Saleh', arabicName: 'صالح' },
+  { name: 'Ibrahim (Abraham)', arabicName: 'إبراهيم' },
+  { name: 'Lut (Lot)', arabicName: 'لوط' },
+  { name: 'Ishmael', arabicName: 'إسماعيل' },
+  { name: 'Ishaq (Isaac)', arabicName: 'إسحاق' },
+  { name: 'Yaqub (Jacob)', arabicName: 'يعقوب' },
+  { name: 'Yusuf (Joseph)', arabicName: 'يوسف' },
+  { name: 'Ayyub (Job)', arabicName: 'أيوب' },
+  { name: "Shu'aib", arabicName: 'شعيب' },
+  { name: 'Musa (Moses)', arabicName: 'موسى' },
+  { name: 'Harun (Aaron)', arabicName: 'هارون' },
+  { name: 'Dhul-Kifl', arabicName: 'ذو الكفل' },
+  { name: 'Dawud (David)', arabicName: 'داوود' },
+  { name: 'Sulaiman (Solomon)', arabicName: 'سليمان' },
+  { name: 'Ilyas (Elijah)', arabicName: 'إلياس' },
+  { name: 'Al-Yasa (Elisha)', arabicName: 'اليسع' },
+  { name: 'Yunus (Jonah)', arabicName: 'يونس' },
+  { name: 'Zakariyah', arabicName: 'زكريا' },
+  { name: 'Yahya (John)', arabicName: 'يحيى' },
+  { name: 'Isa (Jesus)', arabicName: 'عيسى' },
 ];
 
 const TOPICS = [
@@ -22,9 +49,11 @@ const TOPICS = [
 ];
 
 function App() {
+  const { t, i18n } = useTranslation(['common', 'home']);
   const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library' | 'dedication'>('home');
   const [mode, setMode] = useState<'gate' | 'kid' | 'parent'>('gate');
   const [selectedProphet, setSelectedProphet] = useState<string>("");
+  const [showLanguageSelector, setShowLanguageSelector] = useState(!isLanguageSelected());
   const [selectedTopic, setSelectedTopic] = useState<string>("General Life");
   const [transcribing, setTranscribing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,8 +123,8 @@ function App() {
             setTranscribing(false);
 
             // Basic "Smart" selection based on transcription (Demo logic)
-            const foundProphet = PROPHETS.find(p => text.toLowerCase().includes(p.toLowerCase().split(' ')[0]));
-            if (foundProphet) setSelectedProphet(foundProphet);
+            const foundProphet = PROPHETS.find(p => text.toLowerCase().includes(p.name.toLowerCase().split(' ')[0]));
+            if (foundProphet) setSelectedProphet(foundProphet.name);
 
             stream.getTracks().forEach(t => t.stop());
         };
@@ -124,12 +153,12 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 flex flex-col items-center justify-center p-6">
       <div className="max-w-4xl w-full text-center space-y-10">
         <div className="space-y-4">
-          <p className="text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold">Bismillah</p>
+          <p className="text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold">{t('home:gate.bismillah')}</p>
           <h1 className="text-4xl md:text-5xl font-serif text-rose-900 leading-tight">
-            Welcome to <span className="text-amber-600">Alaya & Soad's Gift</span>
+            {t('home:gate.welcome')} <span className="text-amber-600">{t('common:app.name')}</span>
           </h1>
           <p className="text-stone-600 max-w-2xl mx-auto">
-            A calm space for families: kids go straight to their stories, parents can unlock everything with a PIN.
+            {t('home:gate.subtitle')}
           </p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
@@ -138,24 +167,24 @@ function App() {
             className="rounded-3xl bg-amber-500 text-white py-8 px-6 shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-all flex flex-col gap-3"
           >
             <div className="flex items-center justify-center gap-3 text-2xl font-bold">
-              <i className="fas fa-rocket"></i> Kids Mode
+              <i className="fas fa-rocket"></i> {t('home:gate.kidsMode')}
             </div>
-            <p className="text-sm text-white/90">Jump right into stories, songs, and Quran—no login needed.</p>
+            <p className="text-sm text-white/90">{t('home:gate.kidsDescription')}</p>
           </button>
-          <div className="rounded-3xl bg-white border border-stone-100 py-8 px-6 shadow-lg flex flex-col gap-4">
+          <div className={`rounded-3xl bg-white border border-stone-100 py-8 px-6 shadow-lg flex flex-col gap-4 ${isArabic() ? 'text-right' : 'text-left'}`}>
             <div className="flex items-center justify-between">
-              <div className="text-left">
-                <p className="text-xs uppercase text-stone-500 font-semibold">Parents</p>
-                <p className="text-2xl font-bold text-rose-900">Unlock everything</p>
+              <div className={isArabic() ? 'text-right' : 'text-left'}>
+                <p className="text-xs uppercase text-stone-500 font-semibold">{t('home:gate.parents')}</p>
+                <p className="text-2xl font-bold text-rose-900">{t('home:gate.unlockEverything')}</p>
               </div>
               <i className="fas fa-user-shield text-rose-600 text-2xl"></i>
             </div>
-            <p className="text-sm text-stone-600">Enter your name + PIN to manage settings, Learn with Soso, and full stories.</p>
+            <p className="text-sm text-stone-600">{t('home:gate.parentDescription')}</p>
             <button
               onClick={() => setShowParentGate(true)}
               className="w-full rounded-2xl bg-rose-900 text-white py-3 font-semibold hover:bg-rose-800 transition-colors"
             >
-              I’m a Parent
+              {t('home:gate.imAParent')}
             </button>
           </div>
         </div>
@@ -163,20 +192,31 @@ function App() {
     </div>
   );
 
+  // Show language selector on first launch
+  if (showLanguageSelector) {
+    return (
+      <LanguageSelectorModal
+        isOpen={showLanguageSelector}
+        onComplete={() => setShowLanguageSelector(false)}
+      />
+    );
+  }
+
   if (mode === 'gate') {
     return (
-      <>
+      <RTLProvider>
         {renderGate()}
         <ParentGate
           isOpen={showParentGate}
           onClose={() => setShowParentGate(false)}
           onAuthed={handleParentAuthed}
         />
-      </>
+      </RTLProvider>
     );
   }
 
   return (
+    <RTLProvider>
     <div className="min-h-screen bg-stone-100 flex flex-col text-stone-800">
       {/* PWA Components */}
       <OfflineIndicator onDownloadClick={() => setShowDownloadManager(true)} />
@@ -197,11 +237,11 @@ function App() {
           <button
             onClick={() => setView('dedication')}
             className="w-10 h-10 bg-rose-700 rounded-lg flex items-center justify-center text-white text-xl hover:bg-rose-600 transition-colors"
-            title="In Loving Memory"
+            title={t('common:nav.inLovingMemory')}
           >
             <i className="fas fa-heart"></i>
           </button>
-          <h1 className="text-xl md:text-2xl font-serif font-bold text-rose-900 tracking-wide">Alaya & Soad's Gift</h1>
+          <h1 className="text-xl md:text-2xl font-serif font-bold text-rose-900 tracking-wide">{t('common:app.name')}</h1>
         </div>
         <div className="flex gap-2 md:gap-4 text-sm font-medium overflow-x-auto items-center">
             <button
@@ -285,7 +325,7 @@ function App() {
                         onChange={(e) => setSelectedProphet(e.target.value)}
                       >
                         <option value="">Select a guide...</option>
-                        {PROPHETS.map(p => <option key={p} value={p}>{p}</option>)}
+                        {PROPHETS.map(p => <option key={p.name} value={p.name}>{p.name} ({p.arabicName})</option>)}
                       </select>
                       <i className="fas fa-chevron-down absolute right-4 top-5 text-stone-400 pointer-events-none"></i>
                   </div>
@@ -335,23 +375,25 @@ function App() {
                 </button>
               </div>
 
-              {/* Quick Pick Story Cards */}
+              {/* Quick Pick Story Cards - All 24 Prophets */}
               <div className="mt-8">
                 <h3 className="text-lg font-serif text-stone-600 mb-4 flex items-center gap-2">
                   <i className="fas fa-star text-amber-500"></i>
                   Quick Pick
+                  <span className="text-sm text-stone-400 font-sans">({PROPHETS.length} Prophets)</span>
                 </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {PROPHETS.slice(0, 4).map(prophet => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[420px] overflow-y-auto pr-2 pb-2 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
+                  {PROPHETS.map(prophet => (
                     <StoryCard
-                      key={prophet}
-                      prophet={prophet}
+                      key={prophet.name}
+                      prophet={prophet.name}
+                      arabicName={prophet.arabicName}
                       topic={selectedTopic}
                       onSelect={(p) => {
                         setSelectedProphet(p);
                         setView('story');
                       }}
-                      isSelected={selectedProphet === prophet}
+                      isSelected={selectedProphet === prophet.name}
                     />
                   ))}
                 </div>
@@ -439,6 +481,7 @@ function App() {
         )}
       </main>
     </div>
+    </RTLProvider>
   );
 }
 

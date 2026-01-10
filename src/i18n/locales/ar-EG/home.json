@@ -1,0 +1,87 @@
+{
+  "gate": {
+    "bismillah": "بسم الله",
+    "welcome": "أهلاً بيكم في",
+    "subtitle": "مكان هادي للعيلة: الأطفال يروحوا للقصص على طول، والوالدين يفتحوا كل حاجة برقم سري.",
+    "kidsMode": "وضع الأطفال",
+    "kidsDescription": "ادخل على طول للقصص والأناشيد والقرآن—من غير تسجيل.",
+    "parents": "الوالدين",
+    "unlockEverything": "افتح كل حاجة",
+    "parentDescription": "اكتب اسمك والرقم السري عشان تفتح الإعدادات واتعلم مع سوسو والقصص الكاملة.",
+    "imAParent": "أنا والد/ة"
+  },
+  "stories": {
+    "title": "اكتشف",
+    "highlight": "قصص الأنبياء الخالدة.",
+    "subtitle": "عيش قصص القرآن من خلال الحكي التفاعلي والصور والمعلومات التاريخية.",
+    "chooseProphet": "اختار نبي",
+    "selectGuide": "اختار دليلك...",
+    "askViaAudio": "أو اسأل بالصوت",
+    "tapMic": "اضغط على المايك وقول الاسم...",
+    "focusTheme": "اختار الموضوع",
+    "beginJourney": "ابدأ الرحلة",
+    "quickPick": "اختيار سريع",
+    "prophets": "نبي"
+  },
+  "prophets": {
+    "Adam": "آدم",
+    "Idris": "إدريس",
+    "Nuh (Noah)": "نوح",
+    "Hud": "هود",
+    "Saleh": "صالح",
+    "Ibrahim (Abraham)": "إبراهيم",
+    "Lut (Lot)": "لوط",
+    "Ishmael": "إسماعيل",
+    "Ishaq (Isaac)": "إسحاق",
+    "Yaqub (Jacob)": "يعقوب",
+    "Yusuf (Joseph)": "يوسف",
+    "Ayyub (Job)": "أيوب",
+    "Shu'aib": "شعيب",
+    "Musa (Moses)": "موسى",
+    "Harun (Aaron)": "هارون",
+    "Dhul-Kifl": "ذو الكفل",
+    "Dawud (David)": "داوود",
+    "Sulaiman (Solomon)": "سليمان",
+    "Ilyas (Elijah)": "إلياس",
+    "Al-Yasa (Elisha)": "اليسع",
+    "Yunus (Jonah)": "يونس",
+    "Zakariyah": "زكريا",
+    "Yahya (John)": "يحيى",
+    "Isa (Jesus)": "عيسى"
+  },
+  "topics": {
+    "General Life": "الحياة العامة",
+    "Patience": "الصبر",
+    "Trust in God": "التوكل على الله",
+    "Leadership": "القيادة",
+    "Family": "العيلة",
+    "Miracles": "المعجزات",
+    "Justice": "العدل"
+  },
+  "audioStories": {
+    "title": "صوتيات السيرة",
+    "subtitle": "تأملات مسجلة جاهزة للاستماع بدون نت عن لحظات من حياة النبي.",
+    "readAlong": "اقرأ معانا",
+    "playAudio": "شغّل الصوت",
+    "stopAudio": "وقّف الصوت"
+  },
+  "quranQuote": {
+    "text": "نَحْنُ نَقُصُّ عَلَيْكَ أَحْسَنَ الْقَصَصِ بِمَا أَوْحَيْنَا إِلَيْكَ هَٰذَا الْقُرْآنَ...",
+    "reference": "سورة يوسف ١٢:٣"
+  },
+  "parentGate": {
+    "parentLogin": "دخول الوالدين",
+    "createPIN": "إنشاء رقم سري",
+    "nameLabel": "الاسم",
+    "pinLabel": "الرقم السري (٤ أرقام أو أكتر)",
+    "enterPIN": "ادخل الرقم السري",
+    "parentName": "اسم الوالد/ة",
+    "rememberMe": "فكرني على الجهاز ده",
+    "createAccount": "إنشاء حساب",
+    "alreadyHavePIN": "عندي رقم سري",
+    "login": "دخول",
+    "savePIN": "احفظ الرقم السري",
+    "pleaseWait": "استنى شوية...",
+    "manageSettings": "الوالدين يقدروا يتحكموا في الإعدادات ويفتحوا كل المميزات ويتابعوا التقدم."
+  }
+}

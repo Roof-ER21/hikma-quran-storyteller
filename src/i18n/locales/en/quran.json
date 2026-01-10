@@ -1,0 +1,41 @@
+{
+  "title": "The Holy Quran",
+  "tabs": {
+    "read": "Read",
+    "story": "Story",
+    "listen": "Listen",
+    "study": "Study",
+    "practice": "Practice"
+  },
+  "surah": {
+    "surah": "Surah",
+    "ayahs": "Ayahs",
+    "meccan": "Meccan",
+    "medinan": "Medinan",
+    "juz": "Juz",
+    "page": "Page"
+  },
+  "themes": {
+    "classic": "Classic (Rose)",
+    "calm": "Calm",
+    "vibrant": "Vibrant"
+  },
+  "settings": {
+    "translation": "Translation",
+    "reciter": "Reciter",
+    "fontSize": "Font Size",
+    "showTransliteration": "Show Transliteration",
+    "showTranslation": "Show Translation"
+  },
+  "player": {
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "repeat": "Repeat",
+    "speed": "Speed"
+  },
+  "search": {
+    "placeholder": "Search surahs...",
+    "noResults": "No surahs found"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "view": {
+    "backToStories": "Back to Stories",
+    "loading": "Loading story...",
+    "generating": "Generating your story...",
+    "readTime": "min read",
+    "continueReading": "Continue Reading"
+  },
+  "tabs": {
+    "story": "Story",
+    "locations": "Locations",
+    "context": "Context"
+  },
+  "ambience": {
+    "label": "Ambience",
+    "silence": "Silence",
+    "desert": "Desert Wind",
+    "night": "Night Peace",
+    "rain": "Rainfall",
+    "ocean": "Ocean Waves",
+    "cave": "Cave Echo",
+    "market": "Market Bustle"
+  },
+  "language": {
+    "label": "Story Language",
+    "english": "English",
+    "arabic": "Arabic (Fusha)",
+    "egyptian": "Egyptian Arabic"
+  },
+  "narration": {
+    "play": "Play Narration",
+    "pause": "Pause Narration",
+    "stop": "Stop Narration"
+  },
+  "images": {
+    "generating": "Generating image...",
+    "regenerate": "Regenerate Image",
+    "visualize": "Visualize Scene"
+  },
+  "immersive": {
+    "enter": "Enter Immersive Mode",
+    "exit": "Exit Immersive Mode"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "app": {
+    "name": "Alaya & Soad's Gift",
+    "tagline": "Stories from Jannah"
+  },
+  "nav": {
+    "stories": "Stories",
+    "quran": "The Quran",
+    "live": "Learn with Soso",
+    "kids": "Kids",
+    "library": "Library",
+    "parent": "Parent",
+    "downloads": "Offline Downloads",
+    "inLovingMemory": "In Loving Memory"
+  },
+  "buttons": {
+    "back": "Back",
+    "continue": "Continue",
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search"
+  },
+  "language": {
+    "select": "Select Language",
+    "english": "English",
+    "arabic": "Egyptian Arabic",
+    "changeNote": "You can change this later in settings"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "offline": "You're offline",
+    "online": "Online"
+  }
+}

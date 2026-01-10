@@ -1,0 +1,55 @@
+{
+  "greeting": "السلام عليكم!",
+  "question": "عايز تتعلم إيه النهاردة؟",
+  "activities": {
+    "arabicLetters": "الحروف العربية",
+    "arabicLettersDesc": "اتعلم تقرأ وتكتب",
+    "shortSurahs": "السور القصيرة",
+    "shortSurahsDesc": "احفظ آيات جميلة",
+    "prophetStories": "قصص الأنبياء",
+    "prophetStoriesDesc": "مغامرات ممتعة من القرآن",
+    "myStars": "نجومي",
+    "myStarsDesc": "شوف إنجازاتك"
+  },
+  "levels": {
+    "seedling": "بذرة",
+    "sprout": "برعم",
+    "flower": "زهرة",
+    "tree": "شجرة",
+    "garden": "حديقة"
+  },
+  "progress": {
+    "stars": "نجوم",
+    "streak": "أيام متتالية",
+    "level": "المستوى",
+    "keepGoing": "كمّل كده!",
+    "greatJob": "شاطر!",
+    "amazing": "ممتاز!"
+  },
+  "letters": {
+    "title": "الحروف العربية",
+    "practice": "تدرّب",
+    "listen": "اسمع",
+    "trace": "ارسم",
+    "next": "الحرف الجاي",
+    "previous": "الحرف اللي فات"
+  },
+  "surahs": {
+    "title": "السور القصيرة",
+    "memorize": "احفظ",
+    "listen": "اسمع",
+    "practice": "تدرّب",
+    "ayah": "آية"
+  },
+  "stories": {
+    "title": "قصص الأنبياء",
+    "readStory": "اقرأ القصة",
+    "listenStory": "اسمع",
+    "newStory": "قصة جديدة"
+  },
+  "rewards": {
+    "newStar": "كسبت نجمة!",
+    "levelUp": "مستوى جديد!",
+    "badge": "شارة جديدة!"
+  }
+}

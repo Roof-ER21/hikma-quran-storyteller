@@ -1,0 +1,44 @@
+{
+  "title": "Prophet Stories Library",
+  "subtitle": "Scholarly narratives with Quran verses and hadith references",
+  "loading": "Loading Prophet Stories Library...",
+  "search": {
+    "placeholder": "Search prophets, lessons, locations...",
+    "noResults": "No stories found"
+  },
+  "filters": {
+    "all": "All Prophets",
+    "era": "Era",
+    "location": "Location"
+  },
+  "story": {
+    "era": "Era",
+    "period": "Period",
+    "location": "Location",
+    "keyLessons": "Key Lessons",
+    "sections": "Sections",
+    "relatedProphets": "Related Prophets",
+    "historicalNotes": "Historical Notes"
+  },
+  "narration": {
+    "playFullStory": "Play Full Story",
+    "playSection": "Play Section",
+    "pause": "Pause",
+    "stop": "Stop",
+    "selectReciter": "Select Reciter",
+    "playbackSpeed": "Playback Speed"
+  },
+  "verses": {
+    "quranVerse": "Quran Verse",
+    "surah": "Surah",
+    "verse": "Verse",
+    "transliteration": "Transliteration"
+  },
+  "hadith": {
+    "title": "Hadith Reference",
+    "source": "Source",
+    "book": "Book",
+    "number": "Number",
+    "grade": "Grade"
+  }
+}

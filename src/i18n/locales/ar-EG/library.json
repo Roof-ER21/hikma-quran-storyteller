@@ -1,0 +1,44 @@
+{
+  "title": "مكتبة قصص الأنبياء",
+  "subtitle": "قصص علمية بآيات قرآنية وأحاديث",
+  "loading": "جاري تحميل مكتبة قصص الأنبياء...",
+  "search": {
+    "placeholder": "ابحث عن أنبياء، دروس، أماكن...",
+    "noResults": "مفيش قصص"
+  },
+  "filters": {
+    "all": "كل الأنبياء",
+    "era": "العصر",
+    "location": "المكان"
+  },
+  "story": {
+    "era": "العصر",
+    "period": "الفترة",
+    "location": "المكان",
+    "keyLessons": "الدروس الرئيسية",
+    "sections": "الأقسام",
+    "relatedProphets": "أنبياء مرتبطين",
+    "historicalNotes": "ملاحظات تاريخية"
+  },
+  "narration": {
+    "playFullStory": "شغّل القصة كاملة",
+    "playSection": "شغّل القسم",
+    "pause": "وقّف",
+    "stop": "أوقف",
+    "selectReciter": "اختار القارئ",
+    "playbackSpeed": "سرعة التشغيل"
+  },
+  "verses": {
+    "quranVerse": "آية قرآنية",
+    "surah": "سورة",
+    "verse": "آية",
+    "transliteration": "النطق"
+  },
+  "hadith": {
+    "title": "حديث نبوي",
+    "source": "المصدر",
+    "book": "الكتاب",
+    "number": "الرقم",
+    "grade": "الدرجة"
+  }
+}

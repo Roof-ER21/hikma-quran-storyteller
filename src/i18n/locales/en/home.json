@@ -1,0 +1,87 @@
+{
+  "gate": {
+    "bismillah": "Bismillah",
+    "welcome": "Welcome to",
+    "subtitle": "A calm space for families: kids go straight to their stories, parents can unlock everything with a PIN.",
+    "kidsMode": "Kids Mode",
+    "kidsDescription": "Jump right into stories, songs, and Quran—no login needed.",
+    "parents": "Parents",
+    "unlockEverything": "Unlock everything",
+    "parentDescription": "Enter your name + PIN to manage settings, Learn with Soso, and full stories.",
+    "imAParent": "I'm a Parent"
+  },
+  "stories": {
+    "title": "Explore the timeless",
+    "highlight": "stories of the Prophets.",
+    "subtitle": "Experience the Quran's narratives through interactive storytelling, visualizations, and historical insights.",
+    "chooseProphet": "Choose a Prophet",
+    "selectGuide": "Select a guide...",
+    "askViaAudio": "Or Ask via Audio",
+    "tapMic": "Tap mic to say a name...",
+    "focusTheme": "Focus Theme",
+    "beginJourney": "Begin Journey",
+    "quickPick": "Quick Pick",
+    "prophets": "Prophets"
+  },
+  "prophets": {
+    "Adam": "Adam",
+    "Idris": "Idris",
+    "Nuh (Noah)": "Nuh (Noah)",
+    "Hud": "Hud",
+    "Saleh": "Saleh",
+    "Ibrahim (Abraham)": "Ibrahim (Abraham)",
+    "Lut (Lot)": "Lut (Lot)",
+    "Ishmael": "Ishmael",
+    "Ishaq (Isaac)": "Ishaq (Isaac)",
+    "Yaqub (Jacob)": "Yaqub (Jacob)",
+    "Yusuf (Joseph)": "Yusuf (Joseph)",
+    "Ayyub (Job)": "Ayyub (Job)",
+    "Shu'aib": "Shu'aib",
+    "Musa (Moses)": "Musa (Moses)",
+    "Harun (Aaron)": "Harun (Aaron)",
+    "Dhul-Kifl": "Dhul-Kifl",
+    "Dawud (David)": "Dawud (David)",
+    "Sulaiman (Solomon)": "Sulaiman (Solomon)",
+    "Ilyas (Elijah)": "Ilyas (Elijah)",
+    "Al-Yasa (Elisha)": "Al-Yasa (Elisha)",
+    "Yunus (Jonah)": "Yunus (Jonah)",
+    "Zakariyah": "Zakariyah",
+    "Yahya (John)": "Yahya (John)",
+    "Isa (Jesus)": "Isa (Jesus)"
+  },
+  "topics": {
+    "General Life": "General Life",
+    "Patience": "Patience",
+    "Trust in God": "Trust in God",
+    "Leadership": "Leadership",
+    "Family": "Family",
+    "Miracles": "Miracles",
+    "Justice": "Justice"
+  },
+  "audioStories": {
+    "title": "Immersive Seerah Audio",
+    "subtitle": "Pre-recorded, offline-ready reflections on moments from the Prophet's life.",
+    "readAlong": "Read along",
+    "playAudio": "Play audio",
+    "stopAudio": "Stop audio"
+  },
+  "quranQuote": {
+    "text": "We relate to you, [O Muhammad], the best of stories in what We have revealed to you of this Qur'an...",
+    "reference": "Surah Yusuf 12:3"
+  },
+  "parentGate": {
+    "parentLogin": "Parent Login",
+    "createPIN": "Create Parent PIN",
+    "nameLabel": "Name",
+    "pinLabel": "PIN (4+ digits)",
+    "enterPIN": "Enter PIN",
+    "parentName": "Parent name",
+    "rememberMe": "Remember me on this device",
+    "createAccount": "Create account",
+    "alreadyHavePIN": "I already have a PIN",
+    "login": "Login",
+    "savePIN": "Save PIN",
+    "pleaseWait": "Please wait...",
+    "manageSettings": "Parents can manage settings, unlock all features, and track progress."
+  }
+}

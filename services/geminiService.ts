@@ -197,6 +197,22 @@ export const LANGUAGE_LABELS: Record<StoryLanguage, string> = {
   arabic_egyptian: 'مصري'
 };
 
+// localStorage key for language preference (matches i18n config)
+const LANGUAGE_KEY = 'alayasoad_language';
+
+/**
+ * Get story language based on the user's i18n language preference
+ * Returns 'arabic_egyptian' for Arabic users, 'english' otherwise
+ * Can be overridden by passing a specific language to generateStory
+ */
+export const getStoryLanguageFromI18n = (): StoryLanguage => {
+  const currentLang = localStorage.getItem(LANGUAGE_KEY) || 'en';
+  if (currentLang === 'ar-EG') {
+    return 'arabic_egyptian';
+  }
+  return 'english';
+};
+
 /**
  * Generate a high-quality story using Gemini 3 Pro
  * Now supports Egyptian Arabic and includes scene markers for image generation

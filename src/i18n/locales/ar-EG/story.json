@@ -1,0 +1,44 @@
+{
+  "view": {
+    "backToStories": "رجوع للقصص",
+    "loading": "جاري تحميل القصة...",
+    "generating": "جاري إنشاء قصتك...",
+    "readTime": "دقيقة قراءة",
+    "continueReading": "كمّل القراءة"
+  },
+  "tabs": {
+    "story": "القصة",
+    "locations": "الأماكن",
+    "context": "السياق"
+  },
+  "ambience": {
+    "label": "الأجواء",
+    "silence": "صمت",
+    "desert": "رياح الصحراء",
+    "night": "هدوء الليل",
+    "rain": "صوت المطر",
+    "ocean": "أمواج البحر",
+    "cave": "صدى الكهف",
+    "market": "ضجة السوق"
+  },
+  "language": {
+    "label": "لغة القصة",
+    "english": "English",
+    "arabic": "العربية الفصحى",
+    "egyptian": "العامية المصرية"
+  },
+  "narration": {
+    "play": "شغّل الحكي",
+    "pause": "وقّف الحكي",
+    "stop": "أوقف الحكي"
+  },
+  "images": {
+    "generating": "جاري إنشاء الصورة...",
+    "regenerate": "اعمل صورة تانية",
+    "visualize": "تخيّل المشهد"
+  },
+  "immersive": {
+    "enter": "الوضع الغامر",
+    "exit": "اخرج من الوضع الغامر"
+  }
+}

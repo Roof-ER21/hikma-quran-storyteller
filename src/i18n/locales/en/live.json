@@ -1,0 +1,26 @@
+{
+  "title": "Learn with Soso",
+  "subtitle": "Your personal Quran learning companion",
+  "modes": {
+    "general": "General",
+    "generalDesc": "Ask questions about Islam and the Quran",
+    "tajweed": "Tajweed",
+    "tajweedDesc": "Learn proper Quran recitation rules",
+    "hifzCoach": "Hifz Coach",
+    "hifzCoachDesc": "Memorization guidance and tips",
+    "tafsir": "Tafsir",
+    "tafsirDesc": "Deep understanding of verses"
+  },
+  "chat": {
+    "placeholder": "Ask Soso anything...",
+    "send": "Send",
+    "thinking": "Soso is thinking...",
+    "error": "Something went wrong. Please try again.",
+    "welcome": "Assalamu Alaikum! I'm Soso, your Quran learning companion. How can I help you today?"
+  },
+  "voice": {
+    "startListening": "Start Listening",
+    "stopListening": "Stop Listening",
+    "speaking": "Speaking..."
+  }
+}

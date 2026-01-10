@@ -1,0 +1,41 @@
+{
+  "title": "القرآن الكريم",
+  "tabs": {
+    "read": "اقرأ",
+    "story": "قصة",
+    "listen": "اسمع",
+    "study": "ادرس",
+    "practice": "تدرّب"
+  },
+  "surah": {
+    "surah": "سورة",
+    "ayahs": "آيات",
+    "meccan": "مكية",
+    "medinan": "مدنية",
+    "juz": "جزء",
+    "page": "صفحة"
+  },
+  "themes": {
+    "classic": "كلاسيك (وردي)",
+    "calm": "هادي",
+    "vibrant": "حيوي"
+  },
+  "settings": {
+    "translation": "الترجمة",
+    "reciter": "القارئ",
+    "fontSize": "حجم الخط",
+    "showTransliteration": "اعرض النطق",
+    "showTranslation": "اعرض الترجمة"
+  },
+  "player": {
+    "play": "شغّل",
+    "pause": "وقّف",
+    "stop": "أوقف",
+    "repeat": "كرّر",
+    "speed": "السرعة"
+  },
+  "search": {
+    "placeholder": "ابحث في السور...",
+    "noResults": "مفيش نتايج"
+  }
+}

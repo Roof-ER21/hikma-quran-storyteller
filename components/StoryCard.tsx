@@ -8,19 +8,38 @@ import {
 
 interface StoryCardProps {
   prophet: string;
+  arabicName?: string;
   topic: string;
   language?: StoryLanguage;
   onSelect: (prophet: string, topic: string) => void;
   isSelected?: boolean;
 }
 
-// Prophet-specific icons and colors
+// Prophet-specific icons and colors for all 24 prophets
 const PROPHET_THEMES: Record<string, { icon: string; color: string; gradient: string }> = {
   "Adam": { icon: "fa-seedling", color: "emerald", gradient: "from-emerald-500 to-teal-600" },
+  "Idris": { icon: "fa-pen-fancy", color: "violet", gradient: "from-violet-500 to-purple-600" },
   "Nuh (Noah)": { icon: "fa-ship", color: "blue", gradient: "from-blue-500 to-cyan-600" },
+  "Hud": { icon: "fa-wind", color: "slate", gradient: "from-slate-500 to-gray-600" },
+  "Saleh": { icon: "fa-mountain", color: "amber", gradient: "from-amber-500 to-yellow-600" },
   "Ibrahim (Abraham)": { icon: "fa-fire", color: "orange", gradient: "from-orange-500 to-amber-600" },
+  "Lut (Lot)": { icon: "fa-city", color: "stone", gradient: "from-stone-500 to-gray-600" },
+  "Ishmael": { icon: "fa-kaaba", color: "stone", gradient: "from-stone-600 to-neutral-700" },
+  "Ishaq (Isaac)": { icon: "fa-sun", color: "yellow", gradient: "from-yellow-500 to-amber-600" },
+  "Yaqub (Jacob)": { icon: "fa-users", color: "teal", gradient: "from-teal-500 to-cyan-600" },
   "Yusuf (Joseph)": { icon: "fa-star", color: "purple", gradient: "from-purple-500 to-violet-600" },
+  "Ayyub (Job)": { icon: "fa-praying-hands", color: "rose", gradient: "from-rose-400 to-pink-500" },
+  "Shu'aib": { icon: "fa-balance-scale", color: "emerald", gradient: "from-emerald-600 to-green-700" },
   "Musa (Moses)": { icon: "fa-water", color: "sky", gradient: "from-sky-500 to-blue-600" },
+  "Harun (Aaron)": { icon: "fa-hands-helping", color: "cyan", gradient: "from-cyan-500 to-teal-600" },
+  "Dhul-Kifl": { icon: "fa-leaf", color: "green", gradient: "from-green-500 to-emerald-600" },
+  "Dawud (David)": { icon: "fa-crown", color: "amber", gradient: "from-amber-600 to-orange-700" },
+  "Sulaiman (Solomon)": { icon: "fa-gem", color: "indigo", gradient: "from-indigo-500 to-purple-600" },
+  "Ilyas (Elijah)": { icon: "fa-bolt", color: "yellow", gradient: "from-yellow-400 to-orange-500" },
+  "Al-Yasa (Elisha)": { icon: "fa-heart", color: "pink", gradient: "from-pink-500 to-rose-600" },
+  "Yunus (Jonah)": { icon: "fa-fish", color: "blue", gradient: "from-blue-600 to-indigo-700" },
+  "Zakariyah": { icon: "fa-child", color: "sky", gradient: "from-sky-400 to-blue-500" },
+  "Yahya (John)": { icon: "fa-droplet", color: "cyan", gradient: "from-cyan-400 to-sky-500" },
   "Isa (Jesus)": { icon: "fa-dove", color: "indigo", gradient: "from-indigo-500 to-blue-600" },
   "Muhammad": { icon: "fa-moon", color: "rose", gradient: "from-rose-500 to-pink-600" }
 };
@@ -38,6 +57,7 @@ const TOPIC_ICONS: Record<string, string> = {
 
 const StoryCard: React.FC<StoryCardProps> = ({
   prophet,
+  arabicName,
   topic,
   language = 'english' as StoryLanguage,
   onSelect,
@@ -120,9 +140,12 @@ const StoryCard: React.FC<StoryCardProps> = ({
         </div>
 
         {/* Prophet Name */}
-        <h3 className="text-xl font-serif font-bold mb-1 drop-shadow-sm">
+        <h3 className="text-lg font-serif font-bold mb-0.5 drop-shadow-sm leading-tight">
           {prophet}
         </h3>
+        {arabicName && (
+          <p className="text-sm font-arabic text-white/80 mb-1">{arabicName}</p>
+        )}
 
         {/* Topic Badge */}
         <div className="flex items-center gap-2 mb-3">

@@ -1,0 +1,55 @@
+{
+  "greeting": "Assalamu Alaikum!",
+  "question": "What do you want to learn today?",
+  "activities": {
+    "arabicLetters": "Arabic Letters",
+    "arabicLettersDesc": "Learn to read and write",
+    "shortSurahs": "Short Surahs",
+    "shortSurahsDesc": "Memorize beautiful verses",
+    "prophetStories": "Prophet Stories",
+    "prophetStoriesDesc": "Fun adventures from the Quran",
+    "myStars": "My Stars",
+    "myStarsDesc": "See your achievements"
+  },
+  "levels": {
+    "seedling": "Seedling",
+    "sprout": "Sprout",
+    "flower": "Flower",
+    "tree": "Tree",
+    "garden": "Garden"
+  },
+  "progress": {
+    "stars": "Stars",
+    "streak": "Day Streak",
+    "level": "Level",
+    "keepGoing": "Keep going!",
+    "greatJob": "Great job!",
+    "amazing": "Amazing!"
+  },
+  "letters": {
+    "title": "Arabic Letters",
+    "practice": "Practice",
+    "listen": "Listen",
+    "trace": "Trace",
+    "next": "Next Letter",
+    "previous": "Previous Letter"
+  },
+  "surahs": {
+    "title": "Short Surahs",
+    "memorize": "Memorize",
+    "listen": "Listen",
+    "practice": "Practice",
+    "ayah": "Ayah"
+  },
+  "stories": {
+    "title": "Prophet Stories",
+    "readStory": "Read Story",
+    "listenStory": "Listen",
+    "newStory": "New Story"
+  },
+  "rewards": {
+    "newStar": "You earned a star!",
+    "levelUp": "Level Up!",
+    "badge": "New Badge!"
+  }
+}

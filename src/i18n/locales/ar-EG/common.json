@@ -1,0 +1,39 @@
+{
+  "app": {
+    "name": "هدية علياء و سعاد",
+    "tagline": "قصص من الجنة"
+  },
+  "nav": {
+    "stories": "قصص",
+    "quran": "القرآن",
+    "live": "اتعلم مع سوسو",
+    "kids": "الأطفال",
+    "library": "المكتبة",
+    "parent": "الوالدين",
+    "downloads": "التحميلات",
+    "inLovingMemory": "في ذكرى"
+  },
+  "buttons": {
+    "back": "رجوع",
+    "continue": "استمر",
+    "play": "شغّل",
+    "pause": "وقّف",
+    "stop": "أوقف",
+    "close": "اقفل",
+    "save": "احفظ",
+    "cancel": "الغِ",
+    "search": "ابحث"
+  },
+  "language": {
+    "select": "اختر لغتك",
+    "english": "English",
+    "arabic": "العربية المصرية",
+    "changeNote": "تقدر تغيرها بعدين من الإعدادات"
+  },
+  "status": {
+    "loading": "جاري التحميل...",
+    "error": "حصل حاجة غلط",
+    "offline": "مفيش نت",
+    "online": "متصل"
+  }
+}
