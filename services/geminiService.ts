@@ -497,6 +497,8 @@ export const speakText = async (text: string, options: TTSOptions = {}): Promise
 
   return callWithRetry(async () => {
     const ai = getAI();
+    console.log('[TTS] Generating audio, voice:', voice, 'text:', text.slice(0, 40) + '...');
+
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
       contents: [{ parts: [{ text: text.slice(0, 500) }] }],
@@ -512,7 +514,11 @@ export const speakText = async (text: string, options: TTSOptions = {}): Promise
     });
 
     const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-    if (!base64Audio) return null;
+    if (!base64Audio) {
+      console.error('[TTS] No audio in response. Candidates:', JSON.stringify(response.candidates, null, 2).slice(0, 500));
+      return null;
+    }
+    console.log('[TTS] Audio generated, base64 length:', base64Audio.length);
 
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});
     const audioBuffer = await decodeAudioData(

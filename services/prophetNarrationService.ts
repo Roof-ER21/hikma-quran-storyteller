@@ -28,6 +28,7 @@ import { getGlobalVerseNumber } from './quranDataService';
 const AUDIO_CDN = 'https://cdn.islamic.network/quran/audio';
 const SCHOLAR_VOICE = 'Charon'; // Calm, scholarly voice
 const TRANSITION_DELAY = 800; // ms between audio segments
+const TTS_RATE_LIMIT_DELAY = 1000; // ms delay before TTS calls to avoid rate limits
 const PREBAKED_BASE_PATH = '/assets/prophets/audio';
 
 // ============================================
@@ -414,13 +415,21 @@ class ProphetNarrationService {
     this.updateState({ isLoading: false });
   }
 
+  private sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   private async playTTS(text: string): Promise<void> {
     try {
+      // Add delay before TTS to avoid rate limits
+      await this.sleep(TTS_RATE_LIMIT_DELAY);
+
       const { speakText } = await import('./geminiService');
 
       // Truncate long text for TTS (API limit)
       const truncatedText = text.length > 500 ? text.slice(0, 497) + '...' : text;
 
+      console.log('[ProphetNarration] Calling TTS for:', truncatedText.slice(0, 40) + '...');
       const audioBuffer = await speakText(truncatedText, { voice: SCHOLAR_VOICE });
 
       if (!audioBuffer) {
