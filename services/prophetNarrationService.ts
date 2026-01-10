@@ -165,10 +165,10 @@ class ProphetNarrationService {
     // 2. Quranic verses
     if (section.verses && section.verses.length > 0) {
       for (const verse of section.verses) {
-        // Verse intro (TTS)
+        // Verse intro (TTS) - needs to be longer for Gemini TTS to work reliably
         queue.push({
           type: 'tts',
-          content: `Surah ${verse.surah}, Verse ${verse.verse}`,
+          content: `Now, let us listen to the recitation from Surah ${verse.surah}, Verse ${verse.verse}.`,
           surah: verse.surah,
           verse: verse.verse,
           metadata: { sectionId: section.id },
@@ -426,8 +426,14 @@ class ProphetNarrationService {
 
       const { speakText } = await import('./geminiService');
 
+      // Gemini TTS struggles with very short text - pad if needed
+      let processedText = text;
+      if (text.length < 30) {
+        processedText = `${text}. Please listen carefully.`;
+      }
+
       // Truncate long text for TTS (API limit)
-      const truncatedText = text.length > 500 ? text.slice(0, 497) + '...' : text;
+      const truncatedText = processedText.length > 500 ? processedText.slice(0, 497) + '...' : processedText;
 
       console.log('[ProphetNarration] Calling TTS for:', truncatedText.slice(0, 40) + '...');
       const audioBuffer = await speakText(truncatedText, { voice: SCHOLAR_VOICE });
