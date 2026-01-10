@@ -13,6 +13,7 @@ import ParentGate from './components/ParentGate';
 import AdultAudioStories from './components/AdultAudioStories';
 import ProphetStoriesLibrary from './components/ProphetStoriesLibrary';
 import DedicationPage from './components/DedicationPage';
+import IslamicTools from './components/IslamicTools';
 import RTLProvider from './src/components/RTLProvider';
 import LanguageSelectorModal from './src/i18n/LanguageSelectorModal';
 import { isLanguageSelected, isArabic } from './src/i18n';
@@ -50,7 +51,7 @@ const TOPICS = [
 
 function App() {
   const { t, i18n } = useTranslation(['common', 'home']);
-  const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library' | 'dedication'>('home');
+  const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library' | 'dedication' | 'tools'>('home');
   const [mode, setMode] = useState<'gate' | 'kid' | 'parent'>('gate');
   const [selectedProphet, setSelectedProphet] = useState<string>("");
   const [showLanguageSelector, setShowLanguageSelector] = useState(!isLanguageSelected());
@@ -299,6 +300,13 @@ function App() {
                 <i className="fas fa-book-reader md:mr-2"></i>
                 <span className="hidden md:inline">Library</span>
             </button>
+            <button
+                onClick={() => setView('tools')}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'tools' ? 'bg-purple-100 text-purple-800' : 'text-stone-500 hover:text-purple-600'}`}
+            >
+                <i className="fas fa-compass md:mr-2"></i>
+                <span className="hidden md:inline">Tools</span>
+            </button>
             {/* Language Toggle Button */}
             <button
                 onClick={() => {
@@ -491,6 +499,12 @@ function App() {
         {view === 'dedication' && (
             <div className="fixed inset-0 z-40">
                 <DedicationPage onClose={() => setView('home')} />
+            </div>
+        )}
+
+        {view === 'tools' && (
+            <div className="h-[calc(100vh-140px)]">
+                <IslamicTools onBack={() => setView('home')} />
             </div>
         )}
 
