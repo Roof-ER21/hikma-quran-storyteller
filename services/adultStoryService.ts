@@ -11,6 +11,8 @@ export interface StoryScene {
   sceneTitle: string;
   text: string;
   quranReference: string | null;
+  sceneTitleArabic?: string;
+  textArabic?: string;
 }
 
 export interface AdultStory {
@@ -20,9 +22,12 @@ export interface AdultStory {
   title: string;
   titleArabic: string;
   theme: string;
+  themeArabic?: string;
   estimatedReadTime: number;
   scenes: StoryScene[];
   keyLessons: string[];
+  keyLessonsArabic?: string[];
+  summaryArabic?: string;
   relatedVerses: string[];
 }
 
@@ -179,9 +184,16 @@ export const getStoryCount = (): number => {
 /**
  * Format story for display (converts scene text to clean paragraphs)
  */
-export const formatStoryForDisplay = (story: AdultStory): string => {
+export type StoryLanguage = 'english' | 'arabic' | 'arabic_egyptian';
+
+export const formatStoryForDisplay = (story: AdultStory, language: StoryLanguage = 'english'): string => {
+  const useArabic = language === 'arabic' || language === 'arabic_egyptian';
+
+  const getSceneTitle = (scene: StoryScene) => useArabic ? (scene.sceneTitleArabic || scene.sceneTitle) : scene.sceneTitle;
+  const getSceneText = (scene: StoryScene) => useArabic ? (scene.textArabic || scene.text) : scene.text;
+
   return story.scenes.map(scene => {
-    let text = `## ${scene.sceneTitle}\n\n${scene.text}`;
+    let text = `## ${getSceneTitle(scene)}\n\n${getSceneText(scene)}`;
     if (scene.quranReference) {
       text += `\n\n📖 *${scene.quranReference}*`;
     }

@@ -315,7 +315,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
       setPreloadedStory(preloaded);
       setStoryMode('preloaded');
       // Format preloaded story for display
-      const formattedStory = formatStoryForDisplay(preloaded);
+      const formattedStory = formatStoryForDisplay(preloaded, language);
       setStory(formattedStory);
       setCleanedStory(formattedStory);
       setLoading(false);
@@ -329,6 +329,15 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
       stopAmbience();
     };
   }, [prophet]);
+
+  // Re-render preloaded story when language changes
+  useEffect(() => {
+    if (storyMode === 'preloaded' && preloadedStory) {
+      const formattedStory = formatStoryForDisplay(preloadedStory, language);
+      setStory(formattedStory);
+      setCleanedStory(formattedStory);
+    }
+  }, [language, storyMode, preloadedStory]);
 
   // Generate new AI story (called when user clicks "Generate New Story")
   const handleGenerateNewStory = async () => {
@@ -1101,7 +1110,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
         <div className={`px-4 py-2 bg-emerald-50 border-b border-emerald-200 flex items-center gap-3 text-sm text-emerald-800 ${isArabic ? 'flex-row-reverse' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
           <i className="fas fa-check-circle text-emerald-600"></i>
           <span className={isArabic ? 'font-arabic' : ''}>
-            {t('preloaded.available', 'Story ready')} • {preloadedStory.theme} • {preloadedStory.estimatedReadTime} {t('preloaded.minRead', 'min read')}
+            {t('preloaded.available', 'Story ready')} • {(language === 'arabic' || language === 'arabic_egyptian') ? (preloadedStory.themeArabic || preloadedStory.theme) : preloadedStory.theme} • {preloadedStory.estimatedReadTime} {t('preloaded.minRead', 'min read')}
           </span>
           <span className="ml-auto text-xs text-emerald-600">
             <i className="fas fa-wifi-slash mr-1"></i>
