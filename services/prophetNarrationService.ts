@@ -149,7 +149,7 @@ class ProphetNarrationService {
   ): NarrationQueueItem[] {
     const queue: NarrationQueueItem[] = [];
 
-    // 1. Section content (check for prebaked first)
+    // 1. Section content (check for prebaked first, with TTS fallback text)
     const prebakedPath = `${PREBAKED_BASE_PATH}/sections/${storyId}-${section.id}.mp3`;
     queue.push({
       type: 'prebaked',
@@ -157,6 +157,7 @@ class ProphetNarrationService {
       metadata: {
         sectionId: section.id,
         sectionTitle: section.title,
+        fallbackText: section.content, // Store original text for TTS fallback
       },
     });
 
@@ -416,24 +417,41 @@ class ProphetNarrationService {
   private async playTTS(text: string): Promise<void> {
     try {
       const { speakText } = await import('./geminiService');
-      const audioBuffer = await speakText(text, { voice: SCHOLAR_VOICE });
+
+      // Truncate long text for TTS (API limit)
+      const truncatedText = text.length > 500 ? text.slice(0, 497) + '...' : text;
+
+      const audioBuffer = await speakText(truncatedText, { voice: SCHOLAR_VOICE });
 
       if (!audioBuffer) {
-        throw new Error('TTS generation failed');
+        throw new Error('TTS returned no audio - check API key configuration');
       }
 
       // Convert AudioBuffer to playable audio
       await this.playAudioBuffer(audioBuffer);
     } catch (error) {
       console.error('TTS error:', error);
+      this.updateState({ error: 'Voice narration unavailable - check API settings' });
       throw error;
     }
   }
 
   private async playTTSFallback(item: NarrationQueueItem): Promise<void> {
-    // For prebaked content that failed, we need to get the original text
-    // This would require loading the story data - for now, skip to next
-    console.log('Prebaked audio not found, skipping to next item');
+    // For prebaked content that failed, try TTS with the fallback text
+    const fallbackText = item.metadata?.fallbackText;
+
+    if (fallbackText) {
+      console.log('Prebaked audio not found, using TTS fallback');
+      try {
+        await this.playTTS(fallbackText);
+        return;
+      } catch (error) {
+        console.error('TTS fallback also failed:', error);
+      }
+    } else {
+      console.log('Prebaked audio not found and no fallback text, skipping');
+    }
+
     this.onItemEnded();
   }
 

@@ -251,6 +251,7 @@ export interface NarrationQueueItem {
     source?: string;
     sectionId?: string;
     sectionTitle?: string;
+    fallbackText?: string; // Original text for TTS fallback when prebaked fails
   };
 }
 
