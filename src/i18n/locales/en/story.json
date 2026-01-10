@@ -3,6 +3,18 @@
     "consulting": "Consulting the archives...",
     "weaving": "Weaving the tale of {{prophet}}"
   },
+  "actions": {
+    "generateNew": "Generate New Story",
+    "generating": "Generating...",
+    "exploreLibrary": "Explore in Library"
+  },
+  "preloaded": {
+    "available": "Story ready",
+    "minRead": "min read",
+    "worksOffline": "Works offline",
+    "keyLessons": "Key Lessons",
+    "relatedVerses": "Related Verses"
+  },
   "view": {
     "backToStories": "Back to Stories",
     "readTime": "{{time}} min read",

@@ -453,6 +453,10 @@ function App() {
                     prophet={selectedProphet}
                     topic={selectedTopic}
                     onBack={() => setView('home')}
+                    onNavigateToLibrary={(prophetId) => {
+                      setView('library');
+                      // ProphetStoriesLibrary will auto-scroll to prophet if needed
+                    }}
                 />
             </div>
         )}

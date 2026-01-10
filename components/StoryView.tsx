@@ -13,6 +13,11 @@ import {
   LANGUAGE_LABELS
 } from '../services/geminiService';
 import {
+  getAdultStoryByName,
+  AdultStory,
+  formatStoryForDisplay
+} from '../services/adultStoryService';
+import {
   saveStoryReadingPosition,
   getStoryReadingPosition,
   StoryReadingPosition
@@ -107,7 +112,11 @@ interface StoryViewProps {
   prophet: string;
   topic: string;
   onBack: () => void;
+  onNavigateToLibrary?: (prophetId?: string) => void;
 }
+
+// Story display mode
+type StoryMode = 'preloaded' | 'generating' | 'ai-generated';
 
 const AMBIENCE_OPTIONS = [
     { id: 'silence', label: 'Silence', icon: 'fa-volume-mute' },
@@ -135,13 +144,17 @@ const AUDIO_CUE_KEYWORDS: Record<string, string[]> = {
   thunder: ['destroyed', 'punishment', 'wrath', 'perished', 'doom', 'fire', 'lightning']
 };
 
-const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
+const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigateToLibrary }) => {
   const { t, i18n } = useTranslation('story');
   const isArabic = i18n.language === 'ar-EG';
 
+  // Story mode: preloaded (instant), generating, or ai-generated
+  const [storyMode, setStoryMode] = useState<StoryMode>('preloaded');
+  const [preloadedStory, setPreloadedStory] = useState<AdultStory | null>(null);
+
   const [story, setStory] = useState<string>("");
   const [cleanedStory, setCleanedStory] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false); // Start false for preloaded
   const [images, setImages] = useState<string[]>([]);
   const [sceneImages, setSceneImages] = useState<SceneImage[]>([]);
   const [generatingImage, setGeneratingImage] = useState<boolean>(false);
@@ -283,66 +296,89 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
     }
   }, [savedPosition]);
 
-  // Load Story with scene extraction and progressive image generation
+  // Load preloaded story on mount (instant, no API call)
   useEffect(() => {
-    const loadStory = async () => {
-      setLoading(true);
-      setImages([]);
-      setSceneImages([]);
-      setCleanedStory("");
-
-      try {
-        const text = await generateStory(prophet, topic, language);
-        const rawStory = text || "Could not generate story.";
-        setStory(rawStory);
-
-        // Extract scenes and clean the story text
-        const scenes = extractScenes(rawStory);
-        const cleaned = cleanStoryText(rawStory);
-        setCleanedStory(cleaned);
-
-        // Initialize scene images array
-        if (scenes.length > 0) {
-          const initialSceneImages: SceneImage[] = scenes.map(prompt => ({
-            prompt,
-            image: null,
-            loading: false
-          }));
-          setSceneImages(initialSceneImages);
-
-          // Generate first image immediately (hero image)
-          const heroPrompt = scenes[0] || `Cinematic landscape of the era of Prophet ${prophet}, ${topic}`;
-          const heroImg = await generateStoryImage(heroPrompt, { aspectRatio: "16:9", resolution: "2K" });
-          if (heroImg) {
-            setImages([heroImg]);
-            setSceneImages(prev => prev.map((s, i) => i === 0 ? { ...s, image: heroImg, loading: false } : s));
-          }
-
-          // Generate remaining images progressively in background
-          generateRemainingSceneImages(scenes.slice(1), 1);
-        } else {
-          // Fallback: Generate a single hero image if no scenes
-          const prompt = `Cinematic landscape of the era of Prophet ${prophet}, ${topic}, wide shot, atmospheric`;
-          const img = await generateStoryImage(prompt, { aspectRatio: "16:9", resolution: "2K" });
-          if (img) setImages([img]);
-        }
-
-      } catch (e) {
-        console.error(e);
-        setStory("Error loading story. Please try again.");
-        setCleanedStory("Error loading story. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadStory();
+    const preloaded = getAdultStoryByName(prophet);
+    if (preloaded) {
+      setPreloadedStory(preloaded);
+      setStoryMode('preloaded');
+      // Format preloaded story for display
+      const formattedStory = formatStoryForDisplay(preloaded);
+      setStory(formattedStory);
+      setCleanedStory(formattedStory);
+      setLoading(false);
+    } else {
+      // No preloaded story - auto-generate
+      handleGenerateNewStory();
+    }
 
     return () => {
       stopAudio();
       stopAmbience();
     };
-  }, [prophet, topic, language]);
+  }, [prophet]);
+
+  // Generate new AI story (called when user clicks "Generate New Story")
+  const handleGenerateNewStory = async () => {
+    setStoryMode('generating');
+    setLoading(true);
+    setImages([]);
+    setSceneImages([]);
+    setCleanedStory("");
+    setPreloadedStory(null);
+
+    try {
+      const text = await generateStory(prophet, topic, language);
+      const rawStory = text || "Could not generate story.";
+      setStory(rawStory);
+
+      // Extract scenes and clean the story text
+      const scenes = extractScenes(rawStory);
+      const cleaned = cleanStoryText(rawStory);
+      setCleanedStory(cleaned);
+
+      // Initialize scene images array
+      if (scenes.length > 0) {
+        const initialSceneImages: SceneImage[] = scenes.map(prompt => ({
+          prompt,
+          image: null,
+          loading: false
+        }));
+        setSceneImages(initialSceneImages);
+
+        // Generate first image immediately (hero image)
+        const heroPrompt = scenes[0] || `Cinematic landscape of the era of Prophet ${prophet}, ${topic}`;
+        const heroImg = await generateStoryImage(heroPrompt, { aspectRatio: "16:9", resolution: "2K" });
+        if (heroImg) {
+          setImages([heroImg]);
+          setSceneImages(prev => prev.map((s, i) => i === 0 ? { ...s, image: heroImg, loading: false } : s));
+        }
+
+        // Generate remaining images progressively in background
+        generateRemainingSceneImages(scenes.slice(1), 1);
+      } else {
+        // Fallback: Generate a single hero image if no scenes
+        const prompt = `Cinematic landscape of the era of Prophet ${prophet}, ${topic}, wide shot, atmospheric`;
+        const img = await generateStoryImage(prompt, { aspectRatio: "16:9", resolution: "2K" });
+        if (img) setImages([img]);
+      }
+
+      setStoryMode('ai-generated');
+    } catch (e) {
+      console.error(e);
+      setStory("Error loading story. Please try again.");
+      setCleanedStory("Error loading story. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Regenerate when language changes (only for AI stories)
+  useEffect(() => {
+    if (storyMode === 'ai-generated') {
+      handleGenerateNewStory();
+    }
+  }, [language]);
 
   // Progressive image generation for remaining scenes
   const generateRemainingSceneImages = async (scenes: string[], startIndex: number) => {
@@ -1019,7 +1055,49 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
            </div>
         </div>
       </div>
-      
+
+      {/* Action Buttons Bar - Generate New / Explore Library */}
+      {!immersiveMode && !loading && (
+        <div className={`px-4 py-3 bg-gradient-to-r from-rose-50 to-amber-50 border-b border-stone-200 flex gap-3 ${isArabic ? 'flex-row-reverse' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
+          <button
+            onClick={handleGenerateNewStory}
+            disabled={storyMode === 'generating'}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
+              storyMode === 'generating'
+                ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-rose-600 to-rose-700 text-white hover:from-rose-700 hover:to-rose-800 shadow-md hover:shadow-lg'
+            } ${isArabic ? 'font-arabic' : ''}`}
+          >
+            <i className={`fas ${storyMode === 'generating' ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`}></i>
+            <span>{storyMode === 'generating' ? t('actions.generating', 'Generating...') : t('actions.generateNew', 'Generate New Story')}</span>
+          </button>
+
+          {onNavigateToLibrary && (
+            <button
+              onClick={() => onNavigateToLibrary(preloadedStory?.id)}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium bg-white border-2 border-amber-500 text-amber-700 hover:bg-amber-50 transition-all shadow-sm hover:shadow-md ${isArabic ? 'font-arabic' : ''}`}
+            >
+              <i className="fas fa-book-open"></i>
+              <span>{t('actions.exploreLibrary', 'Explore in Library')}</span>
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Preloaded Story Info Bar */}
+      {!immersiveMode && !loading && storyMode === 'preloaded' && preloadedStory && (
+        <div className={`px-4 py-2 bg-emerald-50 border-b border-emerald-200 flex items-center gap-3 text-sm text-emerald-800 ${isArabic ? 'flex-row-reverse' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
+          <i className="fas fa-check-circle text-emerald-600"></i>
+          <span className={isArabic ? 'font-arabic' : ''}>
+            {t('preloaded.available', 'Story ready')} • {preloadedStory.theme} • {preloadedStory.estimatedReadTime} {t('preloaded.minRead', 'min read')}
+          </span>
+          <span className="ml-auto text-xs text-emerald-600">
+            <i className="fas fa-wifi-slash mr-1"></i>
+            {t('preloaded.worksOffline', 'Works offline')}
+          </span>
+        </div>
+      )}
+
       {/* Mini Progress Bar for Immersive Mode */}
       {immersiveMode && isPlaying && (
          <div className="fixed top-[72px] left-0 w-full h-1 bg-white/20 z-50">

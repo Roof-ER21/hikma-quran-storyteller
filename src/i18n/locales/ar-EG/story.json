@@ -3,6 +3,18 @@
     "consulting": "بنستشير الأرشيف...",
     "weaving": "بننسج حكاية {{prophet}}"
   },
+  "actions": {
+    "generateNew": "اعمل قصة جديدة",
+    "generating": "بنعمل...",
+    "exploreLibrary": "استكشف في المكتبة"
+  },
+  "preloaded": {
+    "available": "القصة جاهزة",
+    "minRead": "دقيقة قراءة",
+    "worksOffline": "شغّالة من غير نت",
+    "keyLessons": "الدروس المستفادة",
+    "relatedVerses": "الآيات المتعلقة"
+  },
   "view": {
     "backToStories": "رجوع للقصص",
     "readTime": "{{time}} دقيقة قراءة",
