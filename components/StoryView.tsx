@@ -185,6 +185,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
   // TTS State
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isNarrationLoading, setIsNarrationLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
@@ -907,10 +908,12 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
         stopAudio();
         return;
     }
-    
-    setIsPlaying(true);
+
+    setIsNarrationLoading(true);
     try {
         const buffer = await speakText(story);
+        setIsNarrationLoading(false);
+        setIsPlaying(true);
         if (buffer) {
             audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
             const source = audioCtxRef.current.createBufferSource();
@@ -943,6 +946,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
         }
     } catch (e) {
         console.error("TTS Failed", e);
+        setIsNarrationLoading(false);
         setIsPlaying(false);
     }
   };
@@ -1047,12 +1051,25 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
            </button>
 
            <div className="relative">
-               <button 
-                 onClick={playAudio} 
-                 className={`p-3 rounded-full transition-all shadow-md relative z-10 ${isPlaying ? 'bg-amber-600 text-white ring-4 ring-amber-200' : 'bg-rose-900 text-white hover:bg-rose-800'}`}
+               <button
+                 onClick={playAudio}
+                 disabled={isNarrationLoading}
+                 className={`p-3 rounded-full transition-all shadow-md relative z-10 ${
+                   isNarrationLoading
+                     ? 'bg-amber-500 text-white animate-pulse cursor-wait'
+                     : isPlaying
+                       ? 'bg-amber-600 text-white ring-4 ring-amber-200'
+                       : 'bg-rose-900 text-white hover:bg-rose-800'
+                 }`}
+                 title={isNarrationLoading ? 'Preparing narration...' : isPlaying ? 'Stop' : 'Play narration'}
                >
-                 <i className={`fas ${isPlaying ? 'fa-stop' : 'fa-play'}`}></i>
+                 <i className={`fas ${isNarrationLoading ? 'fa-spinner fa-spin' : isPlaying ? 'fa-stop' : 'fa-play'}`}></i>
                </button>
+               {isNarrationLoading && (
+                 <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-amber-700 whitespace-nowrap font-medium animate-pulse">
+                   Loading...
+                 </span>
+               )}
                {isPlaying && (
                  <svg className="absolute top-0 left-0 w-full h-full -m-1 pointer-events-none w-[calc(100%+8px)] h-[calc(100%+8px)]" viewBox="0 0 36 36">
                     <path

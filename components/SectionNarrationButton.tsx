@@ -64,7 +64,7 @@ const SectionNarrationButton: React.FC<SectionNarrationButtonProps> = ({
           ? 'bg-rose-100 text-rose-700 hover:bg-rose-200'
           : 'bg-stone-100 text-stone-600 hover:bg-rose-50 hover:text-rose-600'
         }
-        ${isLoading ? 'cursor-wait opacity-70' : 'cursor-pointer'}
+        ${isLoading ? 'cursor-wait animate-pulse bg-amber-100 text-amber-700' : 'cursor-pointer'}
       `}
       title={tooltip}
       aria-busy={isLoading}
