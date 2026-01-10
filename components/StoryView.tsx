@@ -207,16 +207,27 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
   }, []);
 
   // Soft Islamic-inspired background for non-immersive mode
+  const heroBackgroundImage = !immersiveMode
+    ? (images[0] || getProphetImagePath(preloadedStory?.id || prophet))
+    : null;
+
   const storyBackgroundStyle = immersiveMode
     ? undefined
     : {
-        backgroundImage: `
-          radial-gradient(circle at 20% 20%, rgba(190, 24, 93, 0.06) 0, rgba(190, 24, 93, 0.06) 12px, transparent 12px),
-          radial-gradient(circle at 80% 0%, rgba(234, 179, 8, 0.06) 0, rgba(234, 179, 8, 0.06) 14px, transparent 18px),
-          linear-gradient(180deg, #f9f7f4 0%, #fdfaf6 28%, #f6f1e9 100%)
-        `,
-        backgroundSize: '180px 180px, 240px 240px, cover',
-        backgroundAttachment: 'fixed, fixed, fixed',
+        backgroundImage: heroBackgroundImage
+          ? `
+            linear-gradient(180deg, rgba(249,247,244,0.94) 0%, rgba(249,247,244,0.86) 45%, rgba(246,241,233,0.92) 100%),
+            url(${heroBackgroundImage})
+          `
+          : `
+            radial-gradient(circle at 20% 20%, rgba(190, 24, 93, 0.06) 0, rgba(190, 24, 93, 0.06) 12px, transparent 12px),
+            radial-gradient(circle at 80% 0%, rgba(234, 179, 8, 0.06) 0, rgba(234, 179, 8, 0.06) 14px, transparent 18px),
+            linear-gradient(180deg, #f9f7f4 0%, #fdfaf6 28%, #f6f1e9 100%)
+          `,
+        backgroundSize: heroBackgroundImage ? 'cover, cover' : '180px 180px, 240px 240px, cover',
+        backgroundAttachment: heroBackgroundImage ? 'fixed, fixed' : 'fixed, fixed, fixed',
+        backgroundPosition: heroBackgroundImage ? `center ${-parallaxOffset * 0.25}px, center top` : undefined,
+        backgroundRepeat: 'no-repeat',
       };
 
   // Scroll handler for reading progress and parallax
