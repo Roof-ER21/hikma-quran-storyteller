@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getKidsProgress, addKidsStars, BADGES, getKidsBadges } from '../../services/offlineDatabase';
 import kidsStories from '../../data/kidsStories';
 import { speakWithWebSpeech } from '../../services/kidsAssetLoader';
@@ -59,6 +60,9 @@ const ACTIVITIES = [
 ];
 
 const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
+  const { t, i18n } = useTranslation('kids');
+  const isArabic = i18n.language === 'ar-EG';
+
   const [activity, setActivity] = useState<KidsActivity>('home');
   const [totalStars, setTotalStars] = useState(0);
   const [level, setLevel] = useState(1);
@@ -190,42 +194,51 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
         </div>
 
         {/* Welcome Message */}
-        <div className="text-center px-6 py-4">
-          <h1 className="text-3xl font-bold text-stone-700 mb-2">
-            Assalamu Alaikum! 👋
+        <div className="text-center px-6 py-4" dir={isArabic ? 'rtl' : 'ltr'}>
+          <h1 className={`text-3xl font-bold text-stone-700 mb-2 ${isArabic ? 'font-arabic' : ''}`}>
+            {t('greeting')} 👋
           </h1>
-          <p className="text-lg text-stone-500">
-            What do you want to learn today?
+          <p className={`text-lg text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>
+            {t('question')}
           </p>
         </div>
 
         {/* Activity Cards Grid */}
         <div className="flex-1 p-6">
           <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-            {ACTIVITIES.map((act) => (
-              <button
-                key={act.id}
-                onClick={() => handleActivityClick(act.id)}
-                className="aspect-square rounded-3xl p-4 flex flex-col items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-transform"
-                style={{ backgroundColor: act.color }}
-              >
-                <div className="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center">
-                  <i className={`fas ${act.icon} text-3xl text-white`}></i>
-                </div>
-                <span className="text-white font-bold text-lg">{act.title}</span>
-                <span className="text-white/80 text-2xl font-arabic">{act.titleArabic}</span>
-              </button>
-            ))}
+            {ACTIVITIES.map((act) => {
+              // Map activity id to translation key
+              const titleKey = act.id === 'alphabet' ? 'activities.arabicLetters'
+                : act.id === 'quran' ? 'activities.shortSurahs'
+                : act.id === 'stories' ? 'activities.prophetStories'
+                : 'activities.myStars';
+              const arabicKey = titleKey + 'Ar';
+
+              return (
+                <button
+                  key={act.id}
+                  onClick={() => handleActivityClick(act.id)}
+                  className="aspect-square rounded-3xl p-4 flex flex-col items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-transform"
+                  style={{ backgroundColor: act.color }}
+                >
+                  <div className="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center">
+                    <i className={`fas ${act.icon} text-3xl text-white`}></i>
+                  </div>
+                  <span className={`text-white font-bold text-lg ${isArabic ? 'font-arabic' : ''}`}>{t(titleKey)}</span>
+                  <span className="text-white/80 text-2xl font-arabic">{t(arabicKey)}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Progress to Next Level */}
         {nextLevel && (
           <div className="p-6">
-            <div className="bg-white rounded-2xl p-4 shadow-lg max-w-md mx-auto">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-stone-500">Next level: {nextLevel.emoji} {nextLevel.name}</span>
-                <span className="text-sm font-bold text-amber-500">{starsToNextLevel} ⭐ to go!</span>
+            <div className="bg-white rounded-2xl p-4 shadow-lg max-w-md mx-auto" dir={isArabic ? 'rtl' : 'ltr'}>
+              <div className={`flex items-center justify-between mb-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
+                <span className={`text-sm text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>{t('nextLevel.label')} {nextLevel.emoji} {t(`levels.${nextLevel.name.toLowerCase()}`)}</span>
+                <span className={`text-sm font-bold text-amber-500 ${isArabic ? 'font-arabic' : ''}`}>{t('nextLevel.toGo', { count: starsToNextLevel })} ⭐</span>
               </div>
               <div className="h-3 bg-stone-100 rounded-full overflow-hidden">
                 <div

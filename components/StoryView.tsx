@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   generateStory,
   generateStoryImage,
@@ -135,6 +136,9 @@ const AUDIO_CUE_KEYWORDS: Record<string, string[]> = {
 };
 
 const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
+  const { t, i18n } = useTranslation('story');
+  const isArabic = i18n.language === 'ar-EG';
+
   const [story, setStory] = useState<string>("");
   const [cleanedStory, setCleanedStory] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -902,7 +906,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-rose-800 bg-gradient-to-br from-stone-50 to-rose-50">
+      <div className="flex flex-col items-center justify-center h-full text-rose-800 bg-gradient-to-br from-stone-50 to-rose-50" dir={isArabic ? 'rtl' : 'ltr'}>
         <div className="relative mb-8">
           {/* Decorative rings */}
           <div className="absolute inset-0 rounded-full border-2 border-rose-200 animate-ping opacity-30"></div>
@@ -912,8 +916,8 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
             <i className="fas fa-book-open absolute text-rose-700 text-xl"></i>
           </div>
         </div>
-        <p className="text-2xl font-serif animate-pulse">Consulting the archives...</p>
-        <p className="text-sm text-stone-500 mt-2 animate-fade-in-up">Weaving the tale of {prophet}</p>
+        <p className={`text-2xl font-serif animate-pulse ${isArabic ? 'font-arabic' : ''}`}>{t('loading.consulting')}</p>
+        <p className={`text-sm text-stone-500 mt-2 animate-fade-in-up ${isArabic ? 'font-arabic' : ''}`}>{t('loading.weaving', { prophet })}</p>
 
         {/* Skeleton preview */}
         <div className="mt-8 w-full max-w-md px-8 space-y-3 opacity-30">
@@ -1066,22 +1070,22 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
           <div className="flex border-b border-gray-200 bg-white sticky top-0 z-10">
             {/* Existing Tab Logic */}
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'read' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'}`}
+                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'read' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => setActiveTab('read')}
             >
-                Story
+                {t('tabs.story')}
             </button>
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'locations' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'}`}
+                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'locations' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => { setActiveTab('locations'); handleLoadLocations(); }}
             >
-                Locations
+                {t('tabs.locations')}
             </button>
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'context' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'}`}
+                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'context' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => { setActiveTab('context'); handleLoadContext(); }}
             >
-                Deep Dive
+                {t('tabs.deepDive')}
             </button>
           </div>
       )}
@@ -1091,15 +1095,15 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
         <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-40 animate-fade-in-up">
           <button
             onClick={handleContinueReading}
-            className="bg-rose-600 hover:bg-rose-700 text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-3 transition-all hover:scale-105"
+            className={`bg-rose-600 hover:bg-rose-700 text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-3 transition-all hover:scale-105 ${isArabic ? 'flex-row-reverse' : ''}`}
           >
             <i className="fas fa-bookmark"></i>
-            <span className="font-medium">Continue Reading</span>
+            <span className={`font-medium ${isArabic ? 'font-arabic' : ''}`}>{t('view.continueReading')}</span>
             <span className="text-rose-200 text-sm">({Math.round(savedPosition.scrollPercent)}%)</span>
           </button>
           <button
             onClick={() => setShowContinueReading(false)}
-            className="absolute -top-2 -right-2 w-6 h-6 bg-stone-600 hover:bg-stone-700 text-white rounded-full text-xs flex items-center justify-center"
+            className={`absolute -top-2 w-6 h-6 bg-stone-600 hover:bg-stone-700 text-white rounded-full text-xs flex items-center justify-center ${isArabic ? '-left-2' : '-right-2'}`}
           >
             <i className="fas fa-times"></i>
           </button>
@@ -1130,10 +1134,10 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
 
                 {/* Reading Stats */}
                 {!immersiveMode && cleanedStory && (
-                    <div className="flex items-center gap-4 mb-6 text-xs text-stone-400 uppercase tracking-wider animate-fade-in-up stagger-1">
-                      <span><i className="fas fa-clock mr-1"></i>{Math.ceil((cleanedStory || story).split(' ').length / 200)} min read</span>
-                      <span><i className="fas fa-align-left mr-1"></i>{(cleanedStory || story).split('\n').filter(l => l.trim()).length} paragraphs</span>
-                      {sceneImages.length > 0 && <span><i className="fas fa-images mr-1"></i>{sceneImages.length} scenes</span>}
+                    <div className={`flex items-center gap-4 mb-6 text-xs text-stone-400 uppercase tracking-wider animate-fade-in-up stagger-1 ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
+                      <span className={isArabic ? 'flex items-center flex-row-reverse gap-1' : ''}><i className={`fas fa-clock ${isArabic ? '' : 'mr-1'}`}></i>{t('view.readTime', { time: Math.ceil((cleanedStory || story).split(' ').length / 200) })}</span>
+                      <span className={isArabic ? 'flex items-center flex-row-reverse gap-1' : ''}><i className={`fas fa-align-left ${isArabic ? '' : 'mr-1'}`}></i>{t('view.paragraphs', { count: (cleanedStory || story).split('\n').filter(l => l.trim()).length })}</span>
+                      {sceneImages.length > 0 && <span className={isArabic ? 'flex items-center flex-row-reverse gap-1' : ''}><i className={`fas fa-images ${isArabic ? '' : 'mr-1'}`}></i>{t('view.scenes', { count: sceneImages.length })}</span>}
                     </div>
                 )}
 
@@ -1184,7 +1188,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
                 {sceneImages.length > 1 && !immersiveMode && (
                     <div className="mt-12 space-y-6 animate-fade-in-up">
                         <div className="islamic-divider text-rose-300/50">
-                          <h4 className="text-lg font-serif text-rose-900 px-4">Story Scenes</h4>
+                          <h4 className={`text-lg font-serif text-rose-900 px-4 ${isArabic ? 'font-arabic' : ''}`}>{t('images.storyScenes')}</h4>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             {sceneImages.slice(1).map((scene, i) => (
@@ -1208,12 +1212,12 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
                                         <>
                                           <img
                                             src={scene.image}
-                                            alt={`Scene ${i + 2}`}
+                                            alt={t('images.scene', { number: i + 2 })}
                                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                           />
                                           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <div className="absolute bottom-2 left-2 right-2 text-white text-xs truncate flex items-center justify-between">
-                                              <span>Scene {i + 2}</span>
+                                            <div className={`absolute bottom-2 left-2 right-2 text-white text-xs truncate flex items-center justify-between ${isArabic ? 'flex-row-reverse' : ''}`}>
+                                              <span className={isArabic ? 'font-arabic' : ''}>{t('images.scene', { number: i + 2 })}</span>
                                               <i className="fas fa-expand text-white/80"></i>
                                             </div>
                                           </div>
@@ -1231,13 +1235,13 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
 
                 {!immersiveMode && (
                     <div className="mt-12 flex justify-center">
-                        <button 
+                        <button
                             onClick={handleGenerateImage}
                             disabled={generatingImage}
-                            className="bg-rose-100 hover:bg-rose-200 text-rose-900 px-6 py-3 rounded-full flex items-center gap-2 transition-all disabled:opacity-50 font-medium"
+                            className={`bg-rose-100 hover:bg-rose-200 text-rose-900 px-6 py-3 rounded-full flex items-center gap-2 transition-all disabled:opacity-50 font-medium ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
                         >
                             <i className={`fas ${generatingImage ? 'fa-spinner fa-spin' : 'fa-paint-brush'}`}></i>
-                            {generatingImage ? 'Painting...' : 'Generate New Scene'}
+                            {generatingImage ? t('images.generating') : t('images.generate')}
                         </button>
                     </div>
                 )}
@@ -1246,20 +1250,20 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
 
         {/* Other Tabs (Standard Implementation) */}
         {activeTab === 'locations' && !immersiveMode && (
-            <div className="max-w-2xl mx-auto space-y-6">
-                {!mapText && <div className="text-center text-gray-500 py-10"><i className="fas fa-compass fa-spin text-2xl mb-2"></i><p>Locating...</p></div>}
-                
+            <div className="max-w-2xl mx-auto space-y-6" dir={isArabic ? 'rtl' : 'ltr'}>
+                {!mapText && <div className="text-center text-gray-500 py-10"><i className="fas fa-compass fa-spin text-2xl mb-2"></i><p className={isArabic ? 'font-arabic' : ''}>{t('locations.locating')}</p></div>}
+
                 {mapText && (
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h3 className="text-lg font-bold text-rose-900 mb-2">Geographical Context</h3>
+                        <h3 className={`text-lg font-bold text-rose-900 mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('locations.geoContext')}</h3>
                         <p className="text-gray-700">{mapText}</p>
                     </div>
                 )}
-                
+
                 {locations.length > 0 && (
                     <div className="grid gap-3">
                         {locations.map((loc, i) => (
-                             <a key={i} href={loc.uri} target="_blank" rel="noopener noreferrer" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-rose-300 transition-colors flex items-center justify-between group">
+                             <a key={i} href={loc.uri} target="_blank" rel="noopener noreferrer" className={`block bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-rose-300 transition-colors flex items-center justify-between group ${isArabic ? 'flex-row-reverse' : ''}`}>
                                 <span className="font-medium text-rose-800">{loc.title}</span>
                                 <i className="fas fa-external-link-alt text-gray-400 group-hover:text-rose-500"></i>
                              </a>
@@ -1270,16 +1274,16 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack }) => {
         )}
 
         {activeTab === 'context' && !immersiveMode && (
-            <div className="max-w-2xl mx-auto space-y-6">
-                 {!contextSources.length && <div className="text-center text-gray-500 py-10"><i className="fas fa-search fa-spin text-2xl mb-2"></i><p>Searching archives...</p></div>}
-                 
+            <div className="max-w-2xl mx-auto space-y-6" dir={isArabic ? 'rtl' : 'ltr'}>
+                 {!contextSources.length && <div className="text-center text-gray-500 py-10"><i className="fas fa-search fa-spin text-2xl mb-2"></i><p className={isArabic ? 'font-arabic' : ''}>{t('context.searching')}</p></div>}
+
                  {contextSources.length > 0 && (
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h3 className="text-lg font-bold text-rose-900 mb-4">Sources & Further Reading</h3>
+                        <h3 className={`text-lg font-bold text-rose-900 mb-4 ${isArabic ? 'font-arabic' : ''}`}>{t('context.sources')}</h3>
                         <ul className="space-y-3">
                             {contextSources.map((source, i) => (
                                 <li key={i}>
-                                    <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-rose-700 hover:underline flex items-start gap-2">
+                                    <a href={source.url} target="_blank" rel="noopener noreferrer" className={`text-rose-700 hover:underline flex items-start gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
                                         <i className="fas fa-link mt-1 text-xs"></i>
                                         <span>{source.title}</span>
                                     </a>

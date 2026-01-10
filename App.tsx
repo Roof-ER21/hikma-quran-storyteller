@@ -150,14 +150,28 @@ function App() {
   };
 
   const renderGate = () => (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 flex flex-col items-center justify-center p-6 relative">
+      {/* Language Toggle on Gate */}
+      <button
+        onClick={() => {
+          const newLang = i18n.language === 'ar-EG' ? 'en' : 'ar-EG';
+          i18n.changeLanguage(newLang);
+          localStorage.setItem('alayasoad_language', newLang);
+        }}
+        className="absolute top-4 right-4 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-stone-600 hover:text-rose-700 hover:bg-white transition-colors shadow-sm border border-stone-200 flex items-center gap-2"
+        title={i18n.language === 'ar-EG' ? 'Switch to English' : 'التبديل للعربية'}
+      >
+        <i className="fas fa-globe"></i>
+        <span className="text-sm font-medium">{i18n.language === 'ar-EG' ? 'English' : 'العربية'}</span>
+      </button>
+
       <div className="max-w-4xl w-full text-center space-y-10">
         <div className="space-y-4">
-          <p className="text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold">{t('home:gate.bismillah')}</p>
-          <h1 className="text-4xl md:text-5xl font-serif text-rose-900 leading-tight">
+          <p className={`text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.bismillah')}</p>
+          <h1 className={`text-4xl md:text-5xl font-serif text-rose-900 leading-tight ${isArabic() ? 'font-arabic' : ''}`}>
             {t('home:gate.welcome')} <span className="text-amber-600">{t('common:app.name')}</span>
           </h1>
-          <p className="text-stone-600 max-w-2xl mx-auto">
+          <p className={`text-stone-600 max-w-2xl mx-auto ${isArabic() ? 'font-arabic' : ''}`}>
             {t('home:gate.subtitle')}
           </p>
         </div>
@@ -166,23 +180,23 @@ function App() {
             onClick={enterKids}
             className="rounded-3xl bg-amber-500 text-white py-8 px-6 shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-all flex flex-col gap-3"
           >
-            <div className="flex items-center justify-center gap-3 text-2xl font-bold">
+            <div className={`flex items-center justify-center gap-3 text-2xl font-bold ${isArabic() ? 'font-arabic' : ''}`}>
               <i className="fas fa-rocket"></i> {t('home:gate.kidsMode')}
             </div>
-            <p className="text-sm text-white/90">{t('home:gate.kidsDescription')}</p>
+            <p className={`text-sm text-white/90 ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.kidsDescription')}</p>
           </button>
           <div className={`rounded-3xl bg-white border border-stone-100 py-8 px-6 shadow-lg flex flex-col gap-4 ${isArabic() ? 'text-right' : 'text-left'}`}>
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center justify-between ${isArabic() ? 'flex-row-reverse' : ''}`}>
               <div className={isArabic() ? 'text-right' : 'text-left'}>
-                <p className="text-xs uppercase text-stone-500 font-semibold">{t('home:gate.parents')}</p>
-                <p className="text-2xl font-bold text-rose-900">{t('home:gate.unlockEverything')}</p>
+                <p className={`text-xs uppercase text-stone-500 font-semibold ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.parents')}</p>
+                <p className={`text-2xl font-bold text-rose-900 ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.unlockEverything')}</p>
               </div>
               <i className="fas fa-user-shield text-rose-600 text-2xl"></i>
             </div>
-            <p className="text-sm text-stone-600">{t('home:gate.parentDescription')}</p>
+            <p className={`text-sm text-stone-600 ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.parentDescription')}</p>
             <button
               onClick={() => setShowParentGate(true)}
-              className="w-full rounded-2xl bg-rose-900 text-white py-3 font-semibold hover:bg-rose-800 transition-colors"
+              className={`w-full rounded-2xl bg-rose-900 text-white py-3 font-semibold hover:bg-rose-800 transition-colors ${isArabic() ? 'font-arabic' : ''}`}
             >
               {t('home:gate.imAParent')}
             </button>
@@ -281,6 +295,19 @@ function App() {
             >
                 <i className="fas fa-book-reader md:mr-2"></i>
                 <span className="hidden md:inline">Library</span>
+            </button>
+            {/* Language Toggle Button */}
+            <button
+                onClick={() => {
+                  const newLang = i18n.language === 'ar-EG' ? 'en' : 'ar-EG';
+                  i18n.changeLanguage(newLang);
+                  localStorage.setItem('alayasoad_language', newLang);
+                }}
+                className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors"
+                title={i18n.language === 'ar-EG' ? 'Switch to English' : 'التبديل للعربية'}
+            >
+                <i className="fas fa-globe"></i>
+                <span className="hidden sm:inline ml-1 text-xs">{i18n.language === 'ar-EG' ? 'EN' : 'ع'}</span>
             </button>
             {/* Download Manager Button */}
             <button

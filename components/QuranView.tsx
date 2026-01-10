@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { generateSurahStory, speakText, generateStoryImage } from '../services/geminiService';
 import { getSurahWithTranslation, TRANSLATIONS } from '../services/quranDataService';
 import { audioManager, RECITERS, DEFAULT_RECITER } from '../services/quranAudioService';
@@ -222,6 +223,9 @@ const SURAHS: SurahDef[] = [
 ];
 
 const QuranView: React.FC = () => {
+  const { t, i18n } = useTranslation('quran');
+  const isArabic = i18n.language === 'ar-EG';
+
   // Surah selection state
   const [selectedSurah, setSelectedSurah] = useState<SurahDef | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -920,30 +924,31 @@ const QuranView: React.FC = () => {
 
   // Surah list view
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div className="h-full overflow-y-auto" dir={isArabic ? 'rtl' : 'ltr'}>
+      <div className={`mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 ${isArabic ? 'md:flex-row-reverse' : ''}`}>
         <div>
-          <h2 className="text-3xl font-serif text-rose-900 mb-2">The Noble Quran</h2>
-          <p className="text-stone-600">Read, listen, and explore the stories and meanings of each Surah.</p>
+          <h2 className={`text-3xl font-serif text-rose-900 mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('title')}</h2>
+          <p className={`text-stone-600 ${isArabic ? 'font-arabic' : ''}`}>{t('subtitle')}</p>
         </div>
-        <div className="flex gap-2">
+        <div className={`flex gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
           <div className="relative flex-1 md:flex-none">
-            <i className="fas fa-search absolute left-3 top-3.5 text-stone-400"></i>
+            <i className={`fas fa-search absolute ${isArabic ? 'right-3' : 'left-3'} top-3.5 text-stone-400`}></i>
             <input
               type="text"
-              placeholder="Search Surahs..."
-              className="pl-10 pr-4 py-3 bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 w-full md:w-64"
+              placeholder={t('search.placeholder')}
+              className={`${isArabic ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4'} py-3 bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 w-full md:w-64 ${isArabic ? 'font-arabic' : ''}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              dir={isArabic ? 'rtl' : 'ltr'}
             />
           </div>
           <button
             onClick={() => setShowVoiceSearch(true)}
-            className="px-4 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-lg flex items-center gap-2 transition-colors shadow-sm"
+            className={`px-4 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-lg flex items-center gap-2 transition-colors shadow-sm ${isArabic ? 'flex-row-reverse' : ''}`}
             title="Voice Search - Recite to find any verse"
           >
             <i className="fas fa-microphone"></i>
-            <span className="hidden sm:inline">Voice Search</span>
+            <span className={`hidden sm:inline ${isArabic ? 'font-arabic' : ''}`}>{t('search.voiceSearch')}</span>
           </button>
         </div>
       </div>
@@ -978,15 +983,15 @@ const QuranView: React.FC = () => {
           </button>
         ))}
         {filteredSurahs.length === 0 && (
-          <div className="col-span-full text-center py-12 text-stone-500">
-            No Surahs found matching "{searchTerm}"
+          <div className={`col-span-full text-center py-12 text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>
+            {t('search.noResults')} "{searchTerm}"
           </div>
         )}
       </div>
 
       <div className="mt-12 bg-gradient-to-r from-rose-50 to-amber-50 p-6 rounded-xl border border-rose-100 text-center">
-        <p className="text-rose-800 italic text-lg">"We have certainly sent down distinct verses. And Allah guides whom He wills to a straight path."</p>
-        <p className="text-rose-600 text-sm font-bold mt-2">Surah An-Nur 24:46</p>
+        <p className={`text-rose-800 italic text-lg ${isArabic ? 'font-arabic' : ''}`}>"{t('quote.text')}"</p>
+        <p className={`text-rose-600 text-sm font-bold mt-2 ${isArabic ? 'font-arabic' : ''}`}>{t('quote.reference')}</p>
       </div>
 
       {/* Voice Search Modal in List View */}

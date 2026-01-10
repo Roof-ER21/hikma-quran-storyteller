@@ -1,18 +1,22 @@
 {
+  "loading": {
+    "consulting": "بنستشير الأرشيف...",
+    "weaving": "بننسج حكاية {{prophet}}"
+  },
   "view": {
     "backToStories": "رجوع للقصص",
-    "loading": "جاري تحميل القصة...",
-    "generating": "جاري إنشاء قصتك...",
-    "readTime": "دقيقة قراءة",
-    "continueReading": "كمّل القراءة"
+    "readTime": "{{time}} دقيقة قراءة",
+    "paragraphs": "{{count}} فقرة",
+    "scenes": "{{count}} مشهد",
+    "continueReading": "كمّل القراءة",
+    "error": "حصل خطأ في تحميل القصة. جرّب تاني."
   },
   "tabs": {
     "story": "القصة",
     "locations": "الأماكن",
-    "context": "السياق"
+    "deepDive": "استكشاف أعمق"
   },
   "ambience": {
-    "label": "الأجواء",
     "silence": "صمت",
     "desert": "رياح الصحراء",
     "night": "هدوء الليل",
@@ -22,7 +26,6 @@
     "market": "ضجة السوق"
   },
   "language": {
-    "label": "لغة القصة",
     "english": "English",
     "arabic": "العربية الفصحى",
     "egyptian": "العامية المصرية"
@@ -33,12 +36,21 @@
     "stop": "أوقف الحكي"
   },
   "images": {
-    "generating": "جاري إنشاء الصورة...",
-    "regenerate": "اعمل صورة تانية",
-    "visualize": "تخيّل المشهد"
+    "generating": "بنرسم...",
+    "generate": "اعمل مشهد جديد",
+    "storyScenes": "مشاهد القصة",
+    "scene": "مشهد {{number}}"
   },
   "immersive": {
-    "enter": "الوضع الغامر",
-    "exit": "اخرج من الوضع الغامر"
+    "enter": "الوضع السينمائي",
+    "exit": "اخرج من الوضع السينمائي"
+  },
+  "locations": {
+    "locating": "بنبحث...",
+    "geoContext": "السياق الجغرافي"
+  },
+  "context": {
+    "searching": "بنبحث في الأرشيف...",
+    "sources": "المصادر و قراءات إضافية"
   }
 }

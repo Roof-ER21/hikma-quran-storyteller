@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AdultProphetStory, StorySection, NarrationState } from '../types';
 import { loadProphetStories, searchProphetStories } from '../services/prophetService';
 import { prophetNarrationService, RECITERS, DEFAULT_RECITER } from '../services/prophetNarrationService';
@@ -6,6 +7,8 @@ import SectionNarrationButton from './SectionNarrationButton';
 import ProphetAudioPlayer from './ProphetAudioPlayer';
 
 const ProphetStoriesLibrary: React.FC = () => {
+  const { t, i18n } = useTranslation('library');
+  const isArabic = i18n.language === 'ar-EG';
   const [stories, setStories] = useState<AdultProphetStory[]>([]);
   const [filteredStories, setFilteredStories] = useState<AdultProphetStory[]>([]);
   const [selectedStory, setSelectedStory] = useState<AdultProphetStory | null>(null);
@@ -147,25 +150,25 @@ const ProphetStoriesLibrary: React.FC = () => {
       <div className="flex items-center justify-center h-96">
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-rose-900 mx-auto"></div>
-          <p className="text-stone-500 font-medium">Loading Prophet Stories Library...</p>
+          <p className={`text-stone-500 font-medium ${isArabic ? 'font-arabic' : ''}`}>{t('loading')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-rose-50/30 to-amber-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-rose-50/30 to-amber-50/20" dir={isArabic ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="bg-gradient-to-r from-rose-900 via-rose-800 to-amber-900 text-white">
         <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="flex items-center gap-4 mb-4">
+          <div className={`flex items-center gap-4 mb-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
               <i className="fas fa-book-open text-3xl"></i>
             </div>
-            <div>
-              <h1 className="text-4xl font-serif font-bold">Prophet Stories Library</h1>
-              <p className="text-rose-100 text-lg mt-1">
-                Scholarly narratives with Quranic verses and Hadith references
+            <div className={isArabic ? 'text-right' : ''}>
+              <h1 className={`text-4xl font-serif font-bold ${isArabic ? 'font-arabic' : ''}`}>{t('title')}</h1>
+              <p className={`text-rose-100 text-lg mt-1 ${isArabic ? 'font-arabic' : ''}`}>
+                {t('subtitle')}
               </p>
             </div>
           </div>
@@ -173,19 +176,20 @@ const ProphetStoriesLibrary: React.FC = () => {
           {/* Search Bar */}
           <div className="mt-8 max-w-2xl">
             <div className="relative">
-              <i className="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400"></i>
+              <i className={`fas fa-search absolute ${isArabic ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 text-stone-400`}></i>
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by prophet name, location, lessons, or keywords..."
-                className="w-full pl-12 pr-12 py-4 rounded-xl bg-white/95 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-lg"
+                placeholder={t('search.placeholder')}
+                className={`w-full ${isArabic ? 'pr-12 pl-12 text-right' : 'pl-12 pr-12'} py-4 rounded-xl bg-white/95 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-lg ${isArabic ? 'font-arabic' : ''}`}
+                dir={isArabic ? 'rtl' : 'ltr'}
               />
               {searchQuery && (
                 <button
                   onClick={clearSearch}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
+                  className={`absolute ${isArabic ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors`}
                 >
                   <i className="fas fa-times"></i>
                 </button>

@@ -1,5 +1,6 @@
 {
-  "title": "The Holy Quran",
+  "title": "The Noble Quran",
+  "subtitle": "Read, listen, and explore the stories and meanings of each Surah.",
   "tabs": {
     "read": "Read",
     "story": "Story",
@@ -10,6 +11,7 @@
   "surah": {
     "surah": "Surah",
     "ayahs": "Ayahs",
+    "verses": "verses",
     "meccan": "Meccan",
     "medinan": "Medinan",
     "juz": "Juz",
@@ -21,11 +23,13 @@
     "vibrant": "Vibrant"
   },
   "settings": {
+    "title": "Reading Settings",
     "translation": "Translation",
     "reciter": "Reciter",
     "fontSize": "Font Size",
     "showTransliteration": "Show Transliteration",
-    "showTranslation": "Show Translation"
+    "showTranslation": "Show Translation",
+    "theme": "Theme"
   },
   "player": {
     "play": "Play",
@@ -35,7 +39,41 @@
     "speed": "Speed"
   },
   "search": {
-    "placeholder": "Search surahs...",
-    "noResults": "No surahs found"
+    "placeholder": "Search Surahs...",
+    "noResults": "No Surahs found matching",
+    "voiceSearch": "Voice Search"
+  },
+  "loading": {
+    "verses": "Loading verses...",
+    "story": "Unfolding the verses...",
+    "practice": "Loading practice data...",
+    "audio": "Loading audio player..."
+  },
+  "actions": {
+    "listenToStory": "Listen to Story",
+    "stop": "Stop",
+    "visualize": "Visualize",
+    "creating": "Creating..."
+  },
+  "practice": {
+    "recitationCheck": "Recitation Check",
+    "memorization": "Memorization",
+    "selectVerse": "Select a Verse to Practice",
+    "chooseDifferent": "Choose Different Verse"
+  },
+  "study": {
+    "title": "Word-by-Word Study",
+    "description": "Deep dive into each word's meaning, root, and grammar. This feature is coming soon!",
+    "translation": "Translation",
+    "rootWords": "Root Words",
+    "grammar": "Grammar"
+  },
+  "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
+  "error": {
+    "loadFailed": "Failed to load Quran data. Please try again."
+  },
+  "quote": {
+    "text": "We have certainly sent down distinct verses. And Allah guides whom He wills to a straight path.",
+    "reference": "Surah An-Nur 24:46"
   }
 }

@@ -3,13 +3,68 @@
   "subtitle": "صاحبك الشخصي لتعلم القرآن",
   "modes": {
     "general": "عام",
-    "generalDesc": "اسأل أسئلة عن الإسلام والقرآن",
+    "generalDesc": "اسأل عن الأنبياء والتاريخ الإسلامي والقصص",
     "tajweed": "تجويد",
-    "tajweedDesc": "اتعلم قواعد تلاوة القرآن الصح",
+    "tajweedDesc": "اتعلم قواعد تلاوة القرآن والنطق الصحيح",
     "hifzCoach": "مدرب حفظ",
-    "hifzCoachDesc": "إرشادات ونصايح للحفظ",
+    "hifzCoachDesc": "تقنيات الحفظ والتمرين",
     "tafsir": "تفسير",
-    "tafsirDesc": "فهم عميق للآيات"
+    "tafsirDesc": "المعاني العميقة وسياق الآيات"
+  },
+  "verseContext": {
+    "title": "ركّز على آية معينة (اختياري)",
+    "surahLabel": "اسم أو رقم السورة",
+    "surahPlaceholder": "مثلاً: البقرة أو ٢",
+    "verseLabel": "الآية",
+    "versePlaceholder": "مثلاً: ٢٥٥"
+  },
+  "startButton": "ابدأ جلسة {{mode}}",
+  "modeInfo": {
+    "title": "وضع {{mode}}",
+    "tajweedTip": "نصيحة: اتلو آيات واسأل عن قواعد تجويد معينة زي الإخفاء والإدغام والمد.",
+    "hifzTip": "نصيحة: حدد سورة عايز تحفظها والذكاء الاصطناعي هيسألك ويديك تقنيات حفظ.",
+    "tafsirTip": "نصيحة: اسأل عن معنى أو سياق أو تطبيق أي آية."
+  },
+  "session": {
+    "tajweedTutor": "معلم التجويد",
+    "hifzCoach": "مدرب الحفظ",
+    "tafsirScholar": "عالم التفسير",
+    "voiceConversation": "محادثة صوتية",
+    "tajweedSubtitle": "اتلو أو اسأل عن قواعد النطق",
+    "hifzSubtitle": "خلينا نتمرن ونقوّي ذاكرتك",
+    "tafsirSubtitle": "اسأل عن المعاني والحكمة",
+    "conversationSubtitle": "اسأل عن أي نبي أو حدث تاريخي"
+  },
+  "status": {
+    "teaching": "بيعلّم...",
+    "coaching": "بيدرّب...",
+    "explaining": "بيشرح...",
+    "listening": "بيسمع...",
+    "listeningForYou": "مستنيك تتكلم...",
+    "tapToStart": "دوس على الميكروفون علشان تبدأ"
+  },
+  "actions": {
+    "endSession": "إنهاء الجلسة",
+    "changeMode": "تغيير الوضع"
+  },
+  "suggestions": {
+    "tryAsking": "جرّب تسأل:",
+    "conversation": {
+      "prophet": "\"احكيلي عن النبي يوسف\"",
+      "battle": "\"إيه اللي حصل في بدر؟\""
+    },
+    "tajweed": {
+      "ikhfa": "\"اشرحلي قواعد الإخفاء\"",
+      "pronounce": "\"إزاي أنطق الضاد؟\""
+    },
+    "hifz": {
+      "quiz": "\"امتحني في الفاتحة\"",
+      "tips": "\"اديني نصايح للحفظ\""
+    },
+    "tafsir": {
+      "ayatulKursi": "\"اشرحلي آية الكرسي\"",
+      "surahAsr": "\"إيه معنى سورة العصر؟\""
+    }
   },
   "chat": {
     "placeholder": "اسأل سوسو أي حاجة...",

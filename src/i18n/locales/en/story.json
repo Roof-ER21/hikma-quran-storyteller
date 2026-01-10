@@ -1,18 +1,22 @@
 {
+  "loading": {
+    "consulting": "Consulting the archives...",
+    "weaving": "Weaving the tale of {{prophet}}"
+  },
   "view": {
     "backToStories": "Back to Stories",
-    "loading": "Loading story...",
-    "generating": "Generating your story...",
-    "readTime": "min read",
-    "continueReading": "Continue Reading"
+    "readTime": "{{time}} min read",
+    "paragraphs": "{{count}} paragraphs",
+    "scenes": "{{count}} scenes",
+    "continueReading": "Continue Reading",
+    "error": "Error loading story. Please try again."
   },
   "tabs": {
     "story": "Story",
     "locations": "Locations",
-    "context": "Context"
+    "deepDive": "Deep Dive"
   },
   "ambience": {
-    "label": "Ambience",
     "silence": "Silence",
     "desert": "Desert Wind",
     "night": "Night Peace",
@@ -22,7 +26,6 @@
     "market": "Market Bustle"
   },
   "language": {
-    "label": "Story Language",
     "english": "English",
     "arabic": "Arabic (Fusha)",
     "egyptian": "Egyptian Arabic"
@@ -33,12 +36,21 @@
     "stop": "Stop Narration"
   },
   "images": {
-    "generating": "Generating image...",
-    "regenerate": "Regenerate Image",
-    "visualize": "Visualize Scene"
+    "generating": "Painting...",
+    "generate": "Generate New Scene",
+    "storyScenes": "Story Scenes",
+    "scene": "Scene {{number}}"
   },
   "immersive": {
-    "enter": "Enter Immersive Mode",
-    "exit": "Exit Immersive Mode"
+    "enter": "Cinematic Mode",
+    "exit": "Exit Cinematic Mode"
+  },
+  "locations": {
+    "locating": "Locating...",
+    "geoContext": "Geographical Context"
+  },
+  "context": {
+    "searching": "Searching archives...",
+    "sources": "Sources & Further Reading"
   }
 }

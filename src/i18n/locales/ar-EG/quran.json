@@ -1,41 +1,79 @@
 {
   "title": "القرآن الكريم",
+  "subtitle": "اقرأ، واسمع، واستكشف قصص ومعاني كل سورة.",
   "tabs": {
     "read": "اقرأ",
-    "story": "قصة",
-    "listen": "اسمع",
+    "story": "القصة",
+    "listen": "استمع",
     "study": "ادرس",
     "practice": "تدرّب"
   },
   "surah": {
     "surah": "سورة",
     "ayahs": "آيات",
+    "verses": "آية",
     "meccan": "مكية",
     "medinan": "مدنية",
     "juz": "جزء",
     "page": "صفحة"
   },
   "themes": {
-    "classic": "كلاسيك (وردي)",
-    "calm": "هادي",
-    "vibrant": "حيوي"
+    "classic": "كلاسيكي (وردي)",
+    "calm": "هادئ",
+    "vibrant": "نابض"
   },
   "settings": {
+    "title": "إعدادات القراءة",
     "translation": "الترجمة",
     "reciter": "القارئ",
     "fontSize": "حجم الخط",
-    "showTransliteration": "اعرض النطق",
-    "showTranslation": "اعرض الترجمة"
+    "showTransliteration": "إظهار النطق",
+    "showTranslation": "إظهار الترجمة",
+    "theme": "المظهر"
   },
   "player": {
     "play": "شغّل",
     "pause": "وقّف",
     "stop": "أوقف",
-    "repeat": "كرّر",
+    "repeat": "كرر",
     "speed": "السرعة"
   },
   "search": {
     "placeholder": "ابحث في السور...",
-    "noResults": "مفيش نتايج"
+    "noResults": "مافيش سور بالاسم ده",
+    "voiceSearch": "البحث الصوتي"
+  },
+  "loading": {
+    "verses": "جاري تحميل الآيات...",
+    "story": "بنفتح الآيات...",
+    "practice": "جاري تحميل بيانات التدريب...",
+    "audio": "جاري تحميل المشغّل..."
+  },
+  "actions": {
+    "listenToStory": "اسمع القصة",
+    "stop": "أوقف",
+    "visualize": "تخيّل",
+    "creating": "جاري الإنشاء..."
+  },
+  "practice": {
+    "recitationCheck": "فحص التلاوة",
+    "memorization": "الحفظ",
+    "selectVerse": "اختر آية للتدريب",
+    "chooseDifferent": "اختر آية تانية"
+  },
+  "study": {
+    "title": "دراسة كلمة بكلمة",
+    "description": "تعمّق في معنى كل كلمة وجذرها ونحوها. الميزة دي قريب!",
+    "translation": "الترجمة",
+    "rootWords": "الجذور",
+    "grammar": "النحو"
+  },
+  "bismillah": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+  "error": {
+    "loadFailed": "فشل تحميل بيانات القرآن. جرّب تاني."
+  },
+  "quote": {
+    "text": "وَلَقَدْ أَنْزَلْنَا آيَاتٍ مُبَيِّنَاتٍ وَاللَّهُ يَهْدِي مَنْ يَشَاءُ إِلَىٰ صِرَاطٍ مُسْتَقِيمٍ",
+    "reference": "سورة النور ٢٤:٤٦"
   }
 }

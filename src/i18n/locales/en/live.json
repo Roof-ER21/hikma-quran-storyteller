@@ -3,13 +3,68 @@
   "subtitle": "Your personal Quran learning companion",
   "modes": {
     "general": "General",
-    "generalDesc": "Ask questions about Islam and the Quran",
+    "generalDesc": "Ask about prophets, Islamic history, and stories",
     "tajweed": "Tajweed",
-    "tajweedDesc": "Learn proper Quran recitation rules",
+    "tajweedDesc": "Learn Quran recitation rules and pronunciation",
     "hifzCoach": "Hifz Coach",
-    "hifzCoachDesc": "Memorization guidance and tips",
+    "hifzCoachDesc": "Memorization techniques and practice",
     "tafsir": "Tafsir",
-    "tafsirDesc": "Deep understanding of verses"
+    "tafsirDesc": "Deep meanings and context of verses"
+  },
+  "verseContext": {
+    "title": "Focus on specific verse (optional)",
+    "surahLabel": "Surah Name/Number",
+    "surahPlaceholder": "e.g., Al-Baqarah or 2",
+    "verseLabel": "Verse",
+    "versePlaceholder": "e.g., 255"
+  },
+  "startButton": "Start {{mode}} Session",
+  "modeInfo": {
+    "title": "{{mode}} Mode",
+    "tajweedTip": "Tip: Recite verses and ask about specific Tajweed rules like Ikhfa, Idgham, or Madd.",
+    "hifzTip": "Tip: Specify a Surah to memorize and the AI will quiz you and provide memory techniques.",
+    "tafsirTip": "Tip: Ask about the meaning, context, or application of any verse."
+  },
+  "session": {
+    "tajweedTutor": "Tajweed Tutor",
+    "hifzCoach": "Hifz Coach",
+    "tafsirScholar": "Tafsir Scholar",
+    "voiceConversation": "Voice Conversation",
+    "tajweedSubtitle": "Recite or ask about pronunciation rules",
+    "hifzSubtitle": "Let's practice and strengthen your memory",
+    "tafsirSubtitle": "Ask about meanings and wisdom",
+    "conversationSubtitle": "Ask about any Prophet or historical event"
+  },
+  "status": {
+    "teaching": "Teaching...",
+    "coaching": "Coaching...",
+    "explaining": "Explaining...",
+    "listening": "Listening...",
+    "listeningForYou": "Listening for you...",
+    "tapToStart": "Tap microphone to start"
+  },
+  "actions": {
+    "endSession": "End Session",
+    "changeMode": "Change Mode"
+  },
+  "suggestions": {
+    "tryAsking": "Try asking:",
+    "conversation": {
+      "prophet": "\"Tell me about Prophet Yusuf\"",
+      "battle": "\"What happened at Badr?\""
+    },
+    "tajweed": {
+      "ikhfa": "\"Explain Ikhfa rules\"",
+      "pronounce": "\"How do I pronounce ض?\""
+    },
+    "hifz": {
+      "quiz": "\"Quiz me on Al-Fatiha\"",
+      "tips": "\"Give me memory tips\""
+    },
+    "tafsir": {
+      "ayatulKursi": "\"Explain Ayatul Kursi\"",
+      "surahAsr": "\"What does Surah Al-Asr mean?\""
+    }
   },
   "chat": {
     "placeholder": "Ask Soso anything...",

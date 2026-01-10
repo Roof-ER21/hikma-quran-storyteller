@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeAudioData } from '../services/audioUtils';
 import { getGeminiApiKey } from '../services/geminiService';
@@ -15,12 +16,13 @@ interface TutoringModeConfig {
     systemPrompt: string;
 }
 
+// Mode configurations - names/descriptions are fetched via i18n
 const TUTORING_MODES: TutoringModeConfig[] = [
     {
         id: 'conversation',
-        name: 'General',
+        name: 'general', // i18n key
         icon: 'fa-comments',
-        description: 'Ask about prophets, Islamic history, and stories',
+        description: 'generalDesc', // i18n key
         color: 'amber',
         systemPrompt: `You are Hikma, a wise and warm Islamic scholar and storyteller. Your voice is calm, measured, and deeply knowledgeable.
 
@@ -43,9 +45,9 @@ STYLE:
     },
     {
         id: 'tajweed',
-        name: 'Tajweed',
+        name: 'tajweed', // i18n key
         icon: 'fa-book-quran',
-        description: 'Learn Quran recitation rules and pronunciation',
+        description: 'tajweedDesc', // i18n key
         color: 'emerald',
         systemPrompt: `You are a Tajweed master and Quran recitation coach. Your role is to teach the rules of proper Quran recitation.
 
@@ -69,9 +71,9 @@ INTERACTION:
     },
     {
         id: 'memorization',
-        name: 'Hifz Coach',
+        name: 'hifzCoach', // i18n key
         icon: 'fa-brain',
-        description: 'Memorization techniques and practice',
+        description: 'hifzCoachDesc', // i18n key
         color: 'purple',
         systemPrompt: `You are an experienced Hifz (Quran memorization) coach. You help students memorize the Quran effectively.
 
@@ -102,9 +104,9 @@ TESTING:
     },
     {
         id: 'tafsir',
-        name: 'Tafsir',
+        name: 'tafsir', // i18n key
         icon: 'fa-lightbulb',
-        description: 'Deep meanings and context of verses',
+        description: 'tafsirDesc', // i18n key
         color: 'blue',
         systemPrompt: `You are a Tafsir (Quran exegesis) scholar. You explain the deep meanings, context, and wisdom of Quranic verses.
 
@@ -140,6 +142,9 @@ const VOICE_OPTIONS: Record<TutoringMode, string> = {
 };
 
 const LiveMode: React.FC = () => {
+    const { t, i18n } = useTranslation('live');
+    const isArabic = i18n.language === 'ar-EG';
+
     // Connection state
     const [connected, setConnected] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
@@ -357,10 +362,10 @@ Be ready to discuss any verse from this Surah and its themes.`;
     // Mode Selector View
     if (showModeSelector && !connected) {
         return (
-            <div className="h-full flex flex-col p-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white rounded-lg overflow-y-auto">
+            <div className={`h-full flex flex-col p-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white rounded-lg overflow-y-auto ${isArabic ? 'text-right' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
                 <div className="text-center mb-6">
-                    <h2 className="text-3xl font-serif mb-2">Learn with Soso</h2>
-                    <p className="text-slate-400">Choose your learning mode</p>
+                    <h2 className={`text-3xl font-serif mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('title')}</h2>
+                    <p className={`text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('subtitle')}</p>
                 </div>
 
                 {/* Mode Cards */}
@@ -374,7 +379,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
                                 key={mode.id}
                                 onClick={() => setSelectedMode(mode.id)}
                                 className={`
-                                    p-4 rounded-xl border-2 transition-all text-left
+                                    p-4 rounded-xl border-2 transition-all ${isArabic ? 'text-right' : 'text-left'}
                                     ${isSelected
                                         ? `${modeColors.border} bg-white/10`
                                         : 'border-slate-700 hover:border-slate-500'
@@ -384,11 +389,11 @@ Be ready to discuss any verse from this Surah and its themes.`;
                                 <div className={`w-10 h-10 rounded-lg ${modeColors.bg} flex items-center justify-center mb-3`}>
                                     <i className={`fas ${mode.icon} text-white`}></i>
                                 </div>
-                                <h3 className={`font-semibold mb-1 ${isSelected ? modeColors.text : 'text-white'}`}>
-                                    {mode.name}
+                                <h3 className={`font-semibold mb-1 ${isSelected ? modeColors.text : 'text-white'} ${isArabic ? 'font-arabic' : ''}`}>
+                                    {t(`modes.${mode.name}`)}
                                 </h3>
-                                <p className="text-xs text-slate-400 line-clamp-2">
-                                    {mode.description}
+                                <p className={`text-xs text-slate-400 line-clamp-2 ${isArabic ? 'font-arabic' : ''}`}>
+                                    {t(`modes.${mode.description}`)}
                                 </p>
                             </button>
                         );
@@ -397,29 +402,31 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
                 {/* Verse Context (Optional) */}
                 <div className="bg-slate-800/50 rounded-xl p-4 mb-6">
-                    <h4 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
+                    <h4 className={`text-sm font-medium text-slate-300 mb-3 flex items-center gap-2 ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
                         <i className="fas fa-book-open text-slate-400"></i>
-                        Focus on specific verse (optional)
+                        {t('verseContext.title')}
                     </h4>
-                    <div className="flex gap-3">
+                    <div className={`flex gap-3 ${isArabic ? 'flex-row-reverse' : ''}`}>
                         <div className="flex-1">
-                            <label className="text-xs text-slate-500 mb-1 block">Surah Name/Number</label>
+                            <label className={`text-xs text-slate-500 mb-1 block ${isArabic ? 'font-arabic' : ''}`}>{t('verseContext.surahLabel')}</label>
                             <input
                                 type="text"
-                                placeholder="e.g., Al-Baqarah or 2"
+                                placeholder={t('verseContext.surahPlaceholder')}
                                 value={verseContext.surah}
                                 onChange={(e) => setVerseContext(prev => ({ ...prev, surah: e.target.value }))}
-                                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-400"
+                                className={`w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-400 ${isArabic ? 'text-right' : ''}`}
+                                dir={isArabic ? 'rtl' : 'ltr'}
                             />
                         </div>
                         <div className="w-24">
-                            <label className="text-xs text-slate-500 mb-1 block">Verse</label>
+                            <label className={`text-xs text-slate-500 mb-1 block ${isArabic ? 'font-arabic' : ''}`}>{t('verseContext.verseLabel')}</label>
                             <input
                                 type="text"
-                                placeholder="e.g., 255"
+                                placeholder={t('verseContext.versePlaceholder')}
                                 value={verseContext.verse}
                                 onChange={(e) => setVerseContext(prev => ({ ...prev, verse: e.target.value }))}
-                                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-400"
+                                className={`w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-400 ${isArabic ? 'text-right' : ''}`}
+                                dir={isArabic ? 'rtl' : 'ltr'}
                             />
                         </div>
                     </div>
@@ -432,34 +439,35 @@ Be ready to discuss any verse from this Surah and its themes.`;
                         w-full py-4 rounded-xl font-semibold text-lg
                         ${colors.bg} hover:opacity-90 transition-all
                         flex items-center justify-center gap-3 shadow-lg
+                        ${isArabic ? 'flex-row-reverse font-arabic' : ''}
                     `}
                 >
                     <i className="fas fa-microphone"></i>
-                    Start {modeConfig.name} Session
+                    {t('startButton', { mode: t(`modes.${modeConfig.name}`) })}
                 </button>
 
                 {/* Mode Info */}
                 <div className="mt-4 p-4 bg-slate-800/30 rounded-xl">
-                    <h4 className={`font-medium ${colors.text} mb-2 flex items-center gap-2`}>
+                    <h4 className={`font-medium ${colors.text} mb-2 flex items-center gap-2 ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
                         <i className={`fas ${modeConfig.icon}`}></i>
-                        {modeConfig.name} Mode
+                        {t('modeInfo.title', { mode: t(`modes.${modeConfig.name}`) })}
                     </h4>
-                    <p className="text-sm text-slate-400">
-                        {modeConfig.description}
+                    <p className={`text-sm text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>
+                        {t(`modes.${modeConfig.description}`)}
                     </p>
                     {selectedMode === 'tajweed' && (
-                        <p className="text-xs text-slate-500 mt-2">
-                            Tip: Recite verses and ask about specific Tajweed rules like Ikhfa, Idgham, or Madd.
+                        <p className={`text-xs text-slate-500 mt-2 ${isArabic ? 'font-arabic' : ''}`}>
+                            {t('modeInfo.tajweedTip')}
                         </p>
                     )}
                     {selectedMode === 'memorization' && (
-                        <p className="text-xs text-slate-500 mt-2">
-                            Tip: Specify a Surah to memorize and the AI will quiz you and provide memory techniques.
+                        <p className={`text-xs text-slate-500 mt-2 ${isArabic ? 'font-arabic' : ''}`}>
+                            {t('modeInfo.hifzTip')}
                         </p>
                     )}
                     {selectedMode === 'tafsir' && (
-                        <p className="text-xs text-slate-500 mt-2">
-                            Tip: Ask about the meaning, context, or application of any verse.
+                        <p className={`text-xs text-slate-500 mt-2 ${isArabic ? 'font-arabic' : ''}`}>
+                            {t('modeInfo.tafsirTip')}
                         </p>
                     )}
                 </div>
@@ -469,15 +477,15 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
     // Active Session View
     return (
-        <div className={`h-full flex flex-col items-center justify-center p-6 bg-gradient-to-b ${colors.gradient} text-white rounded-lg relative overflow-hidden`}>
+        <div className={`h-full flex flex-col items-center justify-center p-6 bg-gradient-to-b ${colors.gradient} text-white rounded-lg relative overflow-hidden`} dir={isArabic ? 'rtl' : 'ltr'}>
             {/* Visualizer Background Effect */}
             <div className={`absolute inset-0 opacity-20 pointer-events-none transition-all duration-500 ${aiSpeaking ? `${colors.bg} blur-3xl` : 'bg-transparent'}`}></div>
 
             <div className="z-10 text-center space-y-6 max-w-md w-full">
                 {/* Mode Badge */}
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${colors.bg}/20 ${colors.text} text-sm`}>
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${colors.bg}/20 ${colors.text} text-sm ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
                     <i className={`fas ${modeConfig.icon}`}></i>
-                    {modeConfig.name} Mode
+                    {t('modeInfo.title', { mode: t(`modes.${modeConfig.name}`) })}
                     {verseContext.surah && (
                         <span className="text-white/60">
                             | {verseContext.surah}{verseContext.verse ? `:${verseContext.verse}` : ''}
@@ -486,17 +494,17 @@ Be ready to discuss any verse from this Surah and its themes.`;
                 </div>
 
                 <div>
-                    <h2 className="text-3xl font-serif mb-2">
-                        {selectedMode === 'tajweed' && 'Tajweed Tutor'}
-                        {selectedMode === 'memorization' && 'Hifz Coach'}
-                        {selectedMode === 'tafsir' && 'Tafsir Scholar'}
-                        {selectedMode === 'conversation' && 'Voice Conversation'}
+                    <h2 className={`text-3xl font-serif mb-2 ${isArabic ? 'font-arabic' : ''}`}>
+                        {selectedMode === 'tajweed' && t('session.tajweedTutor')}
+                        {selectedMode === 'memorization' && t('session.hifzCoach')}
+                        {selectedMode === 'tafsir' && t('session.tafsirScholar')}
+                        {selectedMode === 'conversation' && t('session.voiceConversation')}
                     </h2>
-                    <p className="text-slate-300 text-sm">
-                        {selectedMode === 'tajweed' && 'Recite or ask about pronunciation rules'}
-                        {selectedMode === 'memorization' && "Let's practice and strengthen your memory"}
-                        {selectedMode === 'tafsir' && 'Ask about meanings and wisdom'}
-                        {selectedMode === 'conversation' && 'Ask about any Prophet or historical event'}
+                    <p className={`text-slate-300 text-sm ${isArabic ? 'font-arabic' : ''}`}>
+                        {selectedMode === 'tajweed' && t('session.tajweedSubtitle')}
+                        {selectedMode === 'memorization' && t('session.hifzSubtitle')}
+                        {selectedMode === 'tafsir' && t('session.tafsirSubtitle')}
+                        {selectedMode === 'conversation' && t('session.conversationSubtitle')}
                     </p>
                 </div>
 
@@ -522,12 +530,12 @@ Be ready to discuss any verse from this Surah and its themes.`;
                     {error ? (
                         <span className="text-red-400 bg-red-900/30 px-4 py-1 rounded-full text-sm">{error}</span>
                     ) : (
-                        <span className={`text-sm px-4 py-1 rounded-full transition-all ${connected ? 'bg-slate-900/50' : 'text-slate-500'} ${colors.text}`}>
+                        <span className={`text-sm px-4 py-1 rounded-full transition-all ${connected ? 'bg-slate-900/50' : 'text-slate-500'} ${colors.text} ${isArabic ? 'font-arabic' : ''}`}>
                             {connected
                                 ? (aiSpeaking
-                                    ? (selectedMode === 'tajweed' ? "Teaching..." : selectedMode === 'memorization' ? "Coaching..." : "Explaining...")
-                                    : isSpeaking ? "Listening..." : "Listening for you...")
-                                : "Tap microphone to start"}
+                                    ? (selectedMode === 'tajweed' ? t('status.teaching') : selectedMode === 'memorization' ? t('status.coaching') : t('status.explaining'))
+                                    : isSpeaking ? t('status.listening') : t('status.listeningForYou'))
+                                : t('status.tapToStart')}
                         </span>
                     )}
                 </div>
@@ -540,23 +548,23 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
                 {/* Quick Actions */}
                 {connected && (
-                    <div className="flex justify-center gap-3 pt-4">
+                    <div className={`flex justify-center gap-3 pt-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
                         <button
                             onClick={stopSession}
-                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors"
+                            className={`px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
                         >
                             <i className="fas fa-stop"></i>
-                            End Session
+                            {t('actions.endSession')}
                         </button>
                         <button
                             onClick={() => {
                                 stopSession();
                                 setShowModeSelector(true);
                             }}
-                            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors"
+                            className={`px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
                         >
                             <i className="fas fa-exchange-alt"></i>
-                            Change Mode
+                            {t('actions.changeMode')}
                         </button>
                     </div>
                 )}
@@ -565,30 +573,30 @@ Be ready to discuss any verse from this Surah and its themes.`;
             {/* Suggestion Prompts */}
             {connected && !aiSpeaking && !isSpeaking && (
                 <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-xs text-slate-500 text-center mb-2">Try asking:</p>
+                    <p className={`text-xs text-slate-500 text-center mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.tryAsking')}</p>
                     <div className="flex flex-wrap justify-center gap-2">
                         {selectedMode === 'conversation' && (
                             <>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"Tell me about Prophet Yusuf"</span>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"What happened at Badr?"</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.conversation.prophet')}</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.conversation.battle')}</span>
                             </>
                         )}
                         {selectedMode === 'tajweed' && (
                             <>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"Explain Ikhfa rules"</span>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"How do I pronounce ض?"</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.tajweed.ikhfa')}</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.tajweed.pronounce')}</span>
                             </>
                         )}
                         {selectedMode === 'memorization' && (
                             <>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"Quiz me on Al-Fatiha"</span>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"Give me memory tips"</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.hifz.quiz')}</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.hifz.tips')}</span>
                             </>
                         )}
                         {selectedMode === 'tafsir' && (
                             <>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"Explain Ayatul Kursi"</span>
-                                <span className="text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400">"What does Surah Al-Asr mean?"</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.tafsir.ayatulKursi')}</span>
+                                <span className={`text-xs bg-slate-800/50 px-3 py-1 rounded-full text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('suggestions.tafsir.surahAsr')}</span>
                             </>
                         )}
                     </div>

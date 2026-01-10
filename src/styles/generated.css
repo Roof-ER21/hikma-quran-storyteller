@@ -1737,6 +1737,10 @@ video {
   bottom: 0px;
 }
 
+.-left-2 {
+  left: -0.5rem;
+}
+
 .-left-3 {
   left: -0.75rem;
 }
@@ -2526,6 +2530,10 @@ video {
 
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }
 
 .flex-col {
@@ -3984,6 +3992,14 @@ video {
   padding-left: 3rem;
 }
 
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
+}
+
 .pr-12 {
   padding-right: 3rem;
 }
@@ -5303,6 +5319,10 @@ video {
 
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:flex-row-reverse {
+    flex-direction: row-reverse;
   }
 
   .md\:items-end {

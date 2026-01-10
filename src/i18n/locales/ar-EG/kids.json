@@ -3,51 +3,85 @@
   "question": "عايز تتعلم إيه النهاردة؟",
   "activities": {
     "arabicLetters": "الحروف العربية",
-    "arabicLettersDesc": "اتعلم تقرأ وتكتب",
+    "arabicLettersAr": "الحروف",
+    "arabicLettersDesc": "اتعلم الحروف العربية!",
     "shortSurahs": "السور القصيرة",
-    "shortSurahsDesc": "احفظ آيات جميلة",
+    "shortSurahsAr": "سور قصيرة",
+    "shortSurahsDesc": "اسمع واحفظ!",
     "prophetStories": "قصص الأنبياء",
-    "prophetStoriesDesc": "مغامرات ممتعة من القرآن",
+    "prophetStoriesAr": "قصص الأنبياء",
+    "prophetStoriesDesc": "قصص رائعة!",
     "myStars": "نجومي",
-    "myStarsDesc": "شوف إنجازاتك"
+    "myStarsAr": "نجومي",
+    "myStarsDesc": "شوف تقدمك!"
+  },
+  "nextLevel": {
+    "label": "المستوى الجاي:",
+    "toGo": "{{count}} كمان!"
   },
   "levels": {
     "seedling": "بذرة",
     "sprout": "برعم",
     "flower": "زهرة",
     "tree": "شجرة",
-    "garden": "حديقة"
+    "garden": "حديقة",
+    "rainbow": "قوس قزح",
+    "star": "نجمة",
+    "moon": "قمر",
+    "sun": "شمس",
+    "universe": "الكون"
   },
   "progress": {
     "stars": "نجوم",
     "streak": "أيام متتالية",
     "level": "المستوى",
+    "levelProgress": "تقدم المستوى",
     "keepGoing": "كمّل كده!",
     "greatJob": "شاطر!",
-    "amazing": "ممتاز!"
+    "amazing": "ممتاز!",
+    "youDidIt": "برافو عليك!",
+    "earnedStar": "كسبت نجمة!",
+    "badgesUnlocked": "{{earned}} من {{total}} شارة مفتوحة"
   },
   "letters": {
     "title": "الحروف العربية",
     "practice": "تدرّب",
     "listen": "اسمع",
-    "trace": "ارسم",
+    "trace": "ارسم الحرف!",
+    "traceInstruction": "استخدم صباعك ترسم الحرف",
     "next": "الحرف الجاي",
-    "previous": "الحرف اللي فات"
+    "previous": "الحرف اللي فات",
+    "tapToHear": "دوس على الحرف تسمعه!",
+    "loading": "جاري التحميل...",
+    "loadingAudio": "جاري تحميل الصوت...",
+    "playing": "بيتشغّل...",
+    "clear": "امسح",
+    "done": "خلاص!",
+    "keepGoing": "كمّل! ارسم أكتر!"
   },
   "surahs": {
     "title": "السور القصيرة",
     "memorize": "احفظ",
     "listen": "اسمع",
     "practice": "تدرّب",
-    "ayah": "آية"
+    "ayah": "آية",
+    "verseOf": "آية {{current}} من {{total}}"
   },
   "stories": {
     "title": "قصص الأنبياء",
     "readStory": "اقرأ القصة",
     "listenStory": "اسمع",
-    "newStory": "قصة جديدة"
+    "newStory": "قصة جديدة",
+    "playNarration": "شغّل الحكي",
+    "playingNarration": "بيتشغّل...",
+    "lesson": "الدرس:"
   },
   "rewards": {
+    "title": "نجومي",
+    "myBadges": "شاراتي",
+    "badgeDetails": "تفاصيل الشارة",
+    "unlocked": "مفتوحة!",
+    "keepPlaying": "كمّل لعب علشان تفتحها!",
     "newStar": "كسبت نجمة!",
     "levelUp": "مستوى جديد!",
     "badge": "شارة جديدة!"
