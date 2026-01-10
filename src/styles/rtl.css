@@ -1,0 +1,30 @@
+/* RTL overrides applied when <html> has class 'rtl' (set by RTLProvider) */
+
+html.rtl,
+body.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+html.rtl body {
+  font-family: 'Amiri', 'Noto Naskh Arabic', 'Scheherazade New', system-ui, sans-serif;
+}
+
+html.rtl input,
+html.rtl textarea,
+html.rtl button,
+html.rtl select {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Ensure long-form content aligns for Arabic */
+html.rtl .prose {
+  text-align: right;
+}
+
+/* Utility to force LTR chunks (e.g., emails/URLs) when needed */
+.ltr-chunk {
+  direction: ltr !important;
+  text-align: left !important;
+}

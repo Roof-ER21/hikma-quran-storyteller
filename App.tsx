@@ -231,7 +231,10 @@ function App() {
 
   return (
     <RTLProvider>
-    <div className="min-h-screen bg-stone-100 flex flex-col text-stone-800">
+    <div
+      className="min-h-screen bg-stone-100 flex flex-col text-stone-800"
+      dir={i18n.language === 'ar-EG' ? 'rtl' : 'ltr'}
+    >
       {/* PWA Components */}
       <OfflineIndicator onDownloadClick={() => setShowDownloadManager(true)} />
       <PWAInstallPrompt />
