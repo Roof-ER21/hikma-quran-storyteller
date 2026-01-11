@@ -766,7 +766,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               <div>
                 <h4 className="text-sm font-medium text-stone-500 mb-4 flex items-center gap-2">
                   <i className="fas fa-info-circle"></i>
-                  Tap a word for details • {wordBreakdown.totalWords} words
+                  {t('practice.tapWord', { count: wordBreakdown.totalWords })}
                 </h4>
                 <div className="flex flex-wrap gap-3 justify-center" dir="rtl">
                   {wordBreakdown.words.map((word, index) => (
@@ -900,7 +900,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               <div>
                 <h4 className="text-sm font-medium text-stone-500 mb-4 flex items-center gap-2">
                   <i className="fas fa-tree"></i>
-                  Root Word Analysis
+                  {t('roots.title')}
                 </h4>
                 {getUniqueRoots(wordBreakdown).length > 0 ? (
                   <div className="space-y-4">
@@ -912,7 +912,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                           </div>
                           <div>
                             <p className="font-medium text-green-800">{rootInfo.root}</p>
-                            <p className="text-sm text-green-600">{rootInfo.words.length} word(s) from this root</p>
+                            <p className="text-sm text-green-600">{t('roots.wordsFromRoot', { count: rootInfo.words.length })}</p>
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2">
@@ -929,8 +929,8 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                 ) : (
                   <div className="text-center py-8 text-stone-500">
                     <i className="fas fa-tree text-4xl mb-3 opacity-30"></i>
-                    <p>Root word data not available for this verse</p>
-                    <p className="text-sm mt-1">Try Al-Fatiha (Surah 1) for complete root analysis</p>
+                    <p className={isArabic ? 'font-arabic' : ''}>{t('roots.notAvailable')}</p>
+                    <p className={`text-sm mt-1 ${isArabic ? 'font-arabic' : ''}`}>{t('roots.tryHint')}</p>
                   </div>
                 )}
               </div>
@@ -939,11 +939,9 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
         ) : (
           <div className="bg-amber-50 rounded-2xl p-8 text-center border border-amber-200">
             <i className="fas fa-exclamation-circle text-4xl text-amber-500 mb-3"></i>
-            <h4 className="font-semibold text-amber-800 mb-2">Word Analysis Unavailable</h4>
-            <p className="text-amber-700 text-sm">
-              Word-by-word data is currently available for Al-Fatiha (Surah 1).
-              <br />
-              More surahs coming soon!
+            <h4 className={`font-semibold text-amber-800 mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('roots.wordAnalysisUnavailable')}</h4>
+            <p className={`text-amber-700 text-sm ${isArabic ? 'font-arabic' : ''}`}>
+              {t('roots.moreComing')}
             </p>
           </div>
         )}
@@ -956,7 +954,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
       return (
         <div className="text-center text-stone-500 py-12">
           <i className="fas fa-spinner fa-spin text-4xl mb-4"></i>
-          <p>Loading practice data...</p>
+          <p className={isArabic ? 'font-arabic' : ''}>{t('practice.loading')}</p>
         </div>
       );
     }
@@ -974,7 +972,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             }`}
           >
             <i className="fas fa-microphone"></i>
-            Recitation Check
+            {t('practice.recitationCheck')}
           </button>
           <button
             onClick={() => setPracticeMode('memorization')}
@@ -985,16 +983,16 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             }`}
           >
             <i className="fas fa-brain"></i>
-            Memorization
+            {t('practice.memorization')}
           </button>
         </div>
 
         {/* Verse Selector */}
         {!practiceVerse ? (
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-stone-100">
-            <h3 className="font-semibold text-stone-800 mb-4 flex items-center gap-2">
+            <h3 className={`font-semibold text-stone-800 mb-4 flex items-center gap-2 ${isArabic ? 'font-arabic flex-row-reverse' : ''}`}>
               <i className="fas fa-list text-rose-600"></i>
-              Select a Verse to Practice
+              {t('practice.selectVerse')}
             </h3>
             <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-10 gap-2 max-h-64 overflow-y-auto">
               {surahData.verses.map((verse) => (
@@ -1013,10 +1011,10 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             {/* Back Button */}
             <button
               onClick={() => setPracticeVerse(null)}
-              className="mb-4 text-rose-600 hover:text-rose-700 flex items-center gap-2 transition-colors"
+              className={`mb-4 text-rose-600 hover:text-rose-700 flex items-center gap-2 transition-colors ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
             >
-              <i className="fas fa-arrow-left"></i>
-              Choose Different Verse
+              <i className={`fas fa-arrow-${isArabic ? 'right' : 'left'}`}></i>
+              {t('practice.chooseDifferent')}
             </button>
 
             {/* Practice Component */}

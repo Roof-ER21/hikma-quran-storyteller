@@ -59,7 +59,9 @@
     "recitationCheck": "Recitation Check",
     "memorization": "Memorization",
     "selectVerse": "Select a Verse to Practice",
-    "chooseDifferent": "Choose Different Verse"
+    "chooseDifferent": "Choose Different Verse",
+    "loading": "Loading practice data...",
+    "tapWord": "Tap a word for details • {{count}} words"
   },
   "study": {
     "title": "Word-by-Word Study",
@@ -75,5 +77,13 @@
   "quote": {
     "text": "We have certainly sent down distinct verses. And Allah guides whom He wills to a straight path.",
     "reference": "Surah An-Nur 24:46"
+  },
+  "roots": {
+    "title": "Root Word Analysis",
+    "wordsFromRoot": "{{count}} word(s) from this root",
+    "notAvailable": "Root word data not available for this verse",
+    "tryHint": "Try Al-Fatiha (Surah 1) for complete root analysis",
+    "wordAnalysisUnavailable": "Word Analysis Unavailable",
+    "moreComing": "Word-by-word data is currently available for Al-Fatiha (Surah 1).\nMore surahs coming soon!"
   }
 }
