@@ -1306,26 +1306,32 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
           <button
             key={s.number}
             onClick={() => setSelectedSurah(s)}
-            className="bg-white p-5 rounded-xl shadow-sm border border-stone-100 hover:shadow-md hover:border-rose-300 hover:scale-[1.01] transition-all text-left group"
+            className={`bg-white p-5 rounded-xl shadow-sm border border-stone-100 hover:shadow-md hover:border-rose-300 hover:scale-[1.01] transition-all group ${isArabic ? 'text-right' : 'text-left'}`}
           >
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div className={`flex items-center gap-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-500 to-rose-700 text-white font-bold flex items-center justify-center text-sm">
                   {s.number}
                 </div>
-                <div>
-                  <h3 className="font-bold text-stone-800 group-hover:text-rose-800">{s.nameEn}</h3>
-                  <p className="text-sm text-stone-500">{s.meaning}</p>
+                <div className={`${isArabic ? 'text-right' : ''}`}>
+                  <h3 className="font-bold text-stone-800 group-hover:text-rose-800">
+                    {isArabic ? s.nameAr : s.nameEn}
+                  </h3>
+                  <p className="text-sm text-stone-500">
+                    {isArabic ? '' : s.meaning}
+                  </p>
                 </div>
               </div>
-              <div className="text-right">
-                <span className="font-arabic text-xl text-rose-900">{s.nameAr}</span>
-                <p className="text-xs text-stone-400 mt-1">{s.verses} verses</p>
+              <div className={`${isArabic ? 'text-left' : 'text-right'}`}>
+                {!isArabic && <span className="font-arabic text-xl text-rose-900">{s.nameAr}</span>}
+                <p className="text-xs text-stone-400 mt-1">
+                  {s.verses} {t('surah.verses', 'verses')}
+                </p>
               </div>
             </div>
             <div className="mt-3 flex items-center gap-2 text-xs text-stone-400">
               <span className={`px-2 py-0.5 rounded-full ${s.revelationType === 'Meccan' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
-                {s.revelationType}
+                {s.revelationType === 'Meccan' ? t('surah.meccan', 'Meccan') : t('surah.medinan', 'Medinan')}
               </span>
             </div>
           </button>
