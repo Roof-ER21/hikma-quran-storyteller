@@ -563,7 +563,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               className={`${themeStyles.primaryBtn} text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all disabled:opacity-50`}
             >
               <i className={`fas ${generatingImage ? 'fa-spinner fa-spin' : 'fa-image'}`}></i>
-              {generatingImage ? 'Creating...' : 'Visualize'}
+              {generatingImage ? t('actions.creating') : t('actions.visualize')}
             </button>
           </div>
         )}
@@ -1069,13 +1069,13 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                 onClick={() => immersiveMode ? setImmersiveMode(false) : (setSelectedSurah(null), setStory(""), setImages([]), setSurahData(null))}
                 className={`${themeStyles.backBtnHover} p-2 rounded-full transition-colors`}
               >
-                <i className={`fas ${immersiveMode ? 'fa-compress' : 'fa-arrow-left'}`}></i>
+                <i className={`fas ${immersiveMode ? 'fa-compress' : isArabic ? 'fa-arrow-right' : 'fa-arrow-left'}`}></i>
               </button>
               <div>
-                <h2 className="text-xl font-serif">{selectedSurah.nameEn}</h2>
+                <h2 className={`text-xl font-serif ${isArabic ? 'font-arabic' : ''}`}>{isArabic ? selectedSurah.nameAr : selectedSurah.nameEn}</h2>
                 {!immersiveMode && (
                   <p className={`${themeStyles.subText} text-xs font-arabic`}>
-                    {selectedSurah.nameAr} • {selectedSurah.meaning} • {selectedSurah.verses} verses
+                    {selectedSurah.nameAr} • {isArabic ? '' : selectedSurah.meaning} • {selectedSurah.verses} {t('surah.verses')}
                   </p>
                 )}
               </div>

@@ -50,7 +50,7 @@
     "audio": "Loading audio player..."
   },
   "actions": {
-    "listenToStory": "Listen to Story",
+    "listenToStory": "Listen to the story",
     "stop": "Stop",
     "visualize": "Visualize",
     "creating": "Creating..."

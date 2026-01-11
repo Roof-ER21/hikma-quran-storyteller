@@ -50,8 +50,8 @@
     "audio": "جاري تحميل المشغّل..."
   },
   "actions": {
-    "listenToStory": "اسمع القصة",
-    "stop": "أوقف",
+    "listenToStory": "استمع إلى القصة",
+    "stop": "إيقاف",
     "visualize": "تخيّل",
     "creating": "جاري الإنشاء..."
   },
