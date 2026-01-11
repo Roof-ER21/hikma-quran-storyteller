@@ -23,6 +23,10 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
 
   const submit = async () => {
     setError(null);
+    if (!name.trim() || !pin.trim()) {
+      setError(t('parentGate.missingFields'));
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch(`/api/parent/${mode}`, {
@@ -35,7 +39,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
       onAuthed(data.token, data.parent?.name || name, remember);
       onClose();
     } catch (e: any) {
-      setError(e.message || 'Failed');
+      setError(e.message || t('parentGate.error'));
     } finally {
       setLoading(false);
     }
@@ -94,7 +98,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
           {t('parentGate.rememberMe')}
         </label>
 
-        {error && <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</div>}
+        {error && <div className={`text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2 ${isArabic ? 'font-arabic text-right' : ''}`}>{error}</div>}
 
         <div className={`flex items-center justify-between gap-3 ${isArabic ? 'flex-row-reverse' : ''}`}>
           <button

@@ -82,6 +82,8 @@
     "login": "Login",
     "savePIN": "Save PIN",
     "pleaseWait": "Please wait...",
-    "manageSettings": "Parents can manage settings, unlock all features, and track progress."
+    "manageSettings": "Parents can manage settings, unlock all features, and track progress.",
+    "error": "Something went wrong. Please try again.",
+    "missingFields": "Name and PIN are required."
   }
 }
