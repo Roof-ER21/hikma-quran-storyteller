@@ -523,7 +523,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
       return (
         <div className={`flex flex-col items-center justify-center h-64 ${themeStyles.loadingIcon} animate-pulse`}>
           <i className="fas fa-quran text-4xl mb-4"></i>
-          <p className="text-xl font-serif">Unfolding the verses...</p>
+          <p className="text-xl font-serif">{t('loading.story')}</p>
         </div>
       );
     }
@@ -555,7 +555,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               className={`px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all ${isPlaying ? themeStyles.audioBtnActive : themeStyles.audioBtnIdle} text-white`}
             >
               <i className={`fas ${isPlaying ? 'fa-stop' : 'fa-play'}`}></i>
-              {isPlaying ? 'Stop' : 'Listen to Story'}
+              {isPlaying ? t('actions.stop') : t('actions.listenToStory')}
             </button>
             <button
               onClick={handleGenerateImage}
@@ -576,7 +576,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
       return (
         <div className="text-center text-stone-500 py-12">
           <i className="fas fa-spinner fa-spin text-4xl mb-4"></i>
-          <p>Loading audio player...</p>
+          <p>{t('loading.audio')}</p>
         </div>
       );
     }
@@ -586,7 +586,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
         {/* Audio Player */}
         <AudioPlayer
           surahNumber={selectedSurah!.number}
-          surahName={selectedSurah!.nameEn}
+          surahName={isArabic ? selectedSurah!.nameAr : selectedSurah!.nameEn}
           totalVerses={surahData.numberOfAyahs}
           currentVerse={currentPlayingVerse || 1}
           onVerseChange={(verse) => setCurrentPlayingVerse(verse)}
@@ -594,7 +594,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
 
         {/* Verse List with Play Buttons */}
         <div className="mt-8 space-y-2">
-          <h3 className="font-semibold text-stone-700 mb-4">Verses</h3>
+          <h3 className="font-semibold text-stone-700 mb-4">{t('listen.verses')}</h3>
           {surahData.verses.map((verse) => (
             <button
               key={verse.numberInSurah}
@@ -631,10 +631,10 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-stone-100">
             <h3 className="font-semibold text-stone-800 mb-4 flex items-center gap-2">
               <i className="fas fa-list text-rose-600"></i>
-              Select a Verse to Study
+              {t('study.selectVerse')}
             </h3>
             <p className="text-stone-500 text-sm mb-4">
-              Choose a verse from {selectedSurah?.nameEn} to analyze word-by-word
+              {t('study.chooseVerse', { surah: isArabic ? selectedSurah?.nameAr : selectedSurah?.nameEn })}
             </p>
             <div className="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-14 gap-2 max-h-64 overflow-y-auto p-2">
               {surahData?.verses.map((verse) => (
@@ -657,7 +657,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
       return (
         <div className={`flex flex-col items-center justify-center h-64 ${themeStyles.loadingIcon} animate-pulse`}>
           <i className="fas fa-book text-4xl mb-4"></i>
-          <p className="text-xl font-serif">Analyzing verse...</p>
+          <p className="text-xl font-serif">{t('study.analyzing')}</p>
         </div>
       );
     }
@@ -675,7 +675,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               className="text-stone-500 hover:text-rose-600 transition-colors flex items-center gap-2"
             >
               <i className="fas fa-arrow-left"></i>
-              <span className="text-sm">All Verses</span>
+              <span className="text-sm">{t('study.allVerses')}</span>
             </button>
             <div className="flex items-center gap-2">
               <button
@@ -686,7 +686,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                 <i className="fas fa-chevron-left text-xs"></i>
               </button>
               <span className="px-3 py-1 bg-rose-100 text-rose-700 rounded-full font-medium">
-                Verse {selectedStudyVerse}
+                {t('study.verseNumber', { number: selectedStudyVerse })}
               </span>
               <button
                 onClick={() => setSelectedStudyVerse(Math.min(surahData?.verses.length || 1, selectedStudyVerse + 1))}
@@ -733,7 +733,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             }`}
           >
             <i className="fas fa-align-right"></i>
-            Word-by-Word
+            {t('study.wordByWord')}
           </button>
           <button
             onClick={() => setStudyMode('grammar')}
@@ -744,7 +744,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             }`}
           >
             <i className="fas fa-graduation-cap"></i>
-            Grammar
+            {t('study.grammar')}
           </button>
           <button
             onClick={() => setStudyMode('roots')}
@@ -755,7 +755,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             }`}
           >
             <i className="fas fa-tree"></i>
-            Root Words
+            {t('study.rootWords')}
           </button>
         </div>
 
@@ -795,7 +795,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                     <div className="flex items-start justify-between mb-3">
                       <h4 className="font-semibold text-rose-800 flex items-center gap-2">
                         <i className="fas fa-search"></i>
-                        Word Details
+                        {t('study.wordDetails')}
                       </h4>
                       <button
                         onClick={() => setSelectedWord(null)}
@@ -807,28 +807,28 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                       <div className="bg-white rounded-lg p-3 text-center">
                         <p className="text-2xl font-amiri text-stone-800">{selectedWord.arabic}</p>
-                        <p className="text-xs text-stone-500 mt-1">Arabic</p>
+                        <p className="text-xs text-stone-500 mt-1">{t('study.labels.arabic')}</p>
                       </div>
                       <div className="bg-white rounded-lg p-3 text-center">
                         <p className="text-lg text-rose-700">{selectedWord.transliteration}</p>
-                        <p className="text-xs text-stone-500 mt-1">Transliteration</p>
+                        <p className="text-xs text-stone-500 mt-1">{t('study.labels.transliteration')}</p>
                       </div>
                       <div className="bg-white rounded-lg p-3 text-center">
                         <p className="text-lg text-stone-700">{selectedWord.translation}</p>
-                        <p className="text-xs text-stone-500 mt-1">Translation</p>
+                        <p className="text-xs text-stone-500 mt-1">{t('study.labels.translation')}</p>
                       </div>
                       <div className="bg-white rounded-lg p-3 text-center">
                         <p className={`inline-block px-2 py-1 rounded-full text-sm font-medium ${getPosColor(selectedWord.partOfSpeech)}`}>
                           {getGrammarLabel(selectedWord.partOfSpeech)}
                         </p>
-                        <p className="text-xs text-stone-500 mt-1">Part of Speech</p>
+                        <p className="text-xs text-stone-500 mt-1">{t('study.labels.partOfSpeech')}</p>
                       </div>
                     </div>
                     {selectedWord.rootWord && (
                       <div className="mt-3 p-3 bg-white rounded-lg">
                         <div className="flex items-center gap-2 text-stone-600">
                           <i className="fas fa-tree text-green-600"></i>
-                          <span className="text-sm">Root:</span>
+                          <span className="text-sm">{t('study.labels.root')}:</span>
                           <span className="font-amiri text-lg text-stone-800">{selectedWord.rootArabic}</span>
                           <span className="text-stone-500">({selectedWord.rootWord})</span>
                         </div>
@@ -852,7 +852,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               <div>
                 <h4 className="text-sm font-medium text-stone-500 mb-4 flex items-center gap-2">
                   <i className="fas fa-chart-pie"></i>
-                  Grammar Analysis
+                  {t('study.grammarAnalysis')}
                 </h4>
                 {/* Grammar stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
@@ -1041,7 +1041,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               <MemorizationMode
                 verses={[practiceVerse]}
                 surahNumber={selectedSurah!.number}
-                surahName={selectedSurah!.nameEn}
+                surahName={isArabic ? selectedSurah!.nameAr : selectedSurah!.nameEn}
                 onProgress={(completed, total) => {
                   console.log(`Memorization progress: ${completed}/${total}`);
                   if (completed === total) {
@@ -1086,7 +1086,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               <button
                 onClick={() => setShowVoiceSearch(true)}
                 className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                title="Voice Search - Find any verse"
+                title={t('search.voiceTooltip')}
               >
                 <i className="fas fa-search"></i>
               </button>
@@ -1104,16 +1104,16 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setShowSettings(false)} />
                     <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl z-50 p-4 text-stone-800">
-                      <h4 className="font-semibold mb-3">Reading Settings</h4>
+                      <h4 className="font-semibold mb-3">{t('settings.title')}</h4>
 
                       <div className="space-y-4">
                         <div>
-                          <label className="text-sm text-stone-600 mb-2 block">Font Size</label>
+                          <label className="text-sm text-stone-600 mb-2 block">{t('settings.fontSize')}</label>
                           <FontSizeSelector selectedSize={fontSize} onSizeChange={setFontSize} />
                         </div>
 
                         <div className="flex items-center justify-between">
-                          <label className="text-sm text-stone-600">Show Translation</label>
+                          <label className="text-sm text-stone-600">{t('settings.showTranslation')}</label>
                           <button
                             onClick={() => setShowTranslation(!showTranslation)}
                             className={`w-10 h-5 rounded-full transition-colors relative ${showTranslation ? 'bg-rose-600' : 'bg-stone-300'}`}
@@ -1123,7 +1123,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                         </div>
 
                         <div>
-                          <label className="text-sm text-stone-600 mb-2 block">Translation</label>
+                          <label className="text-sm text-stone-600 mb-2 block">{t('settings.translation')}</label>
                           <select
                             value={selectedTranslation}
                             onChange={(e) => setSelectedTranslation(e.target.value)}
@@ -1136,7 +1136,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                         </div>
 
                         <div>
-                          <label className="text-sm text-stone-600 mb-2 block">Reciter</label>
+                          <label className="text-sm text-stone-600 mb-2 block">{t('settings.reciter')}</label>
                           <select
                             value={selectedReciter}
                             onChange={(e) => {
@@ -1152,7 +1152,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                         </div>
 
                         <div>
-                          <label className="text-sm text-stone-600 mb-2 block">Theme</label>
+                          <label className="text-sm text-stone-600 mb-2 block">{t('settings.theme')}</label>
                           <div className="flex gap-2">
                             {Object.keys(THEMES).map((t) => (
                               <button
@@ -1162,7 +1162,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                                   theme === t ? 'bg-rose-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                                 }`}
                               >
-                                {THEMES[t as ThemeType].name.split(' ')[0]}
+                                {t(`themes.${t}`)}
                               </button>
                             ))}
                           </div>
@@ -1176,7 +1176,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               <button
                 onClick={() => setImmersiveMode(!immersiveMode)}
                 className="p-2 rounded-full hover:bg-white/10 transition-colors"
-                title="Focus Mode"
+                title={t('actions.focusMode')}
               >
                 <i className="fas fa-expand"></i>
               </button>
@@ -1187,11 +1187,11 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
           {!immersiveMode && (
             <div className="flex bg-black/20 rounded-lg p-1">
               {[
-                { id: 'read' as TabType, label: 'Read', icon: 'fa-book-open' },
-                { id: 'story' as TabType, label: 'Story', icon: 'fa-scroll' },
-                { id: 'listen' as TabType, label: 'Listen', icon: 'fa-headphones' },
-                { id: 'study' as TabType, label: 'Study', icon: 'fa-graduation-cap' },
-                { id: 'practice' as TabType, label: 'Practice', icon: 'fa-microphone-alt' },
+                { id: 'read' as TabType, label: t('tabs.read'), icon: 'fa-book-open' },
+                { id: 'story' as TabType, label: t('tabs.story'), icon: 'fa-scroll' },
+                { id: 'listen' as TabType, label: t('tabs.listen'), icon: 'fa-headphones' },
+                { id: 'study' as TabType, label: t('tabs.study'), icon: 'fa-graduation-cap' },
+                { id: 'practice' as TabType, label: t('tabs.practice'), icon: 'fa-microphone-alt' },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -1220,7 +1220,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
         {/* Floating Audio Player */}
         <FloatingAudioPlayer
           surahNumber={selectedSurah.number}
-          surahName={selectedSurah.nameEn}
+          surahName={isArabic ? selectedSurah.nameAr : selectedSurah.nameEn}
           totalVerses={selectedSurah.verses || 0}
           currentVerse={currentPlayingVerse || 1}
           isVisible={showFloatingPlayer && activeTab !== 'listen'}
@@ -1239,7 +1239,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
               <div className="flex items-center justify-between p-4 border-b border-stone-100">
                 <h3 className="text-lg font-semibold text-stone-800 flex items-center gap-2">
                   <i className="fas fa-search text-rose-600"></i>
-                  Voice Search
+                  {t('search.voiceSearch')}
                 </h3>
                 <button
                   onClick={() => setShowVoiceSearch(false)}
@@ -1291,7 +1291,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
           <button
             onClick={() => setShowVoiceSearch(true)}
             className={`px-4 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-lg flex items-center gap-2 transition-colors shadow-sm ${isArabic ? 'flex-row-reverse' : ''}`}
-            title="Voice Search - Recite to find any verse"
+            title={t('search.voiceTooltip')}
           >
             <i className="fas fa-microphone"></i>
             <span className={`hidden sm:inline ${isArabic ? 'font-arabic' : ''}`}>{t('search.voiceSearch')}</span>
@@ -1353,7 +1353,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             <div className="flex items-center justify-between p-4 border-b border-stone-100">
               <h3 className="text-lg font-semibold text-stone-800 flex items-center gap-2">
                 <i className="fas fa-microphone text-rose-600"></i>
-                Voice Search
+                {t('search.voiceSearch')}
               </h3>
               <button
                 onClick={() => setShowVoiceSearch(false)}

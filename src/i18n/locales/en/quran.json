@@ -41,7 +41,8 @@
   "search": {
     "placeholder": "Search Surahs...",
     "noResults": "No Surahs found matching",
-    "voiceSearch": "Voice Search"
+    "voiceSearch": "Voice Search",
+    "voiceTooltip": "Voice Search - Find any verse"
   },
   "loading": {
     "verses": "Loading verses...",
@@ -53,7 +54,8 @@
     "listenToStory": "Listen to the story",
     "stop": "Stop",
     "visualize": "Visualize",
-    "creating": "Creating..."
+    "creating": "Creating...",
+    "focusMode": "Focus Mode"
   },
   "practice": {
     "recitationCheck": "Recitation Check",
@@ -68,7 +70,25 @@
     "description": "Deep dive into each word with Arabic text, transliteration, translation, grammar analysis, and root word exploration.",
     "translation": "Translation",
     "rootWords": "Root Words",
-    "grammar": "Grammar"
+    "grammar": "Grammar",
+    "selectVerse": "Select a Verse to Study",
+    "chooseVerse": "Choose a verse from {{surah}} to analyze word-by-word",
+    "analyzing": "Analyzing verse...",
+    "allVerses": "All Verses",
+    "verseNumber": "Verse {{number}}",
+    "wordByWord": "Word-by-Word",
+    "wordDetails": "Word Details",
+    "grammarAnalysis": "Grammar Analysis",
+    "labels": {
+      "arabic": "Arabic",
+      "transliteration": "Transliteration",
+      "translation": "Translation",
+      "partOfSpeech": "Part of Speech",
+      "root": "Root"
+    }
+  },
+  "listen": {
+    "verses": "Verses"
   },
   "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
   "error": {
