@@ -7,16 +7,52 @@ import { speakWithWebSpeech } from '../../services/kidsAssetLoader';
 import { speakArabicLetter, speakArabicLetterWithExample } from '../../services/geminiService';
 import CelebrationOverlay from './CelebrationOverlay';
 
-// Kids-friendly color palette
-const KIDS_COLORS = {
+// Kids-friendly color palette (covers all story color keys)
+const KIDS_COLORS: Record<string, string> = {
   coral: '#FF6B6B',
-  teal: '#4ECDC4',
-  yellow: '#FFE66D',
-  green: '#7ED321',
-  purple: '#A29BFE',
+  teal: '#14B8A6',
+  yellow: '#F59E0B',
+  green: '#22C55E',
+  purple: '#A78BFA',
+  blue: '#3B82F6',
+  gold: '#D97706',
+  bronze: '#B45309',
+  silver: '#94A3B8',
+  white: '#F5F5F5',
+  indigo: '#6366F1',
+  brown: '#8B5E3C',
+  sand: '#D4A15E',
+  gray: '#6B7280',
+  black: '#111827',
+  lightblue: '#38BDF8',
+  navy: '#1E3A8A',
+  olive: '#6B8E23',
+  mint: '#2DD4BF',
+  amber: '#F59E0B',
+  emerald: '#10B981',
+  sage: '#93A572',
+  forest: '#166534',
   cream: '#FFF8E7',
   orange: '#F39C12',
 };
+
+const STORY_COLOR_FALLBACK = '#3B82F6';
+
+const getStoryColor = (colorKey: string) => KIDS_COLORS[colorKey] || STORY_COLOR_FALLBACK;
+
+const isColorLight = (hexColor: string) => {
+  const hex = hexColor.replace('#', '');
+  if (hex.length !== 6) return false;
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.7;
+};
+
+const getStoryTextColor = (bgColor: string) => (isColorLight(bgColor) ? '#1f2937' : '#ffffff');
+const getStoryMutedTextColor = (bgColor: string) =>
+  isColorLight(bgColor) ? 'rgba(55, 65, 81, 0.8)' : 'rgba(255, 255, 255, 0.85)';
 
 type KidsActivity = 'home' | 'alphabet' | 'quran' | 'stories' | 'rewards';
 
@@ -354,7 +390,7 @@ interface ActivityProps {
 }
 
 // Version query to bust stale PWA/service-worker caches for static kids assets
-const ASSET_VERSION = '2026-01-10b';
+const ASSET_VERSION = '2026-01-25a';
 const assetUrl = (path: string) => `${path}?v=${ASSET_VERSION}`;
 
 // Arabic Alphabet Data
@@ -1174,11 +1210,15 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   if (selectedStory) {
     const scene = selectedStory.scenes[currentScene];
     const isLastScene = currentScene === selectedStory.scenes.length - 1;
+    const storyColor = getStoryColor(selectedStory.colorKey);
+    const storyTextColor = getStoryTextColor(storyColor);
+    const storyMutedTextColor = getStoryMutedTextColor(storyColor);
+    const indicatorInactive = isColorLight(storyColor) ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.35)';
 
     return (
       <div
         className="min-h-full flex flex-col"
-        style={{ backgroundColor: KIDS_COLORS[selectedStory.colorKey] }}
+        style={{ backgroundColor: storyColor }}
       >
         <div className="p-4 flex items-center justify-between">
           <button
@@ -1186,7 +1226,11 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               setSelectedStory(null);
               setCurrentScene(0);
             }}
-            className="w-14 h-14 rounded-full bg-white/30 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
+            className="w-14 h-14 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+            style={{
+              backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.25)',
+              color: storyTextColor
+            }}
           >
             <i className="fas fa-times text-xl"></i>
           </button>
@@ -1194,7 +1238,10 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             {selectedStory.scenes.map((_, i) => (
               <div
                 key={i}
-                className={`w-3 h-3 rounded-full ${i === currentScene ? 'bg-white' : 'bg-white/30'}`}
+                className="w-3 h-3 rounded-full"
+                style={{
+                  backgroundColor: i === currentScene ? storyTextColor : indicatorInactive
+                }}
               />
             ))}
           </div>
@@ -1214,9 +1261,9 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
                 (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
               }}
             />
-            <div className="hidden text-8xl flex items-center justify-center h-full">{scene.emoji}</div>
+            <div className="hidden text-8xl flex items-center justify-center h-full" style={{ color: storyTextColor, opacity: 0.9 }}>{scene.emoji}</div>
           </div>
-          <p className="text-xl text-white font-medium max-w-xs leading-relaxed">
+          <p className="text-xl font-medium max-w-xs leading-relaxed" style={{ color: storyTextColor }}>
             {scene.text}
           </p>
           <button
@@ -1228,11 +1275,14 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           </button>
 
           {isLastScene && (
-            <div className="mt-8 bg-white/20 rounded-2xl p-4">
-              <p className="text-lg text-white/80">Lesson:</p>
-              <p className="text-xl text-white font-bold">{selectedStory.lesson}</p>
+            <div
+              className="mt-8 rounded-2xl p-4"
+              style={{ backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.15)' }}
+            >
+              <p className="text-lg" style={{ color: storyMutedTextColor }}>Lesson:</p>
+              <p className="text-xl font-bold" style={{ color: storyTextColor }}>{selectedStory.lesson}</p>
               {completedStories.has(selectedStory.id) && (
-                <div className="mt-2 text-2xl">⭐ You earned a star!</div>
+                <div className="mt-2 text-2xl" style={{ color: storyTextColor }}>⭐ You earned a star!</div>
               )}
             </div>
           )}
@@ -1243,16 +1293,23 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             onClick={handlePrevScene}
             disabled={currentScene === 0}
             className={`w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-transform ${
-              currentScene === 0 ? 'opacity-30' : 'hover:scale-105 active:scale-95 bg-white/30'
+              currentScene === 0 ? 'opacity-30' : 'hover:scale-105 active:scale-95'
             }`}
+            style={{
+              backgroundColor: currentScene === 0 ? 'transparent' : isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.25)',
+              color: storyTextColor
+            }}
           >
-            <i className="fas fa-arrow-left text-2xl text-white"></i>
+            <i className="fas fa-arrow-left text-2xl"></i>
           </button>
           <button
             onClick={handleNextScene}
-            className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+            className="w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+            style={{
+              backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : '#ffffff'
+            }}
           >
-            <i className={`fas ${isLastScene ? 'fa-check' : 'fa-arrow-right'} text-2xl`} style={{ color: KIDS_COLORS[selectedStory.colorKey] }}></i>
+            <i className={`fas ${isLastScene ? 'fa-check' : 'fa-arrow-right'} text-2xl`} style={{ color: storyColor }}></i>
           </button>
         </div>
       </div>
@@ -1281,52 +1338,61 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-          {kidsStories.map((story) => (
-            <button
-              key={story.id}
-              onClick={() => setSelectedStory(story)}
-              className={`rounded-2xl overflow-hidden shadow-lg hover:scale-105 active:scale-95 transition-transform ${
-                completedStories.has(story.id) ? 'ring-4 ring-green-400' : ''
-              }`}
-            >
-              {/* Thumbnail from first scene */}
-              <div
-                className="aspect-square relative bg-stone-200"
-                style={{ backgroundColor: KIDS_COLORS[story.colorKey] }}
+          {kidsStories.map((story) => {
+            const storyColor = getStoryColor(story.colorKey);
+            const storyTextColor = getStoryTextColor(storyColor);
+            const storyMutedTextColor = getStoryMutedTextColor(storyColor);
+
+            return (
+              <button
+                key={story.id}
+                onClick={() => setSelectedStory(story)}
+                className={`rounded-2xl overflow-hidden shadow-lg hover:scale-105 active:scale-95 transition-transform ${
+                  completedStories.has(story.id) ? 'ring-4 ring-green-400' : ''
+                }`}
               >
-                <img
-                  src={assetUrl(`/assets/kids/illustrations/story-${story.id}-0.png`)}
-                  alt={story.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to colored background with emoji
-                    const imgEl = e.target as HTMLImageElement;
-                    imgEl.style.display = 'none';
-                    const fallback = imgEl.parentElement?.querySelector('.fallback-thumb') as HTMLElement | null;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                {/* Fallback emoji */}
-                <div className="fallback-thumb hidden absolute inset-0 items-center justify-center text-5xl text-white/90 drop-shadow-lg">
-                  {story.emoji}
+                {/* Thumbnail from first scene */}
+                <div
+                  className="aspect-square relative bg-stone-200"
+                  style={{ backgroundColor: storyColor }}
+                >
+                  <img
+                    src={assetUrl(`/assets/kids/illustrations/story-${story.id}-0.png`)}
+                    alt={story.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback to colored background with emoji
+                      const imgEl = e.target as HTMLImageElement;
+                      imgEl.style.display = 'none';
+                      const fallback = imgEl.parentElement?.querySelector('.fallback-thumb') as HTMLElement | null;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  {/* Fallback emoji */}
+                  <div
+                    className="fallback-thumb hidden absolute inset-0 items-center justify-center text-5xl drop-shadow-lg"
+                    style={{ color: storyTextColor, opacity: 0.9 }}
+                  >
+                    {story.emoji}
+                  </div>
+                  {/* Gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  {/* Completion badge */}
+                  {completedStories.has(story.id) && (
+                    <div className="absolute top-2 right-2 text-2xl">⭐</div>
+                  )}
                 </div>
-                {/* Gradient overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                {/* Completion badge */}
-                {completedStories.has(story.id) && (
-                  <div className="absolute top-2 right-2 text-2xl">⭐</div>
-                )}
-              </div>
-              {/* Story info */}
-              <div
-                className="p-3 text-center"
-                style={{ backgroundColor: KIDS_COLORS[story.colorKey] }}
-              >
-                <h3 className="text-lg font-bold text-white">{story.prophet}</h3>
-                <p className="text-xl font-arabic text-white/90">{story.prophetArabic}</p>
-              </div>
-            </button>
-          ))}
+                {/* Story info */}
+                <div
+                  className="p-3 text-center"
+                  style={{ backgroundColor: storyColor, color: storyTextColor }}
+                >
+                  <h3 className="text-lg font-bold" style={{ color: storyTextColor }}>{story.prophet}</h3>
+                  <p className="text-xl font-arabic" style={{ color: storyMutedTextColor }}>{story.prophetArabic}</p>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

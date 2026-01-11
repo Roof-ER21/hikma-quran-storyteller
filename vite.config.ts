@@ -15,6 +15,8 @@ export default defineConfig(({ mode }) => {
         react(),
         VitePWA({
           registerType: 'autoUpdate',
+          // Avoid terser crashes during SW generation
+          minify: false,
           includeAssets: [
             'icons/*.svg',
             'icons/*.png',
