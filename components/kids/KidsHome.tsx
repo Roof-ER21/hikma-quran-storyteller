@@ -1143,6 +1143,8 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   const [completedStories, setCompletedStories] = useState<Set<string>>(new Set());
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isNarrating, setIsNarrating] = useState(false);
+  const [prebakedAudioReady, setPrebakedAudioReady] = useState(false);
+  const [checkingAudio, setCheckingAudio] = useState(false);
 
   useEffect(() => {
     audioRef.current = new Audio();
@@ -1153,6 +1155,41 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
       }
     };
   }, []);
+
+  // Verify that every scene (and lesson) has a pre-generated audio file; otherwise default to live narration so we always read the updated story text.
+  useEffect(() => {
+    if (!selectedStory) return;
+    let cancelled = false;
+    const checkAudio = async () => {
+      setCheckingAudio(true);
+      setPrebakedAudioReady(false);
+      const urls = [
+        ...selectedStory.scenes.map((_, idx) => assetUrl(`/assets/kids/audio/story-${selectedStory.id}-scene-${idx}.mp3`)),
+        assetUrl(`/assets/kids/audio/story-${selectedStory.id}-lesson.mp3`),
+      ];
+      try {
+        const results = await Promise.all(
+          urls.map(async (url) => {
+            try {
+              const res = await fetch(url, { method: 'HEAD' });
+              return res.ok;
+            } catch {
+              return false;
+            }
+          })
+        );
+        if (!cancelled) {
+          setPrebakedAudioReady(results.every(Boolean));
+        }
+      } finally {
+        if (!cancelled) setCheckingAudio(false);
+      }
+    };
+    checkAudio();
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedStory]);
 
   const playSceneAudio = async () => {
     if (!selectedStory) return;
@@ -1169,6 +1206,12 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
       await speakWithWebSpeech(scene.text, 0.95);
       setIsNarrating(false);
     };
+
+    // If we don't have full, fresh pre-baked coverage, use live narration to guarantee the latest story content.
+    if (!prebakedAudioReady) {
+      await playFallback();
+      return;
+    }
 
     audio.onended = () => setIsNarrating(false);
     audio.onerror = async () => {
@@ -1245,7 +1288,17 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               />
             ))}
           </div>
-          <div className="w-14"></div>
+          <div className="flex items-center gap-2">
+            <div
+              className="text-xs px-3 py-1 rounded-full"
+              style={{
+                backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.2)',
+                color: storyTextColor
+              }}
+            >
+              {checkingAudio ? 'Checking audio…' : prebakedAudioReady ? 'Pre-recorded' : 'Live narration'}
+            </div>
+          </div>
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
