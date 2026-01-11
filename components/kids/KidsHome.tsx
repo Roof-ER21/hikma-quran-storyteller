@@ -1260,6 +1260,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
   }
 
   // Story selection view
+  const totalStories = kidsStories.length;
   return (
     <div
       className="min-h-full flex flex-col"
@@ -1274,7 +1275,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         </button>
         <h1 className="text-2xl font-bold text-stone-700">Prophet Stories</h1>
         <div className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center">
-          <span className="text-amber-500 font-bold">{completedStories.size}/5</span>
+          <span className="text-amber-500 font-bold">{completedStories.size}/{totalStories}</span>
         </div>
       </div>
 
@@ -1289,20 +1290,28 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               }`}
             >
               {/* Thumbnail from first scene */}
-              <div className="aspect-square relative">
+              <div
+                className="aspect-square relative bg-stone-200"
+                style={{ backgroundColor: KIDS_COLORS[story.colorKey] }}
+              >
                 <img
                   src={assetUrl(`/assets/kids/illustrations/story-${story.id}-0.png`)}
                   alt={story.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     // Fallback to colored background with emoji
-                    (e.target as HTMLImageElement).style.display = 'none';
+                    const imgEl = e.target as HTMLImageElement;
+                    imgEl.style.display = 'none';
+                    const fallback = imgEl.parentElement?.querySelector('.fallback-thumb') as HTMLElement | null;
+                    if (fallback) fallback.style.display = 'flex';
                   }}
                 />
+                {/* Fallback emoji */}
+                <div className="fallback-thumb hidden absolute inset-0 items-center justify-center text-5xl text-white/90 drop-shadow-lg">
+                  {story.emoji}
+                </div>
                 {/* Gradient overlay for text readability */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 {/* Completion badge */}
                 {completedStories.has(story.id) && (
                   <div className="absolute top-2 right-2 text-2xl">⭐</div>
