@@ -488,26 +488,39 @@ function App() {
         {view === 'home' && mode !== 'kid' && (
             <div className="grid md:grid-cols-2 gap-12 items-center h-full animate-in fade-in duration-500">
             <div className="space-y-8">
-              <div className="space-y-4">
+              <div className={`space-y-4 ${isArabic() ? 'text-right font-arabic' : ''}`}>
                 <h2 className="text-4xl md:text-5xl font-serif text-rose-950 leading-tight">
-                  Explore the timeless <br/>
-                  <span className="text-rose-600">stories of the Prophets.</span>
+                  {isArabic() ? (
+                    <>
+                      اكتشف روائع <br />
+                      <span className="text-rose-600">قصص الأنبياء</span>
+                    </>
+                  ) : (
+                    <>
+                      Explore the timeless <br />
+                      <span className="text-rose-600">stories of the Prophets.</span>
+                    </>
+                  )}
                 </h2>
                 <p className="text-lg text-stone-600 max-w-md">
-                  Experience the Quran's narratives through interactive storytelling, visualizations, and historical insights.
+                  {isArabic()
+                    ? 'عش حكايات القرآن عبر سرد تفاعلي، بصري، وتاريخي.'
+                    : "Experience the Quran's narratives through interactive storytelling, visualizations, and historical insights."}
                 </p>
               </div>
 
               <div className="bg-white p-6 rounded-2xl shadow-lg border border-stone-100 space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-stone-500 mb-2 uppercase tracking-wider">Choose a Prophet</label>
+                  <label className={`block text-sm font-medium text-stone-500 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
+                    {isArabic() ? 'اختر نبيًّا' : 'Choose a Prophet'}
+                  </label>
                   <div className="relative">
                       <select
                         className="w-full p-4 bg-stone-50 border border-stone-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-rose-500 text-lg font-serif"
                         value={selectedProphet}
                         onChange={(e) => setSelectedProphet(e.target.value)}
                       >
-                        <option value="">Select a guide...</option>
+                        <option value="">{isArabic() ? 'اختر دليلك...' : 'Select a guide...'}</option>
                         {PROPHETS.map(p => <option key={p.name} value={p.name}>{p.name} ({p.arabicName})</option>)}
                       </select>
                       <i className="fas fa-chevron-down absolute right-4 top-5 text-stone-400 pointer-events-none"></i>
@@ -515,13 +528,15 @@ function App() {
                 </div>
 
                 <div>
-                   <label className="block text-sm font-medium text-stone-500 mb-2 uppercase tracking-wider">Or Ask via Audio</label>
+                   <label className={`block text-sm font-medium text-stone-500 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
+                    {isArabic() ? 'أو اسأل بالصوت' : 'Or Ask via Audio'}
+                   </label>
                    <div className="flex gap-2">
                        <input
                             type="text"
                             value={searchQuery}
                             readOnly
-                            placeholder="Tap mic to say a name..."
+                            placeholder={isArabic() ? 'اضغط على الميكروفون لذكر الاسم...' : 'Tap mic to say a name...'}
                             className="flex-1 p-3 bg-stone-50 border border-stone-200 rounded-xl"
                        />
                        <button
@@ -535,7 +550,9 @@ function App() {
                 </div>
 
                 <div>
-                   <label className="block text-sm font-medium text-stone-500 mb-3 uppercase tracking-wider">Focus Theme</label>
+                   <label className={`block text-sm font-medium text-stone-500 mb-3 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
+                    {isArabic() ? 'الموضوع المراد' : 'Focus Theme'}
+                   </label>
                    <div className="flex flex-wrap gap-2">
                       {TOPICS.map(topic => (
                         <button
@@ -554,16 +571,18 @@ function App() {
                   disabled={!selectedProphet}
                   className="w-full py-4 bg-rose-900 text-white rounded-xl font-medium text-lg hover:bg-rose-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-rose-900/20"
                 >
-                  Begin Journey
+                  {isArabic() ? 'ابدأ الرحلة' : 'Begin Journey'}
                 </button>
               </div>
 
               {/* Quick Pick Story Cards - All 24 Prophets */}
               <div className="mt-8">
-                <h3 className="text-lg font-serif text-stone-600 mb-4 flex items-center gap-2">
+                <h3 className={`text-lg font-serif text-stone-600 mb-4 flex items-center gap-2 ${isArabic() ? 'flex-row-reverse text-right font-arabic' : ''}`}>
                   <i className="fas fa-star text-amber-500"></i>
-                  Quick Pick
-                  <span className="text-sm text-stone-400 font-sans">({PROPHETS.length} Prophets)</span>
+                  {isArabic() ? 'اختيار سريع' : 'Quick Pick'}
+                  <span className="text-sm text-stone-400 font-sans">
+                    ({PROPHETS.length} {isArabic() ? 'نبيًّا' : 'Prophets'})
+                  </span>
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[420px] overflow-y-auto pr-2 pb-2 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
                   {PROPHETS.map(prophet => (
