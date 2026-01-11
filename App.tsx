@@ -52,6 +52,10 @@ const TOPICS = [
   "General Life", "Patience", "Trust in God", "Leadership", "Family", "Miracles", "Justice"
 ];
 
+const getTopicLabel = (topic: string, t: (key: string, def?: string) => string) => {
+  return t(`topics.${topic}`, topic);
+};
+
 function App() {
   const { t, i18n } = useTranslation(['common', 'home']);
   const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library' | 'dedication' | 'tools'>('home');
@@ -560,7 +564,7 @@ function App() {
                           onClick={() => setSelectedTopic(topic)}
                           className={`px-4 py-2 rounded-full text-sm transition-all ${selectedTopic === topic ? 'bg-amber-100 text-amber-900 ring-1 ring-amber-300' : 'bg-stone-50 text-stone-600 hover:bg-stone-100'}`}
                         >
-                          {topic}
+                          {getTopicLabel(topic, t)}
                         </button>
                       ))}
                    </div>
