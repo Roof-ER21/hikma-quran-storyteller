@@ -275,6 +275,8 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
 
   // Phase 2: Voice Search & Practice state
   const [showVoiceSearch, setShowVoiceSearch] = useState(false);
+  const [jumpVerse, setJumpVerse] = useState<number | ''>('');
+  const listenVerseRefs = useRef<Record<number, HTMLButtonElement | null>>({});
   const [practiceMode, setPracticeMode] = useState<'recitation' | 'memorization'>('recitation');
   const [practiceVerse, setPracticeVerse] = useState<Verse | null>(null);
 
@@ -583,6 +585,35 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
 
     return (
       <div className="max-w-2xl mx-auto">
+        {/* Jump to verse */}
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-stone-100 flex flex-col sm:flex-row gap-3 sm:items-end">
+          <div className="flex-1">
+            <label className="block text-sm text-stone-600 mb-1">{t('listen.jumpTo')}</label>
+            <input
+              type="number"
+              min={1}
+              max={surahData.numberOfAyahs}
+              value={jumpVerse}
+              onChange={(e) => {
+                const val = e.target.value;
+                setJumpVerse(val === '' ? '' : Number(val));
+              }}
+              className="w-full p-2.5 border rounded-lg text-sm"
+              placeholder={`1 - ${surahData.numberOfAyahs}`}
+            />
+          </div>
+          <button
+            onClick={() => {
+              if (!jumpVerse || jumpVerse < 1 || jumpVerse > surahData.numberOfAyahs) return;
+              handlePlayVerse(jumpVerse);
+              listenVerseRefs.current[jumpVerse]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }}
+            className="px-4 py-2 bg-rose-600 text-white rounded-lg shadow hover:bg-rose-700 transition-colors"
+          >
+            {t('listen.go')}
+          </button>
+        </div>
+
         {/* Audio Player */}
         <AudioPlayer
           surahNumber={selectedSurah!.number}
@@ -606,6 +637,9 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                   : 'bg-white/80 hover:bg-white border-l-4 border-transparent'
                 }
               `}
+              ref={(el) => {
+                listenVerseRefs.current[verse.numberInSurah] = el;
+              }}
             >
               <span className="w-8 h-8 bg-rose-100 rounded-full flex items-center justify-center text-rose-700 text-sm font-bold flex-shrink-0">
                 {verse.numberInSurah}

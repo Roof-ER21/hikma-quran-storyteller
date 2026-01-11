@@ -1007,7 +1007,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
             </div>
         </div>
         
-        <div className="flex gap-2 items-center flex-wrap justify-end">
+        <div className="flex gap-2 items-center flex-wrap justify-end max-w-full overflow-x-auto">
             {/* Language Toggle - 3 Languages */}
             {!immersiveMode && (
                 <div className="flex bg-stone-100 rounded-lg p-1 mr-2 flex-wrap gap-1">
@@ -1046,7 +1046,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
            <button
              onClick={() => setImmersiveMode(!immersiveMode)}
              className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10 text-rose-400' : 'hover:bg-stone-100 text-stone-400'}`}
-             title="Cinematic Mode"
+             title={immersiveMode ? t('immersive.exit') : t('immersive.enter')}
            >
              <i className="fas fa-expand"></i>
            </button>

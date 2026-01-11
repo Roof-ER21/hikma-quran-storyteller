@@ -88,7 +88,9 @@
     }
   },
   "listen": {
-    "verses": "Verses"
+    "verses": "Verses",
+    "jumpTo": "Jump to verse",
+    "go": "Go"
   },
   "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
   "error": {
