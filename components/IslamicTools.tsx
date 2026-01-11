@@ -427,9 +427,9 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         {/* Qibla Info Card */}
         <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-2xl p-6 text-white shadow-xl">
           <div className="text-center">
-            <p className="text-emerald-200 text-sm uppercase tracking-wider">Direction to Mecca</p>
+            <p className={`text-emerald-200 text-sm uppercase tracking-wider ${isArabic ? 'font-arabic' : ''}`}>{t('qibla.direction')}</p>
             <h3 className="text-5xl font-bold mt-2">{qiblaAngle.toFixed(1)}°</h3>
-            <p className="text-emerald-100 mt-1">from North</p>
+            <p className={`text-emerald-100 mt-1 ${isArabic ? 'font-arabic' : ''}`}>{t('qibla.fromNorth')}</p>
           </div>
         </div>
 
@@ -485,19 +485,19 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
           {/* Compass Status */}
           <div className="mt-6 text-center">
             {compassHeading !== null ? (
-              <p className="text-emerald-600 flex items-center justify-center gap-2">
+              <p className={`text-emerald-600 flex items-center justify-center gap-2 ${isArabic ? 'font-arabic flex-row-reverse' : ''}`}>
                 <i className="fas fa-check-circle"></i>
-                Compass active - Point your device towards the arrow
+                {t('qibla.compassActive')}
               </p>
             ) : (
               <div className="space-y-2">
-                <p className="text-stone-500">Enable compass for real-time direction</p>
+                <p className={`text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>{t('qibla.enablePrompt')}</p>
                 <button
                   onClick={requestCompassPermission}
                   className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
                 >
-                  <i className="fas fa-compass mr-2"></i>
-                  Enable Compass
+                  <i className={`fas fa-compass ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+                  {t('qibla.enable')}
                 </button>
               </div>
             )}
@@ -511,7 +511,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
               <i className="fas fa-route text-amber-600"></i>
             </div>
             <div>
-              <p className="text-sm text-amber-700">Distance to Mecca</p>
+              <p className={`text-sm text-amber-700 ${isArabic ? 'font-arabic' : ''}`}>{t('qibla.distance')}</p>
               <p className="text-2xl font-bold text-amber-800">{qiblaDirection.distance.toLocaleString()} km</p>
             </div>
           </div>
@@ -519,10 +519,10 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
 
         {/* Your Location */}
         <div className="bg-white rounded-xl p-4 shadow-sm border border-stone-100">
-          <p className="text-sm text-stone-500 mb-2">Your Location</p>
+          <p className={`text-sm text-stone-500 mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('qibla.yourLocation')}</p>
           <div className="flex items-center gap-3">
             <i className="fas fa-map-marker-alt text-rose-500"></i>
-            <span className="font-medium">{locationName || 'Getting location...'}</span>
+            <span className={`font-medium ${isArabic ? 'font-arabic' : ''}`}>{locationName || t('qibla.gettingLocation')}</span>
           </div>
           <p className="text-xs text-stone-400 mt-1">
             {qiblaDirection.latitude.toFixed(4)}°, {qiblaDirection.longitude.toFixed(4)}°
@@ -539,7 +539,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
       <div className="space-y-6">
         {/* Hijri Date Card */}
         <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-8 text-white shadow-xl text-center">
-          <p className="text-purple-200 text-sm uppercase tracking-wider">Islamic Date</p>
+          <p className={`text-purple-200 text-sm uppercase tracking-wider ${isArabic ? 'font-arabic' : ''}`}>{t('calendar.islamicDate')}</p>
           <h3 className="text-5xl font-bold mt-4 font-arabic">{islamicDate.day}</h3>
           <p className="text-3xl mt-2 font-arabic">{islamicDate.monthNameAr}</p>
           <p className="text-purple-200 mt-1">{islamicDate.monthName}</p>
@@ -551,7 +551,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
           <div className="bg-amber-50 rounded-xl p-4 border-2 border-amber-200 shadow-md">
             <div className="flex items-center gap-2 text-amber-800 mb-3">
               <i className="fas fa-star text-amber-500"></i>
-              <span className="font-bold">Special Day</span>
+              <span className={`font-bold ${isArabic ? 'font-arabic' : ''}`}>{t('calendar.specialDay')}</span>
             </div>
             {islamicDate.holidays.map((holiday, idx) => (
               <p key={idx} className="text-amber-900 font-medium text-lg">
@@ -568,7 +568,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
               <i className="fas fa-calendar-alt text-stone-600 text-2xl"></i>
             </div>
             <div>
-              <p className="text-sm text-stone-500">Gregorian Date</p>
+              <p className={`text-sm text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>{t('calendar.gregorianDate')}</p>
               <p className="text-xl font-bold text-stone-800">
                 {new Date().toLocaleDateString('en-US', {
                   weekday: 'long',
@@ -584,7 +584,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         {/* Islamic Months Reference */}
         <div className="bg-white rounded-xl shadow-md border border-stone-100 overflow-hidden">
           <div className="p-4 bg-stone-50 border-b border-stone-100">
-            <h4 className="font-bold text-stone-800">Islamic Months</h4>
+            <h4 className={`font-bold text-stone-800 ${isArabic ? 'font-arabic' : ''}`}>{t('calendar.monthsTitle')}</h4>
           </div>
           <div className="grid grid-cols-2 gap-px bg-stone-100">
             {[

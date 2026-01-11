@@ -26,5 +26,21 @@
     "minutesBefore": "{{minutes}} دقيقة قبل",
     "atTime": "عند وقت الصلاة",
     "timezone": "المواقيت بحسب منطقتك الزمنية: {{tz}}"
+  },
+  "qibla": {
+    "direction": "اتجاه مكة",
+    "fromNorth": "من الشمال",
+    "compassActive": "البوصلة مفعلة - وجّه الجهاز نحو السهم",
+    "enablePrompt": "فعّل البوصلة للاتجاه اللحظي",
+    "enable": "تفعيل البوصلة",
+    "distance": "المسافة إلى مكة",
+    "yourLocation": "موقعك",
+    "gettingLocation": "جاري الحصول على الموقع..."
+  },
+  "calendar": {
+    "islamicDate": "التاريخ الهجري",
+    "specialDay": "يوم مميز",
+    "gregorianDate": "التاريخ الميلادي",
+    "monthsTitle": "الأشهر الهجرية"
   }
 }

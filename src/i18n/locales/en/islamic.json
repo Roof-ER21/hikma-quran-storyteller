@@ -26,5 +26,21 @@
     "minutesBefore": "{{minutes}} minutes before",
     "atTime": "At prayer time",
     "timezone": "Times shown in your local timezone: {{tz}}"
+  },
+  "qibla": {
+    "direction": "Direction to Mecca",
+    "fromNorth": "from North",
+    "compassActive": "Compass active - Point your device towards the arrow",
+    "enablePrompt": "Enable compass for real-time direction",
+    "enable": "Enable Compass",
+    "distance": "Distance to Mecca",
+    "yourLocation": "Your Location",
+    "gettingLocation": "Getting location..."
+  },
+  "calendar": {
+    "islamicDate": "Islamic Date",
+    "specialDay": "Special Day",
+    "gregorianDate": "Gregorian Date",
+    "monthsTitle": "Islamic Months"
   }
 }
