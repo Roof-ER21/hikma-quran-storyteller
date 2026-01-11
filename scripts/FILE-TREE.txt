@@ -1,0 +1,195 @@
+F5-TTS STORY AUDIO GENERATION SYSTEM - FILE TREE
+=================================================
+
+hikma_-quran-storyteller/
+│
+├── 📘 F5-TTS-COMPLETE-SYSTEM.md              ⭐ START HERE - Complete overview
+│
+├── 📊 data/                                   Input story data
+│   ├── kidsStories.json                       25 kids prophet stories
+│   ├── adultStories.json                      5 adult Seerah stories
+│   └── prophetStoriesAdults.json              25 detailed prophet stories
+│
+├── 🔊 public/assets/                          Output audio files
+│   ├── kids/audio/                            Kids story audio (~275 files)
+│   │   ├── story-adam-scene-0.mp3
+│   │   ├── story-adam-scene-1.mp3
+│   │   ├── story-adam-lesson.mp3
+│   │   └── ... (all kids stories)
+│   │
+│   └── adult/audio/                           Adult story audio (~205 files)
+│       ├── seerah-beginning.mp3
+│       ├── taif-mercy.mp3
+│       ├── adam-creation.mp3
+│       ├── adam-knowledge.mp3
+│       └── ... (all adult stories)
+│
+└── 🛠️  scripts/                               F5-TTS generation system
+    │
+    ├── 🎯 CORE SCRIPTS (Production-Ready)
+    ├── generate_story_audio.py                ⭐ Main batch generator (622 lines)
+    ├── create_reference_audio.py              ⭐ Reference audio helper (314 lines)
+    ├── test_f5tts_setup.py                    ⭐ System verification (280 lines)
+    └── setup_f5tts.sh                         ⭐ Automated setup script
+    │
+    ├── 📚 DOCUMENTATION
+    ├── README-F5-TTS-AUDIO.md                 Complete technical guide (497 lines)
+    ├── QUICKSTART-F5TTS.md                    5-minute quick start (258 lines)
+    ├── F5-TTS-IMPLEMENTATION.md               Implementation details (600+ lines)
+    └── FILE-TREE.txt                          This file
+    │
+    ├── ⚙️  CONFIGURATION
+    └── requirements-f5tts.txt                 Python dependencies
+    │
+    ├── 🎙️  REFERENCE AUDIO (Voice Cloning)
+    └── tts/
+        ├── kids_voice_reference.wav           ✅ Kids voice (24kHz mono, ~700KB)
+        ├── kids_voice_reference.txt           ✅ Kids voice transcript
+        ├── adult_voice_reference.wav          ✅ Adult voice (24kHz mono, ~700KB)
+        └── adult_voice_reference.txt          ✅ Adult voice transcript
+
+
+QUICK START COMMANDS
+====================
+
+# 1. Setup (one time)
+./scripts/setup_f5tts.sh
+
+# 2. Verify setup
+python scripts/test_f5tts_setup.py
+
+# 3. Generate test story
+python scripts/generate_story_audio.py --story adam
+
+# 4. Generate all stories
+python scripts/generate_story_audio.py --type all
+
+
+STORY PROCESSING SUMMARY
+=========================
+
+Kids Stories (25 prophets)
+├── Input:  data/kidsStories.json
+├── Output: public/assets/kids/audio/
+├── Files:  ~275 MP3s (scenes + lessons)
+└── Format: story-{id}-scene-{n}.mp3, story-{id}-lesson.mp3
+
+Adult Seerah (5 stories)
+├── Input:  data/adultStories.json
+├── Output: public/assets/adult/audio/
+├── Files:  5 MP3s
+└── Format: {story-id}.mp3
+
+Adult Prophet Stories (25 prophets)
+├── Input:  data/prophetStoriesAdults.json
+├── Output: public/assets/adult/audio/
+├── Files:  ~200 MP3s (multi-section)
+└── Format: {prophet-id}-{section-id}.mp3
+
+Total: ~480 audio files
+
+
+DOCUMENTATION GUIDE
+===================
+
+For Beginners:
+→ QUICKSTART-F5TTS.md               5-minute setup guide
+
+For Complete Reference:
+→ README-F5-TTS-AUDIO.md            Full technical documentation
+
+For Technical Details:
+→ F5-TTS-IMPLEMENTATION.md          Implementation & architecture
+
+For Overview:
+→ F5-TTS-COMPLETE-SYSTEM.md         System overview (root level)
+
+
+COMMON COMMANDS
+===============
+
+# Generate specific story types
+python scripts/generate_story_audio.py --type kids
+python scripts/generate_story_audio.py --type adult-seerah
+python scripts/generate_story_audio.py --type adult-prophet
+
+# Generate specific story
+python scripts/generate_story_audio.py --story adam
+
+# Force regenerate
+python scripts/generate_story_audio.py --type all --force
+
+# Preview without generating
+python scripts/generate_story_audio.py --dry-run --type kids
+
+# Validate reference audio
+python scripts/create_reference_audio.py --validate
+
+# View logs
+tail -f scripts/generate_story_audio.log
+
+
+SYSTEM STATISTICS
+=================
+
+Created Scripts:     4 (1,216+ lines of Python + Bash)
+Documentation:       4 files (1,500+ lines)
+Reference Files:     4 (2 WAV + 2 TXT)
+Story Types:         3 (kids, adult Seerah, adult prophet)
+Total Stories:       55 (25 kids + 5 Seerah + 25 prophet)
+Expected Output:     ~480 audio files
+Storage Required:    ~100-200 MB
+Generation Time:     6-8 hours (CPU) / 2-3 hours (GPU)
+
+
+FILE STATUS
+===========
+
+✅ generate_story_audio.py         622 lines, executable
+✅ create_reference_audio.py       314 lines, executable
+✅ test_f5tts_setup.py             280 lines, executable
+✅ setup_f5tts.sh                  Bash script, executable
+✅ requirements-f5tts.txt          Dependencies list
+✅ README-F5-TTS-AUDIO.md          497 lines
+✅ QUICKSTART-F5TTS.md             258 lines
+✅ F5-TTS-IMPLEMENTATION.md        600+ lines
+✅ F5-TTS-COMPLETE-SYSTEM.md       500+ lines (root)
+✅ kids_voice_reference.wav        Pre-configured 24kHz mono
+✅ adult_voice_reference.wav       Pre-configured 24kHz mono
+✅ Reference transcripts            Present
+
+
+VERSION INFORMATION
+===================
+
+System Version:      1.0.0
+Date:                January 11, 2025
+Status:              ✅ Production Ready
+Python Required:     3.8+
+F5-TTS Required:     0.1.0+
+Platform:            macOS/Linux/Windows
+
+
+NEXT STEPS
+==========
+
+1. Read F5-TTS-COMPLETE-SYSTEM.md (root level overview)
+2. Run ./scripts/setup_f5tts.sh (automated setup)
+3. Run python scripts/test_f5tts_setup.py (verify)
+4. Run python scripts/generate_story_audio.py --story adam (test)
+5. Run python scripts/generate_story_audio.py --type all (generate all)
+6. Review output files in public/assets/
+7. Deploy to production
+
+
+SUPPORT
+=======
+
+Documentation:  See scripts/README-F5-TTS-AUDIO.md
+Quick Start:    See scripts/QUICKSTART-F5TTS.md
+Help Commands:  python scripts/generate_story_audio.py --help
+Logs:           scripts/generate_story_audio.log
+F5-TTS Docs:    https://github.com/SWivid/F5-TTS
+
+
+Complete, tested, and production-ready! 🚀

@@ -1,0 +1,19 @@
+# F5-TTS Story Audio Generation Requirements
+# Install with: pip install -r requirements-f5tts.txt
+
+# Core TTS engine
+f5-tts>=0.1.0
+
+# Audio processing
+pydub>=0.25.1
+
+# Progress bars
+tqdm>=4.66.0
+
+# Optional: For better audio processing
+soundfile>=0.12.1
+librosa>=0.10.0
+
+# Optional: For GPU acceleration (if CUDA available)
+# torch>=2.0.0
+# torchaudio>=2.0.0
