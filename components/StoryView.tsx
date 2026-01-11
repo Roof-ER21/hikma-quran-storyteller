@@ -997,7 +997,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
       
       {/* Immersive Header / Controls */}
       <div className={`${immersiveMode ? 'bg-black/80 text-white backdrop-blur-md fixed top-0 w-full z-50' : 'bg-white text-stone-800 border-b border-stone-200'} p-4 flex items-center justify-between transition-all duration-300`}>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-w-0">
             <button onClick={immersiveMode ? () => setImmersiveMode(false) : onBack} className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10' : 'hover:bg-stone-100'}`}>
                <i className={`fas ${immersiveMode ? 'fa-compress' : 'fa-arrow-left'}`}></i>
             </button>
@@ -1007,10 +1007,10 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
             </div>
         </div>
         
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center flex-wrap justify-end">
             {/* Language Toggle - 3 Languages */}
             {!immersiveMode && (
-                <div className="flex bg-stone-100 rounded-lg p-1 mr-2">
+                <div className="flex bg-stone-100 rounded-lg p-1 mr-2 flex-wrap gap-1">
                     <button
                         onClick={() => setLanguage('english')}
                         className={`text-xs px-2 py-1 rounded transition-colors ${language === 'english' ? 'bg-white shadow text-rose-900 font-medium' : 'text-stone-400 hover:text-stone-600'}`}
@@ -1108,11 +1108,11 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
       {/* Action Buttons Bar - Generate New / Explore Library */}
       {!immersiveMode && !loading && (
-        <div className={`px-4 py-3 bg-gradient-to-r from-rose-50 to-amber-50 border-b border-stone-200 flex gap-3 ${isArabic ? 'flex-row-reverse' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
+        <div className={`px-4 py-3 bg-gradient-to-r from-rose-50 to-amber-50 border-b border-stone-200 flex flex-col sm:flex-row gap-3 ${isArabic ? 'flex-row-reverse sm:flex-row-reverse' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
           <button
             onClick={handleGenerateNewStory}
             disabled={storyMode === 'generating'}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
+            className={`w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
               storyMode === 'generating'
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-rose-600 to-rose-700 text-white hover:from-rose-700 hover:to-rose-800 shadow-md hover:shadow-lg'
@@ -1125,7 +1125,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
           {onNavigateToLibrary && (
             <button
               onClick={() => onNavigateToLibrary(preloadedStory?.id)}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium bg-white border-2 border-amber-500 text-amber-700 hover:bg-amber-50 transition-all shadow-sm hover:shadow-md ${isArabic ? 'font-arabic' : ''}`}
+              className={`w-full sm:flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium bg-white border-2 border-amber-500 text-amber-700 hover:bg-amber-50 transition-all shadow-sm hover:shadow-md ${isArabic ? 'font-arabic' : ''}`}
             >
               <i className="fas fa-book-open"></i>
               <span>{t('actions.exploreLibrary', 'Explore in Library')}</span>
