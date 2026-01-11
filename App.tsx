@@ -331,7 +331,7 @@ function App() {
   return (
     <RTLProvider>
     <div
-      className="min-h-screen bg-stone-100 flex flex-col text-stone-800"
+      className="min-h-screen bg-stone-100 flex flex-col text-stone-800 overflow-x-hidden"
       dir={i18n.language === 'ar-EG' ? 'rtl' : 'ltr'}
     >
       {/* PWA Components */}

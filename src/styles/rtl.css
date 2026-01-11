@@ -10,6 +10,12 @@ html.rtl body {
   font-family: 'Amiri', 'Noto Naskh Arabic', 'Scheherazade New', system-ui, sans-serif;
 }
 
+/* Prevent sideways scroll on mobile when switching directions */
+html,
+body {
+  overflow-x: hidden;
+}
+
 html.rtl input,
 html.rtl textarea,
 html.rtl button,

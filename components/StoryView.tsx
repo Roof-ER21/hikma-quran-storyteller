@@ -1256,7 +1256,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
       {/* Content */}
       <div
         ref={contentRef}
-        className={`flex-1 overflow-y-auto ${immersiveMode ? 'bg-stone-900 p-8 md:p-20 pt-24' : 'p-6 md:p-10'} scroll-smooth`}
+        className={`flex-1 overflow-y-auto overflow-x-hidden ${immersiveMode ? 'bg-stone-900 p-8 md:p-20 pt-24' : 'p-6 md:p-10'} scroll-smooth`}
         style={storyBackgroundStyle}
       >
         {activeTab === 'read' && (
