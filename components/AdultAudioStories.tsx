@@ -10,6 +10,29 @@ const AdultAudioStories: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [openStory, setOpenStory] = useState<Story | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const preloadedAudiosRef = useRef<Map<string, HTMLAudioElement>>(new Map());
+
+  // Warm the browser cache with pre-recorded audio so playback starts instantly.
+  React.useEffect(() => {
+    const map = preloadedAudiosRef.current;
+    stories.forEach((story) => {
+      const src = `/assets/adult/audio/${story.id}.mp3?v=${ADULT_AUDIO_VERSION}`;
+      if (map.has(story.id)) return;
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.src = src;
+      audio.load();
+      map.set(story.id, audio);
+    });
+
+    return () => {
+      map.forEach((audio) => {
+        audio.pause();
+        audio.src = '';
+      });
+      map.clear();
+    };
+  }, []);
 
   const stop = () => {
     if (audioRef.current) {
@@ -28,11 +51,12 @@ const AdultAudioStories: React.FC = () => {
     }
 
     const src = `/assets/adult/audio/${story.id}.mp3?v=${ADULT_AUDIO_VERSION}`;
-    if (!audioRef.current) {
-      audioRef.current = new Audio(src);
-    } else {
-      audioRef.current.src = src;
-    }
+    const cached = preloadedAudiosRef.current.get(story.id);
+    const audio = cached && cached.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA ? cached : (audioRef.current || new Audio());
+
+    audio.src = src;
+    audio.preload = 'auto';
+    audioRef.current = audio;
 
     audioRef.current.onended = () => {
       setPlayingId(null);
