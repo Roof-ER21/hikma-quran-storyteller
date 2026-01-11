@@ -159,6 +159,19 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        chunkSizeWarningLimit: 1200,
+        rollupOptions: {
+          output: {
+            manualChunks: (id) => {
+              if (id.includes('services/geminiService')) return 'ai-gemini';
+              if (id.includes('services/audioUtils') || id.includes('services/quranAudioService')) return 'audio-core';
+              if (id.includes('node_modules')) return 'vendor';
+              return undefined;
+            }
+          }
+        }
       }
     };
 });
