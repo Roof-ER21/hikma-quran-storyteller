@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   PrayerTimes,
   QiblaDirection,
@@ -30,6 +31,8 @@ interface IslamicToolsProps {
 }
 
 export default function IslamicTools({ onBack }: IslamicToolsProps) {
+  const { t, i18n } = useTranslation('islamic');
+  const isArabic = i18n.language === 'ar-EG';
   const [activeTab, setActiveTab] = useState<TabType>('prayer');
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationName, setLocationName] = useState<string>('');
@@ -249,13 +252,15 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
           <div className="bg-gradient-to-br from-rose-600 to-rose-800 rounded-2xl p-6 text-white shadow-xl">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-rose-200 text-sm uppercase tracking-wider">Next Prayer</p>
+                <p className="text-rose-200 text-sm uppercase tracking-wider">
+                  {t('prayer.next')}
+                </p>
                 <h3 className="text-3xl font-bold mt-1">{nextPrayer.name}</h3>
                 <p className="text-rose-100 font-arabic text-xl">{nextPrayer.nameAr}</p>
               </div>
               <div className="text-right">
                 <p className="text-4xl font-bold">{nextPrayer.time}</p>
-                <p className="text-rose-200">in {timeUntil}</p>
+                <p className="text-rose-200">{t('prayer.in', { time: timeUntil })}</p>
               </div>
             </div>
           </div>
@@ -282,7 +287,9 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
 
         {/* Calculation Method Selector */}
         <div className="bg-white rounded-xl p-4 shadow-md border border-stone-100">
-          <label className="text-sm font-medium text-stone-500 mb-2 block">Calculation Method</label>
+          <label className={`text-sm font-medium text-stone-500 mb-2 block ${isArabic ? 'font-arabic text-right' : ''}`}>
+            {t('prayer.calculation')}
+          </label>
           <select
             value={calculationMethod}
             onChange={(e) => setCalculationMethod(Number(e.target.value))}
@@ -306,8 +313,8 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
                 <i className={`fas fa-bell ${notificationsEnabled ? 'text-green-600' : 'text-stone-400'}`}></i>
               </div>
               <div>
-                <p className="font-medium text-stone-800">Prayer Notifications</p>
-                <p className="text-xs text-stone-500">Get reminded before each prayer</p>
+                <p className={`font-medium text-stone-800 ${isArabic ? 'font-arabic' : ''}`}>{t('prayer.notifications')}</p>
+                <p className={`text-xs text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>{t('prayer.notificationsSub')}</p>
               </div>
             </div>
             <button
@@ -323,17 +330,19 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
           </div>
           {notificationsEnabled && (
             <div className="mt-3 pt-3 border-t border-stone-100">
-              <label className="text-xs text-stone-500 mb-2 block">Notify me before prayer</label>
+              <label className={`text-xs text-stone-500 mb-2 block ${isArabic ? 'font-arabic text-right' : ''}`}>
+                {t('prayer.notifyBefore')}
+              </label>
               <select
                 value={notifyMinutesBefore}
                 onChange={(e) => setNotifyMinutesBefore(Number(e.target.value))}
                 className="w-full p-2 bg-stone-50 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               >
-                <option value={5}>5 minutes before</option>
-                <option value={10}>10 minutes before</option>
-                <option value={15}>15 minutes before</option>
-                <option value={30}>30 minutes before</option>
-                <option value={0}>At prayer time</option>
+                {[5,10,15,30,0].map((min) => (
+                  <option key={min} value={min}>
+                    {min === 0 ? t('prayer.atTime') : t('prayer.minutesBefore', { minutes: min })}
+                  </option>
+                ))}
               </select>
             </div>
           )}
@@ -343,7 +352,9 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         <div className="bg-blue-50 rounded-xl p-3 border border-blue-100">
           <div className="flex items-center gap-2 text-blue-700 text-sm">
             <i className="fas fa-clock"></i>
-            <span>Times shown in your local timezone: <strong>{prayerTimes.timezone}</strong></span>
+            <span className={isArabic ? 'font-arabic' : ''}>
+              {t('prayer.timezone', { tz: prayerTimes.timezone })}
+            </span>
           </div>
         </div>
 
@@ -619,8 +630,8 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
     return (
       <div className="flex flex-col items-center justify-center h-full py-20">
         <div className="w-16 h-16 border-4 border-rose-200 border-t-rose-600 rounded-full animate-spin"></div>
-        <p className="mt-4 text-stone-600">Getting your location...</p>
-        <p className="text-sm text-stone-400 mt-1">Please allow location access when prompted</p>
+        <p className={`mt-4 text-stone-600 ${isArabic ? 'font-arabic' : ''}`}>{t('loading.location')}</p>
+        <p className={`text-sm text-stone-400 mt-1 ${isArabic ? 'font-arabic' : ''}`}>{t('loading.permission')}</p>
       </div>
     );
   }
@@ -631,14 +642,14 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
           <i className="fas fa-exclamation-triangle text-red-500 text-3xl"></i>
         </div>
-        <h3 className="text-xl font-bold text-stone-800 mb-2">Location Required</h3>
-        <p className="text-stone-600 text-center max-w-md mb-6">{error}</p>
+        <h3 className={`text-xl font-bold text-stone-800 mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('error.title')}</h3>
+        <p className={`text-stone-600 text-center max-w-md mb-6 ${isArabic ? 'font-arabic' : ''}`}>{error}</p>
         <button
           onClick={() => window.location.reload()}
           className="px-6 py-3 bg-rose-600 text-white rounded-xl hover:bg-rose-700 transition-colors"
         >
-          <i className="fas fa-redo mr-2"></i>
-          Try Again
+          <i className={`fas fa-redo ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+          {t('error.retry')}
         </button>
       </div>
     );
@@ -653,12 +664,12 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
             onClick={onBack}
             className="w-10 h-10 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors"
           >
-            <i className="fas fa-arrow-left text-stone-600"></i>
+            <i className={`fas fa-arrow-${isArabic ? 'right' : 'left'} text-stone-600`}></i>
           </button>
         )}
         <div>
-          <h1 className="text-xl font-bold text-rose-900">Islamic Tools</h1>
-          <p className="text-sm text-stone-500">أدوات إسلامية</p>
+          <h1 className={`text-xl font-bold text-rose-900 ${isArabic ? 'font-arabic' : ''}`}>{t('header.title')}</h1>
+          <p className={`text-sm text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>{t('header.subtitle')}</p>
         </div>
       </div>
 
@@ -671,8 +682,8 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
               activeTab === 'prayer' ? 'text-rose-700' : 'text-stone-500 hover:text-stone-700'
             }`}
           >
-            <i className="fas fa-mosque mr-2"></i>
-            Prayer Times
+            <i className={`fas fa-mosque ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+            {t('tabs.prayer')}
             {activeTab === 'prayer' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-600"></div>
             )}
@@ -683,8 +694,8 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
               activeTab === 'qibla' ? 'text-emerald-700' : 'text-stone-500 hover:text-stone-700'
             }`}
           >
-            <i className="fas fa-compass mr-2"></i>
-            Qibla
+            <i className={`fas fa-compass ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+            {t('tabs.qibla')}
             {activeTab === 'qibla' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-600"></div>
             )}
@@ -695,8 +706,8 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
               activeTab === 'calendar' ? 'text-purple-700' : 'text-stone-500 hover:text-stone-700'
             }`}
           >
-            <i className="fas fa-calendar-alt mr-2"></i>
-            Calendar
+            <i className={`fas fa-calendar-alt ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+            {t('tabs.calendar')}
             {activeTab === 'calendar' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600"></div>
             )}

@@ -1,0 +1,30 @@
+{
+  "header": {
+    "title": "أدوات إسلامية",
+    "subtitle": "Islamic Tools"
+  },
+  "loading": {
+    "location": "جاري تحديد موقعك...",
+    "permission": "يرجى السماح بالوصول للموقع عند الطلب"
+  },
+  "error": {
+    "title": "الموقع مطلوب",
+    "retry": "حاول مرة أخرى"
+  },
+  "tabs": {
+    "prayer": "مواقيت الصلاة",
+    "qibla": "القبلة",
+    "calendar": "التقويم"
+  },
+  "prayer": {
+    "next": "الصلاة القادمة",
+    "in": "بعد {{time}}",
+    "calculation": "طريقة الحساب",
+    "notifications": "إشعارات الصلاة",
+    "notificationsSub": "تذكير قبل كل صلاة",
+    "notifyBefore": "ذكّرني قبل الصلاة",
+    "minutesBefore": "{{minutes}} دقيقة قبل",
+    "atTime": "عند وقت الصلاة",
+    "timezone": "المواقيت بحسب منطقتك الزمنية: {{tz}}"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "header": {
+    "title": "Islamic Tools",
+    "subtitle": "أدوات إسلامية"
+  },
+  "loading": {
+    "location": "Getting your location...",
+    "permission": "Please allow location access when prompted"
+  },
+  "error": {
+    "title": "Location Required",
+    "retry": "Try Again"
+  },
+  "tabs": {
+    "prayer": "Prayer Times",
+    "qibla": "Qibla",
+    "calendar": "Calendar"
+  },
+  "prayer": {
+    "next": "Next Prayer",
+    "in": "in {{time}}",
+    "calculation": "Calculation Method",
+    "notifications": "Prayer Notifications",
+    "notificationsSub": "Get reminded before each prayer",
+    "notifyBefore": "Notify me before prayer",
+    "minutesBefore": "{{minutes}} minutes before",
+    "atTime": "At prayer time",
+    "timezone": "Times shown in your local timezone: {{tz}}"
+  }
+}

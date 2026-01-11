@@ -11,6 +11,7 @@ import enQuran from './locales/en/quran.json';
 import enLive from './locales/en/live.json';
 import enDedication from './locales/en/dedication.json';
 import enLibrary from './locales/en/library.json';
+import enIslamic from './locales/en/islamic.json';
 
 // Import Egyptian Arabic translation files
 import arEGCommon from './locales/ar-EG/common.json';
@@ -21,6 +22,7 @@ import arEGQuran from './locales/ar-EG/quran.json';
 import arEGLive from './locales/ar-EG/live.json';
 import arEGDedication from './locales/ar-EG/dedication.json';
 import arEGLibrary from './locales/ar-EG/library.json';
+import arEGIslamic from './locales/ar-EG/islamic.json';
 
 // localStorage keys
 export const LANGUAGE_KEY = 'alayasoad_language';
@@ -36,6 +38,7 @@ const resources = {
     live: enLive,
     dedication: enDedication,
     library: enLibrary,
+    islamic: enIslamic,
   },
   'ar-EG': {
     common: arEGCommon,
@@ -46,6 +49,7 @@ const resources = {
     live: arEGLive,
     dedication: arEGDedication,
     library: arEGLibrary,
+    islamic: arEGIslamic,
   },
 };
 
@@ -56,7 +60,7 @@ i18n
     resources,
     fallbackLng: 'en',
     defaultNS: 'common',
-    ns: ['common', 'home', 'story', 'kids', 'quran', 'live', 'dedication', 'library'],
+    ns: ['common', 'home', 'story', 'kids', 'quran', 'live', 'dedication', 'library', 'islamic'],
     interpolation: {
       escapeValue: false,
     },
