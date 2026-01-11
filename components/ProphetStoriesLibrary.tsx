@@ -213,23 +213,23 @@ const ProphetStoriesLibrary: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* No Results */}
-        {filteredStories.length === 0 && searchQuery && (
-          <div className="text-center py-16">
-            <i className="fas fa-search text-6xl text-stone-300 mb-4"></i>
-            <h3 className="text-2xl font-serif text-stone-700 mb-2">No stories found</h3>
-            <p className="text-stone-500 mb-4">
-              Try adjusting your search terms or browse all prophets
-            </p>
-            <button
-              onClick={clearSearch}
-              className="px-6 py-3 bg-rose-900 text-white rounded-xl font-medium hover:bg-rose-800 transition-colors"
-            >
-              Clear Search
-            </button>
-          </div>
-        )}
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            {/* No Results */}
+            {filteredStories.length === 0 && searchQuery && (
+              <div className="text-center py-16">
+                <i className="fas fa-search text-6xl text-stone-300 mb-4"></i>
+                <h3 className={`text-2xl font-serif text-stone-700 mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('search.noResultsHeader', 'No stories found')}</h3>
+                <p className={`text-stone-500 mb-4 ${isArabic ? 'font-arabic' : ''}`}>
+                  {t('search.noResultsBody', 'Try adjusting your search terms or browse all prophets')}
+                </p>
+                <button
+                  onClick={clearSearch}
+                  className="px-6 py-3 bg-rose-900 text-white rounded-xl font-medium hover:bg-rose-800 transition-colors"
+                >
+                  {t('search.clear', 'Clear Search')}
+                </button>
+              </div>
+            )}
 
         {/* Prophet Cards Grid */}
         {!selectedStory && filteredStories.length > 0 && (
@@ -248,11 +248,13 @@ const ProphetStoriesLibrary: React.FC = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <h3 className="text-2xl font-serif font-bold text-rose-900 mb-1 group-hover:text-rose-700 transition-colors">
-                        {story.prophetName}
+                        {isArabic ? story.arabicName : story.prophetName}
                       </h3>
-                      <p className="text-xl font-arabic text-amber-700 mb-2" dir="rtl">
-                        {story.arabicName}
-                      </p>
+                      {!isArabic && (
+                        <p className="text-xl font-arabic text-amber-700 mb-2" dir="rtl">
+                          {story.arabicName}
+                        </p>
+                      )}
                     </div>
                     <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center group-hover:bg-rose-200 transition-colors">
                       <i className="fas fa-scroll"></i>
@@ -261,11 +263,11 @@ const ProphetStoriesLibrary: React.FC = () => {
 
                   <div className="flex flex-wrap gap-2 text-xs">
                     <span className="px-3 py-1 rounded-full bg-white text-stone-600 border border-stone-200">
-                      <i className="fas fa-map-marker-alt mr-1"></i>
+                      <i className={`fas fa-map-marker-alt ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
                       {story.location}
                     </span>
                     <span className="px-3 py-1 rounded-full bg-white text-stone-600 border border-stone-200">
-                      <i className="fas fa-clock mr-1"></i>
+                      <i className={`fas fa-clock ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
                       {story.era}
                     </span>
                   </div>
@@ -273,26 +275,26 @@ const ProphetStoriesLibrary: React.FC = () => {
 
                 {/* Card Body */}
                 <div className="p-6">
-                  <p className="text-stone-600 leading-relaxed line-clamp-3 mb-4">
-                    {story.summary}
+                  <p className={`text-stone-600 leading-relaxed line-clamp-3 mb-4 ${isArabic ? 'font-arabic text-right' : ''}`}>
+                    {isArabic && story.summaryArabic ? story.summaryArabic : story.summary}
                   </p>
 
                   {/* Key Lessons Preview */}
                   {story.keyLessons.length > 0 && (
                     <div className="space-y-2">
-                      <p className="text-xs uppercase tracking-wider text-stone-500 font-semibold">
-                        Key Lessons
+                      <p className={`text-xs uppercase tracking-wider text-stone-500 font-semibold ${isArabic ? 'font-arabic text-right' : ''}`}>
+                        {t('story.keyLessons')}
                       </p>
                       <ul className="space-y-1">
-                        {story.keyLessons.slice(0, 2).map((lesson, idx) => (
+                        {(isArabic && story.keyLessonsArabic ? story.keyLessonsArabic : story.keyLessons).slice(0, 2).map((lesson, idx) => (
                           <li key={idx} className="flex items-start gap-2 text-sm text-stone-600">
                             <i className="fas fa-check-circle text-amber-600 mt-1 flex-shrink-0"></i>
                             <span className="line-clamp-1">{lesson}</span>
                           </li>
                         ))}
-                        {story.keyLessons.length > 2 && (
+                        {(isArabic && story.keyLessonsArabic ? story.keyLessonsArabic.length : story.keyLessons.length) > 2 && (
                           <li className="text-sm text-rose-700 font-medium">
-                            +{story.keyLessons.length - 2} more lessons
+                            +{(isArabic && story.keyLessonsArabic ? story.keyLessonsArabic.length : story.keyLessons.length) - 2} {t('story.moreLessons', 'more lessons')}
                           </li>
                         )}
                       </ul>
@@ -301,8 +303,8 @@ const ProphetStoriesLibrary: React.FC = () => {
 
                   {/* Read More Button */}
                   <button className="mt-4 w-full py-3 bg-rose-900 text-white rounded-xl font-medium hover:bg-rose-800 transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg">
-                    <span>Read Full Story</span>
-                    <i className="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                    <span className={isArabic ? 'font-arabic' : ''}>{t('story.readFullStory')}</span>
+                    <i className={`fas fa-arrow-${isArabic ? 'left' : 'right'} transform group-hover:translate-x-1 transition-transform`}></i>
                   </button>
                 </div>
               </div>
@@ -334,8 +336,8 @@ const ProphetStoriesLibrary: React.FC = () => {
                   }}
                   className="mb-6 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors flex items-center gap-2"
                 >
-                  <i className="fas fa-arrow-left"></i>
-                  <span>Back to Library</span>
+                  <i className={`fas fa-arrow-${isArabic ? 'right' : 'left'}`}></i>
+                  <span className={isArabic ? 'font-arabic' : ''}>{t('story.backToLibrary')}</span>
                 </button>
 
                 <div className="flex items-start justify-between gap-6">

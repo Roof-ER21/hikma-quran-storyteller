@@ -11,11 +11,19 @@
     "era": "العصر",
     "location": "المكان"
   },
+  "search": {
+    "noResultsHeader": "لا توجد قصص",
+    "noResultsBody": "جرّب تعديل كلمات البحث أو تصفح كل الأنبياء",
+    "clear": "مسح البحث"
+  },
   "story": {
     "era": "العصر",
     "period": "الفترة",
     "location": "المكان",
     "keyLessons": "الدروس الرئيسية",
+    "moreLessons": "دروس إضافية",
+    "readFullStory": "اقرأ القصة كاملة",
+    "backToLibrary": "العودة للمكتبة",
     "sections": "الأقسام",
     "relatedProphets": "أنبياء مرتبطين",
     "historicalNotes": "ملاحظات تاريخية"

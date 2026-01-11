@@ -11,11 +11,19 @@
     "era": "Era",
     "location": "Location"
   },
+  "search": {
+    "noResultsHeader": "No stories found",
+    "noResultsBody": "Try adjusting your search terms or browse all prophets",
+    "clear": "Clear Search"
+  },
   "story": {
     "era": "Era",
     "period": "Period",
     "location": "Location",
     "keyLessons": "Key Lessons",
+    "moreLessons": "more lessons",
+    "readFullStory": "Read Full Story",
+    "backToLibrary": "Back to Library",
     "sections": "Sections",
     "relatedProphets": "Related Prophets",
     "historicalNotes": "Historical Notes"
