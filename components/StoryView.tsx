@@ -165,7 +165,8 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
   const [contextSources, setContextSources] = useState<{title: string, url: string}[]>([]);
   const [summary, setSummary] = useState<string>("");
   const [activeTab, setActiveTab] = useState<'read' | 'locations' | 'context'>('read');
-  const [language, setLanguage] = useState<StoryLanguage>('english');
+  const [language, setLanguage] = useState<StoryLanguage>(i18n.language === 'ar-EG' ? 'arabic' : 'english');
+  const [manualLanguageChoice, setManualLanguageChoice] = useState(false);
   
   // UX State
   const [immersiveMode, setImmersiveMode] = useState(false);
@@ -207,6 +208,13 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
   useEffect(() => {
     injectAnimationStyles();
   }, []);
+
+  // Default the adult story language to Arabic when the app is in Arabic mode (while allowing manual override).
+  useEffect(() => {
+    if (!manualLanguageChoice) {
+      setLanguage(i18n.language === 'ar-EG' ? 'arabic' : 'english');
+    }
+  }, [i18n.language, manualLanguageChoice]);
 
   // Soft Islamic-inspired background for non-immersive mode
   const heroBackgroundImage = !immersiveMode
@@ -1012,17 +1020,17 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
             {!immersiveMode && (
                 <div className="flex bg-stone-100 rounded-lg p-1 mr-2 flex-wrap gap-1">
                     <button
-                        onClick={() => setLanguage('english')}
+                        onClick={() => { setManualLanguageChoice(true); setLanguage('english'); }}
                         className={`text-xs px-2 py-1 rounded transition-colors ${language === 'english' ? 'bg-white shadow text-rose-900 font-medium' : 'text-stone-400 hover:text-stone-600'}`}
                         title="English"
                     >{LANGUAGE_LABELS.english}</button>
                     <button
-                        onClick={() => setLanguage('arabic')}
+                        onClick={() => { setManualLanguageChoice(true); setLanguage('arabic'); }}
                         className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic' ? 'bg-white shadow text-rose-900 font-medium' : 'text-stone-400 hover:text-stone-600'}`}
                         title="Arabic (Fusha)"
                     >{LANGUAGE_LABELS.arabic}</button>
                     <button
-                        onClick={() => setLanguage('arabic_egyptian')}
+                        onClick={() => { setManualLanguageChoice(true); setLanguage('arabic_egyptian'); }}
                         className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic_egyptian' ? 'bg-white shadow text-rose-900 font-medium' : 'text-stone-400 hover:text-stone-600'}`}
                         title="Egyptian Arabic (مصري)"
                     >{LANGUAGE_LABELS.arabic_egyptian}</button>
