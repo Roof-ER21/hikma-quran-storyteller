@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NarrationState } from '../types';
 import { RECITERS, formatTime } from '../services/quranAudioService';
 
@@ -30,6 +31,8 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
   currentReciter,
 }) => {
   const [showSettings, setShowSettings] = useState(false);
+  const { t, i18n } = useTranslation('library');
+  const isArabic = i18n.language === 'ar-EG';
 
   const {
     isPlaying,
@@ -51,26 +54,26 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
   }
 
   const getCurrentItemLabel = () => {
-    if (!currentItem) return 'Loading...';
+    if (!currentItem) return t('narration.loading', 'Loading...');
 
     switch (currentItem.type) {
       case 'quran-recitation':
-        return `Quran - Surah ${currentItem.surah}:${currentItem.verse}`;
+        return t('narration.quranRecitation', { surah: currentItem.surah, verse: currentItem.verse });
       case 'tts':
         if (currentItem.metadata?.isTranslation) {
-          return `Translation - Surah ${currentItem.surah}:${currentItem.verse}`;
+          return t('narration.translation', { surah: currentItem.surah, verse: currentItem.verse });
         }
         if (currentItem.metadata?.isHadith) {
-          return `Hadith - ${currentItem.metadata.source}`;
+          return t('narration.hadithLabel', { source: currentItem.metadata.source });
         }
         if (currentItem.metadata?.sectionTitle) {
           return currentItem.metadata.sectionTitle;
         }
-        return 'Narration';
+        return t('narration.default', 'Narration');
       case 'prebaked':
-        return currentItem.metadata?.sectionTitle || 'Section';
+        return currentItem.metadata?.sectionTitle || t('narration.section', 'Section');
       default:
-        return 'Playing...';
+        return t('narration.playing', 'Playing...');
     }
   };
 
@@ -82,9 +85,9 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
             <div className="max-w-7xl mx-auto px-4 py-2 flex items-center gap-3 text-amber-50">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-300 animate-pulse"></span>
               <div className="leading-tight">
-                <p className="text-sm font-semibold">Preparing narration audio...</p>
+                <p className="text-sm font-semibold">{t('narration.preparing')}</p>
                 <p className="text-xs text-amber-100/80">
-                  Loading the next section and Quran recitation. This can take a few seconds.
+                  {t('narration.preparingHint')}
                 </p>
               </div>
             </div>
@@ -103,8 +106,8 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
             {/* Prophet info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs uppercase tracking-wider text-rose-200">
-                  {currentProphetName || 'Prophet Story'}
+                <span className={`text-xs uppercase tracking-wider text-rose-200 ${isArabic ? 'font-arabic' : ''}`}>
+                  {currentProphetName || t('narration.prophetStory')}
                 </span>
                 <span className="text-xs text-rose-300">
                   {currentIndex + 1} / {totalItems}
@@ -117,7 +120,7 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
                 {currentItem?.type === 'quran-recitation' && (
                   <span className="px-2 py-0.5 text-xs bg-amber-500/30 rounded-full">
                     <i className="fas fa-quran mr-1"></i>
-                    Recitation
+                    {t('narration.recitationTag')}
                   </span>
                 )}
               </div>
@@ -137,7 +140,7 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
                 onClick={onSkipBack}
                 disabled={currentIndex === 0}
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                title="Previous"
+                title={t('narration.previous')}
               >
                 <i className="fas fa-step-backward text-sm"></i>
               </button>
@@ -162,7 +165,7 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
                 onClick={onSkipForward}
                 disabled={currentIndex >= totalItems - 1}
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                title="Next"
+                title={t('narration.next')}
               >
                 <i className="fas fa-step-forward text-sm"></i>
               </button>
@@ -187,7 +190,7 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
             <button
               onClick={() => setShowSettings(!showSettings)}
               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
-              title="Settings"
+              title={t('narration.settings')}
             >
               <i className={`fas fa-${showSettings ? 'times' : 'cog'} text-sm`}></i>
             </button>
@@ -196,7 +199,7 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
             <button
               onClick={onStop}
               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
-              title="Stop"
+              title={t('narration.stop')}
             >
               <i className="fas fa-stop text-sm"></i>
             </button>

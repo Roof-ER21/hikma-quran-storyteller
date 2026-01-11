@@ -112,7 +112,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         setLocationName(getLocationFromTimezone(prayers.timezone));
       } catch (err) {
         console.error('Error getting prayer times:', err);
-        setLocationName('Unknown Location');
+        setLocationName(t('qibla.unknownLocation'));
       }
 
       // Get Islamic date (non-blocking, has fallback)
@@ -165,7 +165,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         setNotificationsEnabled(true);
         localStorage.setItem('islamic_tools_notifications_enabled', 'true');
       } else {
-        alert('Notification permission denied. Please enable notifications in your browser settings.');
+        alert(t('prayer.notificationsDenied'));
       }
     }
   };
@@ -403,7 +403,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
                 <i className="fas fa-moon text-indigo-600"></i>
               </div>
               <div>
-                <p className="font-medium text-indigo-800">Midnight</p>
+                <p className="font-medium text-indigo-800">{t('prayer.midnight')}</p>
                 <p className="font-arabic text-sm text-indigo-600">منتصف الليل</p>
               </div>
             </div>
@@ -562,24 +562,24 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         )}
 
         {/* Gregorian Date */}
-        <div className="bg-white rounded-xl p-6 shadow-md border border-stone-100">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-stone-100 rounded-xl flex items-center justify-center">
-              <i className="fas fa-calendar-alt text-stone-600 text-2xl"></i>
-            </div>
-            <div>
-              <p className={`text-sm text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>{t('calendar.gregorianDate')}</p>
-              <p className="text-xl font-bold text-stone-800">
-                {new Date().toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </p>
+          <div className="bg-white rounded-xl p-6 shadow-md border border-stone-100">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-stone-100 rounded-xl flex items-center justify-center">
+                <i className="fas fa-calendar-alt text-stone-600 text-2xl"></i>
+              </div>
+              <div>
+                <p className={`text-sm text-stone-500 ${isArabic ? 'font-arabic' : ''}`}>{t('calendar.gregorianDate')}</p>
+                <p className="text-xl font-bold text-stone-800">
+                  {new Date().toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
         {/* Islamic Months Reference */}
         <div className="bg-white rounded-xl shadow-md border border-stone-100 overflow-hidden">

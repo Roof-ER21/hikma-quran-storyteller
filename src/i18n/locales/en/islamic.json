@@ -19,13 +19,15 @@
   "prayer": {
     "next": "Next Prayer",
     "in": "in {{time}}",
+    "midnight": "Midnight",
     "calculation": "Calculation Method",
     "notifications": "Prayer Notifications",
     "notificationsSub": "Get reminded before each prayer",
     "notifyBefore": "Notify me before prayer",
     "minutesBefore": "{{minutes}} minutes before",
     "atTime": "At prayer time",
-    "timezone": "Times shown in your local timezone: {{tz}}"
+    "timezone": "Times shown in your local timezone: {{tz}}",
+    "notificationsDenied": "Notification permission denied. Please enable notifications in your browser settings."
   },
   "qibla": {
     "direction": "Direction to Mecca",
@@ -35,7 +37,8 @@
     "enable": "Enable Compass",
     "distance": "Distance to Mecca",
     "yourLocation": "Your Location",
-    "gettingLocation": "Getting location..."
+    "gettingLocation": "Getting location...",
+    "unknownLocation": "Unknown Location"
   },
   "calendar": {
     "islamicDate": "Islamic Date",

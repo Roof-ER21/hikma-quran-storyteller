@@ -198,15 +198,15 @@ const ProphetStoriesLibrary: React.FC = () => {
           </div>
 
           {/* Stats */}
-          <div className="mt-6 flex items-center gap-6 text-sm text-rose-100">
+          <div className={`mt-6 flex items-center gap-6 text-sm text-rose-100 ${isArabic ? 'font-arabic flex-row-reverse' : ''}`}>
             <span className="flex items-center gap-2">
               <i className="fas fa-users"></i>
-              {filteredStories.length} {filteredStories.length === 1 ? 'Prophet' : 'Prophets'}
+              {t('stats.count', { count: filteredStories.length })}
             </span>
             {searchQuery && (
               <span className="flex items-center gap-2">
                 <i className="fas fa-filter"></i>
-                Filtered from {stories.length} total
+                {t('stats.filtered', { total: stories.length })}
               </span>
             )}
           </div>

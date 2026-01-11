@@ -6,6 +6,10 @@
     "placeholder": "Search prophets, lessons, locations...",
     "noResults": "No stories found"
   },
+  "stats": {
+    "count": "Prophets: {{count}}",
+    "filtered": "Filtered from {{total}} total"
+  },
   "filters": {
     "all": "All Prophets",
     "era": "Era",
@@ -34,7 +38,21 @@
     "pause": "Pause",
     "stop": "Stop",
     "selectReciter": "Select Reciter",
-    "playbackSpeed": "Playback Speed"
+    "playbackSpeed": "Playback Speed",
+    "loading": "Loading...",
+    "quranRecitation": "Quran - Surah {{surah}}:{{verse}}",
+    "translation": "Translation - Surah {{surah}}:{{verse}}",
+    "hadithLabel": "Hadith - {{source}}",
+    "default": "Narration",
+    "section": "Section",
+    "playing": "Playing...",
+    "preparing": "Preparing narration audio...",
+    "preparingHint": "Loading the next section and Quran recitation. This can take a few seconds.",
+    "prophetStory": "Prophet Story",
+    "recitationTag": "Recitation",
+    "previous": "Previous",
+    "next": "Next",
+    "settings": "Settings"
   },
   "verses": {
     "quranVerse": "Quran Verse",

@@ -19,13 +19,15 @@
   "prayer": {
     "next": "الصلاة القادمة",
     "in": "بعد {{time}}",
+    "midnight": "منتصف الليل",
     "calculation": "طريقة الحساب",
     "notifications": "إشعارات الصلاة",
     "notificationsSub": "تذكير قبل كل صلاة",
     "notifyBefore": "ذكّرني قبل الصلاة",
     "minutesBefore": "{{minutes}} دقيقة قبل",
     "atTime": "عند وقت الصلاة",
-    "timezone": "المواقيت بحسب منطقتك الزمنية: {{tz}}"
+    "timezone": "المواقيت بحسب منطقتك الزمنية: {{tz}}",
+    "notificationsDenied": "تم رفض إذن الإشعارات. فعّل الإشعارات من إعدادات المتصفح."
   },
   "qibla": {
     "direction": "اتجاه مكة",
@@ -35,7 +37,8 @@
     "enable": "تفعيل البوصلة",
     "distance": "المسافة إلى مكة",
     "yourLocation": "موقعك",
-    "gettingLocation": "جاري الحصول على الموقع..."
+    "gettingLocation": "جاري الحصول على الموقع...",
+    "unknownLocation": "موقع غير معروف"
   },
   "calendar": {
     "islamicDate": "التاريخ الهجري",
