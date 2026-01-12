@@ -191,7 +191,7 @@ const OmniaLovePage: React.FC<OmniaLovePageProps> = ({ onContinue }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[100] overflow-hidden">
+    <div className="fixed inset-0 z-[100] overflow-y-auto overflow-x-hidden">
       {/* Inject animation styles */}
       <style>{`
         @keyframes fall {
@@ -294,7 +294,7 @@ const OmniaLovePage: React.FC<OmniaLovePageProps> = ({ onContinue }) => {
       ))}
 
       {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 md:p-8 overflow-y-auto">
+      <div className="relative z-10 flex flex-col items-center min-h-full p-4 md:p-8 py-12 md:py-16 pb-20 md:pb-24">
         <div
           className={`max-w-xl w-full transition-all duration-1000 ${
             showContent ? 'opacity-100' : 'opacity-0'
