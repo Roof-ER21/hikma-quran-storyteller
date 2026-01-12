@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Offline cached Quran audio (downloaded dynamically)
+public/assets/quran/offline/
