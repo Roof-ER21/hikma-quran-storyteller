@@ -546,9 +546,19 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
                 <div>
                     {/* Tutor Name and Avatar */}
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                        <span className="text-3xl">{selectedTutor.avatar}</span>
-                        <h2 className={`text-3xl font-serif ${isArabic ? 'font-arabic' : ''}`}>
+                    <div className="flex flex-col items-center gap-3 mb-2">
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-white/20 ring-2 ring-white/30 shadow-lg">
+                            <img
+                                src={selectedTutor.avatarImage}
+                                alt={selectedTutor.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).style.display = 'none';
+                                    (e.target as HTMLImageElement).parentElement!.innerHTML = `<div class="w-full h-full flex items-center justify-center text-4xl">${selectedTutor.avatar}</div>`;
+                                }}
+                            />
+                        </div>
+                        <h2 className={`text-2xl font-serif ${isArabic ? 'font-arabic' : ''}`}>
                             {isArabic ? selectedTutor.nameAr : selectedTutor.name}
                         </h2>
                     </div>

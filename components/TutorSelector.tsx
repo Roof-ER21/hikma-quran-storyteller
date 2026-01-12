@@ -61,14 +61,24 @@ export default function TutorSelector({ onSelect, onContinue }: TutorSelectorPro
 
       {/* Selected Tutor Details */}
       {selectedTutor && (
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 mb-6 max-w-lg mx-auto">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-4xl">{selectedTutor.avatar}</span>
-            <div>
-              <h3 className="text-white font-bold text-lg">
+        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 mb-6 max-w-lg mx-auto overflow-hidden">
+          {/* Detail Image */}
+          <div className="relative -mx-4 -mt-4 mb-4 h-40 overflow-hidden">
+            <img
+              src={selectedTutor.detailImage}
+              alt={selectedTutor.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to emoji if image fails
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/90 to-transparent" />
+            <div className="absolute bottom-3 left-4 right-4">
+              <h3 className="text-white font-bold text-xl drop-shadow-lg">
                 {isArabic ? selectedTutor.nameAr : selectedTutor.name}
               </h3>
-              <p className="text-emerald-300 text-sm">
+              <p className="text-emerald-200 text-sm drop-shadow-md">
                 {isArabic ? selectedTutor.subtitleAr : selectedTutor.subtitle}
               </p>
             </div>
@@ -112,6 +122,8 @@ interface TutorCardProps {
 }
 
 function TutorCard({ tutor, isSelected, isArabic, onSelect }: TutorCardProps) {
+  const [imageError, setImageError] = React.useState(false);
+
   return (
     <button
       onClick={onSelect}
@@ -125,13 +137,26 @@ function TutorCard({ tutor, isSelected, isArabic, onSelect }: TutorCardProps) {
     >
       {/* Selected Checkmark */}
       {isSelected && (
-        <div className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center">
+        <div className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center z-10">
           <i className="fas fa-check text-emerald-600 text-sm"></i>
         </div>
       )}
 
-      {/* Avatar */}
-      <div className="text-4xl mb-2">{tutor.avatar}</div>
+      {/* Avatar Image */}
+      <div className="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden bg-white/20">
+        {!imageError ? (
+          <img
+            src={tutor.avatarImage}
+            alt={tutor.name}
+            className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-3xl">
+            {tutor.avatar}
+          </div>
+        )}
+      </div>
 
       {/* Name */}
       <h3 className="text-white font-bold text-sm mb-1">
@@ -157,15 +182,29 @@ export function TutorBadge({ tutorId, onClick }: TutorBadgeProps) {
   const isArabic = i18n.language?.startsWith('ar');
   const tutors = getAllTutors();
   const tutor = tutors.find(t => t.id === (tutorId || getSelectedTutorId()));
+  const [imageError, setImageError] = React.useState(false);
 
   if (!tutor) return null;
 
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-full px-3 py-1.5 transition-all"
+      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-full px-2 py-1 transition-all"
     >
-      <span className="text-lg">{tutor.avatar}</span>
+      <div className="w-8 h-8 rounded-full overflow-hidden bg-white/20">
+        {!imageError ? (
+          <img
+            src={tutor.avatarImage}
+            alt={tutor.name}
+            className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-lg">
+            {tutor.avatar}
+          </div>
+        )}
+      </div>
       <span className="text-white text-sm font-medium">
         {isArabic ? tutor.nameAr : tutor.name}
       </span>

@@ -8,6 +8,8 @@ export interface TutorPreset {
   name: string;
   nameAr: string;
   avatar: string;
+  avatarImage: string;  // Path to avatar image for cards
+  detailImage: string;  // Path to larger detail image
   subtitle: string;
   subtitleAr: string;
   description: string;
@@ -27,6 +29,8 @@ export const TUTOR_PRESETS: TutorPreset[] = [
     name: 'Sheikh Khalid',
     nameAr: 'الشيخ خالد',
     avatar: '👨‍🏫',
+    avatarImage: '/assets/tutors/khalid-avatar.png',
+    detailImage: '/assets/tutors/khalid-detail.png',
     subtitle: 'The Scholar',
     subtitleAr: 'العالِم',
     description: 'Formal, authoritative, deeply knowledgeable. Provides thorough explanations with references to classical scholars.',
@@ -66,6 +70,8 @@ Always begin with "Bismillah" when starting a new topic. End responses with bene
     name: 'Sister Amina',
     nameAr: 'الأخت أمينة',
     avatar: '👩‍🏫',
+    avatarImage: '/assets/tutors/amina-avatar.png',
+    detailImage: '/assets/tutors/amina-detail.png',
     subtitle: 'The Encourager',
     subtitleAr: 'المشجّعة',
     description: 'Warm, patient, uplifting. Perfect for beginners who need gentle guidance and confidence building.',
@@ -112,6 +118,8 @@ Always make the learner feel valued and capable. If they make a mistake, gently 
     name: 'Brother Yusuf',
     nameAr: 'الأخ يوسف',
     avatar: '💪',
+    avatarImage: '/assets/tutors/yusuf-avatar.png',
+    detailImage: '/assets/tutors/yusuf-detail.png',
     subtitle: 'The Coach',
     subtitleAr: 'المدرّب',
     description: 'Energetic, motivating, action-oriented. Ideal for memorization and those who thrive on momentum.',
@@ -166,6 +174,8 @@ Keep the energy high while respecting the sacred nature of the Quran.`
     name: 'Dr. Layla',
     nameAr: 'د. ليلى',
     avatar: '👩‍🔬',
+    avatarImage: '/assets/tutors/layla-avatar.png',
+    detailImage: '/assets/tutors/layla-detail.png',
     subtitle: 'The Academic',
     subtitleAr: 'الأكاديمية',
     description: 'Analytical, comparative, research-based. Great for those who love linguistic analysis and structured learning.',
@@ -219,6 +229,8 @@ Provide intellectual depth while remaining accessible. Make linguistic analysis 
     name: 'Uncle Hassan',
     nameAr: 'عم حسن',
     avatar: '👴',
+    avatarImage: '/assets/tutors/hassan-avatar.png',
+    detailImage: '/assets/tutors/hassan-detail.png',
     subtitle: 'The Storyteller',
     subtitleAr: 'الراوي',
     description: 'Casual, warm, conversational. Makes learning feel like sitting with a wise grandparent sharing stories.',
