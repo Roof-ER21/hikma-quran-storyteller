@@ -1,6 +1,12 @@
 {
-  "title": "اتعلم مع سوسو",
-  "subtitle": "صاحبك الشخصي لتعلم القرآن",
+  "title": "المعلّم الشخصي",
+  "subtitle": "تجربتك الشخصية لتعلم القرآن",
+  "tutorSelector": {
+    "title": "اختر معلّمك",
+    "subtitle": "كل معلّم لديه شخصية وأسلوب تعليم فريد",
+    "changeTutor": "تغيير المعلّم",
+    "continue": "متابعة"
+  },
   "modes": {
     "general": "عام",
     "generalDesc": "اسأل عن الأنبياء والتاريخ الإسلامي والقصص",
@@ -45,7 +51,8 @@
   },
   "actions": {
     "endSession": "إنهاء الجلسة",
-    "changeMode": "تغيير الوضع"
+    "changeMode": "تغيير الوضع",
+    "changeTutor": "تغيير المعلّم"
   },
   "suggestions": {
     "tryAsking": "جرّب تسأل:",

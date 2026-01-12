@@ -4,6 +4,13 @@ import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeAudioData } from '../services/audioUtils';
 import { getGeminiApiKey } from '../services/geminiService';
 import { AlayaTutorWrapper } from './AlayaTutor';
+import TutorSelector, { TutorBadge } from './TutorSelector';
+import {
+  TutorPreset,
+  getSelectedTutor,
+  buildTutorPrompt,
+  getTutorVoiceConfig,
+} from '../services/tutorService';
 
 // Tutoring Mode Types
 type TutoringMode = 'conversation' | 'tajweed' | 'memorization' | 'tafsir';
@@ -153,10 +160,14 @@ const LiveMode: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [logs, setLogs] = useState<string[]>([]);
 
+    // Tutor selection state
+    const [showTutorSelector, setShowTutorSelector] = useState(true);
+    const [selectedTutor, setSelectedTutor] = useState<TutorPreset>(() => getSelectedTutor());
+
     // Tutoring state
     const [selectedMode, setSelectedMode] = useState<TutoringMode>('conversation');
     const [verseContext, setVerseContext] = useState({ surah: '', verse: '' });
-    const [showModeSelector, setShowModeSelector] = useState(true);
+    const [showModeSelector, setShowModeSelector] = useState(false);
 
     // Audio refs
     const inputAudioCtxRef = useRef<AudioContext | null>(null);
@@ -179,18 +190,19 @@ const LiveMode: React.FC = () => {
 
     const buildSystemPrompt = () => {
         const modeConfig = getModeConfig();
-        let prompt = modeConfig.systemPrompt;
+        let modePrompt = modeConfig.systemPrompt;
 
         // Add verse context if provided
         if (verseContext.surah && verseContext.verse) {
-            prompt += `\n\nCURRENT FOCUS: The student wants to discuss Surah ${verseContext.surah}, Verse ${verseContext.verse}.
+            modePrompt += `\n\nCURRENT FOCUS: The student wants to discuss Surah ${verseContext.surah}, Verse ${verseContext.verse}.
 Start by acknowledging this verse and relate your responses to it when relevant.`;
         } else if (verseContext.surah) {
-            prompt += `\n\nCURRENT FOCUS: The student wants to discuss Surah ${verseContext.surah}.
+            modePrompt += `\n\nCURRENT FOCUS: The student wants to discuss Surah ${verseContext.surah}.
 Be ready to discuss any verse from this Surah and its themes.`;
         }
 
-        return prompt;
+        // Combine tutor personality with mode-specific instructions
+        return buildTutorPrompt(selectedTutor.id, modePrompt);
     };
 
     const startSession = async () => {
@@ -217,7 +229,8 @@ Be ready to discuss any verse from this Surah and its themes.`;
             const connectToGemini = async () => {
                 const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
                 const systemPrompt = buildSystemPrompt();
-                const voiceName = VOICE_OPTIONS[selectedMode];
+                const tutorVoice = getTutorVoiceConfig(selectedTutor.id);
+                const voiceName = tutorVoice.name;
 
                 return ai.live.connect({
                     model: 'gemini-2.5-flash-native-audio-preview-12-2025',
@@ -342,7 +355,8 @@ Be ready to discuss any verse from this Surah and its themes.`;
         setIsSpeaking(false);
         setAiSpeaking(false);
         setLogs([]);
-        setShowModeSelector(true);
+        setShowTutorSelector(true);
+        setShowModeSelector(false);
     };
 
     useEffect(() => {
@@ -360,10 +374,38 @@ Be ready to discuss any verse from this Surah and its themes.`;
     };
     const colors = colorClasses[modeConfig.color];
 
+    // Tutor Selector View
+    if (showTutorSelector && !connected) {
+        return (
+            <TutorSelector
+                onSelect={(tutor) => setSelectedTutor(tutor)}
+                onContinue={() => {
+                    setShowTutorSelector(false);
+                    setShowModeSelector(true);
+                }}
+            />
+        );
+    }
+
     // Mode Selector View
     if (showModeSelector && !connected) {
         return (
             <div className={`h-full flex flex-col p-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white rounded-lg overflow-y-auto ${isArabic ? 'text-right' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
+                {/* Tutor Badge Header */}
+                <div className={`flex items-center justify-between mb-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
+                    <TutorBadge
+                        tutorId={selectedTutor.id}
+                        onClick={() => setShowTutorSelector(true)}
+                    />
+                    <button
+                        onClick={() => setShowTutorSelector(true)}
+                        className="text-slate-400 hover:text-white text-sm flex items-center gap-1"
+                    >
+                        <i className="fas fa-exchange-alt"></i>
+                        <span className={isArabic ? 'font-arabic' : ''}>{isArabic ? 'تغيير المعلّم' : 'Change Tutor'}</span>
+                    </button>
+                </div>
+
                 <div className="text-center mb-6">
                     <h2 className={`text-3xl font-serif mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('title')}</h2>
                     <p className={`text-slate-400 ${isArabic ? 'font-arabic' : ''}`}>{t('subtitle')}</p>
@@ -503,17 +545,15 @@ Be ready to discuss any verse from this Surah and its themes.`;
                 </div>
 
                 <div>
-                    <h2 className={`text-3xl font-serif mb-2 ${isArabic ? 'font-arabic' : ''}`}>
-                        {selectedMode === 'tajweed' && t('session.tajweedTutor')}
-                        {selectedMode === 'memorization' && t('session.hifzCoach')}
-                        {selectedMode === 'tafsir' && t('session.tafsirScholar')}
-                        {selectedMode === 'conversation' && t('session.voiceConversation')}
-                    </h2>
+                    {/* Tutor Name and Avatar */}
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                        <span className="text-3xl">{selectedTutor.avatar}</span>
+                        <h2 className={`text-3xl font-serif ${isArabic ? 'font-arabic' : ''}`}>
+                            {isArabic ? selectedTutor.nameAr : selectedTutor.name}
+                        </h2>
+                    </div>
                     <p className={`text-slate-300 text-sm ${isArabic ? 'font-arabic' : ''}`}>
-                        {selectedMode === 'tajweed' && t('session.tajweedSubtitle')}
-                        {selectedMode === 'memorization' && t('session.hifzSubtitle')}
-                        {selectedMode === 'tafsir' && t('session.tafsirSubtitle')}
-                        {selectedMode === 'conversation' && t('session.conversationSubtitle')}
+                        {isArabic ? selectedTutor.subtitleAr : selectedTutor.subtitle}
                     </p>
                 </div>
 
@@ -557,7 +597,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
                 {/* Quick Actions */}
                 {connected && (
-                    <div className={`flex justify-center gap-3 pt-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex flex-wrap justify-center gap-3 pt-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
                         <button
                             onClick={stopSession}
                             className={`px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
@@ -568,12 +608,23 @@ Be ready to discuss any verse from this Surah and its themes.`;
                         <button
                             onClick={() => {
                                 stopSession();
+                                setShowTutorSelector(false);
                                 setShowModeSelector(true);
                             }}
                             className={`px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
                         >
                             <i className="fas fa-exchange-alt"></i>
                             {t('actions.changeMode')}
+                        </button>
+                        <button
+                            onClick={() => {
+                                stopSession();
+                                setShowTutorSelector(true);
+                            }}
+                            className={`px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
+                        >
+                            <i className="fas fa-user-graduate"></i>
+                            <span className={isArabic ? 'font-arabic' : ''}>{isArabic ? 'تغيير المعلّم' : 'Change Tutor'}</span>
                         </button>
                     </div>
                 )}

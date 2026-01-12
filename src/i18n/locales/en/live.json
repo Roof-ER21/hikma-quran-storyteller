@@ -1,6 +1,12 @@
 {
-  "title": "Learn with Soso",
-  "subtitle": "Your personal Quran learning companion",
+  "title": "Personal Tutor",
+  "subtitle": "Your personalized Quran learning experience",
+  "tutorSelector": {
+    "title": "Choose Your Learning Guide",
+    "subtitle": "Each tutor has a unique personality and teaching style",
+    "changeTutor": "Change Tutor",
+    "continue": "Continue"
+  },
   "modes": {
     "general": "General",
     "generalDesc": "Ask about prophets, Islamic history, and stories",
@@ -45,7 +51,8 @@
   },
   "actions": {
     "endSession": "End Session",
-    "changeMode": "Change Mode"
+    "changeMode": "Change Mode",
+    "changeTutor": "Change Tutor"
   },
   "suggestions": {
     "tryAsking": "Try asking:",

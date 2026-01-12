@@ -391,8 +391,8 @@ function App() {
                 disabled={isLocked('live')}
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'live' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'} ${isLocked('live') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
-                <i className="fas fa-microphone md:mr-2"></i>
-                <span className="hidden md:inline">Learn with Soso</span>
+                <i className="fas fa-user-graduate md:mr-2"></i>
+                <span className="hidden md:inline">{isArabic() ? 'المعلّم الشخصي' : 'Personal Tutor'}</span>
             </button>
             <button
                 onClick={() => setView('kids')}
