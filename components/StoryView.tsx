@@ -988,7 +988,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-rose-800 bg-gradient-to-br from-stone-50 to-rose-50" dir={isArabic ? 'rtl' : 'ltr'}>
+      <div className="flex flex-col items-center justify-center h-full text-rose-800 dark:text-accent-gold bg-gradient-to-br from-stone-50 to-rose-50 dark:from-dark-bg dark:to-dark-card transition-colors duration-300" dir={isArabic ? 'rtl' : 'ltr'}>
         <div className="relative mb-8">
           {/* Decorative rings */}
           <div className="absolute inset-0 rounded-full border-2 border-rose-200 animate-ping opacity-30"></div>
@@ -1013,50 +1013,50 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
   }
 
   return (
-    <div className={`flex flex-col h-full bg-stone-50 transition-all duration-700 ${immersiveMode ? 'fixed inset-0 z-50' : 'rounded-lg shadow-xl overflow-hidden'}`}>
+    <div className={`flex flex-col h-full bg-stone-50 dark:bg-dark-bg transition-all duration-700 ${immersiveMode ? 'fixed inset-0 z-50' : 'rounded-lg shadow-xl dark:shadow-dark-lg overflow-hidden'}`}>
       
       {/* Immersive Header / Controls */}
-      <div className={`${immersiveMode ? 'bg-black/80 text-white backdrop-blur-md fixed top-0 w-full z-50' : 'bg-white text-stone-800 border-b border-stone-200'} p-4 flex items-center justify-between transition-all duration-300`}>
+      <div className={`${immersiveMode ? 'bg-black/80 text-white backdrop-blur-md fixed top-0 w-full z-50' : 'bg-white dark:bg-dark-card text-stone-800 dark:text-stone-100 border-b border-stone-200 dark:border-dark-border'} p-4 flex items-center justify-between transition-all duration-300`}>
         <div className="flex items-center gap-4 min-w-0">
-            <button onClick={immersiveMode ? () => setImmersiveMode(false) : onBack} className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10' : 'hover:bg-stone-100'}`}>
+            <button onClick={immersiveMode ? () => setImmersiveMode(false) : onBack} className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10' : 'hover:bg-stone-100 dark:hover:bg-dark-elevated'}`}>
                <i className={`fas ${immersiveMode ? 'fa-compress' : 'fa-arrow-left'}`}></i>
             </button>
             <div>
                 <h2 className="text-xl font-serif font-bold">{prophet}</h2>
-                {!immersiveMode && <p className="text-xs text-stone-500 uppercase tracking-widest">{topic}</p>}
+                {!immersiveMode && <p className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-widest">{topic}</p>}
             </div>
         </div>
         
         <div className="flex gap-2 items-center flex-wrap justify-end max-w-full overflow-x-auto">
             {/* Language Toggle - 3 Languages */}
             {!immersiveMode && (
-                <div className="flex bg-stone-100 rounded-lg p-1 mr-2 flex-wrap gap-1">
+                <div className="flex bg-stone-100 dark:bg-dark-surface rounded-lg p-1 mr-2 flex-wrap gap-1">
                     <button
                         onClick={() => { setManualLanguageChoice(true); setLanguage('english'); }}
-                        className={`text-xs px-2 py-1 rounded transition-colors ${language === 'english' ? 'bg-white shadow text-rose-900 font-medium' : 'text-stone-400 hover:text-stone-600'}`}
+                        className={`text-xs px-2 py-1 rounded transition-colors ${language === 'english' ? 'bg-white dark:bg-dark-elevated shadow text-rose-900 dark:text-accent-gold font-medium' : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300'}`}
                         title="English"
                     >{LANGUAGE_LABELS.english}</button>
                     <button
                         onClick={() => { setManualLanguageChoice(true); setLanguage('arabic'); }}
-                        className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic' ? 'bg-white shadow text-rose-900 font-medium' : 'text-stone-400 hover:text-stone-600'}`}
+                        className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic' ? 'bg-white dark:bg-dark-elevated shadow text-rose-900 dark:text-accent-gold font-medium' : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300'}`}
                         title="Arabic (Fusha)"
                     >{LANGUAGE_LABELS.arabic}</button>
                     <button
                         onClick={() => { setManualLanguageChoice(true); setLanguage('arabic_egyptian'); }}
-                        className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic_egyptian' ? 'bg-white shadow text-rose-900 font-medium' : 'text-stone-400 hover:text-stone-600'}`}
+                        className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic_egyptian' ? 'bg-white dark:bg-dark-elevated shadow text-rose-900 dark:text-accent-gold font-medium' : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300'}`}
                         title="Egyptian Arabic (مصري)"
                     >{LANGUAGE_LABELS.arabic_egyptian}</button>
                 </div>
             )}
 
            {/* Ambience Control */}
-           <div className={`flex items-center rounded-full px-2 py-1 ${immersiveMode ? 'bg-white/10' : 'bg-stone-100'}`}>
+           <div className={`flex items-center rounded-full px-2 py-1 ${immersiveMode ? 'bg-white/10' : 'bg-stone-100 dark:bg-dark-surface'}`}>
                 {AMBIENCE_OPTIONS.map(opt => (
                     <button 
                         key={opt.id}
                         onClick={() => setAmbience(opt.id)}
                         title={opt.label}
-                        className={`w-8 h-8 rounded-full text-xs flex items-center justify-center transition-all ${ambience === opt.id ? 'bg-rose-600 text-white shadow-sm' : 'text-stone-400 hover:text-stone-600'}`}
+                        className={`w-8 h-8 rounded-full text-xs flex items-center justify-center transition-all ${ambience === opt.id ? 'bg-rose-600 dark:bg-accent-gold text-white dark:text-dark-bg shadow-sm' : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300'}`}
                     >
                         <i className={`fas ${opt.icon}`}></i>
                     </button>
@@ -1065,7 +1065,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
            <button
              onClick={() => setImmersiveMode(!immersiveMode)}
-             className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10 text-rose-400' : 'hover:bg-stone-100 text-stone-400'}`}
+             className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10 text-rose-400' : 'hover:bg-stone-100 dark:hover:bg-dark-elevated text-stone-400 dark:text-stone-500'}`}
              title={immersiveMode ? t('immersive.exit') : t('immersive.enter')}
            >
              <i className="fas fa-expand"></i>
@@ -1230,22 +1230,22 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
       {/* Tabs (Hidden in Immersive) */}
       {!immersiveMode && (
-          <div className="flex border-b border-gray-200 bg-white sticky top-0 z-10">
+          <div className="flex border-b border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card sticky top-0 z-10">
             {/* Existing Tab Logic */}
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'read' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'} ${isArabic ? 'font-arabic' : ''}`}
+                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'read' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => setActiveTab('read')}
             >
                 {t('tabs.story')}
             </button>
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'locations' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'} ${isArabic ? 'font-arabic' : ''}`}
+                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'locations' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => { setActiveTab('locations'); handleLoadLocations(); }}
             >
                 {t('tabs.locations')}
             </button>
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'context' ? 'border-rose-800 text-rose-900' : 'border-transparent text-stone-500 hover:text-rose-700'} ${isArabic ? 'font-arabic' : ''}`}
+                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'context' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => { setActiveTab('context'); handleLoadContext(); }}
             >
                 {t('tabs.deepDive')}

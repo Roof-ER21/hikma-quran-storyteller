@@ -159,3 +159,214 @@
     padding-right: var(--safe-area-inset-right);
   }
 }
+
+/* ========================================
+   DARK MODE THEME STYLES
+   ======================================== */
+
+@layer base {
+  /* Dark mode CSS variables */
+  :root {
+    --color-bg-primary: #fafaf9;
+    --color-bg-secondary: #f5f5f4;
+    --color-bg-card: #ffffff;
+    --color-text-primary: #1c1917;
+    --color-text-secondary: #57534e;
+    --color-text-muted: #a8a29e;
+    --color-border: #e7e5e4;
+    --color-accent: #881337;
+    --color-accent-light: #fecdd3;
+  }
+
+  .dark {
+    --color-bg-primary: #0f0f14;
+    --color-bg-secondary: #1a1a24;
+    --color-bg-card: #252532;
+    --color-text-primary: #fafaf9;
+    --color-text-secondary: #d6d3d1;
+    --color-text-muted: #78716c;
+    --color-border: #2a2a3a;
+    --color-accent: #d4a853;
+    --color-accent-light: #3d3525;
+  }
+
+  /* Smooth dark mode transition */
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Dark mode body styles */
+  .dark body {
+    background-color: #0f0f14;
+    color: #fafaf9;
+  }
+
+  /* Dark mode scrollbar */
+  .dark ::-webkit-scrollbar-track {
+    background: #1a1a24;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #3a3a4a;
+    border-radius: 4px;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #4a4a5a;
+  }
+}
+
+@layer components {
+  /* Dark mode card styles */
+  .dark-card {
+    @apply bg-white dark:bg-dark-card dark:border-dark-border;
+  }
+
+  /* Dark mode text */
+  .dark-text {
+    @apply text-stone-800 dark:text-stone-100;
+  }
+
+  .dark-text-secondary {
+    @apply text-stone-600 dark:text-stone-300;
+  }
+
+  .dark-text-muted {
+    @apply text-stone-500 dark:text-stone-400;
+  }
+
+  /* Dark mode backgrounds */
+  .dark-bg {
+    @apply bg-stone-50 dark:bg-dark-bg;
+  }
+
+  .dark-bg-card {
+    @apply bg-white dark:bg-dark-card;
+  }
+
+  .dark-bg-elevated {
+    @apply bg-stone-100 dark:bg-dark-elevated;
+  }
+
+  /* Dark mode borders */
+  .dark-border {
+    @apply border-stone-200 dark:border-dark-border;
+  }
+
+  /* Dark mode buttons */
+  .dark-btn-primary {
+    @apply bg-rose-700 hover:bg-rose-600 dark:bg-accent-gold dark:hover:bg-amber-500 text-white dark:text-dark-bg;
+  }
+
+  .dark-btn-secondary {
+    @apply bg-stone-100 hover:bg-stone-200 dark:bg-dark-elevated dark:hover:bg-dark-surface text-stone-700 dark:text-stone-200;
+  }
+
+  /* Dark mode input fields */
+  .dark-input {
+    @apply bg-white dark:bg-dark-surface border-stone-300 dark:border-dark-border text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:border-rose-500 dark:focus:border-accent-gold focus:ring-rose-500 dark:focus:ring-accent-gold;
+  }
+
+  /* Dark mode navigation */
+  .dark-nav {
+    @apply bg-white dark:bg-dark-card border-stone-200 dark:border-dark-border;
+  }
+
+  .dark-nav-item {
+    @apply text-stone-500 hover:text-rose-700 dark:text-stone-400 dark:hover:text-accent-gold;
+  }
+
+  .dark-nav-item-active {
+    @apply bg-rose-50 text-rose-800 dark:bg-amber-900/30 dark:text-accent-gold;
+  }
+
+  /* Dark mode shadows */
+  .dark-shadow {
+    @apply shadow-lg dark:shadow-dark-lg;
+  }
+
+  /* Gold accent glow for dark mode */
+  .dark-glow {
+    @apply dark:shadow-dark-glow;
+  }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    @apply p-2 rounded-full transition-all duration-300;
+    @apply bg-stone-100 hover:bg-stone-200 text-stone-600;
+    @apply dark:bg-dark-elevated dark:hover:bg-dark-surface dark:text-accent-gold;
+  }
+
+  /* Inviting dark gradient backgrounds */
+  .dark-gradient-bg {
+    @apply bg-gradient-to-br from-stone-50 via-rose-50/30 to-amber-50/20;
+    @apply dark:from-dark-bg dark:via-dark-card dark:to-dark-surface;
+  }
+
+  /* Dark mode prose (for story text) */
+  .dark .prose {
+    --tw-prose-body: #d6d3d1;
+    --tw-prose-headings: #fafaf9;
+    --tw-prose-lead: #a8a29e;
+    --tw-prose-links: #d4a853;
+    --tw-prose-bold: #fafaf9;
+    --tw-prose-counters: #78716c;
+    --tw-prose-bullets: #57534e;
+    --tw-prose-hr: #2a2a3a;
+    --tw-prose-quotes: #d6d3d1;
+    --tw-prose-quote-borders: #d4a853;
+    --tw-prose-captions: #a8a29e;
+    --tw-prose-code: #d4a853;
+    --tw-prose-pre-code: #d6d3d1;
+    --tw-prose-pre-bg: #1a1a24;
+    --tw-prose-th-borders: #3a3a4a;
+    --tw-prose-td-borders: #2a2a3a;
+  }
+}
+
+@layer utilities {
+  /* Dark mode specific utilities */
+  .dark-hover-glow:hover {
+    @apply dark:shadow-dark-glow;
+  }
+
+  /* Text colors that work in both modes */
+  .text-adaptive {
+    @apply text-stone-800 dark:text-stone-100;
+  }
+
+  .text-adaptive-secondary {
+    @apply text-stone-600 dark:text-stone-300;
+  }
+
+  .text-adaptive-muted {
+    @apply text-stone-500 dark:text-stone-400;
+  }
+
+  /* Background that adapts */
+  .bg-adaptive {
+    @apply bg-white dark:bg-dark-card;
+  }
+
+  .bg-adaptive-secondary {
+    @apply bg-stone-100 dark:bg-dark-surface;
+  }
+
+  /* Border that adapts */
+  .border-adaptive {
+    @apply border-stone-200 dark:border-dark-border;
+  }
+
+  /* Gold accent for dark mode highlights */
+  .accent-adaptive {
+    @apply text-rose-700 dark:text-accent-gold;
+  }
+
+  .bg-accent-adaptive {
+    @apply bg-rose-700 dark:bg-accent-gold;
+  }
+}

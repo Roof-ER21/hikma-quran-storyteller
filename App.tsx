@@ -21,6 +21,7 @@ import ParentProfile from './components/ParentProfile';
 import { initProgressSync, cleanupProgressSync } from './services/progressSyncService';
 import { isLanguageSelected, isArabic } from './src/i18n';
 import { AISettingsWrapper } from './components/settings/AIProviderSettings';
+import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
 
 const PROPHETS = [
   { name: 'Adam', arabicName: 'آدم' },
@@ -56,6 +57,24 @@ const TOPICS = [
 const getTopicLabel = (topic: string, t: (key: string, def?: string) => string) => {
   return t(`topics.${topic}`, topic);
 };
+
+// Theme Toggle Component
+function ThemeToggle() {
+  const { theme, toggleTheme, themeIcon, getLabel } = useTheme();
+  const { i18n } = useTranslation();
+  const isArabicLang = i18n.language === 'ar-EG';
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className="theme-toggle flex items-center gap-1"
+      title={getLabel(isArabicLang)}
+    >
+      <i className={`fas ${themeIcon}`}></i>
+      <span className="hidden sm:inline text-xs">{getLabel(isArabicLang)}</span>
+    </button>
+  );
+}
 
 function App() {
   const { t, i18n } = useTranslation(['common', 'home']);
@@ -254,7 +273,11 @@ function App() {
   };
 
   const renderGate = () => (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 flex flex-col items-center justify-center p-6 relative">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 dark:from-dark-bg dark:via-dark-card dark:to-dark-surface flex flex-col items-center justify-center p-6 relative transition-colors duration-300">
+      {/* Theme Toggle on Gate */}
+      <div className="absolute top-4 left-4">
+        <ThemeToggle />
+      </div>
       {/* Language Toggle on Gate */}
       <button
         onClick={() => {
@@ -262,7 +285,7 @@ function App() {
           i18n.changeLanguage(newLang);
           localStorage.setItem('alayasoad_language', newLang);
         }}
-        className="absolute top-4 right-4 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-stone-600 hover:text-rose-700 hover:bg-white transition-colors shadow-sm border border-stone-200 flex items-center gap-2"
+        className="absolute top-4 right-4 px-4 py-2 rounded-full bg-white/80 dark:bg-dark-card/80 backdrop-blur-sm text-stone-600 dark:text-stone-300 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-white dark:hover:bg-dark-elevated transition-colors shadow-sm dark:shadow-dark-lg border border-stone-200 dark:border-dark-border flex items-center gap-2"
         title={i18n.language === 'ar-EG' ? 'Switch to English' : 'التبديل للعربية'}
       >
         <i className="fas fa-globe"></i>
@@ -271,36 +294,36 @@ function App() {
 
       <div className="max-w-4xl w-full text-center space-y-10">
         <div className="space-y-4">
-          <p className={`text-sm uppercase tracking-[0.3em] text-rose-600 font-semibold ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.bismillah')}</p>
-          <h1 className={`text-4xl md:text-5xl font-serif text-rose-900 leading-tight ${isArabic() ? 'font-arabic' : ''}`}>
-            {t('home:gate.welcome')} <span className="text-amber-600">{t('common:app.name')}</span>
+          <p className={`text-sm uppercase tracking-[0.3em] text-rose-600 dark:text-accent-gold font-semibold ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.bismillah')}</p>
+          <h1 className={`text-4xl md:text-5xl font-serif text-rose-900 dark:text-stone-100 leading-tight ${isArabic() ? 'font-arabic' : ''}`}>
+            {t('home:gate.welcome')} <span className="text-amber-600 dark:text-accent-gold">{t('common:app.name')}</span>
           </h1>
-          <p className={`text-stone-600 max-w-2xl mx-auto ${isArabic() ? 'font-arabic' : ''}`}>
+          <p className={`text-stone-600 dark:text-stone-300 max-w-2xl mx-auto ${isArabic() ? 'font-arabic' : ''}`}>
             {t('home:gate.subtitle')}
           </p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <button
             onClick={enterKids}
-            className="rounded-3xl bg-amber-500 text-white py-8 px-6 shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-all flex flex-col gap-3"
+            className="rounded-3xl bg-amber-500 dark:bg-amber-600 text-white py-8 px-6 shadow-xl dark:shadow-dark-lg hover:shadow-2xl hover:scale-[1.01] transition-all flex flex-col gap-3"
           >
             <div className={`flex items-center justify-center gap-3 text-2xl font-bold ${isArabic() ? 'font-arabic' : ''}`}>
               <i className="fas fa-rocket"></i> {t('home:gate.kidsMode')}
             </div>
             <p className={`text-sm text-white/90 ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.kidsDescription')}</p>
           </button>
-          <div className={`rounded-3xl bg-white border border-stone-100 py-8 px-6 shadow-lg flex flex-col gap-4 ${isArabic() ? 'text-right' : 'text-left'}`}>
+          <div className={`rounded-3xl bg-white dark:bg-dark-card border border-stone-100 dark:border-dark-border py-8 px-6 shadow-lg dark:shadow-dark-lg flex flex-col gap-4 transition-colors duration-300 ${isArabic() ? 'text-right' : 'text-left'}`}>
             <div className={`flex items-center justify-between ${isArabic() ? 'flex-row-reverse' : ''}`}>
               <div className={isArabic() ? 'text-right' : 'text-left'}>
-                <p className={`text-xs uppercase text-stone-500 font-semibold ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.parents')}</p>
-                <p className={`text-2xl font-bold text-rose-900 ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.unlockEverything')}</p>
+                <p className={`text-xs uppercase text-stone-500 dark:text-stone-400 font-semibold ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.parents')}</p>
+                <p className={`text-2xl font-bold text-rose-900 dark:text-accent-gold ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.unlockEverything')}</p>
               </div>
-              <i className="fas fa-user-shield text-rose-600 text-2xl"></i>
+              <i className="fas fa-user-shield text-rose-600 dark:text-accent-gold text-2xl"></i>
             </div>
-            <p className={`text-sm text-stone-600 ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.parentDescription')}</p>
+            <p className={`text-sm text-stone-600 dark:text-stone-300 ${isArabic() ? 'font-arabic' : ''}`}>{t('home:gate.parentDescription')}</p>
             <button
               onClick={() => setShowParentGate(true)}
-              className={`w-full rounded-2xl bg-rose-900 text-white py-3 font-semibold hover:bg-rose-800 transition-colors ${isArabic() ? 'font-arabic' : ''}`}
+              className={`w-full rounded-2xl bg-rose-900 dark:bg-accent-gold text-white dark:text-dark-bg py-3 font-semibold hover:bg-rose-800 dark:hover:bg-amber-500 transition-colors ${isArabic() ? 'font-arabic' : ''}`}
             >
               {t('home:gate.imAParent')}
             </button>
@@ -322,6 +345,7 @@ function App() {
 
   if (mode === 'gate') {
     return (
+      <ThemeProvider>
       <RTLProvider>
         {renderGate()}
         <ParentGate
@@ -330,13 +354,15 @@ function App() {
           onAuthed={handleParentAuthed}
         />
       </RTLProvider>
+      </ThemeProvider>
     );
   }
 
   return (
+    <ThemeProvider>
     <RTLProvider>
     <div
-      className="min-h-screen-safe bg-stone-100 flex flex-col text-stone-800 overflow-x-hidden mobile-scroll"
+      className="min-h-screen-safe bg-stone-100 dark:bg-dark-bg flex flex-col text-stone-800 dark:text-stone-100 overflow-x-hidden mobile-scroll transition-colors duration-300"
       dir={i18n.language === 'ar-EG' ? 'rtl' : 'ltr'}
     >
       {/* PWA Components */}
@@ -359,29 +385,29 @@ function App() {
       />
 
       {/* Navbar */}
-      <nav className="bg-white border-b border-stone-200 px-6 py-4 flex justify-between items-center shadow-sm">
+      <nav className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-6 py-4 flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setView('dedication')}
-            className="w-10 h-10 bg-rose-700 rounded-lg flex items-center justify-center text-white text-xl hover:bg-rose-600 transition-colors"
+            className="w-10 h-10 bg-rose-700 dark:bg-accent-gold rounded-lg flex items-center justify-center text-white dark:text-dark-bg text-xl hover:bg-rose-600 dark:hover:bg-amber-500 transition-colors"
             title={t('common:nav.inLovingMemory')}
           >
             <i className="fas fa-heart"></i>
           </button>
-          <h1 className="text-xl md:text-2xl font-serif font-bold text-rose-900 tracking-wide">{t('common:app.name')}</h1>
+          <h1 className="text-xl md:text-2xl font-serif font-bold text-rose-900 dark:text-accent-gold tracking-wide">{t('common:app.name')}</h1>
         </div>
         <div className="flex gap-2 md:gap-4 text-sm font-medium mobile-scroll-x items-center flex-1 justify-end">
             <button
                 onClick={() => !isLocked('home') && setView('home')}
                 disabled={isLocked('home')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'home' || view === 'story' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'} ${isLocked('home') ? 'opacity-40 cursor-not-allowed' : ''}`}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'home' || view === 'story' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isLocked('home') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-book-open md:mr-2"></i>
                 <span className="hidden md:inline">Stories</span>
             </button>
             <button
                 onClick={() => setView('quran')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'quran' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'}`}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'quran' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'}`}
             >
                 <i className="fas fa-quran md:mr-2"></i>
                 <span className="hidden md:inline">The Quran</span>
@@ -389,14 +415,14 @@ function App() {
             <button
                 onClick={() => !isLocked('live') && setView('live')}
                 disabled={isLocked('live')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'live' ? 'bg-rose-50 text-rose-800' : 'text-stone-500 hover:text-rose-700'} ${isLocked('live') ? 'opacity-40 cursor-not-allowed' : ''}`}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'live' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isLocked('live') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-user-graduate md:mr-2"></i>
                 <span className="hidden md:inline">{isArabic() ? 'المعلّم الشخصي' : 'Personal Tutor'}</span>
             </button>
             <button
                 onClick={() => setView('kids')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'kids' ? 'bg-amber-100 text-amber-800' : 'text-stone-500 hover:text-amber-600'}`}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'kids' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300' : 'text-stone-500 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400'}`}
             >
                 <i className="fas fa-child md:mr-2"></i>
                 <span className="hidden md:inline">Kids</span>
@@ -404,18 +430,20 @@ function App() {
             <button
                 onClick={() => !isLocked('library') && setView('library')}
                 disabled={isLocked('library')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'library' ? 'bg-emerald-100 text-emerald-800' : 'text-stone-500 hover:text-emerald-600'} ${isLocked('library') ? 'opacity-40 cursor-not-allowed' : ''}`}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'library' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300' : 'text-stone-500 dark:text-stone-400 hover:text-emerald-600 dark:hover:text-emerald-400'} ${isLocked('library') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-book-reader md:mr-2"></i>
                 <span className="hidden md:inline">Library</span>
             </button>
             <button
                 onClick={() => setView('tools')}
-                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'tools' ? 'bg-purple-100 text-purple-800' : 'text-stone-500 hover:text-purple-600'}`}
+                className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'tools' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300' : 'text-stone-500 dark:text-stone-400 hover:text-purple-600 dark:hover:text-purple-400'}`}
             >
                 <i className="fas fa-compass md:mr-2"></i>
                 <span className="hidden md:inline">Tools</span>
             </button>
+            {/* Theme Toggle Button */}
+            <ThemeToggle />
             {/* Language Toggle Button */}
             <button
                 onClick={() => {
@@ -423,7 +451,7 @@ function App() {
                   i18n.changeLanguage(newLang);
                   localStorage.setItem('alayasoad_language', newLang);
                 }}
-                className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors"
+                className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors"
                 title={i18n.language === 'ar-EG' ? 'Switch to English' : 'التبديل للعربية'}
             >
                 <i className="fas fa-globe"></i>
@@ -432,7 +460,7 @@ function App() {
             {/* Download Manager Button */}
             <button
                 onClick={() => setShowDownloadManager(true)}
-                className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors"
+                className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors"
                 title="Offline Downloads"
             >
                 <i className="fas fa-download"></i>
@@ -444,7 +472,7 @@ function App() {
         <div className="relative ml-2">
           <button
             onClick={() => parentName ? setShowParentMenu(!showParentMenu) : setShowParentGate(true)}
-            className="px-3 py-2 rounded-full text-stone-500 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-2 text-sm font-medium"
+            className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors flex items-center gap-2 text-sm font-medium"
           >
             <i className="fas fa-user-shield"></i>
             <span className="hidden md:inline">{parentName ? `Hi, ${parentName}` : 'Parent'}</span>
@@ -457,29 +485,29 @@ function App() {
                 className="fixed inset-0 z-40"
                 onClick={() => setShowParentMenu(false)}
               />
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-stone-200 py-2 z-50">
-                <div className="px-4 py-2 border-b border-stone-100">
-                  <p className="text-sm font-medium text-stone-800">{parentName}</p>
-                  <p className="text-xs text-stone-500">Parent Account</p>
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-xl shadow-lg dark:shadow-dark-lg border border-stone-200 dark:border-dark-border py-2 z-50">
+                <div className="px-4 py-2 border-b border-stone-100 dark:border-dark-border">
+                  <p className="text-sm font-medium text-stone-800 dark:text-stone-100">{parentName}</p>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">Parent Account</p>
                 </div>
                 <button
                   onClick={() => {
                     setShowParentMenu(false);
                     setShowParentProfile(true);
                   }}
-                  className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated flex items-center gap-2"
                 >
                   <i className="fas fa-user-circle w-4"></i>
                   Profile & Settings
                 </button>
                 <ShareButton
                   type="app"
-                  className="w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated flex items-center gap-2"
                 />
-                <hr className="my-2 border-stone-100" />
+                <hr className="my-2 border-stone-100 dark:border-dark-border" />
                 <button
                   onClick={handleLogout}
-                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
                 >
                   <i className="fas fa-sign-out-alt w-4"></i>
                   Logout
@@ -496,46 +524,46 @@ function App() {
             <div className="grid md:grid-cols-2 gap-12 items-center h-full animate-in fade-in duration-500">
             <div className="space-y-8">
               <div className={`space-y-4 ${isArabic() ? 'text-right font-arabic' : ''}`}>
-                <h2 className="text-4xl md:text-5xl font-serif text-rose-950 leading-tight">
+                <h2 className="text-4xl md:text-5xl font-serif text-rose-950 dark:text-stone-100 leading-tight">
                   {isArabic() ? (
                     <>
                       اكتشف روائع <br />
-                      <span className="text-rose-600">قصص الأنبياء</span>
+                      <span className="text-rose-600 dark:text-accent-gold">قصص الأنبياء</span>
                     </>
                   ) : (
                     <>
                       Explore the timeless <br />
-                      <span className="text-rose-600">stories of the Prophets.</span>
+                      <span className="text-rose-600 dark:text-accent-gold">stories of the Prophets.</span>
                     </>
                   )}
                 </h2>
-                <p className="text-lg text-stone-600 max-w-md">
+                <p className="text-lg text-stone-600 dark:text-stone-300 max-w-md">
                   {isArabic()
                     ? 'عش حكايات القرآن عبر سرد تفاعلي، بصري، وتاريخي.'
                     : "Experience the Quran's narratives through interactive storytelling, visualizations, and historical insights."}
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-stone-100 space-y-6">
+              <div className="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-lg dark:shadow-dark-lg border border-stone-100 dark:border-dark-border space-y-6 transition-colors duration-300">
                 <div>
-                  <label className={`block text-sm font-medium text-stone-500 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
+                  <label className={`block text-sm font-medium text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
                     {isArabic() ? 'اختر نبيًّا' : 'Choose a Prophet'}
                   </label>
                   <div className="relative">
                       <select
-                        className="w-full p-4 bg-stone-50 border border-stone-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-rose-500 text-lg font-serif"
+                        className="w-full p-4 bg-stone-50 dark:bg-dark-surface border border-stone-200 dark:border-dark-border rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-rose-500 dark:focus:ring-accent-gold text-lg font-serif text-stone-800 dark:text-stone-100"
                         value={selectedProphet}
                         onChange={(e) => setSelectedProphet(e.target.value)}
                       >
                         <option value="">{isArabic() ? 'اختر دليلك...' : 'Select a guide...'}</option>
                         {PROPHETS.map(p => <option key={p.name} value={p.name}>{p.name} ({p.arabicName})</option>)}
                       </select>
-                      <i className="fas fa-chevron-down absolute right-4 top-5 text-stone-400 pointer-events-none"></i>
+                      <i className="fas fa-chevron-down absolute right-4 top-5 text-stone-400 dark:text-stone-500 pointer-events-none"></i>
                   </div>
                 </div>
 
                 <div>
-                   <label className={`block text-sm font-medium text-stone-500 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
+                   <label className={`block text-sm font-medium text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
                     {isArabic() ? 'أو اسأل بالصوت' : 'Or Ask via Audio'}
                    </label>
                    <div className="flex gap-2">
@@ -544,12 +572,12 @@ function App() {
                             value={searchQuery}
                             readOnly
                             placeholder={isArabic() ? 'اضغط على الميكروفون لذكر الاسم...' : 'Tap mic to say a name...'}
-                            className="flex-1 p-3 bg-stone-50 border border-stone-200 rounded-xl"
+                            className="flex-1 p-3 bg-stone-50 dark:bg-dark-surface border border-stone-200 dark:border-dark-border rounded-xl text-stone-800 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500"
                        />
                        <button
                             onClick={handleAudioSearch}
                             disabled={transcribing}
-                            className={`w-12 rounded-xl flex items-center justify-center text-white transition-colors ${transcribing ? 'bg-red-500 animate-pulse' : 'bg-rose-600 hover:bg-rose-700'}`}
+                            className={`w-12 rounded-xl flex items-center justify-center text-white transition-colors ${transcribing ? 'bg-red-500 animate-pulse' : 'bg-rose-600 dark:bg-accent-gold dark:text-dark-bg hover:bg-rose-700 dark:hover:bg-amber-500'}`}
                        >
                            <i className={`fas ${transcribing ? 'fa-ellipsis-h' : 'fa-microphone'}`}></i>
                        </button>
@@ -557,7 +585,7 @@ function App() {
                 </div>
 
                 <div>
-                   <label className={`block text-sm font-medium text-stone-500 mb-3 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
+                   <label className={`block text-sm font-medium text-stone-500 dark:text-stone-400 mb-3 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
                     {isArabic() ? 'الموضوع المراد' : 'Focus Theme'}
                    </label>
                    <div className="flex flex-wrap gap-2">
@@ -565,7 +593,7 @@ function App() {
                         <button
                           key={topic}
                           onClick={() => setSelectedTopic(topic)}
-                          className={`px-4 py-2 rounded-full text-sm transition-all ${selectedTopic === topic ? 'bg-amber-100 text-amber-900 ring-1 ring-amber-300' : 'bg-stone-50 text-stone-600 hover:bg-stone-100'}`}
+                          className={`px-4 py-2 rounded-full text-sm transition-all ${selectedTopic === topic ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-900 dark:text-amber-300 ring-1 ring-amber-300 dark:ring-amber-700' : 'bg-stone-50 dark:bg-dark-surface text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated'}`}
                         >
                           {getTopicLabel(topic, t)}
                         </button>
@@ -576,7 +604,7 @@ function App() {
                 <button
                   onClick={handleStartStory}
                   disabled={!selectedProphet}
-                  className="w-full py-4 bg-rose-900 text-white rounded-xl font-medium text-lg hover:bg-rose-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-rose-900/20"
+                  className="w-full py-4 bg-rose-900 dark:bg-accent-gold text-white dark:text-dark-bg rounded-xl font-medium text-lg hover:bg-rose-800 dark:hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-rose-900/20 dark:shadow-dark-glow"
                 >
                   {isArabic() ? 'ابدأ الرحلة' : 'Begin Journey'}
                 </button>
@@ -584,14 +612,14 @@ function App() {
 
               {/* Quick Pick Story Cards - All 24 Prophets */}
               <div className="mt-8">
-                <h3 className={`text-lg font-serif text-stone-600 mb-4 flex items-center gap-2 ${isArabic() ? 'flex-row-reverse text-right font-arabic' : ''}`}>
-                  <i className="fas fa-star text-amber-500"></i>
+                <h3 className={`text-lg font-serif text-stone-600 dark:text-stone-300 mb-4 flex items-center gap-2 ${isArabic() ? 'flex-row-reverse text-right font-arabic' : ''}`}>
+                  <i className="fas fa-star text-amber-500 dark:text-accent-gold"></i>
                   {isArabic() ? 'اختيار سريع' : 'Quick Pick'}
-                  <span className="text-sm text-stone-400 font-sans">
+                  <span className="text-sm text-stone-400 dark:text-stone-500 font-sans">
                     ({PROPHETS.length} {isArabic() ? 'نبيًّا' : 'Prophets'})
                   </span>
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[420px] overflow-y-auto pr-2 pb-2 scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[420px] overflow-y-auto pr-2 pb-2 scrollbar-thin scrollbar-thumb-stone-300 dark:scrollbar-thumb-dark-elevated scrollbar-track-stone-100 dark:scrollbar-track-dark-surface">
                   {PROPHETS.map(prophet => (
                     <StoryCard
                       key={prophet.name}
@@ -615,15 +643,15 @@ function App() {
 
             {/* Decorative Side */}
             <div className="hidden md:flex justify-center relative">
-               <div className="absolute inset-0 bg-rose-500/5 rounded-full blur-3xl transform scale-90"></div>
+               <div className="absolute inset-0 bg-rose-500/5 dark:bg-accent-gold/5 rounded-full blur-3xl transform scale-90"></div>
                <img
                  src="https://images.unsplash.com/photo-1519817914152-22d216bb9170?q=80&w=1600&auto=format&fit=crop"
                  alt="Abstract Islamic Art"
-                 className="rounded-t-[200px] rounded-b-[50px] shadow-2xl w-3/4 object-cover h-[600px] z-10"
+                 className="rounded-t-[200px] rounded-b-[50px] shadow-2xl dark:shadow-dark-lg w-3/4 object-cover h-[600px] z-10"
                />
-               <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-2xl shadow-xl z-20 max-w-xs">
-                   <p className="font-serif italic text-rose-900">"We relate to you, [O Muhammad], the best of stories in what We have revealed to you of this Qur'an..."</p>
-                   <p className="text-right text-xs text-stone-500 mt-2 font-bold">Surah Yusuf 12:3</p>
+               <div className="absolute -bottom-10 -right-10 bg-white dark:bg-dark-card p-6 rounded-2xl shadow-xl dark:shadow-dark-lg border border-transparent dark:border-dark-border z-20 max-w-xs transition-colors duration-300">
+                   <p className="font-serif italic text-rose-900 dark:text-accent-gold">"We relate to you, [O Muhammad], the best of stories in what We have revealed to you of this Qur'an..."</p>
+                   <p className="text-right text-xs text-stone-500 dark:text-stone-400 mt-2 font-bold">Surah Yusuf 12:3</p>
                </div>
             </div>
           </div>
@@ -704,6 +732,7 @@ function App() {
       </main>
     </div>
     </RTLProvider>
+    </ThemeProvider>
   );
 }
 

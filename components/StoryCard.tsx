@@ -99,10 +99,10 @@ const StoryCard: React.FC<StoryCardProps> = ({
   return (
     <div
       onClick={() => onSelect(prophet, topic)}
-      className={`relative group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
+      className={`relative group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-dark-lg ${
         isSelected
-          ? 'ring-2 ring-rose-500 shadow-lg'
-          : 'shadow-md hover:ring-1 hover:ring-rose-300'
+          ? 'ring-2 ring-rose-500 dark:ring-accent-gold shadow-lg dark:shadow-dark-glow'
+          : 'shadow-md dark:shadow-dark-lg hover:ring-1 hover:ring-rose-300 dark:hover:ring-accent-gold/50'
       }`}
     >
       {/* Background gradient */}
