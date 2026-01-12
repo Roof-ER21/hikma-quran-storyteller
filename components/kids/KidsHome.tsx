@@ -6,6 +6,8 @@ import kidsStories from '../../data/kidsStories';
 import { speakWithWebSpeech } from '../../services/kidsAssetLoader';
 import { speakArabicLetter, speakArabicLetterWithExample } from '../../services/geminiService';
 import CelebrationOverlay from './CelebrationOverlay';
+import { SosoTutorWrapper } from './SosoTutor';
+import type { KidsTutorContext } from '../../services/ai/types';
 
 // Kids-friendly color palette (covers all story color keys)
 const KIDS_COLORS: Record<string, string> = {
@@ -299,6 +301,19 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
           onComplete={() => setShowCelebration(false)}
           type={celebrationType}
           message={celebrationMessage}
+        />
+
+        {/* Soso AI Tutor - Floating Button */}
+        <SosoTutorWrapper
+          context={{
+            activity: 'general',
+            language: isArabic ? 'ar' : 'en'
+          }}
+          onStarEarned={(stars) => {
+            if (stars > 0) {
+              earnStar(true);
+            }
+          }}
         />
       </div>
     );

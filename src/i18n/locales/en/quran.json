@@ -90,7 +90,10 @@
   "listen": {
     "verses": "Verses",
     "jumpTo": "Jump to verse",
-    "go": "Go"
+    "go": "Go",
+    "audioInfo": "Quran Audio Streams as You Listen",
+    "audioInfoMessage": "To keep the app fast, Quran recitations are loaded from the cloud as you play them. Once played, verses are saved for offline listening. Your favorite surahs will be available even without internet!",
+    "audioInfoDismiss": "Got it!"
   },
   "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
   "error": {

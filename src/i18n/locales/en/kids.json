@@ -85,5 +85,31 @@
     "newStar": "You earned a star!",
     "levelUp": "Level Up!",
     "badge": "New Badge!"
+  },
+  "tutor": {
+    "name": "Soso",
+    "subtitle": "Your Learning Buddy",
+    "askButton": "Ask Soso",
+    "welcome": "Hi! I'm Soso, your learning buddy!",
+    "howCanIHelp": "What would you like to learn about?",
+    "encouragement": {
+      "great": "Great question!",
+      "learning": "You're learning so fast!",
+      "mashallah": "MashaAllah!",
+      "amazing": "Amazing job!",
+      "keep": "Keep going!"
+    },
+    "suggestions": {
+      "letter": "Tell me about this letter",
+      "story": "Tell me more about this prophet",
+      "verse": "What does this verse mean?",
+      "funFact": "Tell me a fun fact!"
+    },
+    "placeholder": "Ask Soso...",
+    "thinking": "Soso is thinking...",
+    "error": "Oops! Something went wrong. Try again!",
+    "starsToday": "Stars today",
+    "voiceOn": "Voice on",
+    "voiceOff": "Voice off"
   }
 }

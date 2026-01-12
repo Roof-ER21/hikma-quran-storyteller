@@ -5,6 +5,7 @@ import { loadProphetStories, searchProphetStories } from '../services/prophetSer
 import { prophetNarrationService, RECITERS, DEFAULT_RECITER } from '../services/prophetNarrationService';
 import SectionNarrationButton from './SectionNarrationButton';
 import ProphetAudioPlayer from './ProphetAudioPlayer';
+import { AlayaTutorWrapper } from './AlayaTutor';
 
 const ProphetStoriesLibrary: React.FC = () => {
   const { t, i18n } = useTranslation('library');
@@ -530,6 +531,15 @@ const ProphetStoriesLibrary: React.FC = () => {
       {narrationState && (narrationState.isPlaying || narrationState.isPaused) && (
         <div className="h-24"></div>
       )}
+
+      {/* Alaya AI Tutor - Always available for prophet stories */}
+      <AlayaTutorWrapper
+        context={{
+          activity: 'prophet-stories',
+          currentProphet: selectedStory ? selectedStory.prophetName : undefined,
+          language: isArabic ? 'ar' : 'en'
+        }}
+      />
     </div>
   );
 };

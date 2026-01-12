@@ -20,6 +20,7 @@ import ShareButton from './components/ShareButton';
 import ParentProfile from './components/ParentProfile';
 import { initProgressSync, cleanupProgressSync } from './services/progressSyncService';
 import { isLanguageSelected, isArabic } from './src/i18n';
+import { AISettingsWrapper } from './components/settings/AIProviderSettings';
 
 const PROPHETS = [
   { name: 'Adam', arabicName: 'آدم' },
@@ -436,6 +437,8 @@ function App() {
             >
                 <i className="fas fa-download"></i>
             </button>
+            {/* AI Settings Button */}
+            <AISettingsWrapper />
         </div>
         {/* Parent Button with Dropdown - Outside overflow container */}
         <div className="relative ml-2">

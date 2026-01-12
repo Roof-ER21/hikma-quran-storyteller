@@ -21,7 +21,8 @@ export default defineConfig(({ mode }) => {
             'icons/*.svg',
             'icons/*.png',
             'assets/kids/audio/**/*.mp3',
-            'assets/quran/offline/**/*.mp3',
+            // Quran audio loaded on-demand from CDN, not precached (too large ~900MB)
+            // 'assets/quran/offline/**/*.mp3',
             'assets/adult/audio/*.mp3'
           ],
           manifest: {
@@ -77,14 +78,16 @@ export default defineConfig(({ mode }) => {
                 }
               },
               {
-                // Audio files - Cache on Download (Stale While Revalidate)
+                // Quran Audio - Cache on first play (progressive caching)
+                // Audio streams from CDN and caches locally as user listens
+                // Supports ~20,000 verse files across all reciters
                 urlPattern: /^https:\/\/cdn\.islamic\.network\/quran\/audio\/.*/i,
                 handler: 'CacheFirst',
                 options: {
                   cacheName: 'quran-audio-cache',
                   expiration: {
-                    maxEntries: 500,
-                    maxAgeSeconds: 60 * 60 * 24 * 90 // 90 days
+                    maxEntries: 20000, // All verses across all reciters
+                    maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
                   },
                   cacheableResponse: {
                     statuses: [0, 200]

@@ -11,6 +11,7 @@ import VoiceSearch from './VoiceSearch';
 import RecitationChecker from './RecitationChecker';
 import MemorizationMode from './MemorizationMode';
 import ShareButton from './ShareButton';
+import { AlayaTutorWrapper } from './AlayaTutor';
 import { Verse, Surah as SurahType, VisualConfig } from '../types';
 
 interface SurahDef {
@@ -276,6 +277,10 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
   // Phase 2: Voice Search & Practice state
   const [showVoiceSearch, setShowVoiceSearch] = useState(false);
   const [jumpVerse, setJumpVerse] = useState<number | ''>('');
+  const [showAudioInfo, setShowAudioInfo] = useState(() => {
+    // Show info banner once per session, dismiss persists in localStorage
+    return !localStorage.getItem('quran-audio-info-dismissed');
+  });
   const listenVerseRefs = useRef<Record<number, HTMLButtonElement | null>>({});
   const [practiceMode, setPracticeMode] = useState<'recitation' | 'memorization'>('recitation');
   const [practiceVerse, setPracticeVerse] = useState<Verse | null>(null);
@@ -585,6 +590,28 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
 
     return (
       <div className="max-w-2xl mx-auto">
+        {/* Audio streaming info banner */}
+        {showAudioInfo && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+            <div className="flex items-start gap-3">
+              <i className="fas fa-info-circle text-blue-600 mt-0.5"></i>
+              <div className="flex-1">
+                <p className="font-semibold text-blue-900">{t('listen.audioInfo')}</p>
+                <p className="text-sm text-blue-700 mt-1">{t('listen.audioInfoMessage')}</p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowAudioInfo(false);
+                  localStorage.setItem('quran-audio-info-dismissed', 'true');
+                }}
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium whitespace-nowrap"
+              >
+                {t('listen.audioInfoDismiss')}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Jump to verse */}
         <div className="bg-white rounded-xl p-4 shadow-sm border border-stone-100 flex flex-col sm:flex-row gap-3 sm:items-end">
           <div className="flex-1">
@@ -1298,6 +1325,16 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             </div>
           </div>
         )}
+
+        {/* Alaya Tutor - AI Learning Companion */}
+        <AlayaTutorWrapper
+          context={{
+            activity: 'quran',
+            currentSurah: selectedSurah.number,
+            currentAyah: currentPlayingVerse || selectedStudyVerse || practiceVerse?.numberInSurah,
+            language: isArabic ? 'ar' : 'en'
+          }}
+        />
       </div>
     );
   }

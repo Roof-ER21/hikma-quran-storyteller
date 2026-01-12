@@ -65,5 +65,25 @@
       "reminders": "Reminders",
       "fullScreen": "Full Screen"
     }
+  },
+  "tutor": {
+    "alaya": {
+      "name": "Alaya",
+      "subtitle": "Your Learning Companion",
+      "askButton": "Ask Alaya",
+      "welcome": "Assalamu Alaikum! I'm Alaya, your companion on this learning journey.",
+      "howCanIHelp": "How may I assist you today?",
+      "thinking": "Alaya is thinking...",
+      "placeholder": "Ask Alaya...",
+      "error": "I apologize! Something went wrong. Please try again.",
+      "voiceOn": "Voice on",
+      "voiceOff": "Voice off",
+      "suggestions": {
+        "explainVerse": "Explain this verse",
+        "tellAboutProphet": "Tell me about this prophet",
+        "whatMeans": "What does this mean?",
+        "deeperMeaning": "What's the deeper meaning?"
+      }
+    }
   }
 }

@@ -65,5 +65,25 @@
       "reminders": "تنبيهات",
       "fullScreen": "شاشة كاملة"
     }
+  },
+  "tutor": {
+    "alaya": {
+      "name": "علية",
+      "subtitle": "رفيقتك في التعلم",
+      "askButton": "اسأل علية",
+      "welcome": "السلام عليكم ورحمة الله! أنا علية، رفيقتك في رحلة التعلم.",
+      "howCanIHelp": "كيف أستطيع مساعدتك اليوم؟",
+      "thinking": "علية بتفكر...",
+      "placeholder": "اسأل علية...",
+      "error": "عذراً! حصل خطأ. جرب تاني.",
+      "voiceOn": "الصوت شغال",
+      "voiceOff": "الصوت مقفول",
+      "suggestions": {
+        "explainVerse": "اشرح الآية دي",
+        "tellAboutProphet": "احكيلي عن النبي ده",
+        "whatMeans": "إيه معنى ده؟",
+        "deeperMeaning": "إيه المعنى الأعمق؟"
+      }
+    }
   }
 }

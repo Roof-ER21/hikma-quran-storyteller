@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { GoogleGenAI, LiveServerMessage, Modality } from "@google/genai";
 import { createPcmBlob, decodeAudioData } from '../services/audioUtils';
 import { getGeminiApiKey } from '../services/geminiService';
+import { AlayaTutorWrapper } from './AlayaTutor';
 
 // Tutoring Mode Types
 type TutoringMode = 'conversation' | 'tajweed' | 'memorization' | 'tafsir';
@@ -471,6 +472,14 @@ Be ready to discuss any verse from this Surah and its themes.`;
                         </p>
                     )}
                 </div>
+
+                {/* Alaya Tutor - Text-based fallback */}
+                <AlayaTutorWrapper
+                    context={{
+                        activity: 'live-mode',
+                        language: isArabic ? 'ar' : 'en'
+                    }}
+                />
             </div>
         );
     }
