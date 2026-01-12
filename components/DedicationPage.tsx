@@ -10,7 +10,7 @@ const DedicationPage: React.FC<DedicationPageProps> = ({ onClose }) => {
   const isArabic = i18n.language === 'ar-EG';
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-amber-50 to-rose-100 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="min-h-screen-safe bg-gradient-to-b from-rose-50 via-amber-50 to-rose-100 flex items-center justify-center p-4 sm:p-6 mobile-scroll pb-safe">
       <div className="max-w-lg w-full my-auto py-4">
         {/* Decorative top border */}
         <div className="flex justify-center mb-4 sm:mb-8">

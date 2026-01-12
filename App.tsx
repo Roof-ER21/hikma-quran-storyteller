@@ -336,7 +336,7 @@ function App() {
   return (
     <RTLProvider>
     <div
-      className="min-h-screen bg-stone-100 flex flex-col text-stone-800 overflow-x-hidden"
+      className="min-h-screen-safe bg-stone-100 flex flex-col text-stone-800 overflow-x-hidden mobile-scroll"
       dir={i18n.language === 'ar-EG' ? 'rtl' : 'ltr'}
     >
       {/* PWA Components */}
@@ -370,7 +370,7 @@ function App() {
           </button>
           <h1 className="text-xl md:text-2xl font-serif font-bold text-rose-900 tracking-wide">{t('common:app.name')}</h1>
         </div>
-        <div className="flex gap-2 md:gap-4 text-sm font-medium overflow-x-auto items-center">
+        <div className="flex gap-2 md:gap-4 text-sm font-medium mobile-scroll-x items-center flex-1 justify-end">
             <button
                 onClick={() => !isLocked('home') && setView('home')}
                 disabled={isLocked('home')}

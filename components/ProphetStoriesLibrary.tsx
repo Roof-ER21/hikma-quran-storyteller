@@ -158,7 +158,7 @@ const ProphetStoriesLibrary: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-rose-50/30 to-amber-50/20" dir={isArabic ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen-safe bg-gradient-to-br from-stone-50 via-rose-50/30 to-amber-50/20 mobile-scroll pb-safe" dir={isArabic ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="bg-gradient-to-r from-rose-900 via-rose-800 to-amber-900 text-white">
         <div className="max-w-7xl mx-auto px-6 py-12">

@@ -33,7 +33,7 @@ export default function TutorSelector({ onSelect, onContinue }: TutorSelectorPro
   const selectedTutor = tutors.find(t => t.id === selectedId);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-900 via-emerald-800 to-teal-900 p-4">
+    <div className="min-h-screen-safe bg-gradient-to-b from-emerald-900 via-emerald-800 to-teal-900 p-4 mobile-scroll pb-safe">
       {/* Header */}
       <div className="text-center mb-6">
         <h1 className="text-2xl font-bold text-white mb-2">
