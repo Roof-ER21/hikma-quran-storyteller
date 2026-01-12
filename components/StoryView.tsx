@@ -16,7 +16,9 @@ import {
   getAdultStoryByName,
   AdultStory,
   formatStoryForDisplay,
-  getProphetImagePath
+  getProphetImagePath,
+  getSceneIllustrationPath,
+  getAllSceneIllustrations
 } from '../services/adultStoryService';
 import {
   saveStoryReadingPosition,
@@ -329,6 +331,16 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
       setStory(formattedStory);
       setCleanedStory(formattedStory);
       setLoading(false);
+
+      // Load pre-generated scene illustrations (3 per prophet)
+      const sceneIllustrations = getAllSceneIllustrations(preloaded.id);
+      setImages(sceneIllustrations);
+      // Set up scene images with the illustrations
+      setSceneImages(sceneIllustrations.map((img, i) => ({
+        prompt: `Scene ${i + 1} illustration`,
+        image: img,
+        loading: false
+      })));
     } else {
       // No preloaded story - auto-generate
       handleGenerateNewStory();

@@ -278,6 +278,88 @@ export const getProphetImagePath = (prophetId: string): string => {
 };
 
 /**
+ * Get the scene illustration path for a prophet story
+ * Each prophet has 3 pre-generated scene illustrations (0, 1, 2)
+ * @param prophetId - The prophet identifier
+ * @param sceneIndex - Scene index (0, 1, or 2)
+ * @returns Path to the scene illustration JPG
+ */
+export const getSceneIllustrationPath = (prophetId: string, sceneIndex: number): string => {
+  // Normalize the ID (handle variations)
+  const normalizedId = prophetId.toLowerCase()
+    .replace(/[()]/g, '')
+    .replace(/'/g, '')
+    .replace(/\s+/g, '-')
+    .split(' ')[0]
+    .trim();
+
+  // Map common variations to illustration file names
+  const idMap: Record<string, string> = {
+    'adam': 'adam',
+    'idris': 'idris',
+    'nuh': 'nuh',
+    'noah': 'nuh',
+    'hud': 'hud',
+    'saleh': 'saleh',
+    'ibrahim': 'ibrahim',
+    'abraham': 'ibrahim',
+    'lut': 'lut',
+    'lot': 'lut',
+    'ismail': 'ismail',
+    'ishmael': 'ismail',
+    'ishaq': 'ishaq',
+    'isaac': 'ishaq',
+    'yaqub': 'yaqub',
+    'jacob': 'yaqub',
+    'yusuf': 'yusuf',
+    'joseph': 'yusuf',
+    'ayyub': 'ayyub',
+    'job': 'ayyub',
+    "shu'aib": 'shuaib',
+    'shuaib': 'shuaib',
+    'musa': 'musa',
+    'moses': 'musa',
+    'harun': 'harun',
+    'aaron': 'harun',
+    'dhul-kifl': 'dhul-kifl',
+    'dhulkifl': 'dhul-kifl',
+    'dawud': 'dawud',
+    'david': 'dawud',
+    'sulaiman': 'sulaiman',
+    'solomon': 'sulaiman',
+    'ilyas': 'ilyas',
+    'elijah': 'ilyas',
+    'al-yasa': 'al-yasa',
+    'alyasa': 'al-yasa',
+    'elisha': 'al-yasa',
+    'yunus': 'yunus',
+    'jonah': 'yunus',
+    'zakariya': 'zakariya',
+    'zakariyah': 'zakariya',
+    'zechariah': 'zakariya',
+    'yahya': 'yahya',
+    'john': 'yahya',
+    'isa': 'isa',
+    'jesus': 'isa',
+    'muhammad': 'muhammad',
+  };
+
+  const illustrationId = idMap[normalizedId] || normalizedId;
+  // Clamp scene index to 0-2 (we have 3 illustrations per prophet)
+  const safeIndex = Math.max(0, Math.min(2, sceneIndex));
+  return `/assets/adult/illustrations/${illustrationId}-${safeIndex}.jpg`;
+};
+
+/**
+ * Get all scene illustration paths for a prophet
+ * @param prophetId - The prophet identifier
+ * @returns Array of 3 illustration paths
+ */
+export const getAllSceneIllustrations = (prophetId: string): string[] => {
+  return [0, 1, 2].map(i => getSceneIllustrationPath(prophetId, i));
+};
+
+/**
  * Check if a preloaded image exists for a prophet
  */
 export const hasProphetImage = (prophetId: string): boolean => {
