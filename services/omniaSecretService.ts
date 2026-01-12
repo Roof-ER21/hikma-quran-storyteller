@@ -11,7 +11,9 @@
  */
 export function isOmnia(name: string | null): boolean {
   if (!name) return false;
-  return name.toLowerCase().trim() === 'omnia';
+  const normalized = name.toLowerCase().trim();
+  // Check English "omnia" or Arabic "أمنية"
+  return normalized === 'omnia' || name.trim() === 'أمنية';
 }
 
 /**
