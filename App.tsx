@@ -22,6 +22,9 @@ import { initProgressSync, cleanupProgressSync } from './services/progressSyncSe
 import { isLanguageSelected, isArabic } from './src/i18n';
 import { AISettingsWrapper } from './components/settings/AIProviderSettings';
 import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
+import OmniaLovePage from './components/OmniaLovePage';
+import OmniaSecretModal from './components/OmniaSecretModal';
+import { isOmnia } from './services/omniaSecretService';
 
 const PROPHETS = [
   { name: 'Adam', arabicName: 'آدم' },
@@ -91,6 +94,9 @@ function App() {
   const [showParentMenu, setShowParentMenu] = useState(false);
   const [showParentProfile, setShowParentProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Omnia special page state
+  const [showOmniaQuestion, setShowOmniaQuestion] = useState(false);
+  const [showOmniaLovePage, setShowOmniaLovePage] = useState(false);
   const [parentName, setParentName] = useState<string | null>(null);
   const [parentToken, setParentToken] = useState<string | null>(null);
   // Deep link state
@@ -213,7 +219,13 @@ function App() {
     setParentName(name);
     setParentToken(token);
     setMode('parent');
-    setView('home');
+
+    // Special flow for Omnia - ask secret question
+    if (isOmnia(name)) {
+      setShowOmniaQuestion(true);
+    } else {
+      setView('home');
+    }
   };
 
   const handleLogout = () => {
@@ -224,6 +236,22 @@ function App() {
     setMode('gate');
     setView('home');
     setShowParentMenu(false);
+  };
+
+  // Omnia secret question handlers
+  const handleOmniaCorrect = () => {
+    setShowOmniaQuestion(false);
+    setShowOmniaLovePage(true);
+  };
+
+  const handleOmniaWrong = () => {
+    setShowOmniaQuestion(false);
+    setView('home');
+  };
+
+  const handleOmniaContinue = () => {
+    setShowOmniaLovePage(false);
+    setView('home');
   };
 
   const handleStartStory = () => {
@@ -384,6 +412,19 @@ function App() {
         parentName={parentName || ''}
         onLogout={handleLogout}
       />
+
+      {/* Omnia Special Love Page */}
+      {showOmniaLovePage && (
+        <OmniaLovePage onContinue={handleOmniaContinue} />
+      )}
+
+      {/* Omnia Secret Question Modal */}
+      {showOmniaQuestion && (
+        <OmniaSecretModal
+          onCorrect={handleOmniaCorrect}
+          onWrong={handleOmniaWrong}
+        />
+      )}
 
       {/* Navbar */}
       <nav className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300 relative">

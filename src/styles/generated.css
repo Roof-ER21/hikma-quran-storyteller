@@ -3902,6 +3902,10 @@ html.dark {
   background-color: rgb(255 255 255 / 0.3);
 }
 
+.bg-white\/40 {
+  background-color: rgb(255 255 255 / 0.4);
+}
+
 .bg-white\/5 {
   background-color: rgb(255 255 255 / 0.05);
 }
@@ -4148,8 +4152,20 @@ html.dark {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-rose-100 {
+  --tw-gradient-from: #ffe4e6 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(255 228 230 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .from-rose-100\/80 {
   --tw-gradient-from: rgb(255 228 230 / 0.8) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(255 228 230 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-rose-100\/90 {
+  --tw-gradient-from: rgb(255 228 230 / 0.9) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 228 230 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
@@ -4311,6 +4327,16 @@ html.dark {
   --tw-gradient-stops: var(--tw-gradient-from), #065f46 var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
+.via-pink-50 {
+  --tw-gradient-to: rgb(253 242 248 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #fdf2f8 var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
+.via-pink-50\/90 {
+  --tw-gradient-to: rgb(253 242 248 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), rgb(253 242 248 / 0.9) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
 .via-purple-400 {
   --tw-gradient-to: rgb(192 132 252 / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #c084fc var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -4374,6 +4400,10 @@ html.dark {
 
 .to-amber-50\/20 {
   --tw-gradient-to: rgb(255 251 235 / 0.2) var(--tw-gradient-to-position);
+}
+
+.to-amber-50\/90 {
+  --tw-gradient-to: rgb(255 251 235 / 0.9) var(--tw-gradient-to-position);
 }
 
 .to-amber-500 {
@@ -5498,6 +5528,10 @@ html.dark {
   opacity: 0.9;
 }
 
+.opacity-\[0\.03\] {
+  opacity: 0.03;
+}
+
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -5737,6 +5771,14 @@ html.dark {
 
 .duration-700 {
   transition-duration: 700ms;
+}
+
+.ease-in {
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .ease-linear {
@@ -6153,6 +6195,10 @@ html.dark {
   --tw-gradient-to: #7e22ce var(--tw-gradient-to-position);
 }
 
+.hover\:to-rose-700:hover {
+  --tw-gradient-to: #be123c var(--tw-gradient-to-position);
+}
+
 .hover\:to-rose-800:hover {
   --tw-gradient-to: #9f1239 var(--tw-gradient-to-position);
 }
@@ -6208,6 +6254,11 @@ html.dark {
 .hover\:text-rose-700:hover {
   --tw-text-opacity: 1;
   color: rgb(190 18 60 / var(--tw-text-opacity));
+}
+
+.hover\:text-stone-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(120 113 108 / var(--tw-text-opacity));
 }
 
 .hover\:text-stone-600:hover {
@@ -6270,6 +6321,11 @@ html.dark {
 .hover\:ring-rose-300:hover {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(253 164 175 / var(--tw-ring-opacity));
+}
+
+.focus\:border-rose-400:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(251 113 133 / var(--tw-border-opacity));
 }
 
 .focus\:border-slate-400:focus {
@@ -6813,6 +6869,10 @@ html.dark {
     height: 2.5rem;
   }
 
+  .md\:h-24 {
+    height: 6rem;
+  }
+
   .md\:h-72 {
     height: 18rem;
   }
@@ -6823,6 +6883,10 @@ html.dark {
 
   .md\:w-10 {
     width: 2.5rem;
+  }
+
+  .md\:w-24 {
+    width: 6rem;
   }
 
   .md\:w-64 {
@@ -6921,9 +6985,24 @@ html.dark {
     line-height: 2rem;
   }
 
+  .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
   .md\:text-5xl {
     font-size: 3rem;
     line-height: 1;
+  }
+
+  .md\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .md\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 
   .md\:text-sm {
