@@ -384,9 +384,14 @@ const DedicationPage: React.FC<DedicationPageProps> = ({ onClose }) => {
             </h1>
 
             {/* English names */}
-            <h2 className="text-xl md:text-2xl font-serif text-amber-100/90 mb-6 tracking-wide">
+            <h2 className="text-xl md:text-2xl font-serif text-amber-100/90 mb-2 tracking-wide">
               {t('names.english')}
             </h2>
+
+            {/* Subtitle */}
+            <p className="text-sm md:text-base text-amber-300/70 mb-6 tracking-wide">
+              {t('subtitle')}
+            </p>
 
             {/* Decorative divider */}
             <div className="flex items-center justify-center gap-4 mb-6">
@@ -398,8 +403,13 @@ const DedicationPage: React.FC<DedicationPageProps> = ({ onClose }) => {
             </div>
 
             {/* Memorial message */}
-            <p className={`text-blue-100/80 leading-relaxed text-base md:text-lg mb-6 ${isArabic ? 'font-arabic text-right' : 'font-serif'}`}>
+            <p className={`text-blue-100/80 leading-relaxed text-base md:text-lg mb-4 ${isArabic ? 'font-arabic text-right' : 'font-serif'}`}>
               {t('message')}
+            </p>
+
+            {/* Their qualities */}
+            <p className={`text-blue-100/70 leading-relaxed text-sm md:text-base mb-6 ${isArabic ? 'font-arabic text-right' : 'font-serif'}`}>
+              {t('qualities')}
             </p>
 
             {/* Dua */}
