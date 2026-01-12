@@ -218,18 +218,17 @@ const DedicationPage: React.FC<DedicationPageProps> = ({ onClose }) => {
           animation: gentle-pulse 4s ease-in-out infinite;
         }
         @keyframes fade-in-up {
-          from {
+          0% {
             opacity: 0;
             transform: translateY(20px);
           }
-          to {
+          100% {
             opacity: 1;
             transform: translateY(0);
           }
         }
         .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-          opacity: 0;
+          animation: fade-in-up 0.8s ease-out both;
         }
         @keyframes soft-glow {
           0%, 100% {
