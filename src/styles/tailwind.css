@@ -426,3 +426,58 @@
     min-width: 48px;
   }
 }
+
+/* ========================================
+   ENHANCED MOBILE SCROLLING
+   ======================================== */
+
+/* Allow scroll from anywhere on mobile */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: auto;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  /* Ensure main content scrolls properly */
+  main {
+    overflow-y: visible;
+    overflow-x: hidden;
+  }
+
+  /* Better scrolling for all containers */
+  .mobile-scroll,
+  [class*="overflow-y-auto"] {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Landscape mode mobile menu fix */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Ensure mobile menu is scrollable in landscape */
+  nav + div[class*="fixed"] {
+    max-height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+}
+
+/* Fix for content being cut off on mobile */
+@media (max-width: 768px) {
+  .min-h-screen-safe {
+    min-height: 100%;
+    min-height: -webkit-fill-available;
+  }
+
+  /* Prevent horizontal overflow causing scroll issues */
+  * {
+    max-width: 100vw;
+  }
+
+  img, video, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+  }
+}

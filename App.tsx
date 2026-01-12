@@ -391,8 +391,9 @@ function App() {
     <ThemeProvider>
     <RTLProvider>
     <div
-      className="min-h-screen-safe bg-stone-100 dark:bg-dark-bg flex flex-col text-stone-800 dark:text-stone-100 overflow-x-hidden mobile-scroll transition-colors duration-300"
+      className="min-h-screen-safe bg-stone-100 dark:bg-dark-bg flex flex-col text-stone-800 dark:text-stone-100 overflow-x-hidden transition-colors duration-300"
       dir={i18n.language === 'ar-EG' ? 'rtl' : 'ltr'}
+      style={{ WebkitOverflowScrolling: 'touch' }}
     >
       {/* PWA Components */}
       <OfflineIndicator onDownloadClick={() => setShowDownloadManager(true)} />
@@ -426,8 +427,8 @@ function App() {
         />
       )}
 
-      {/* Navbar */}
-      <nav className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300 relative">
+      {/* Navbar - with safe area padding for notched phones */}
+      <nav className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-4 md:px-6 py-3 md:py-4 pt-safe flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300 relative sticky top-0 z-30">
         <div className="flex items-center gap-2 md:gap-3">
           <button
             onClick={() => setView('dedication')}
@@ -578,9 +579,9 @@ function App() {
               className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40 md:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
-            {/* Dropdown Panel */}
-            <div className="absolute top-full left-0 right-0 bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border shadow-lg dark:shadow-dark-lg z-50 md:hidden animate-in slide-in-from-top-2 duration-200">
-              <div className="p-4 space-y-1">
+            {/* Dropdown Panel - scrollable for landscape mode */}
+            <div className="fixed top-[calc(env(safe-area-inset-top,0px)+56px)] left-0 right-0 bottom-0 bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border shadow-lg dark:shadow-dark-lg z-50 md:hidden animate-in slide-in-from-top-2 duration-200 overflow-y-auto overscroll-contain">
+              <div className="p-4 space-y-1 pb-safe">
                 {/* Navigation Items */}
                 <button
                   onClick={() => { !isLocked('home') && setView('home'); setMobileMenuOpen(false); }}
@@ -681,8 +682,8 @@ function App() {
         )}
       </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+      {/* Main Content - scrollable on mobile */}
+      <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-x-hidden pb-safe">
         {view === 'home' && mode !== 'kid' && (
             <div className="grid md:grid-cols-2 gap-12 items-center h-full animate-in fade-in duration-500">
             <div className="space-y-8">
@@ -821,7 +822,7 @@ function App() {
         )}
 
         {view === 'story' && selectedProphet && (
-            <div className="h-[calc(100vh-140px)]">
+            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <StoryView
                     prophet={selectedProphet}
                     topic={selectedTopic}
@@ -835,13 +836,13 @@ function App() {
         )}
 
         {view === 'live' && (
-            <div className="h-[calc(100vh-140px)]">
+            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <LiveMode />
             </div>
         )}
 
         {view === 'quran' && (
-            <div className="h-[calc(100vh-140px)]">
+            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <QuranView
                   initialSurah={initialDeepLink?.type === 'verse' || initialDeepLink?.type === 'quran' ? initialDeepLink.data.surah : undefined}
                   initialVerse={initialDeepLink?.type === 'verse' ? initialDeepLink.data.verse : undefined}
@@ -850,13 +851,13 @@ function App() {
         )}
 
         {view === 'kids' && (
-            <div className="h-[calc(100vh-140px)]">
+            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <KidsHome onBack={() => setView('home')} />
             </div>
         )}
 
         {view === 'library' && (
-            <div className="h-[calc(100vh-140px)] overflow-auto">
+            <div className="min-h-[50vh] md:h-[calc(100vh-140px)] overflow-auto">
                 <ProphetStoriesLibrary />
             </div>
         )}
@@ -868,7 +869,7 @@ function App() {
         )}
 
         {view === 'tools' && (
-            <div className="h-[calc(100vh-140px)]">
+            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <IslamicTools onBack={() => setView('home')} />
             </div>
         )}
