@@ -354,7 +354,7 @@ const DedicationPage: React.FC<DedicationPageProps> = ({ onClose }) => {
 
           {/* Memorial Card */}
           <div
-            className="bg-white/5 backdrop-blur-md rounded-3xl p-6 md:p-10 text-center border border-white/10 animate-soft-glow animate-fade-in-up mb-6 md:mb-8"
+            className="bg-slate-800/50 backdrop-blur-md rounded-3xl p-6 md:p-10 text-center border border-amber-500/20 animate-soft-glow animate-fade-in-up mb-6 md:mb-8"
             style={{ animationDelay: '0.6s' }}
           >
             {/* In Loving Memory */}
@@ -427,7 +427,7 @@ const DedicationPage: React.FC<DedicationPageProps> = ({ onClose }) => {
 
           {/* Inna lillahi verse - separate card */}
           <div
-            className="bg-gradient-to-br from-amber-900/20 to-blue-900/20 backdrop-blur-sm rounded-2xl p-5 md:p-6 text-center border border-amber-500/20 mb-8 animate-fade-in-up"
+            className="bg-gradient-to-br from-amber-900/30 to-slate-800/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 text-center border border-amber-500/30 mb-8 animate-fade-in-up"
             style={{ animationDelay: '0.9s' }}
           >
             <p
