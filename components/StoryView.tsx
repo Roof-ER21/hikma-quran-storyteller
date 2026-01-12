@@ -180,8 +180,10 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
   const [showContinueReading, setShowContinueReading] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [headerVisible, setHeaderVisible] = useState(true);
 
   // Refs for scroll tracking
+  const lastScrollY = useRef(0);
   const contentRef = useRef<HTMLDivElement>(null);
   const heroImageRef = useRef<HTMLImageElement>(null);
   const savePositionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -251,6 +253,19 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
     const scrollHeight = container.scrollHeight - container.clientHeight;
     const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
     setReadingProgress(Math.min(100, scrollPercentage));
+
+    // Smart header hide/show on mobile
+    const scrollDelta = scrollTop - lastScrollY.current;
+    if (Math.abs(scrollDelta) > 10) {
+      if (scrollDelta > 0 && scrollTop > 100) {
+        // Scrolling down past 100px - hide header
+        setHeaderVisible(false);
+      } else if (scrollDelta < 0) {
+        // Scrolling up - show header
+        setHeaderVisible(true);
+      }
+    }
+    lastScrollY.current = scrollTop;
 
     // Parallax effect - move hero image slower than scroll
     setParallaxOffset(scrollTop * 0.4);
@@ -1015,8 +1030,8 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
   return (
     <div className={`flex flex-col h-full bg-stone-50 dark:bg-dark-bg transition-all duration-700 ${immersiveMode ? 'fixed inset-0 z-50' : 'rounded-lg shadow-xl dark:shadow-dark-lg overflow-hidden'}`}>
       
-      {/* Immersive Header / Controls */}
-      <div className={`${immersiveMode ? 'bg-black/80 text-white backdrop-blur-md fixed top-0 w-full z-50' : 'bg-white dark:bg-dark-card text-stone-800 dark:text-stone-100 border-b border-stone-200 dark:border-dark-border'} p-4 flex items-center justify-between transition-all duration-300`}>
+      {/* Immersive Header / Controls - Smart hide on scroll */}
+      <div className={`${immersiveMode ? 'bg-black/80 text-white backdrop-blur-md fixed top-0 w-full z-50' : 'bg-white dark:bg-dark-card text-stone-800 dark:text-stone-100 border-b border-stone-200 dark:border-dark-border'} p-3 md:p-4 flex items-center justify-between transition-all duration-300 ${!immersiveMode && !headerVisible ? 'transform -translate-y-full absolute top-0 left-0 right-0 z-20' : ''}`}>
         <div className="flex items-center gap-4 min-w-0">
             <button onClick={immersiveMode ? () => setImmersiveMode(false) : onBack} className={`p-2 rounded-full transition-colors ${immersiveMode ? 'hover:bg-white/10' : 'hover:bg-stone-100 dark:hover:bg-dark-elevated'}`}>
                <i className={`fas ${immersiveMode ? 'fa-compress' : 'fa-arrow-left'}`}></i>
@@ -1183,10 +1198,10 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
         />
       )}
 
-      {/* Hero Image with Parallax Effect */}
+      {/* Hero Image with Parallax Effect - Smaller on mobile */}
       {!immersiveMode && (images.length > 0 || (storyMode === 'preloaded' && preloadedStory)) && (
           <div
-            className="h-72 w-full parallax-container group cursor-pointer"
+            className="h-48 md:h-72 w-full parallax-container group cursor-pointer"
             onClick={() => {
               if (images.length > 0) {
                 setLightboxIndex(0);
@@ -1228,24 +1243,23 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
           </div>
       )}
 
-      {/* Tabs (Hidden in Immersive) */}
+      {/* Tabs (Hidden in Immersive) - Compact on mobile */}
       {!immersiveMode && (
           <div className="flex border-b border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card sticky top-0 z-10">
-            {/* Existing Tab Logic */}
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'read' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
+                className={`flex-1 py-2.5 md:py-4 text-xs md:text-sm font-medium border-b-2 transition-colors ${activeTab === 'read' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => setActiveTab('read')}
             >
                 {t('tabs.story')}
             </button>
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'locations' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
+                className={`flex-1 py-2.5 md:py-4 text-xs md:text-sm font-medium border-b-2 transition-colors ${activeTab === 'locations' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => { setActiveTab('locations'); handleLoadLocations(); }}
             >
                 {t('tabs.locations')}
             </button>
             <button
-                className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'context' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
+                className={`flex-1 py-2.5 md:py-4 text-xs md:text-sm font-medium border-b-2 transition-colors ${activeTab === 'context' ? 'border-rose-800 dark:border-accent-gold text-rose-900 dark:text-accent-gold' : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isArabic ? 'font-arabic' : ''}`}
                 onClick={() => { setActiveTab('context'); handleLoadContext(); }}
             >
                 {t('tabs.deepDive')}

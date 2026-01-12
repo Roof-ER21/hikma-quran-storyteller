@@ -370,3 +370,59 @@
     @apply bg-rose-700 dark:bg-accent-gold;
   }
 }
+
+/* ========================================
+   MOBILE MENU ANIMATIONS
+   ======================================== */
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide-in animation for mobile menu dropdown */
+.animate-in {
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.slide-in-from-top-2 {
+  animation-name: slideInFromTop;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+/* Smart header hide/show transition */
+.header-transition {
+  transition: transform 0.3s ease-out;
+}
+
+.header-hidden {
+  transform: translateY(-100%);
+}
+
+/* Improved touch target sizes on mobile */
+@media (max-width: 768px) {
+  .mobile-touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}

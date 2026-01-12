@@ -90,6 +90,7 @@ function App() {
   const [showParentGate, setShowParentGate] = useState(false);
   const [showParentMenu, setShowParentMenu] = useState(false);
   const [showParentProfile, setShowParentProfile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [parentName, setParentName] = useState<string | null>(null);
   const [parentToken, setParentToken] = useState<string | null>(null);
   // Deep link state
@@ -385,18 +386,29 @@ function App() {
       />
 
       {/* Navbar */}
-      <nav className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-6 py-4 flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300">
-        <div className="flex items-center gap-3">
+      <nav className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300 relative">
+        <div className="flex items-center gap-2 md:gap-3">
           <button
             onClick={() => setView('dedication')}
-            className="w-10 h-10 bg-rose-700 dark:bg-accent-gold rounded-lg flex items-center justify-center text-white dark:text-dark-bg text-xl hover:bg-rose-600 dark:hover:bg-amber-500 transition-colors"
+            className="w-9 h-9 md:w-10 md:h-10 bg-rose-700 dark:bg-accent-gold rounded-lg flex items-center justify-center text-white dark:text-dark-bg text-lg md:text-xl hover:bg-rose-600 dark:hover:bg-amber-500 transition-colors"
             title={t('common:nav.inLovingMemory')}
           >
             <i className="fas fa-heart"></i>
           </button>
-          <h1 className="text-xl md:text-2xl font-serif font-bold text-rose-900 dark:text-accent-gold tracking-wide">{t('common:app.name')}</h1>
+          <h1 className="text-lg md:text-2xl font-serif font-bold text-rose-900 dark:text-accent-gold tracking-wide">{t('common:app.name')}</h1>
         </div>
-        <div className="flex gap-2 md:gap-4 text-sm font-medium mobile-scroll-x items-center flex-1 justify-end">
+
+        {/* Mobile Hamburger Menu Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden w-10 h-10 flex items-center justify-center text-stone-600 dark:text-stone-300 hover:text-rose-700 dark:hover:text-accent-gold transition-colors"
+          aria-label="Toggle menu"
+        >
+          <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+        </button>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex gap-2 md:gap-4 text-sm font-medium items-center flex-1 justify-end">
             <button
                 onClick={() => !isLocked('home') && setView('home')}
                 disabled={isLocked('home')}
@@ -516,6 +528,116 @@ function App() {
             </>
           )}
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40 md:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            {/* Dropdown Panel */}
+            <div className="absolute top-full left-0 right-0 bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border shadow-lg dark:shadow-dark-lg z-50 md:hidden animate-in slide-in-from-top-2 duration-200">
+              <div className="p-4 space-y-1">
+                {/* Navigation Items */}
+                <button
+                  onClick={() => { !isLocked('home') && setView('home'); setMobileMenuOpen(false); }}
+                  disabled={isLocked('home')}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'home' || view === 'story' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'} ${isLocked('home') ? 'opacity-40' : ''}`}
+                >
+                  <i className="fas fa-book-open w-5"></i>
+                  <span>Stories</span>
+                </button>
+                <button
+                  onClick={() => { setView('quran'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'quran' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'}`}
+                >
+                  <i className="fas fa-quran w-5"></i>
+                  <span>The Quran</span>
+                </button>
+                <button
+                  onClick={() => { !isLocked('live') && setView('live'); setMobileMenuOpen(false); }}
+                  disabled={isLocked('live')}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'live' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'} ${isLocked('live') ? 'opacity-40' : ''}`}
+                >
+                  <i className="fas fa-user-graduate w-5"></i>
+                  <span>{isArabic() ? 'المعلّم الشخصي' : 'Personal Tutor'}</span>
+                </button>
+                <button
+                  onClick={() => { setView('kids'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'kids' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'}`}
+                >
+                  <i className="fas fa-child w-5"></i>
+                  <span>Kids Mode</span>
+                </button>
+                <button
+                  onClick={() => { !isLocked('library') && setView('library'); setMobileMenuOpen(false); }}
+                  disabled={isLocked('library')}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'library' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'} ${isLocked('library') ? 'opacity-40' : ''}`}
+                >
+                  <i className="fas fa-book-reader w-5"></i>
+                  <span>Library</span>
+                </button>
+                <button
+                  onClick={() => { setView('tools'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'tools' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'}`}
+                >
+                  <i className="fas fa-compass w-5"></i>
+                  <span>Tools</span>
+                </button>
+
+                {/* Divider */}
+                <hr className="my-3 border-stone-200 dark:border-dark-border" />
+
+                {/* Settings Row */}
+                <div className="flex items-center justify-between px-4 py-2">
+                  <span className="text-sm text-stone-500 dark:text-stone-400">Theme</span>
+                  <ThemeToggle />
+                </div>
+                <div className="flex items-center justify-between px-4 py-2">
+                  <span className="text-sm text-stone-500 dark:text-stone-400">Language</span>
+                  <button
+                    onClick={() => {
+                      const newLang = i18n.language === 'ar-EG' ? 'en' : 'ar-EG';
+                      i18n.changeLanguage(newLang);
+                      localStorage.setItem('alayasoad_language', newLang);
+                    }}
+                    className="px-3 py-1.5 rounded-lg text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated transition-colors"
+                  >
+                    {i18n.language === 'ar-EG' ? 'English' : 'العربية'}
+                  </button>
+                </div>
+                <div className="flex items-center justify-between px-4 py-2">
+                  <span className="text-sm text-stone-500 dark:text-stone-400">Downloads</span>
+                  <button
+                    onClick={() => { setShowDownloadManager(true); setMobileMenuOpen(false); }}
+                    className="px-3 py-1.5 rounded-lg text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated transition-colors"
+                  >
+                    <i className="fas fa-download"></i>
+                  </button>
+                </div>
+
+                {/* Parent Section */}
+                <hr className="my-3 border-stone-200 dark:border-dark-border" />
+                <button
+                  onClick={() => {
+                    if (parentName) {
+                      setShowParentProfile(true);
+                    } else {
+                      setShowParentGate(true);
+                    }
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated transition-colors"
+                >
+                  <i className="fas fa-user-shield w-5"></i>
+                  <span>{parentName ? `Hi, ${parentName}` : 'Parent Login'}</span>
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </nav>
 
       {/* Main Content */}

@@ -1814,19 +1814,6 @@ html.dark {
 
 /* Horizontal scroll container (for carousels, tabs) */
 
-.mobile-scroll-x {
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.mobile-scroll-x::-webkit-scrollbar {
-  display: none;
-}
-
 /* Full-screen mobile page */
 
 /* Fixed bottom bar with safe area */
@@ -2172,6 +2159,11 @@ html.dark {
   margin-bottom: 0.5rem;
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -2429,10 +2421,6 @@ html.dark {
 
 .h-7 {
   height: 1.75rem;
-}
-
-.h-72 {
-  height: 18rem;
 }
 
 .h-8 {
@@ -5809,6 +5797,67 @@ html.dark {
    DARK MODE THEME STYLES
    ======================================== */
 
+/* ========================================
+   MOBILE MENU ANIMATIONS
+   ======================================== */
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide-in animation for mobile menu dropdown */
+
+.animate-in {
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.slide-in-from-top-2 {
+  animation-name: slideInFromTop;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+/* Smart header hide/show transition */
+
+.header-transition {
+  transition: transform 0.3s ease-out;
+}
+
+.header-hidden {
+  transform: translateY(-100%);
+}
+
+/* Improved touch target sizes on mobile */
+
+@media (max-width: 768px) {
+  .mobile-touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
 .hover\:scale-105:hover {
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
@@ -6395,6 +6444,10 @@ html.dark {
   background-color: rgb(120 53 15 / 0.4);
 }
 
+.dark\:bg-black\/40:is(.dark *) {
+  background-color: rgb(0 0 0 / 0.4);
+}
+
 .dark\:bg-dark-bg:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(15 15 20 / var(--tw-bg-opacity));
@@ -6756,8 +6809,20 @@ html.dark {
     display: none;
   }
 
+  .md\:h-10 {
+    height: 2.5rem;
+  }
+
+  .md\:h-72 {
+    height: 18rem;
+  }
+
   .md\:h-96 {
     height: 24rem;
+  }
+
+  .md\:w-10 {
+    width: 2.5rem;
   }
 
   .md\:w-64 {
@@ -6804,6 +6869,10 @@ html.dark {
     align-items: flex-end;
   }
 
+  .md\:gap-3 {
+    gap: 0.75rem;
+  }
+
   .md\:gap-4 {
     gap: 1rem;
   }
@@ -6820,6 +6889,10 @@ html.dark {
     padding: 6rem;
   }
 
+  .md\:p-4 {
+    padding: 1rem;
+  }
+
   .md\:p-6 {
     padding: 1.5rem;
   }
@@ -6833,6 +6906,16 @@ html.dark {
     padding-right: 1rem;
   }
 
+  .md\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .md\:py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
   .md\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
@@ -6841,6 +6924,16 @@ html.dark {
   .md\:text-5xl {
     font-size: 3rem;
     line-height: 1;
+  }
+
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
   .md\:opacity-0 {
