@@ -1309,92 +1309,85 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
                   className={`prose prose-lg ${immersiveMode ? 'prose-invert prose-p:leading-loose prose-headings:text-rose-400' : 'prose-stone prose-headings:font-serif prose-headings:text-rose-900'} max-w-none ${(language === 'arabic' || language === 'arabic_egyptian') ? 'text-right font-arabic' : ''}`}
                   dir={(language === 'arabic' || language === 'arabic_egyptian') ? 'rtl' : 'ltr'}
                 >
-                    {(cleanedStory || story).split('\n').map((line, i) => {
-                        // Skip scene markers if any remain
-                        if (line.includes('[SCENE:')) return null;
+                    {(() => {
+                        const lines = (cleanedStory || story).split('\n').filter(l => !l.includes('[SCENE:'));
+                        const contentLines = lines.filter(l => l.trim().length > 0);
+                        const totalParagraphs = contentLines.length;
+                        // Insert images after every ~1/3 of content (for 3 images)
+                        const imageInterval = Math.max(3, Math.floor(totalParagraphs / 3));
+                        let paragraphCount = 0;
+                        let imageIndex = 0;
 
-                        // Detect Headers for styling with animation
-                        if (line.startsWith('#')) {
-                            return (
-                              <div key={i} className="islamic-divider text-rose-300/50 my-8">
-                                <h3
-                                  data-paragraph={i}
-                                  className={`mt-0 mb-0 font-serif text-2xl font-bold px-4 animate-fade-in-up stagger-${Math.min(5, (i % 5) + 1)}`}
-                                >
-                                  {line.replace(/#/g, '').trim()}
-                                </h3>
-                              </div>
-                            );
-                        }
-                        if (line.trim().length === 0) return <br key={i}/>;
+                        return lines.map((line, i) => {
+                            const elements: React.ReactNode[] = [];
 
-                        // Check if this is a Quranic verse citation (typically in parentheses with numbers)
-                        const isVerseCitation = /^\s*[\(\[].*\d+:\d+.*[\)\]]/.test(line) || line.includes('Surah');
+                            // Detect Headers for styling with animation
+                            if (line.startsWith('#')) {
+                                paragraphCount++;
+                                elements.push(
+                                  <div key={`h-${i}`} className="islamic-divider text-rose-300/50 my-8">
+                                    <h3
+                                      data-paragraph={i}
+                                      className={`mt-0 mb-0 font-serif text-2xl font-bold px-4 animate-fade-in-up stagger-${Math.min(5, (i % 5) + 1)}`}
+                                    >
+                                      {line.replace(/#/g, '').trim()}
+                                    </h3>
+                                  </div>
+                                );
+                            } else if (line.trim().length === 0) {
+                                elements.push(<br key={`br-${i}`}/>);
+                            } else {
+                                paragraphCount++;
+                                // Check if this is a Quranic verse citation
+                                const isVerseCitation = /^\s*[\(\[].*\d+:\d+.*[\)\]]/.test(line) || line.includes('Surah');
 
-                        return (
-                          <p
-                            key={i}
-                            data-paragraph={i}
-                            className={`mb-4 text-lg leading-relaxed animate-fade-in-up stagger-${Math.min(5, (i % 5) + 1)} ${
-                              isVerseCitation
-                                ? 'text-center italic text-rose-700/80 bg-rose-50/50 py-2 px-4 rounded-lg border-l-2 border-rose-300'
-                                : ''
-                            }`}
-                          >
-                            {line}
-                          </p>
-                        );
-                    })}
+                                elements.push(
+                                  <p
+                                    key={`p-${i}`}
+                                    data-paragraph={i}
+                                    className={`mb-4 text-lg leading-relaxed animate-fade-in-up stagger-${Math.min(5, (i % 5) + 1)} ${
+                                      isVerseCitation
+                                        ? 'text-center italic text-rose-700/80 bg-rose-50/50 py-2 px-4 rounded-lg border-l-2 border-rose-300'
+                                        : ''
+                                    }`}
+                                  >
+                                    {line}
+                                  </p>
+                                );
+                            }
+
+                            // Insert scene image after certain paragraphs (spread through story)
+                            if (!immersiveMode && sceneImages.length > 0 && paragraphCount > 0 &&
+                                paragraphCount % imageInterval === 0 && imageIndex < sceneImages.length) {
+                                const scene = sceneImages[imageIndex];
+                                if (scene?.image) {
+                                    elements.push(
+                                      <div
+                                        key={`img-${imageIndex}`}
+                                        className="my-8 rounded-xl overflow-hidden shadow-lg cursor-pointer hover:shadow-xl transition-all duration-300 animate-fade-in-up"
+                                        onClick={() => {
+                                          setLightboxIndex(imageIndex);
+                                          setLightboxOpen(true);
+                                        }}
+                                      >
+                                        <img
+                                          src={scene.image}
+                                          alt={t('images.scene', { number: imageIndex + 1 })}
+                                          className="w-full h-auto object-cover"
+                                          loading="lazy"
+                                        />
+                                      </div>
+                                    );
+                                }
+                                imageIndex++;
+                            }
+
+                            return elements;
+                        });
+                    })()}
                 </div>
 
-                {/* Scene Images Gallery with enhanced animations */}
-                {sceneImages.length > 1 && !immersiveMode && (
-                    <div className="mt-12 space-y-6 animate-fade-in-up">
-                        <div className="islamic-divider text-rose-300/50">
-                          <h4 className={`text-lg font-serif text-rose-900 px-4 ${isArabic ? 'font-arabic' : ''}`}>{t('images.storyScenes')}</h4>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            {sceneImages.slice(1).map((scene, i) => (
-                                <div
-                                  key={i}
-                                  onClick={() => {
-                                    if (scene.image) {
-                                      setLightboxIndex(i + 1); // +1 because we slice from 1
-                                      setLightboxOpen(true);
-                                    }
-                                  }}
-                                  className={`relative rounded-xl overflow-hidden shadow-lg aspect-video bg-stone-200 group cursor-pointer hover:shadow-xl transition-all duration-300 animate-fade-in-up stagger-${Math.min(5, (i % 5) + 1)}`}
-                                >
-                                    {scene.loading ? (
-                                        <div className="absolute inset-0 shimmer-skeleton">
-                                          <div className="absolute inset-0 flex items-center justify-center">
-                                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-rose-600"></div>
-                                          </div>
-                                        </div>
-                                    ) : scene.image ? (
-                                        <>
-                                          <img
-                                            src={scene.image}
-                                            alt={t('images.scene', { number: i + 2 })}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                          />
-                                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <div className={`absolute bottom-2 left-2 right-2 text-white text-xs truncate flex items-center justify-between ${isArabic ? 'flex-row-reverse' : ''}`}>
-                                              <span className={isArabic ? 'font-arabic' : ''}>{t('images.scene', { number: i + 2 })}</span>
-                                              <i className="fas fa-expand text-white/80"></i>
-                                            </div>
-                                          </div>
-                                        </>
-                                    ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center text-stone-400 bg-stone-100">
-                                            <i className="fas fa-image text-3xl opacity-50"></i>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                {/* Scene Images are now spread through the story content above */}
 
                 {!immersiveMode && (
                     <div className="mt-12 flex justify-center">
