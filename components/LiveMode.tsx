@@ -227,7 +227,8 @@ Be ready to discuss any verse from this Surah and its themes.`;
             addLog("Connecting to Gemini...");
 
             const connectToGemini = async () => {
-                const ai = new GoogleGenAI({ apiKey: getGeminiApiKey() });
+                const apiKey = await getGeminiApiKey();
+                const ai = new GoogleGenAI({ apiKey });
                 const systemPrompt = buildSystemPrompt();
                 const tutorVoice = getTutorVoiceConfig(selectedTutor.id);
                 const voiceName = tutorVoice.name;

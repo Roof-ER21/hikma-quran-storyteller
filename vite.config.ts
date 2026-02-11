@@ -4,12 +4,18 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, '.', '');
-    const geminiKey = env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY;
+    // API keys are now handled server-side via proxy endpoints
     return {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        proxy: {
+          // Proxy Gemini API calls to backend
+          '/api': {
+            target: 'http://localhost:3000',
+            changeOrigin: true
+          }
+        }
       },
       plugins: [
         react(),
@@ -19,11 +25,9 @@ export default defineConfig(({ mode }) => {
           minify: false,
           includeAssets: [
             'icons/*.svg',
-            'icons/*.png',
-            'assets/kids/audio/**/*.mp3',
-            // Quran audio loaded on-demand from CDN, not precached (too large ~900MB)
-            // 'assets/quran/offline/**/*.mp3',
-            'assets/adult/audio/*.mp3'
+            'icons/*.png'
+            // Story audio loaded on-demand via runtime caching (prevents ~100MB precache)
+            // See runtimeCaching 'story-audio-cache' below
           ],
           manifest: {
             name: "Alaya & Soad's Gift: Stories from Jannah",
@@ -56,6 +60,23 @@ export default defineConfig(({ mode }) => {
                   expiration: {
                     maxEntries: 10,
                     maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200]
+                  }
+                }
+              },
+              {
+                // Story Audio - Cache on first play (progressive caching)
+                // Caches kids/adult story audio as users play them
+                // Prevents ~100MB precache, loads only what's needed
+                urlPattern: /\/assets\/(?:kids|adult)\/audio\/.*\.mp3$/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'story-audio-cache',
+                  expiration: {
+                    maxEntries: 200,
+                    maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
                   },
                   cacheableResponse: {
                     statuses: [0, 200]
@@ -133,6 +154,21 @@ export default defineConfig(({ mode }) => {
                 }
               },
               {
+                // Kids illustrations - Cache on first view (prevents ~100MB precache)
+                urlPattern: /\/assets\/kids\/illustrations\/.*\.(?:png|jpg|webp)$/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'kids-illustrations-cache',
+                  expiration: {
+                    maxEntries: 200,
+                    maxAgeSeconds: 60 * 60 * 24 * 90 // 90 days
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200]
+                  }
+                }
+              },
+              {
                 // Images - Cache First
                 urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
                 handler: 'CacheFirst',
@@ -145,8 +181,9 @@ export default defineConfig(({ mode }) => {
                 }
               }
             ],
-            // Pre-cache essential files
-            globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+            // Pre-cache essential files (exclude large illustrations)
+            globPatterns: ['**/*.{js,css,html,ico,woff2}', 'icons/*.{png,svg}'],
+            globIgnores: ['assets/kids/illustrations/**', 'assets/quran/**'],
             // Skip waiting for faster updates
             skipWaiting: true,
             clientsClaim: true
@@ -156,10 +193,7 @@ export default defineConfig(({ mode }) => {
           }
         })
       ],
-      define: {
-        'process.env.API_KEY': JSON.stringify(geminiKey),
-        'process.env.GEMINI_API_KEY': JSON.stringify(geminiKey)
-      },
+      // API keys removed - now handled server-side
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
@@ -167,6 +201,13 @@ export default defineConfig(({ mode }) => {
       },
       build: {
         chunkSizeWarningLimit: 1200,
+        minify: 'terser',
+        terserOptions: {
+          compress: {
+            drop_console: true,
+            drop_debugger: true
+          }
+        },
         rollupOptions: {
           output: {
             manualChunks: (id) => {

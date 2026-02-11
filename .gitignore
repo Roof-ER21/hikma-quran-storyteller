@@ -25,3 +25,4 @@ dist-ssr
 
 # Offline cached Quran audio (downloaded dynamically)
 public/assets/quran/offline/
+.env

@@ -376,8 +376,9 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
           <button
             onClick={onClose}
             className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            aria-label="Close download manager"
           >
-            <i className="fas fa-times"></i>
+            <i className="fas fa-times" aria-hidden="true"></i>
           </button>
         </div>
 

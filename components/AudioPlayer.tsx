@@ -115,23 +115,26 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
           onClick={handlePrevious}
           disabled={playingVerse <= 1}
           className="text-stone-600 hover:text-rose-600 disabled:opacity-30 transition-colors"
+          aria-label="Previous verse"
         >
-          <i className="fas fa-step-backward"></i>
+          <i className="fas fa-step-backward" aria-hidden="true"></i>
         </button>
 
         <button
           onClick={handlePlay}
           className="w-10 h-10 bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
+          aria-label={isPlaying ? "Pause" : "Play"}
         >
-          <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-sm`}></i>
+          <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-sm`} aria-hidden="true"></i>
         </button>
 
         <button
           onClick={handleNext}
           disabled={playingVerse >= totalVerses}
           className="text-stone-600 hover:text-rose-600 disabled:opacity-30 transition-colors"
+          aria-label="Next verse"
         >
-          <i className="fas fa-step-forward"></i>
+          <i className="fas fa-step-forward" aria-hidden="true"></i>
         </button>
 
         <span className="text-sm text-stone-500 ml-2">
@@ -217,9 +220,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
             ${repeatMode !== 'none' ? 'bg-rose-600 text-white' : 'text-stone-400 hover:text-white'}
           `}
           title={`Repeat: ${repeatMode}`}
+          aria-label={`Repeat mode: ${repeatMode}`}
         >
-          <i className={`fas ${repeatMode === 'verse' ? 'fa-redo-alt' : 'fa-redo'}`}></i>
-          {repeatMode === 'verse' && <span className="absolute text-[8px] mt-3">1</span>}
+          <i className={`fas ${repeatMode === 'verse' ? 'fa-redo-alt' : 'fa-redo'}`} aria-hidden="true"></i>
+          {repeatMode === 'verse' && <span className="absolute text-[8px] mt-3" aria-hidden="true">1</span>}
         </button>
 
         {/* Previous */}
@@ -227,16 +231,18 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
           onClick={handlePrevious}
           disabled={playingVerse <= 1}
           className="w-12 h-12 text-white hover:text-rose-400 disabled:opacity-30 transition-colors"
+          aria-label="Previous verse"
         >
-          <i className="fas fa-step-backward text-xl"></i>
+          <i className="fas fa-step-backward text-xl" aria-hidden="true"></i>
         </button>
 
         {/* Play/Pause */}
         <button
           onClick={handlePlay}
           className="w-16 h-16 bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+          aria-label={isPlaying ? "Pause" : "Play"}
         >
-          <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-2xl ${!isPlaying && 'ml-1'}`}></i>
+          <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-2xl ${!isPlaying && 'ml-1'}`} aria-hidden="true"></i>
         </button>
 
         {/* Next */}
@@ -244,8 +250,9 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
           onClick={handleNext}
           disabled={playingVerse >= totalVerses}
           className="w-12 h-12 text-white hover:text-rose-400 disabled:opacity-30 transition-colors"
+          aria-label="Next verse"
         >
-          <i className="fas fa-step-forward text-xl"></i>
+          <i className="fas fa-step-forward text-xl" aria-hidden="true"></i>
         </button>
 
         {/* Speed */}
@@ -334,8 +341,9 @@ export const FloatingAudioPlayer: React.FC<{
           <button
             onClick={handlePlay}
             className="w-12 h-12 bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-full flex items-center justify-center shadow-lg"
+            aria-label={isPlaying ? "Pause" : "Play"}
           >
-            <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'}`}></i>
+            <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'}`} aria-hidden="true"></i>
           </button>
           <div>
             <h4 className="font-semibold">{surahName}</h4>
@@ -350,21 +358,24 @@ export const FloatingAudioPlayer: React.FC<{
             onClick={() => playingVerse > 1 && audioManager.playVerse(surahNumber, playingVerse - 1)}
             disabled={playingVerse <= 1}
             className="text-stone-400 hover:text-white disabled:opacity-30"
+            aria-label="Previous verse"
           >
-            <i className="fas fa-step-backward"></i>
+            <i className="fas fa-step-backward" aria-hidden="true"></i>
           </button>
           <button
             onClick={() => playingVerse < totalVerses && audioManager.playVerse(surahNumber, playingVerse + 1)}
             disabled={playingVerse >= totalVerses}
             className="text-stone-400 hover:text-white disabled:opacity-30"
+            aria-label="Next verse"
           >
-            <i className="fas fa-step-forward"></i>
+            <i className="fas fa-step-forward" aria-hidden="true"></i>
           </button>
           <button
             onClick={onClose}
             className="text-stone-400 hover:text-white ml-4"
+            aria-label="Close audio player"
           >
-            <i className="fas fa-times"></i>
+            <i className="fas fa-times" aria-hidden="true"></i>
           </button>
         </div>
       </div>

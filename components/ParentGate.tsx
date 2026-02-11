@@ -39,7 +39,14 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
       onAuthed(data.token, data.parent?.name || name, remember);
       onClose();
     } catch (e: any) {
-      setError(e.message || t('parentGate.error'));
+      // Sanitize error messages - don't expose technical details
+      const userFriendlyError =
+        e.message?.includes('Failed') || e.message?.includes('error')
+          ? t('parentGate.error')
+          : e.message?.includes('Invalid') || e.message?.includes('incorrect')
+            ? t('parentGate.invalidCredentials', 'Invalid name or PIN')
+            : t('parentGate.error');
+      setError(userFriendlyError);
     } finally {
       setLoading(false);
     }

@@ -1,30 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
-import StoryView from './components/StoryView';
 import StoryCard from './components/StoryCard';
-import LiveMode from './components/LiveMode';
-import QuranView from './components/QuranView';
-import KidsHome from './components/kids/KidsHome';
-import MediaGenerator from './components/kids/MediaGenerator';
-import DownloadManager from './components/DownloadManager';
 import { OfflineIndicator, PWAInstallPrompt } from './components/OfflineIndicator';
 import { transcribeAudio } from './services/geminiService';
 import ParentGate from './components/ParentGate';
 import AdultAudioStories from './components/AdultAudioStories';
-import ProphetStoriesLibrary from './components/ProphetStoriesLibrary';
-import DedicationPage from './components/DedicationPage';
-import IslamicTools from './components/IslamicTools';
 import RTLProvider from './src/components/RTLProvider';
 import LanguageSelectorModal from './src/i18n/LanguageSelectorModal';
 import ShareButton from './components/ShareButton';
-import ParentProfile from './components/ParentProfile';
 import { initProgressSync, cleanupProgressSync } from './services/progressSyncService';
+import { initSubscription } from './services/subscriptionService';
 import { isLanguageSelected, isArabic } from './src/i18n';
 import { AISettingsWrapper } from './components/settings/AIProviderSettings';
 import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
-import OmniaLovePage from './components/OmniaLovePage';
-import OmniaSecretModal from './components/OmniaSecretModal';
 import { isOmnia } from './services/omniaSecretService';
+
+// Lazy load major view components for code splitting
+const StoryView = lazy(() => import('./components/StoryView'));
+const LiveMode = lazy(() => import('./components/LiveMode'));
+const QuranView = lazy(() => import('./components/QuranView'));
+const KidsHome = lazy(() => import('./components/kids/KidsHome'));
+const MediaGenerator = lazy(() => import('./components/kids/MediaGenerator'));
+const DownloadManager = lazy(() => import('./components/DownloadManager'));
+const ProphetStoriesLibrary = lazy(() => import('./components/ProphetStoriesLibrary'));
+const DedicationPage = lazy(() => import('./components/DedicationPage'));
+const IslamicTools = lazy(() => import('./components/IslamicTools'));
+const ParentProfile = lazy(() => import('./components/ParentProfile'));
+const OmniaLovePage = lazy(() => import('./components/OmniaLovePage'));
+const OmniaSecretModal = lazy(() => import('./components/OmniaSecretModal'));
+
+// Loading Spinner Component for Suspense fallback
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center space-y-4">
+        <div className="inline-block w-12 h-12 border-4 border-rose-200 dark:border-amber-900/30 border-t-rose-600 dark:border-t-accent-gold rounded-full animate-spin"></div>
+        <p className="text-stone-600 dark:text-stone-300 text-sm">Loading...</p>
+      </div>
+    </div>
+  );
+}
 
 const PROPHETS = [
   { name: 'Adam', arabicName: 'آدم' },
@@ -132,6 +147,11 @@ function App() {
 
     return null;
   };
+
+  // Initialize RevenueCat subscription system on mount
+  useEffect(() => {
+    initSubscription().catch(console.error);
+  }, []);
 
   // Check for admin mode via URL query parameter and handle deep links
   useEffect(() => {
@@ -398,33 +418,41 @@ function App() {
       {/* PWA Components */}
       <OfflineIndicator onDownloadClick={() => setShowDownloadManager(true)} />
       <PWAInstallPrompt />
-      <DownloadManager
-        isOpen={showDownloadManager}
-        onClose={() => setShowDownloadManager(false)}
-      />
+      <Suspense fallback={null}>
+        <DownloadManager
+          isOpen={showDownloadManager}
+          onClose={() => setShowDownloadManager(false)}
+        />
+      </Suspense>
       <ParentGate
         isOpen={showParentGate}
         onClose={() => setShowParentGate(false)}
         onAuthed={handleParentAuthed}
       />
-      <ParentProfile
-        isOpen={showParentProfile}
-        onClose={() => setShowParentProfile(false)}
-        parentName={parentName || ''}
-        onLogout={handleLogout}
-      />
+      <Suspense fallback={null}>
+        <ParentProfile
+          isOpen={showParentProfile}
+          onClose={() => setShowParentProfile(false)}
+          parentName={parentName || ''}
+          onLogout={handleLogout}
+        />
+      </Suspense>
 
       {/* Omnia Special Love Page */}
       {showOmniaLovePage && (
-        <OmniaLovePage onContinue={handleOmniaContinue} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <OmniaLovePage onContinue={handleOmniaContinue} />
+        </Suspense>
       )}
 
       {/* Omnia Secret Question Modal */}
       {showOmniaQuestion && (
-        <OmniaSecretModal
-          onCorrect={handleOmniaCorrect}
-          onWrong={handleOmniaWrong}
-        />
+        <Suspense fallback={null}>
+          <OmniaSecretModal
+            onCorrect={handleOmniaCorrect}
+            onWrong={handleOmniaWrong}
+          />
+        </Suspense>
       )}
 
       {/* Navbar - with safe area padding for notched phones */}
@@ -434,8 +462,9 @@ function App() {
             onClick={() => setView('dedication')}
             className="w-9 h-9 md:w-10 md:h-10 bg-rose-700 dark:bg-accent-gold rounded-lg flex items-center justify-center text-white dark:text-dark-bg text-lg md:text-xl hover:bg-rose-600 dark:hover:bg-amber-500 transition-colors"
             title={t('common:nav.inLovingMemory')}
+            aria-label={t('common:nav.inLovingMemory')}
           >
-            <i className="fas fa-heart"></i>
+            <i className="fas fa-heart" aria-hidden="true"></i>
           </button>
           <h1 className="text-lg md:text-2xl font-serif font-bold text-rose-900 dark:text-accent-gold tracking-wide">{t('common:app.name')}</h1>
         </div>
@@ -446,7 +475,7 @@ function App() {
           className="md:hidden w-10 h-10 flex items-center justify-center text-stone-600 dark:text-stone-300 hover:text-rose-700 dark:hover:text-accent-gold transition-colors"
           aria-label="Toggle menu"
         >
-          <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+          <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`} aria-hidden="true"></i>
         </button>
 
         {/* Desktop Navigation */}
@@ -507,8 +536,9 @@ function App() {
                 }}
                 className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors"
                 title={i18n.language === 'ar-EG' ? 'Switch to English' : 'التبديل للعربية'}
+                aria-label={i18n.language === 'ar-EG' ? 'Switch to English' : 'Switch to Arabic'}
             >
-                <i className="fas fa-globe"></i>
+                <i className="fas fa-globe" aria-hidden="true"></i>
                 <span className="hidden sm:inline ml-1 text-xs">{i18n.language === 'ar-EG' ? 'EN' : 'ع'}</span>
             </button>
             {/* Download Manager Button */}
@@ -516,8 +546,9 @@ function App() {
                 onClick={() => setShowDownloadManager(true)}
                 className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors"
                 title="Offline Downloads"
+                aria-label="Offline Downloads"
             >
-                <i className="fas fa-download"></i>
+                <i className="fas fa-download" aria-hidden="true"></i>
             </button>
             {/* AI Settings Button */}
             <AISettingsWrapper />
@@ -655,8 +686,9 @@ function App() {
                   <button
                     onClick={() => { setShowDownloadManager(true); setMobileMenuOpen(false); }}
                     className="px-3 py-1.5 rounded-lg text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated transition-colors"
+                    aria-label="Open download manager"
                   >
-                    <i className="fas fa-download"></i>
+                    <i className="fas fa-download" aria-hidden="true"></i>
                   </button>
                 </div>
 
@@ -823,54 +855,68 @@ function App() {
 
         {view === 'story' && selectedProphet && (
             <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
-                <StoryView
-                    prophet={selectedProphet}
-                    topic={selectedTopic}
-                    onBack={() => setView('home')}
-                    onNavigateToLibrary={(prophetId) => {
-                      setView('library');
-                      // ProphetStoriesLibrary will auto-scroll to prophet if needed
-                    }}
-                />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <StoryView
+                      prophet={selectedProphet}
+                      topic={selectedTopic}
+                      onBack={() => setView('home')}
+                      onNavigateToLibrary={(prophetId) => {
+                        setView('library');
+                        // ProphetStoriesLibrary will auto-scroll to prophet if needed
+                      }}
+                  />
+                </Suspense>
             </div>
         )}
 
         {view === 'live' && (
             <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
-                <LiveMode />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <LiveMode />
+                </Suspense>
             </div>
         )}
 
         {view === 'quran' && (
             <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
-                <QuranView
-                  initialSurah={initialDeepLink?.type === 'verse' || initialDeepLink?.type === 'quran' ? initialDeepLink.data.surah : undefined}
-                  initialVerse={initialDeepLink?.type === 'verse' ? initialDeepLink.data.verse : undefined}
-                />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <QuranView
+                    initialSurah={initialDeepLink?.type === 'verse' || initialDeepLink?.type === 'quran' ? initialDeepLink.data.surah : undefined}
+                    initialVerse={initialDeepLink?.type === 'verse' ? initialDeepLink.data.verse : undefined}
+                  />
+                </Suspense>
             </div>
         )}
 
         {view === 'kids' && (
             <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
-                <KidsHome onBack={() => setView('home')} />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <KidsHome onBack={() => setView('home')} />
+                </Suspense>
             </div>
         )}
 
         {view === 'library' && (
             <div className="min-h-[50vh] md:h-[calc(100vh-140px)] overflow-auto">
-                <ProphetStoriesLibrary />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ProphetStoriesLibrary />
+                </Suspense>
             </div>
         )}
 
         {view === 'dedication' && (
             <div className="fixed inset-0 z-40 overflow-y-auto">
-                <DedicationPage onClose={() => setView('home')} />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <DedicationPage onClose={() => setView('home')} />
+                </Suspense>
             </div>
         )}
 
         {view === 'tools' && (
             <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
-                <IslamicTools onBack={() => setView('home')} />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <IslamicTools onBack={() => setView('home')} />
+                </Suspense>
             </div>
         )}
 
@@ -889,7 +935,9 @@ function App() {
                             Close Generator
                         </button>
                     </div>
-                    <MediaGenerator />
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <MediaGenerator />
+                    </Suspense>
                 </div>
             </div>
         )}

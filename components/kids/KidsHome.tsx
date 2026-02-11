@@ -218,8 +218,9 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
               onBack();
             }}
             className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+            aria-label="Go back"
           >
-            <i className="fas fa-arrow-left text-xl"></i>
+            <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
           </button>
 
           {/* Level & Stars Display */}
@@ -262,9 +263,10 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
                   onClick={() => handleActivityClick(act.id)}
                   className="aspect-square rounded-3xl p-4 flex flex-col items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-transform"
                   style={{ backgroundColor: act.color }}
+                  aria-label={`${t(titleKey)} activity`}
                 >
                   <div className="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center">
-                    <i className={`fas ${act.icon} text-3xl text-white`}></i>
+                    <i className={`fas ${act.icon} text-3xl text-white`} aria-hidden="true"></i>
                   </div>
                   <span className={`text-white font-bold text-lg ${isArabic ? 'font-arabic' : ''}`}>{t(titleKey)}</span>
                   <span className="text-white/80 text-2xl font-arabic">{t(arabicKey)}</span>
@@ -700,8 +702,9 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
                 setStrokeLength(0);
               }}
               className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+              aria-label="Go back"
             >
-              <i className="fas fa-arrow-left text-xl"></i>
+              <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
             </button>
             <h2 className="text-2xl font-bold text-stone-700">Trace the Letter!</h2>
             <div className="w-14"></div>
@@ -746,16 +749,18 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             <button
               onClick={clearCanvas}
               className="px-8 py-4 rounded-2xl bg-white shadow-lg text-stone-600 font-bold text-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
+              aria-label="Clear tracing"
             >
-              <i className="fas fa-redo"></i>
+              <i className="fas fa-redo" aria-hidden="true"></i>
               Clear
             </button>
             <button
               onClick={submitTracing}
               className="px-8 py-4 rounded-2xl shadow-lg text-white font-bold text-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
               style={{ backgroundColor: KIDS_COLORS.green }}
+              aria-label="Submit tracing"
             >
-              <i className="fas fa-check"></i>
+              <i className="fas fa-check" aria-hidden="true"></i>
               Done!
             </button>
           </div>
@@ -774,8 +779,9 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           <button
             onClick={() => setSelectedLetter(null)}
             className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+            aria-label="Go back to letter list"
           >
-            <i className="fas fa-arrow-left text-xl"></i>
+            <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
           </button>
           <div className="text-3xl">{selectedLetter.emoji}</div>
         </div>
@@ -790,6 +796,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               backgroundColor: KIDS_COLORS.coral,
               opacity: (isPlaying || isLoadingAudio) ? 0.7 : 1
             }}
+            aria-label={`Play sound for letter ${selectedLetter.name}`}
           >
             {isLoadingAudio ? (
               <div className="flex flex-col items-center gap-2">
@@ -850,8 +857,9 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+          aria-label="Go back"
         >
-          <i className="fas fa-arrow-left text-xl"></i>
+          <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
         <h1 className="text-2xl font-bold text-stone-700">Arabic Letters</h1>
         <div className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center">
@@ -1086,8 +1094,9 @@ const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               onClick={handlePlayAll}
               className={`w-16 h-16 rounded-full shadow-xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95`}
               style={{ backgroundColor: isPlaying ? KIDS_COLORS.orange : KIDS_COLORS.green }}
+              aria-label={isPlaying ? "Pause recitation" : "Play all verses"}
             >
-              <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-2xl text-white`}></i>
+              <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-2xl text-white`} aria-hidden="true"></i>
             </button>
             <div>
               {listenedSurahs.has(selectedSurah.number) && (
@@ -1110,8 +1119,9 @@ const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+          aria-label="Go back"
         >
-          <i className="fas fa-arrow-left text-xl"></i>
+          <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
         <h1 className="text-2xl font-bold text-stone-700">Short Surahs</h1>
         <div className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center">
@@ -1289,17 +1299,22 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.25)',
               color: storyTextColor
             }}
+            aria-label="Close story"
           >
-            <i className="fas fa-times text-xl"></i>
+            <i className="fas fa-times text-xl" aria-hidden="true"></i>
           </button>
-          <div className="flex gap-1">
+          <div className="flex gap-2" role="tablist" aria-label="Story scenes">
             {selectedStory.scenes.map((_, i) => (
-              <div
+              <button
                 key={i}
-                className="w-3 h-3 rounded-full"
+                className="w-6 h-6 rounded-full flex items-center justify-center transition-transform hover:scale-110"
                 style={{
                   backgroundColor: i === currentScene ? storyTextColor : indicatorInactive
                 }}
+                onClick={() => setCurrentScene(i)}
+                aria-label={`Scene ${i + 1} of ${selectedStory.scenes.length}`}
+                aria-selected={i === currentScene}
+                role="tab"
               />
             ))}
           </div>
@@ -1367,8 +1382,9 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               backgroundColor: currentScene === 0 ? 'transparent' : isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.25)',
               color: storyTextColor
             }}
+            aria-label="Previous scene"
           >
-            <i className="fas fa-arrow-left text-2xl"></i>
+            <i className="fas fa-arrow-left text-2xl" aria-hidden="true"></i>
           </button>
           <button
             onClick={handleNextScene}
@@ -1376,8 +1392,9 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             style={{
               backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : '#ffffff'
             }}
+            aria-label={isLastScene ? "Complete story" : "Next scene"}
           >
-            <i className={`fas ${isLastScene ? 'fa-check' : 'fa-arrow-right'} text-2xl`} style={{ color: storyColor }}></i>
+            <i className={`fas ${isLastScene ? 'fa-check' : 'fa-arrow-right'} text-2xl`} style={{ color: storyColor }} aria-hidden="true"></i>
           </button>
         </div>
       </div>
@@ -1395,8 +1412,9 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+          aria-label="Go back"
         >
-          <i className="fas fa-arrow-left text-xl"></i>
+          <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
         <h1 className="text-2xl font-bold text-stone-700">Prophet Stories</h1>
         <div className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center">
@@ -1526,8 +1544,9 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
           <button
             onClick={() => setSelectedBadge(null)}
             className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+            aria-label="Go back to rewards"
           >
-            <i className="fas fa-arrow-left text-xl"></i>
+            <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
           </button>
           <h1 className="text-xl font-bold text-stone-700">Badge Details</h1>
           <div className="w-14"></div>
@@ -1570,8 +1589,9 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
+          aria-label="Go back"
         >
-          <i className="fas fa-arrow-left text-xl"></i>
+          <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
         <h1 className="text-2xl font-bold text-stone-700">My Stars</h1>
         <div className="w-14"></div>

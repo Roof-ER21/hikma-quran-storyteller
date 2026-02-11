@@ -81,11 +81,12 @@ export const VerseDisplay: React.FC<VerseDisplayProps> = ({
             }
           `}
           title={isPlaying ? 'Playing' : 'Play recitation'}
+          aria-label={isPlaying && isCurrentVerse ? 'Pause recitation' : 'Play verse'}
         >
           {isPlaying && isCurrentVerse ? (
-            <i className="fas fa-pause text-sm"></i>
+            <i className="fas fa-pause text-sm" aria-hidden="true"></i>
           ) : (
-            <i className="fas fa-play text-sm"></i>
+            <i className="fas fa-play text-sm" aria-hidden="true"></i>
           )}
         </button>
 
@@ -101,8 +102,9 @@ export const VerseDisplay: React.FC<VerseDisplayProps> = ({
               }
             `}
             title={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
+            aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
           >
-            <i className={`${isBookmarked ? 'fas' : 'far'} fa-bookmark text-sm`}></i>
+            <i className={`${isBookmarked ? 'fas' : 'far'} fa-bookmark text-sm`} aria-hidden="true"></i>
           </button>
         )}
 
@@ -113,8 +115,9 @@ export const VerseDisplay: React.FC<VerseDisplayProps> = ({
           }}
           className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition-all"
           title="Copy verse"
+          aria-label="Copy verse to clipboard"
         >
-          <i className="far fa-copy text-sm"></i>
+          <i className="far fa-copy text-sm" aria-hidden="true"></i>
         </button>
       </div>
 

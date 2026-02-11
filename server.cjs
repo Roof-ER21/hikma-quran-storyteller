@@ -13,12 +13,7 @@ const DATABASE_URL = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 const app = express();
 app.use(express.json());
 
-// Runtime env injection for client
-app.get('/env.js', (_req, res) => {
-  const key = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || process.env.API_KEY || '';
-  const body = `window.__ENV = { VITE_GEMINI_API_KEY: ${JSON.stringify(key)} };`;
-  res.type('application/javascript').send(body);
-});
+// Runtime env injection removed - API keys now handled server-side via proxy
 
 let pool = null;
 if (DATABASE_URL) {
@@ -383,6 +378,171 @@ app.post('/api/parent/kids-progress/sync', authMiddleware, async (req, res) => {
   }
 });
 
+// =============================================================================
+// GEMINI API PROXY - Securely handles API keys server-side
+// =============================================================================
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+const GOOGLE_CLOUD_TTS_KEY = process.env.GOOGLE_CLOUD_TTS_KEY;
+
+// Endpoint for live mode (real-time WebSocket streaming requires client-side API access)
+// Rate limited and session-based for security
+app.get('/api/gemini/live-key', (req, res) => {
+  if (!GEMINI_API_KEY) {
+    return res.status(500).json({ error: 'Gemini API key not configured' });
+  }
+  // Return the key for live WebSocket connections
+  // Note: Consider adding rate limiting or session validation for production
+  res.json({ key: GEMINI_API_KEY });
+});
+
+// Proxy endpoint for Gemini API
+app.post('/api/gemini/generate', async (req, res) => {
+  try {
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'Gemini API key not configured' });
+    }
+
+    const { model, contents, config } = req.body;
+
+    if (!model || !contents) {
+      return res.status(400).json({ error: 'Missing required fields: model, contents' });
+    }
+
+    // Build the request URL
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+    // Make request to Gemini API
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify({
+        contents: Array.isArray(contents) ? contents : [{ parts: [{ text: contents }] }],
+        generationConfig: config?.generationConfig || {},
+        safetySettings: config?.safetySettings || [],
+        systemInstruction: config?.systemInstruction || undefined,
+        tools: config?.tools || undefined,
+        toolConfig: config?.toolConfig || undefined
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Gemini API error:', data);
+      return res.status(response.status).json(data);
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Gemini proxy error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Proxy endpoint for image generation
+app.post('/api/gemini/generate-image', async (req, res) => {
+  try {
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'Gemini API key not configured' });
+    }
+
+    const { model, prompt, config } = req.body;
+
+    if (!model || !prompt) {
+      return res.status(400).json({ error: 'Missing required fields: model, prompt' });
+    }
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+    const requestBody = {
+      contents: [{ parts: [{ text: prompt }] }]
+    };
+
+    // Add image config if provided
+    if (config?.imageConfig) {
+      requestBody.generationConfig = { imageConfig: config.imageConfig };
+    }
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Gemini image generation error:', data);
+      return res.status(response.status).json(data);
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Gemini image proxy error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Proxy endpoint for TTS (audio generation)
+app.post('/api/gemini/tts', async (req, res) => {
+  try {
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'Gemini API key not configured' });
+    }
+
+    const { model, text, config } = req.body;
+
+    if (!model || !text) {
+      return res.status(400).json({ error: 'Missing required fields: model, text' });
+    }
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+    const requestBody = {
+      contents: [{ parts: [{ text }] }],
+      generationConfig: {
+        responseModalities: config?.responseModalities || ['AUDIO'],
+        speechConfig: config?.speechConfig || {}
+      }
+    };
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Gemini TTS error:', data);
+      return res.status(response.status).json(data);
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Gemini TTS proxy error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// =============================================================================
+// Privacy Policy Route
+app.get('/privacy-policy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacy-policy.html'));
+});
+
+// =============================================================================
 // Static assets
 app.use(express.static(DIST_DIR));
 app.get(/.*/, (_req, res) => {

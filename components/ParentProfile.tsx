@@ -154,8 +154,9 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
           <button
             onClick={onClose}
             className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white/80 hover:text-white"
+            aria-label="Close profile"
           >
-            <i className="fas fa-times text-lg"></i>
+            <i className="fas fa-times text-lg" aria-hidden="true"></i>
           </button>
 
           <div className="flex items-center gap-3 sm:gap-4">

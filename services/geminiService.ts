@@ -1,65 +1,30 @@
-import { GoogleGenAI, Modality, Type } from "@google/genai";
 import { VisualConfig, VoiceSearchResult, RecitationResult, RecitationWord } from "../types";
 import { base64ToUint8Array, decodeAudioData, uint8ArrayToBase64 } from "./audioUtils";
+import { callGeminiProxy, formatContents, generateImage, generateTTS } from "./geminiClient";
 
-// Track which API key to use (primary or backup)
-let useBackupKey = false;
-let lastKeySwitch = 0;
-const KEY_SWITCH_COOLDOWN = 60000; // 1 minute before trying primary again
+// Cache for live mode API key
+let cachedLiveKey: string | null = null;
 
-// Resolve Gemini API key from Vite env (preferred) or fallback to build-time process.env
-export const getGeminiApiKey = () => {
-  const primaryKey =
-    import.meta.env?.VITE_GEMINI_API_KEY ||
-    import.meta.env?.GEMINI_API_KEY ||
-    (typeof window !== 'undefined' && (window as any).__ENV?.VITE_GEMINI_API_KEY) ||
-    process.env.GEMINI_API_KEY ||
-    process.env.API_KEY;
+// Get API key for live mode (real-time WebSocket streaming)
+// This fetches from server-side to avoid exposing key in bundle
+export async function getGeminiApiKey(): Promise<string> {
+  if (cachedLiveKey) return cachedLiveKey;
 
-  const backupKey =
-    import.meta.env?.VITE_GEMINI_API_KEY_2 ||
-    import.meta.env?.GEMINI_API_KEY_2 ||
-    (typeof window !== 'undefined' && (window as any).__ENV?.VITE_GEMINI_API_KEY_2) ||
-    process.env.GEMINI_API_KEY_2;
-
-  // Check if we should try primary again after cooldown
-  if (useBackupKey && Date.now() - lastKeySwitch > KEY_SWITCH_COOLDOWN) {
-    useBackupKey = false;
+  try {
+    const response = await fetch('/api/gemini/live-key');
+    if (!response.ok) {
+      throw new Error('Failed to fetch live key');
+    }
+    const data = await response.json();
+    cachedLiveKey = data.key;
+    return data.key;
+  } catch (error) {
+    console.error('Error fetching Gemini live key:', error);
+    throw error;
   }
+}
 
-  // Use backup if flagged and available
-  if (useBackupKey && backupKey) {
-    return backupKey;
-  }
-
-  if (!primaryKey) {
-    throw new Error('Missing Gemini API key. Set VITE_GEMINI_API_KEY in your environment.');
-  }
-
-  return primaryKey;
-};
-
-// Switch to backup key when rate limited
-export const switchToBackupKey = () => {
-  const backupKey =
-    import.meta.env?.VITE_GEMINI_API_KEY_2 ||
-    import.meta.env?.GEMINI_API_KEY_2 ||
-    (typeof window !== 'undefined' && (window as any).__ENV?.VITE_GEMINI_API_KEY_2) ||
-    process.env.GEMINI_API_KEY_2;
-
-  if (backupKey) {
-    console.log('🔄 Switching to backup Gemini API key');
-    useBackupKey = true;
-    lastKeySwitch = Date.now();
-    return true;
-  }
-  return false;
-};
-
-// Initialize AI instance helper
-const getAI = () => new GoogleGenAI({ apiKey: getGeminiApiKey() });
-
-// Helper for API calls that require paid keys or might 404/403 due to key issues
+// Helper for API calls with retry logic
 const callWithRetry = async <T>(fn: () => Promise<T>): Promise<T> => {
   try {
     return await fn();
@@ -68,21 +33,17 @@ const callWithRetry = async <T>(fn: () => Promise<T>): Promise<T> => {
     const isAuthError = msg.includes("404") || msg.includes("not found") || msg.includes("403") || msg.includes("permission denied");
     const isRateLimited = msg.includes("429") || msg.includes("rate") || msg.includes("quota") || msg.includes("resource exhausted");
 
-    // Try backup key on rate limit
     if (isRateLimited) {
-      console.warn("Rate limited, attempting to switch to backup key...");
-      if (switchToBackupKey()) {
-        // Retry with backup key
-        return await fn();
-      }
-    }
-
-    if (window.aistudio && isAuthError) {
-      console.log("API Error detected, prompting for key selection...");
-      await window.aistudio.openSelectKey();
-      // Retry the function - it will re-instantiate GoogleGenAI with the new process.env.API_KEY
+      console.warn("Rate limited, retrying...");
+      // Wait 1 second and retry
+      await new Promise(resolve => setTimeout(resolve, 1000));
       return await fn();
     }
+
+    if (isAuthError) {
+      console.error("Authentication error with Gemini API");
+    }
+
     throw e;
   }
 };
@@ -225,8 +186,6 @@ export const generateStory = async (prophet: string, topic: string, language: St
   }
 
   return callWithRetry(async () => {
-    const ai = getAI();
-
     // Language-specific instructions
     let langInstruction = '';
     let systemInstruction = '';
@@ -279,9 +238,9 @@ Use colorful Egyptian expressions and make the audience feel the story.`;
     Format: Markdown.
     ${langInstruction}`;
 
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-3-pro-preview',
-      contents: prompt,
+      contents: formatContents(prompt),
       config: {
         systemInstruction: systemInstruction,
       }
@@ -323,8 +282,6 @@ export const generateSurahStory = async (surah: string, language: StoryLanguage 
   }
 
   return callWithRetry(async () => {
-    const ai = getAI();
-
     // Language-specific instructions
     let langInstruction = '';
     let systemInstruction = '';
@@ -359,9 +316,9 @@ Your style is warm, engaging, and accessible like a beloved teacher in Egypt.`;
     Style: Epic, emotional, and rhythmic.
     ${langInstruction}`;
 
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-3-pro-preview',
-      contents: prompt,
+      contents: formatContents(prompt),
       config: {
         systemInstruction: systemInstruction,
       }
@@ -374,12 +331,10 @@ Your style is warm, engaging, and accessible like a beloved teacher in Egypt.`;
  * Generate specific historical context using Search Grounding
  */
 export const getContextWithSearch = async (query: string) => {
-  // Flash usually works with standard keys, but safe to wrap
   return callWithRetry(async () => {
-    const ai = getAI();
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-3-flash-preview',
-      contents: query,
+      contents: formatContents(query),
       config: {
         tools: [{ googleSearch: {} }],
       },
@@ -387,7 +342,7 @@ export const getContextWithSearch = async (query: string) => {
 
     const text = response.text;
     const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    
+
     const sources = chunks
       .map((chunk: any) => chunk.web ? { title: chunk.web.title, url: chunk.web.uri } : null)
       .filter(Boolean);
@@ -401,8 +356,7 @@ export const getContextWithSearch = async (query: string) => {
  */
 export const getLocations = async (storyContext: string, userLat?: number, userLon?: number) => {
   return callWithRetry(async () => {
-    const ai = getAI();
-    const prompt = `Identify the key geographical locations mentioned in this story context: "${storyContext.slice(0, 500)}...". 
+    const prompt = `Identify the key geographical locations mentioned in this story context: "${storyContext.slice(0, 500)}...".
     Provide a brief description of where they are located today.`;
 
     const config: any = {
@@ -420,15 +374,15 @@ export const getLocations = async (storyContext: string, userLat?: number, userL
       };
     }
 
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-2.5-flash',
-      contents: prompt,
+      contents: formatContents(prompt),
       config: config
     });
 
     const text = response.text;
     const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    
+
     const locations = chunks
       .map((chunk: any) => chunk.maps ? { title: chunk.maps.title, uri: chunk.maps.uri } : null)
       .filter(Boolean);
@@ -455,42 +409,19 @@ export const generateStoryImage = async (prompt: string, config: VisualConfig) =
      return PRELOADED_CONTENT[key].image;
   }
 
-  // Proactively check for key if high res, though retry loop handles it too
-  if (config.resolution !== "1K" && window.aistudio) {
-    const hasKey = await window.aistudio.hasSelectedApiKey();
-    if (!hasKey) {
-      await window.aistudio.openSelectKey();
-    }
-  }
-
   return callWithRetry(async () => {
-    const ai = getAI();
     const fullPrompt = `Cinematic concept art, masterpiece, ${prompt}. Golden hour lighting, ancient middle eastern architecture, desert landscapes, ethereal atmosphere. Highly detailed, 8k resolution.`;
 
-    const model = (config.resolution === "1K") 
-      ? 'gemini-2.5-flash-image' 
+    const model = (config.resolution === "1K")
+      ? 'gemini-2.5-flash-image'
       : 'gemini-3-pro-image-preview';
 
-    const response = await ai.models.generateContent({
-      model: model,
-      contents: {
-          parts: [{ text: fullPrompt }]
-      },
-      config: {
-        imageConfig: {
-          aspectRatio: config.aspectRatio,
-          imageSize: config.resolution === "1K" ? undefined : config.resolution
-        }
-      }
-    });
+    const imageConfig = {
+      aspectRatio: config.aspectRatio,
+      imageSize: config.resolution === "1K" ? undefined : config.resolution
+    };
 
-    // Extract image
-    for (const part of response.candidates?.[0]?.content?.parts || []) {
-      if (part.inlineData) {
-        return `data:image/png;base64,${part.inlineData.data}`;
-      }
-    }
-    return null;
+    return await generateImage(model, fullPrompt, imageConfig);
   });
 };
 
@@ -512,29 +443,24 @@ export const speakText = async (text: string, options: TTSOptions = {}): Promise
   const { voice = 'Fenrir', language = 'en' } = options;
 
   return callWithRetry(async () => {
-    const ai = getAI();
-    console.log('[TTS] Generating audio, voice:', voice, 'text:', text.slice(0, 40) + '...');
-
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: text.slice(0, 500) }] }],
-      config: {
-        responseModalities: [Modality.AUDIO],
+    const base64Audio = await generateTTS(
+      'gemini-2.5-flash-preview-tts',
+      text.slice(0, 500),
+      {
+        responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
             prebuiltVoiceConfig: { voiceName: voice },
           },
           languageCode: language === 'ar' ? 'ar-XA' : 'en-US',
         },
-      },
-    });
+      }
+    );
 
-    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
     if (!base64Audio) {
-      console.error('[TTS] No audio in response. Candidates:', JSON.stringify(response.candidates, null, 2).slice(0, 500));
+      console.error('[TTS] No audio in response');
       return null;
     }
-    console.log('[TTS] Audio generated, base64 length:', base64Audio.length);
 
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});
     const audioBuffer = await decodeAudioData(
@@ -556,22 +482,20 @@ export const speakArabicLetter = async (letter: string, letterName: string): Pro
   const arabicText = `${letter}`;  // Just the letter for clear pronunciation
 
   return callWithRetry(async () => {
-    const ai = getAI();
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: arabicText }] }],
-      config: {
-        responseModalities: [Modality.AUDIO],
+    const base64Audio = await generateTTS(
+      'gemini-2.5-flash-preview-tts',
+      arabicText,
+      {
+        responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
             prebuiltVoiceConfig: { voiceName: 'Aoede' },
           },
           languageCode: 'ar-XA',  // Arabic language code
         },
-      },
-    });
+      }
+    );
 
-    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
     if (!base64Audio) return null;
 
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});
@@ -598,22 +522,20 @@ export const speakArabicLetterWithExample = async (
   const arabicText = `${letter}... ${example}`;
 
   return callWithRetry(async () => {
-    const ai = getAI();
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: arabicText }] }],
-      config: {
-        responseModalities: [Modality.AUDIO],
+    const base64Audio = await generateTTS(
+      'gemini-2.5-flash-preview-tts',
+      arabicText,
+      {
+        responseModalities: ['AUDIO'],
         speechConfig: {
           voiceConfig: {
             prebuiltVoiceConfig: { voiceName: 'Aoede' },
           },
           languageCode: 'ar-XA',
         },
-      },
-    });
+      }
+    );
 
-    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
     if (!base64Audio) return null;
 
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 24000});
@@ -632,10 +554,9 @@ export const speakArabicLetterWithExample = async (
  */
 export const quickAnalyze = async (text: string) => {
   return callWithRetry(async () => {
-    const ai = getAI();
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-2.5-flash-lite-latest',
-      contents: `Summarize this text in one sentence: ${text.slice(0, 1000)}`,
+      contents: formatContents(`Summarize this text in one sentence: ${text.slice(0, 1000)}`),
     });
     return response.text;
   });
@@ -646,19 +567,20 @@ export const quickAnalyze = async (text: string) => {
  */
 export const transcribeAudio = async (audioBlob: Blob): Promise<string> => {
     return callWithRetry(async () => {
-      const ai = getAI();
       // Convert blob to base64
       const buffer = await audioBlob.arrayBuffer();
       const base64 = uint8ArrayToBase64(new Uint8Array(buffer));
 
-      const response = await ai.models.generateContent({
+      const response = await callGeminiProxy({
           model: 'gemini-3-flash-preview',
-          contents: {
+          contents: [
+            {
               parts: [
-                  { inlineData: { mimeType: audioBlob.type, data: base64 } },
-                  { text: "Transcribe this audio exactly." }
+                { inlineData: { mimeType: audioBlob.type, data: base64 } },
+                { text: "Transcribe this audio exactly." }
               ]
-          }
+            }
+          ]
       });
       return response.text || "";
     });
@@ -673,18 +595,18 @@ export const voiceSearchQuran = async (audioBlob: Blob): Promise<{
   matches: VoiceSearchResult[];
 }> => {
   return callWithRetry(async () => {
-    const ai = getAI();
     // Convert blob to base64
     const buffer = await audioBlob.arrayBuffer();
     const base64 = uint8ArrayToBase64(new Uint8Array(buffer));
 
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-3-flash-preview',
-      contents: {
-        parts: [
-          { inlineData: { mimeType: audioBlob.type, data: base64 } },
-          {
-            text: `Listen to this Quran recitation and identify the verse(s) being recited.
+      contents: [
+        {
+          parts: [
+            { inlineData: { mimeType: audioBlob.type, data: base64 } },
+            {
+              text: `Listen to this Quran recitation and identify the verse(s) being recited.
 
             Respond ONLY with a JSON object in this exact format (no markdown, no code blocks):
             {
@@ -703,9 +625,10 @@ export const voiceSearchQuran = async (audioBlob: Blob): Promise<{
 
             If you're not certain, still provide your best guess with an appropriate confidence level.
             If no Quran recitation is detected, return an empty matches array.`
-          }
-        ]
-      }
+            }
+          ]
+        }
+      ]
     });
 
     const text = response.text || "{}";
@@ -739,7 +662,6 @@ export const checkRecitation = async (
   verseNumber: number
 ): Promise<RecitationResult & { transcription: string }> => {
   return callWithRetry(async () => {
-    const ai = getAI();
     const buffer = await audioBlob.arrayBuffer();
     const base64 = uint8ArrayToBase64(new Uint8Array(buffer));
 
@@ -769,14 +691,16 @@ Respond ONLY with valid JSON in this exact format (no markdown, no extra text):
   ]
 }`;
 
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-3-flash-preview',
-      contents: {
-        parts: [
-          { inlineData: { mimeType: audioBlob.type, data: base64 } },
-          { text: prompt }
-        ]
-      }
+      contents: [
+        {
+          parts: [
+            { inlineData: { mimeType: audioBlob.type, data: base64 } },
+            { text: prompt }
+          ]
+        }
+      ]
     });
 
     const text = response.text || "{}";
@@ -804,8 +728,6 @@ Respond ONLY with valid JSON in this exact format (no markdown, no extra text):
  */
 export const getRecitationFeedback = async (recitationResult: RecitationResult): Promise<string> => {
   return callWithRetry(async () => {
-    const ai = getAI();
-
     const incorrectWords = recitationResult.words.filter(w => w.status === 'incorrect');
     const missingWords = recitationResult.words.filter(w => w.status === 'missing');
     const extraWords = recitationResult.words.filter(w => w.status === 'extra');
@@ -853,9 +775,9 @@ A motivational message that emphasizes:
 
 Write in a warm, supportive tone. Use clear markdown formatting.`;
 
-    const response = await ai.models.generateContent({
+    const response = await callGeminiProxy({
       model: 'gemini-3-pro-preview',
-      contents: prompt,
+      contents: formatContents(prompt),
       config: {
         systemInstruction: "You are a patient and encouraging Quran teacher (Mu'allim). Your role is to build confidence while providing actionable guidance. Focus on growth, not criticism. Be specific, practical, and kind."
       }

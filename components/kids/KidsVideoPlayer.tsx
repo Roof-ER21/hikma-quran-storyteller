@@ -389,8 +389,9 @@ const KidsVideoPlayer: React.FC<KidsVideoPlayerProps> = ({ storyId, onBack, onCo
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
           disabled={isExporting}
+          aria-label="Go back"
         >
-          <i className="fas fa-arrow-left text-xl"></i>
+          <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
         <div className="text-center">
           <h2 className="text-xl font-bold text-stone-700">{story.title}</h2>
@@ -401,8 +402,9 @@ const KidsVideoPlayer: React.FC<KidsVideoPlayerProps> = ({ storyId, onBack, onCo
           disabled={isExporting || playbackState === 'loading'}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform disabled:opacity-50"
           title="Download video"
+          aria-label={isExporting ? "Exporting video" : "Download video"}
         >
-          <i className={`fas ${isExporting ? 'fa-spinner fa-spin' : 'fa-download'} text-xl`}></i>
+          <i className={`fas ${isExporting ? 'fa-spinner fa-spin' : 'fa-download'} text-xl`} aria-hidden="true"></i>
         </button>
       </div>
 
