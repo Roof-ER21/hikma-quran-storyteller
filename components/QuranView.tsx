@@ -1215,15 +1215,15 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                         <div>
                           <label className="text-sm text-stone-600 mb-2 block">{t('settings.theme')}</label>
                           <div className="flex gap-2">
-                            {Object.keys(THEMES).map((t) => (
+                            {Object.keys(THEMES).map((themeKey) => (
                               <button
-                                key={t}
-                                onClick={() => setTheme(t as ThemeType)}
+                                key={themeKey}
+                                onClick={() => setTheme(themeKey as ThemeType)}
                                 className={`flex-1 py-2 rounded-lg text-xs font-medium transition-colors ${
-                                  theme === t ? 'bg-rose-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                                  theme === themeKey ? 'bg-rose-600 text-white' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                                 }`}
                               >
-                                {t(`themes.${t}`)}
+                                {t(`themes.${themeKey}`)}
                               </button>
                             ))}
                           </div>

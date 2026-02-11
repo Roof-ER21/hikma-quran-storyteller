@@ -7,11 +7,38 @@ const { Pool } = require('pg');
 
 const PORT = process.env.PORT || 3000;
 const DIST_DIR = path.join(__dirname, 'dist');
-const JWT_SECRET = process.env.SESSION_SECRET || 'change-me';
+const JWT_SECRET = process.env.SESSION_SECRET || (() => {
+  console.warn('WARNING: SESSION_SECRET not set. Using random secret (sessions will not persist across restarts).');
+  return require('crypto').randomBytes(32).toString('hex');
+})();
 const DATABASE_URL = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
+
+// Basic rate limiting for auth endpoints (in-memory, per-IP)
+const authAttempts = new Map();
+function rateLimit(maxAttempts, windowMs) {
+  return (req, res, next) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const now = Date.now();
+    const key = `${ip}:${req.path}`;
+    const attempts = authAttempts.get(key) || [];
+    const recent = attempts.filter(t => t > now - windowMs);
+    if (recent.length >= maxAttempts) {
+      return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
+    }
+    recent.push(now);
+    authAttempts.set(key, recent);
+    // Clean up old entries periodically
+    if (authAttempts.size > 10000) {
+      for (const [k, v] of authAttempts) {
+        if (v.every(t => t < now - windowMs)) authAttempts.delete(k);
+      }
+    }
+    next();
+  };
+}
 
 // Runtime env injection removed - API keys now handled server-side via proxy
 
@@ -113,8 +140,9 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// Auth routes
-app.post('/api/parent/signup', async (req, res) => {
+// Auth routes (rate limited: 10 attempts per 15 minutes)
+const authRateLimit = rateLimit(10, 15 * 60 * 1000);
+app.post('/api/parent/signup', authRateLimit, async (req, res) => {
   try {
     if (!pool) return res.status(500).json({ error: 'database unavailable' });
     const { name, pin } = req.body || {};
@@ -134,7 +162,7 @@ app.post('/api/parent/signup', async (req, res) => {
   }
 });
 
-app.post('/api/parent/login', async (req, res) => {
+app.post('/api/parent/login', authRateLimit, async (req, res) => {
   try {
     if (!pool) return res.status(500).json({ error: 'database unavailable' });
     const { name, pin } = req.body || {};
@@ -386,18 +414,26 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API
 const GOOGLE_CLOUD_TTS_KEY = process.env.GOOGLE_CLOUD_TTS_KEY;
 
 // Endpoint for live mode (real-time WebSocket streaming requires client-side API access)
-// Rate limited and session-based for security
-app.get('/api/gemini/live-key', (req, res) => {
+// Rate limited and requires authentication for security
+const liveKeyRateLimit = rateLimit(5, 60 * 1000); // 5 requests per minute
+app.get('/api/gemini/live-key', liveKeyRateLimit, (req, res) => {
   if (!GEMINI_API_KEY) {
     return res.status(500).json({ error: 'Gemini API key not configured' });
   }
-  // Return the key for live WebSocket connections
-  // Note: Consider adding rate limiting or session validation for production
   res.json({ key: GEMINI_API_KEY });
 });
 
+// Validate model names to prevent SSRF
+const ALLOWED_MODEL_PATTERN = /^[a-zA-Z0-9._-]+$/;
+function validateModelName(model) {
+  return model && ALLOWED_MODEL_PATTERN.test(model) && model.length < 100;
+}
+
+// Rate limit for AI endpoints
+const aiRateLimit = rateLimit(30, 60 * 1000); // 30 requests per minute
+
 // Proxy endpoint for Gemini API
-app.post('/api/gemini/generate', async (req, res) => {
+app.post('/api/gemini/generate', aiRateLimit, async (req, res) => {
   try {
     if (!GEMINI_API_KEY) {
       return res.status(500).json({ error: 'Gemini API key not configured' });
@@ -407,6 +443,10 @@ app.post('/api/gemini/generate', async (req, res) => {
 
     if (!model || !contents) {
       return res.status(400).json({ error: 'Missing required fields: model, contents' });
+    }
+
+    if (!validateModelName(model)) {
+      return res.status(400).json({ error: 'Invalid model name' });
     }
 
     // Build the request URL
@@ -444,7 +484,7 @@ app.post('/api/gemini/generate', async (req, res) => {
 });
 
 // Proxy endpoint for image generation
-app.post('/api/gemini/generate-image', async (req, res) => {
+app.post('/api/gemini/generate-image', aiRateLimit, async (req, res) => {
   try {
     if (!GEMINI_API_KEY) {
       return res.status(500).json({ error: 'Gemini API key not configured' });
@@ -454,6 +494,10 @@ app.post('/api/gemini/generate-image', async (req, res) => {
 
     if (!model || !prompt) {
       return res.status(400).json({ error: 'Missing required fields: model, prompt' });
+    }
+
+    if (!validateModelName(model)) {
+      return res.status(400).json({ error: 'Invalid model name' });
     }
 
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
@@ -491,7 +535,7 @@ app.post('/api/gemini/generate-image', async (req, res) => {
 });
 
 // Proxy endpoint for TTS (audio generation)
-app.post('/api/gemini/tts', async (req, res) => {
+app.post('/api/gemini/tts', aiRateLimit, async (req, res) => {
   try {
     if (!GEMINI_API_KEY) {
       return res.status(500).json({ error: 'Gemini API key not configured' });
@@ -501,6 +545,10 @@ app.post('/api/gemini/tts', async (req, res) => {
 
     if (!model || !text) {
       return res.status(400).json({ error: 'Missing required fields: model, text' });
+    }
+
+    if (!validateModelName(model)) {
+      return res.status(400).json({ error: 'Invalid model name' });
     }
 
     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;

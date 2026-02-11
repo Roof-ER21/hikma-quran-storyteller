@@ -93,8 +93,8 @@ const StoryCard: React.FC<StoryCardProps> = ({
     checkStatus();
   }, [prophet, topic, language]);
 
-  // Estimated read time (mock - could be calculated from actual story length)
-  const estimatedReadTime = Math.floor(Math.random() * 5) + 5; // 5-10 min
+  // Estimated read time based on prophet name hash for consistency
+  const estimatedReadTime = 5 + (prophet.charCodeAt(0) % 6); // 5-10 min, deterministic per prophet
 
   return (
     <div

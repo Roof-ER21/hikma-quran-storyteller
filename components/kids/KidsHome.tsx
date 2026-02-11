@@ -477,25 +477,19 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 
       try {
         const response = await fetch(audioUrl, { cache: 'no-cache' });
-        console.log(`Fetching ${audioUrl}: status=${response.status}`);
         if (response.ok) {
           const arrayBuffer = await response.arrayBuffer();
-          console.log(`Got audio data: ${arrayBuffer.byteLength} bytes`);
           if (audioContextRef.current) {
             audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
             usedPreGenerated = true;
-            console.log(`✅ Loaded pre-generated audio for letter: ${letter.id}`);
           }
-        } else {
-          console.log(`❌ Audio file not found (${response.status}): ${audioUrl}`);
         }
       } catch (fetchError) {
-        console.log(`❌ Fetch error for ${letter.id}:`, fetchError);
+        // Pre-generated audio not available, will fall back to TTS
       }
 
       // Fallback to Gemini TTS if pre-generated audio not available
       if (!audioBuffer) {
-        console.log(`Using Gemini TTS for letter: ${letter.id}`);
         audioBuffer = await speakArabicLetterWithExample(
           letter.letter,
           letter.example,
@@ -534,7 +528,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         }
       } else {
         // Final fallback to Web Speech API if both pre-generated and Gemini fail
-        console.log('Both pre-generated and Gemini TTS failed, falling back to Web Speech');
+        // Both pre-generated and Gemini TTS failed, falling back to Web Speech
         setIsLoadingAudio(false);
         await speakWithWebSpeech(`${letter.name}. ${letter.letter}`, 'ar-SA');
         setIsPlaying(false);

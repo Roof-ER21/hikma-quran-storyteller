@@ -72,8 +72,8 @@ const TOPICS = [
   "General Life", "Patience", "Trust in God", "Leadership", "Family", "Miracles", "Justice"
 ];
 
-const getTopicLabel = (topic: string, t: (key: string, def?: string) => string) => {
-  return t(`topics.${topic}`, topic);
+const getTopicLabel = (topic: string, t: (key: string, options?: any) => string) => {
+  return t(`topics.${topic}`, { defaultValue: topic });
 };
 
 // Theme Toggle Component
@@ -843,7 +843,9 @@ function App() {
                <img
                  src="https://images.unsplash.com/photo-1519817914152-22d216bb9170?q=80&w=1600&auto=format&fit=crop"
                  alt="Abstract Islamic Art"
+                 loading="lazy"
                  className="rounded-t-[200px] rounded-b-[50px] shadow-2xl dark:shadow-dark-lg w-3/4 object-cover h-[600px] z-10"
+                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                />
                <div className="absolute -bottom-10 -right-10 bg-white dark:bg-dark-card p-6 rounded-2xl shadow-xl dark:shadow-dark-lg border border-transparent dark:border-dark-border z-20 max-w-xs transition-colors duration-300">
                    <p className="font-serif italic text-rose-900 dark:text-accent-gold">"We relate to you, [O Muhammad], the best of stories in what We have revealed to you of this Qur'an..."</p>

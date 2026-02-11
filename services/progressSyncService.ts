@@ -184,8 +184,7 @@ export async function loadAndMergeServerProgress(): Promise<boolean> {
         const localLetters = await getAllKidsLetterProgress();
         const localLetter = localLetters.find(l => l.id === serverLetter.letter_id);
 
-        await updateKidsLetterProgress(serverLetter.letter_id, {
-          letterArabic: serverLetter.letter_arabic,
+        await updateKidsLetterProgress(serverLetter.letter_id, serverLetter.letter_arabic, {
           timesPlayed: Math.max(localLetter?.timesPlayed || 0, serverLetter.times_played || 0),
           mastered: (localLetter?.mastered || false) || (serverLetter.mastered || false),
           starsEarned: Math.max(localLetter?.starsEarned || 0, serverLetter.stars_earned || 0),

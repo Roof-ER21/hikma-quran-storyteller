@@ -115,6 +115,7 @@ export default function TutorSelector({ onSelect, onContinue }: TutorSelectorPro
 
 // Individual Tutor Card Component
 interface TutorCardProps {
+  key?: React.Key;
   tutor: TutorPreset;
   isSelected: boolean;
   isArabic: boolean;

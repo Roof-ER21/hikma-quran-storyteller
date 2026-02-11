@@ -14,6 +14,14 @@ import {
   type AlayaTutorContext
 } from '../services/adultTutorService';
 
+// Web Speech API type declarations
+declare global {
+  interface Window {
+    SpeechRecognition?: any;
+    webkitSpeechRecognition?: any;
+  }
+}
+
 interface Message {
   id: string;
   role: 'user' | 'alaya';
@@ -47,7 +55,7 @@ export const AlayaTutor: React.FC<AlayaTutorProps> = ({
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   // Initialize with welcome message
   useEffect(() => {
@@ -75,7 +83,7 @@ export const AlayaTutor: React.FC<AlayaTutorProps> = ({
   // Initialize speech recognition
   useEffect(() => {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;

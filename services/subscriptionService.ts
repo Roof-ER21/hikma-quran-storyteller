@@ -72,8 +72,8 @@ export async function getOfferings(): Promise<any | null> {
 
   try {
     const { Purchases } = await import('@revenuecat/purchases-capacitor');
-    const { offerings } = await Purchases.getOfferings();
-    return offerings;
+    const result = await Purchases.getOfferings();
+    return (result as any).offerings ?? result;
   } catch (e) {
     console.error('Error getting offerings:', e);
     return null;

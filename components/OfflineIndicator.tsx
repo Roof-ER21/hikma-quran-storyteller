@@ -21,7 +21,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
         setShowUpdateBanner(true);
       },
       onOfflineReady() {
-        console.log('App ready for offline use');
+        // App ready for offline use
       },
     });
 
@@ -63,7 +63,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
     <>
       {/* Offline Banner */}
       {showOfflineBanner && (
-        <div className={`fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 py-2 z-50 flex items-center justify-between shadow-lg ${isArabic ? 'flex-row-reverse' : ''}`}>
+        <div role="alert" className={`fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 py-2 z-50 flex items-center justify-between shadow-lg ${isArabic ? 'flex-row-reverse' : ''}`}>
           <div className={`flex items-center gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <i className="fas fa-wifi-slash"></i>
             <span className="text-sm font-medium">{t('status.offline')}</span>

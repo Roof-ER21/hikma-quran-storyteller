@@ -1,27 +1,34 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
-interface Props {
+interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
 }
 
-interface State {
+interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = { hasError: false };
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  // Explicit property declarations for React 19 TS compatibility
+  declare readonly props: Readonly<ErrorBoundaryProps>;
+  declare state: ErrorBoundaryState;
 
-  public static getDerivedStateFromError(error: Error): State {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
   }
 
-  public render() {
+  render() {
     if (this.state.hasError) {
       return this.props.fallback || (
         <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white p-4">
