@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generateSurahStory, speakText, generateStoryImage } from '../services/geminiService';
-import { getSurahWithTranslation, TRANSLATIONS } from '../services/quranDataService';
+import { getSurahWithTranslation, getSurahTajweedText, TRANSLATIONS } from '../services/quranDataService';
 import { audioManager, RECITERS, DEFAULT_RECITER } from '../services/quranAudioService';
 import { getVerseWordBreakdown, getPosColor, getGrammarLabel, getUniqueRoots, getGrammarStats, VerseWordBreakdown, WordMorphology } from '../services/quranWordService';
 import { VerseDisplay } from './VerseDisplay';
@@ -254,6 +254,8 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
   const [selectedReciter, setSelectedReciter] = useState(DEFAULT_RECITER);
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large' | 'xlarge'>('medium');
   const [showTranslation, setShowTranslation] = useState(true);
+  const [showTajweed, setShowTajweed] = useState(false);
+  const [tajweedData, setTajweedData] = useState<Map<number, string>>(new Map());
   const [currentPlayingVerse, setCurrentPlayingVerse] = useState<number | null>(null);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
@@ -319,6 +321,15 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
 
     loadQuranData();
   }, [selectedSurah, selectedTranslation]);
+
+  // Load tajweed data when toggle is on
+  useEffect(() => {
+    if (!showTajweed || !selectedSurah) {
+      setTajweedData(new Map());
+      return;
+    }
+    getSurahTajweedText(selectedSurah.number).then(setTajweedData);
+  }, [showTajweed, selectedSurah]);
 
   // Handle deep link to specific verse
   useEffect(() => {
@@ -519,6 +530,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             showTranslation={showTranslation}
             fontSize={fontSize}
             onPlayClick={handlePlayVerse}
+            tajweedHtml={showTajweed ? tajweedData.get(verse.numberInSurah) : undefined}
           />
         ))}
       </div>
@@ -1180,6 +1192,19 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                             className={`w-10 h-5 rounded-full transition-colors relative ${showTranslation ? 'bg-rose-600' : 'bg-stone-300'}`}
                           >
                             <span className={`absolute w-4 h-4 bg-white rounded-full top-0.5 transition-transform shadow-sm ${showTranslation ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                          </button>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <label className="text-sm text-stone-600 flex items-center gap-1.5">
+                            <i className="fas fa-palette text-xs text-rose-500"></i>
+                            Tajweed Colors
+                          </label>
+                          <button
+                            onClick={() => setShowTajweed(!showTajweed)}
+                            className={`w-10 h-5 rounded-full transition-colors relative ${showTajweed ? 'bg-rose-600' : 'bg-stone-300'}`}
+                          >
+                            <span className={`absolute w-4 h-4 bg-white rounded-full top-0.5 transition-transform shadow-sm ${showTajweed ? 'translate-x-5' : 'translate-x-0.5'}`} />
                           </button>
                         </div>
 

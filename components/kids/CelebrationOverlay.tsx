@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Lottie from 'lottie-react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 // Kids-friendly color palette (matching KidsHome.tsx)
 const KIDS_COLORS = {
@@ -16,6 +18,194 @@ const CONFETTI_COLORS = [
   KIDS_COLORS.green,
   KIDS_COLORS.purple,
 ];
+
+// Inline Lottie confetti animation data
+const confettiAnimationData = {
+  v: "5.7.4",
+  fr: 60,
+  ip: 0,
+  op: 120,
+  w: 500,
+  h: 500,
+  nm: "Confetti",
+  ddd: 0,
+  assets: [],
+  layers: [
+    {
+      ddd: 0,
+      ind: 1,
+      ty: 4,
+      nm: "confetti1",
+      sr: 1,
+      ks: {
+        o: { a: 0, k: 100 },
+        r: { a: 1, k: [{ t: 0, s: [0], e: [360] }, { t: 120 }] },
+        p: { a: 1, k: [{ t: 0, s: [250, 0, 0], e: [100, 500, 0] }, { t: 120 }] },
+        a: { a: 0, k: [0, 0, 0] },
+        s: { a: 0, k: [100, 100, 100] }
+      },
+      ao: 0,
+      shapes: [
+        {
+          ty: "rc",
+          d: 1,
+          s: { a: 0, k: [20, 20] },
+          p: { a: 0, k: [0, 0] },
+          r: { a: 0, k: 0 },
+          nm: "Rectangle"
+        },
+        {
+          ty: "fl",
+          c: { a: 0, k: [1, 0.42, 0.42, 1] },
+          o: { a: 0, k: 100 },
+          r: 1,
+          nm: "Fill"
+        }
+      ],
+      ip: 0,
+      op: 120,
+      st: 0
+    },
+    {
+      ddd: 0,
+      ind: 2,
+      ty: 4,
+      nm: "confetti2",
+      sr: 1,
+      ks: {
+        o: { a: 0, k: 100 },
+        r: { a: 1, k: [{ t: 0, s: [0], e: [-360] }, { t: 120 }] },
+        p: { a: 1, k: [{ t: 0, s: [150, 0, 0], e: [400, 500, 0] }, { t: 120 }] },
+        a: { a: 0, k: [0, 0, 0] },
+        s: { a: 0, k: [100, 100, 100] }
+      },
+      ao: 0,
+      shapes: [
+        {
+          ty: "el",
+          d: 1,
+          s: { a: 0, k: [15, 15] },
+          p: { a: 0, k: [0, 0] },
+          nm: "Circle"
+        },
+        {
+          ty: "fl",
+          c: { a: 0, k: [0.31, 0.8, 0.77, 1] },
+          o: { a: 0, k: 100 },
+          r: 1,
+          nm: "Fill"
+        }
+      ],
+      ip: 0,
+      op: 120,
+      st: 0
+    },
+    {
+      ddd: 0,
+      ind: 3,
+      ty: 4,
+      nm: "confetti3",
+      sr: 1,
+      ks: {
+        o: { a: 0, k: 100 },
+        r: { a: 1, k: [{ t: 0, s: [0], e: [360] }, { t: 120 }] },
+        p: { a: 1, k: [{ t: 0, s: [350, 0, 0], e: [200, 500, 0] }, { t: 120 }] },
+        a: { a: 0, k: [0, 0, 0] },
+        s: { a: 0, k: [100, 100, 100] }
+      },
+      ao: 0,
+      shapes: [
+        {
+          ty: "rc",
+          d: 1,
+          s: { a: 0, k: [18, 18] },
+          p: { a: 0, k: [0, 0] },
+          r: { a: 0, k: 0 },
+          nm: "Rectangle"
+        },
+        {
+          ty: "fl",
+          c: { a: 0, k: [1, 0.9, 0.43, 1] },
+          o: { a: 0, k: 100 },
+          r: 1,
+          nm: "Fill"
+        }
+      ],
+      ip: 0,
+      op: 120,
+      st: 0
+    },
+    {
+      ddd: 0,
+      ind: 4,
+      ty: 4,
+      nm: "confetti4",
+      sr: 1,
+      ks: {
+        o: { a: 0, k: 100 },
+        r: { a: 1, k: [{ t: 0, s: [0], e: [-360] }, { t: 120 }] },
+        p: { a: 1, k: [{ t: 0, s: [50, 0, 0], e: [300, 500, 0] }, { t: 120 }] },
+        a: { a: 0, k: [0, 0, 0] },
+        s: { a: 0, k: [100, 100, 100] }
+      },
+      ao: 0,
+      shapes: [
+        {
+          ty: "el",
+          d: 1,
+          s: { a: 0, k: [12, 12] },
+          p: { a: 0, k: [0, 0] },
+          nm: "Circle"
+        },
+        {
+          ty: "fl",
+          c: { a: 0, k: [0.49, 0.82, 0.13, 1] },
+          o: { a: 0, k: 100 },
+          r: 1,
+          nm: "Fill"
+        }
+      ],
+      ip: 0,
+      op: 120,
+      st: 0
+    },
+    {
+      ddd: 0,
+      ind: 5,
+      ty: 4,
+      nm: "confetti5",
+      sr: 1,
+      ks: {
+        o: { a: 0, k: 100 },
+        r: { a: 1, k: [{ t: 0, s: [0], e: [360] }, { t: 120 }] },
+        p: { a: 1, k: [{ t: 0, s: [450, 0, 0], e: [150, 500, 0] }, { t: 120 }] },
+        a: { a: 0, k: [0, 0, 0] },
+        s: { a: 0, k: [100, 100, 100] }
+      },
+      ao: 0,
+      shapes: [
+        {
+          ty: "rc",
+          d: 1,
+          s: { a: 0, k: [16, 16] },
+          p: { a: 0, k: [0, 0] },
+          r: { a: 0, k: 0 },
+          nm: "Rectangle"
+        },
+        {
+          ty: "fl",
+          c: { a: 0, k: [0.64, 0.61, 1, 1] },
+          o: { a: 0, k: 100 },
+          r: 1,
+          nm: "Fill"
+        }
+      ],
+      ip: 0,
+      op: 120,
+      st: 0
+    }
+  ]
+};
 
 interface CelebrationOverlayProps {
   isVisible: boolean;
@@ -101,6 +291,9 @@ const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({
       setIsAnimating(true);
       generateConfetti();
 
+      // Trigger haptic feedback
+      Haptics.impact({ style: ImpactStyle.Heavy }).catch(() => {});
+
       // Trigger sound effect callback
       if (onSoundTrigger) {
         onSoundTrigger();
@@ -142,43 +335,32 @@ const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({
         animation: isAnimating ? 'fadeIn 0.3s ease-out' : 'fadeOut 0.3s ease-out',
       }}
     >
-      {/* Confetti particles */}
-      {confetti.map((particle) => (
-        <div
-          key={particle.id}
-          style={{
-            position: 'absolute',
-            top: '-20px',
-            left: `${particle.left}%`,
-            width: `${particle.size}px`,
-            height: `${particle.size}px`,
-            backgroundColor: particle.shape === 'star' ? 'transparent' : particle.color,
-            opacity: 0.9,
-            borderRadius: particle.shape === 'circle' ? '50%' : '0',
-            transform: `rotate(${particle.rotation}deg)`,
-            animation: `confettiFall ${particle.animationDuration}s linear ${particle.animationDelay}s forwards`,
-            pointerEvents: 'none',
-          }}
-        >
-          {particle.shape === 'star' && (
-            <div
-              style={{
-                fontSize: `${particle.size}px`,
-                color: particle.color,
-                lineHeight: 1,
-              }}
-            >
-              ✨
-            </div>
-          )}
-        </div>
-      ))}
+      {/* Lottie Confetti Animation */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      >
+        <Lottie
+          animationData={confettiAnimationData}
+          loop={true}
+          style={{ width: '100%', height: '100%' }}
+        />
+      </div>
 
       {/* Central celebration message */}
       <div
         style={{
           textAlign: 'center',
           animation: 'bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+          zIndex: 2,
+          position: 'relative',
         }}
       >
         {/* Large emoji */}

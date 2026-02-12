@@ -481,3 +481,53 @@
     height: auto;
   }
 }
+
+/* ========================================
+   TAJWEED COLOR-CODING STYLES
+   ======================================== */
+
+tajweed {
+  font-family: 'Amiri', serif;
+}
+tajweed.ghn { color: #FF7E1E; }
+tajweed.qlq { color: #DD0008; }
+tajweed.idgh_ghn { color: #169200; }
+tajweed.idgh_w_ghn { color: #169200; }
+tajweed.iqlb { color: #26BFFD; }
+tajweed.ikhf { color: #9400A8; }
+tajweed.ikhf_shfw { color: #D500B7; }
+tajweed.idghm_shfw { color: #58B800; }
+tajweed.slnt { color: #AAAAAA; }
+tajweed.ham_wasl { color: #AAAAAA; }
+tajweed.madda_necessary { color: #000EBC; }
+tajweed.madda_obligatory { color: #2144C1; }
+tajweed.madda_permissible { color: #4050FF; }
+tajweed.madda_normal { color: #537FFF; }
+tajweed.idgh_mus { color: #A1A1A1; }
+tajweed.madda_pbligatory { color: #2144C1; }
+
+/* Dark mode tajweed adjustments */
+.dark tajweed.ghn { color: #FFA54E; }
+.dark tajweed.qlq { color: #FF4D54; }
+.dark tajweed.idgh_ghn { color: #4CC440; }
+.dark tajweed.idgh_w_ghn { color: #4CC440; }
+.dark tajweed.iqlb { color: #5DD4FF; }
+.dark tajweed.ikhf { color: #C44DD8; }
+.dark tajweed.ikhf_shfw { color: #E84DD4; }
+.dark tajweed.idghm_shfw { color: #7CD440; }
+.dark tajweed.slnt { color: #888888; }
+.dark tajweed.ham_wasl { color: #888888; }
+.dark tajweed.madda_necessary { color: #4D5FFF; }
+.dark tajweed.madda_obligatory { color: #5B72E0; }
+.dark tajweed.madda_permissible { color: #6B7FFF; }
+.dark tajweed.madda_normal { color: #7B9FFF; }
+
+/* Tajweed legend tooltip on hover */
+tajweed:hover {
+  cursor: help;
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.dark tajweed:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

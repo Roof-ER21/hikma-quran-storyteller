@@ -375,6 +375,39 @@ export function getSurahAndVerseFromGlobal(globalNumber: number): { surah: numbe
 }
 
 /**
+ * Fetch tajweed-annotated text for a surah from AlQuran.cloud tajweed edition.
+ * Returns a map of verseNumberInSurah -> tajweed HTML string.
+ */
+export async function getSurahTajweedText(surahNumber: number): Promise<Map<number, string>> {
+  const cacheKey = `tajweed-${surahNumber}`;
+  const cached = getCached<Map<number, string>>(cacheKey);
+  if (cached) return cached;
+
+  try {
+    const { Tajweed } = await import('tajweed');
+    const tajweedParser = new Tajweed();
+
+    const response = await fetch(`${BASE_URL}/surah/${surahNumber}/quran-tajweed`);
+    const result = await response.json();
+
+    if (result.code !== 200) {
+      return new Map();
+    }
+
+    const tajweedMap = new Map<number, string>();
+    for (const ayah of result.data.ayahs) {
+      tajweedMap.set(ayah.numberInSurah, tajweedParser.parse(ayah.text, true));
+    }
+
+    setCache(cacheKey, tajweedMap);
+    return tajweedMap;
+  } catch (error) {
+    console.error('Error fetching tajweed text:', error);
+    return new Map();
+  }
+}
+
+/**
  * Pre-fetch popular surahs for better UX
  */
 export async function prefetchPopularSurahs(): Promise<void> {

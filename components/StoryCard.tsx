@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import {
   getStoryReadingPosition,
   getCachedStory,
@@ -96,9 +98,17 @@ const StoryCard: React.FC<StoryCardProps> = ({
   // Estimated read time based on prophet name hash for consistency
   const estimatedReadTime = 5 + (prophet.charCodeAt(0) % 6); // 5-10 min, deterministic per prophet
 
+  const handleClick = () => {
+    Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
+    onSelect(prophet, topic);
+  };
+
   return (
-    <div
-      onClick={() => onSelect(prophet, topic)}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      onClick={handleClick}
       className={`relative group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-dark-lg ${
         isSelected
           ? 'ring-2 ring-rose-500 dark:ring-accent-gold shadow-lg dark:shadow-dark-glow'
@@ -180,7 +190,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
           <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

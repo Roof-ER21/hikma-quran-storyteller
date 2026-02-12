@@ -13,6 +13,7 @@ interface VerseDisplayProps {
   onPlayClick?: (verseNumber: number) => void;
   onBookmark?: (verseNumber: number) => void;
   isBookmarked?: boolean;
+  tajweedHtml?: string;
 }
 
 const FONT_SIZES = {
@@ -33,6 +34,7 @@ export const VerseDisplay: React.FC<VerseDisplayProps> = ({
   onPlayClick,
   onBookmark,
   isBookmarked = false,
+  tajweedHtml,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -123,19 +125,31 @@ export const VerseDisplay: React.FC<VerseDisplayProps> = ({
 
       {/* Arabic Text */}
       <div className="mt-4 mb-4">
-        <p
-          className={`
-            font-amiri text-right leading-loose text-stone-800
-            ${sizes.arabic}
-            ${isCurrentVerse ? 'text-rose-900' : ''}
-          `}
-          dir="rtl"
-          lang="ar"
-        >
-          {verse.arabic}
-          {/* Arabic verse end marker */}
-          <span className="text-rose-600 mx-2">۝</span>
-        </p>
+        {tajweedHtml ? (
+          <p
+            className={`
+              font-amiri text-right leading-loose
+              ${sizes.arabic}
+              ${isCurrentVerse ? '' : ''}
+            `}
+            dir="rtl"
+            lang="ar"
+            dangerouslySetInnerHTML={{ __html: tajweedHtml + '<span class="text-rose-600 mx-2">۝</span>' }}
+          />
+        ) : (
+          <p
+            className={`
+              font-amiri text-right leading-loose text-stone-800
+              ${sizes.arabic}
+              ${isCurrentVerse ? 'text-rose-900' : ''}
+            `}
+            dir="rtl"
+            lang="ar"
+          >
+            {verse.arabic}
+            <span className="text-rose-600 mx-2">۝</span>
+          </p>
+        )}
       </div>
 
       {/* Translation */}

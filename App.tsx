@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AnimatePresence, motion } from 'motion/react';
 import StoryCard from './components/StoryCard';
 import { OfflineIndicator, PWAInstallPrompt } from './components/OfflineIndicator';
 import { transcribeAudio } from './services/geminiService';
@@ -14,6 +15,7 @@ import { isLanguageSelected, isArabic } from './src/i18n';
 import { AISettingsWrapper } from './components/settings/AIProviderSettings';
 import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
 import { isOmnia } from './services/omniaSecretService';
+import { trackSessionStart } from './services/inAppReviewService';
 
 // Lazy load major view components for code splitting
 const StoryView = lazy(() => import('./components/StoryView'));
@@ -148,9 +150,10 @@ function App() {
     return null;
   };
 
-  // Initialize RevenueCat subscription system on mount
+  // Initialize RevenueCat subscription system and track session on mount
   useEffect(() => {
     initSubscription().catch(console.error);
+    trackSessionStart();
   }, []);
 
   // Check for admin mode via URL query parameter and handle deep links
@@ -855,8 +858,9 @@ function App() {
           </div>
         )}
 
+        <AnimatePresence mode="wait">
         {view === 'story' && selectedProphet && (
-            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="story" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <StoryView
                       prophet={selectedProphet}
@@ -864,63 +868,63 @@ function App() {
                       onBack={() => setView('home')}
                       onNavigateToLibrary={(prophetId) => {
                         setView('library');
-                        // ProphetStoriesLibrary will auto-scroll to prophet if needed
                       }}
                   />
                 </Suspense>
-            </div>
+            </motion.div>
         )}
 
         {view === 'live' && (
-            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <LiveMode />
                 </Suspense>
-            </div>
+            </motion.div>
         )}
 
         {view === 'quran' && (
-            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="quran" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <QuranView
                     initialSurah={initialDeepLink?.type === 'verse' || initialDeepLink?.type === 'quran' ? initialDeepLink.data.surah : undefined}
                     initialVerse={initialDeepLink?.type === 'verse' ? initialDeepLink.data.verse : undefined}
                   />
                 </Suspense>
-            </div>
+            </motion.div>
         )}
 
         {view === 'kids' && (
-            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="kids" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <KidsHome onBack={() => setView('home')} />
                 </Suspense>
-            </div>
+            </motion.div>
         )}
 
         {view === 'library' && (
-            <div className="min-h-[50vh] md:h-[calc(100vh-140px)] overflow-auto">
+            <motion.div key="library" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)] overflow-auto">
                 <Suspense fallback={<LoadingSpinner />}>
                   <ProphetStoriesLibrary />
                 </Suspense>
-            </div>
+            </motion.div>
         )}
 
         {view === 'dedication' && (
-            <div className="fixed inset-0 z-40 overflow-y-auto">
+            <motion.div key="dedication" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 z-40 overflow-y-auto">
                 <Suspense fallback={<LoadingSpinner />}>
                   <DedicationPage onClose={() => setView('home')} />
                 </Suspense>
-            </div>
+            </motion.div>
         )}
 
         {view === 'tools' && (
-            <div className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="tools" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <IslamicTools onBack={() => setView('home')} />
                 </Suspense>
-            </div>
+            </motion.div>
         )}
+        </AnimatePresence>
 
         {/* Admin: Media Generator (access via ?admin=media) */}
         {showMediaGenerator && (
