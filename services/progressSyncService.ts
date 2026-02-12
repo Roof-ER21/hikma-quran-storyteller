@@ -238,6 +238,9 @@ export async function loadAndMergeServerProgress(): Promise<boolean> {
 export function debouncedSync(): void {
   if (!isParentLoggedIn()) return;
 
+  // COPPA: Only sync if parent has opted in
+  if (localStorage.getItem('alayasoad_sync_enabled') !== 'true') return;
+
   if (syncDebounceTimer) {
     clearTimeout(syncDebounceTimer);
   }

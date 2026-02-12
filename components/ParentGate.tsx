@@ -18,6 +18,8 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [remember, setRemember] = useState(true);
+  const [coppaConsent, setCoppaConsent] = useState(false);
+  const [aiTutorConsent, setAiTutorConsent] = useState(true);
 
   if (!isOpen) return null;
 
@@ -25,6 +27,10 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
     setError(null);
     if (!name.trim() || !pin.trim()) {
       setError(t('parentGate.missingFields'));
+      return;
+    }
+    if (mode === 'signup' && !coppaConsent) {
+      setError('You must consent as a parent/guardian to create an account.');
       return;
     }
     setLoading(true);
@@ -36,6 +42,12 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Failed');
+      // Store COPPA consent preferences
+      if (mode === 'signup') {
+        localStorage.setItem('alayasoad_coppa_consent', 'true');
+        localStorage.setItem('alayasoad_ai_tutor_enabled', aiTutorConsent ? 'true' : 'false');
+        localStorage.setItem('alayasoad_sync_enabled', 'true');
+      }
       onAuthed(data.token, data.parent?.name || name, remember);
       onClose();
     } catch (e: any) {
@@ -104,6 +116,34 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
           />
           {t('parentGate.rememberMe')}
         </label>
+
+        {mode === 'signup' && (
+          <div className="space-y-3 pt-2 border-t border-stone-100">
+            <label className={`flex items-start gap-2 text-xs text-stone-600 ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
+              <input
+                type="checkbox"
+                checked={coppaConsent}
+                onChange={(e) => setCoppaConsent(e.target.checked)}
+                className="w-4 h-4 mt-0.5 text-rose-600 rounded border-stone-300 flex-shrink-0"
+              />
+              <span>
+                I am the parent/guardian (18+) and consent to my child using this app.
+                Learning progress will be saved locally and optionally synced.
+              </span>
+            </label>
+            <label className={`flex items-start gap-2 text-xs text-stone-600 ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
+              <input
+                type="checkbox"
+                checked={aiTutorConsent}
+                onChange={(e) => setAiTutorConsent(e.target.checked)}
+                className="w-4 h-4 mt-0.5 text-rose-600 rounded border-stone-300 flex-shrink-0"
+              />
+              <span>
+                Enable AI Tutor (optional). Child's questions are sent to Google Gemini for educational responses. No data is permanently stored.
+              </span>
+            </label>
+          </div>
+        )}
 
         {error && <div className={`text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2 ${isArabic ? 'font-arabic text-right' : ''}`}>{error}</div>}
 

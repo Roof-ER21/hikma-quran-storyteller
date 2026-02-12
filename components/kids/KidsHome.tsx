@@ -305,18 +305,20 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
           message={celebrationMessage}
         />
 
-        {/* Soso AI Tutor - Floating Button */}
-        <SosoTutorWrapper
-          context={{
-            activity: 'general',
-            language: isArabic ? 'ar' : 'en'
-          }}
-          onStarEarned={(stars) => {
-            if (stars > 0) {
-              earnStar(true);
-            }
-          }}
-        />
+        {/* Soso AI Tutor - Only shown if parent consented (COPPA) */}
+        {localStorage.getItem('alayasoad_ai_tutor_enabled') !== 'false' && (
+          <SosoTutorWrapper
+            context={{
+              activity: 'general',
+              language: isArabic ? 'ar' : 'en'
+            }}
+            onStarEarned={(stars) => {
+              if (stars > 0) {
+                earnStar(true);
+              }
+            }}
+          />
+        )}
       </div>
     );
   }

@@ -7,7 +7,7 @@ import './src/styles/generated.css';
 import './src/styles/rtl.css';
 import './src/i18n'; // Initialize i18n
 
-// Initialize Sentry for crash reporting
+// Initialize Sentry for crash reporting (disabled in kids mode for COPPA compliance)
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
 if (SENTRY_DSN) {
   Sentry.init({
@@ -18,6 +18,13 @@ if (SENTRY_DSN) {
     integrations: [
       Sentry.browserTracingIntegration(),
     ],
+    beforeSend(event) {
+      // COPPA: Never send error data from kids mode
+      if (localStorage.getItem('alayasoad_kids_mode') === 'true') {
+        return null;
+      }
+      return event;
+    },
   });
 }
 

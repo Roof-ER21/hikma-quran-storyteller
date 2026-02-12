@@ -600,6 +600,41 @@ Keep up the amazing work! 🌙✨`;
 
           {activeTab === 'settings' && (
             <div className="space-y-4">
+              {/* Privacy & COPPA Controls */}
+              <div className="bg-blue-50 rounded-xl p-4">
+                <h3 className="font-semibold text-blue-900 mb-3">
+                  <i className="fas fa-shield-alt mr-2"></i>Privacy Controls
+                </h3>
+                <div className="space-y-3">
+                  <label className="flex items-center justify-between">
+                    <span className="text-sm text-blue-800">AI Tutor (Soso)</span>
+                    <input
+                      type="checkbox"
+                      checked={localStorage.getItem('alayasoad_ai_tutor_enabled') !== 'false'}
+                      onChange={(e) => {
+                        localStorage.setItem('alayasoad_ai_tutor_enabled', e.target.checked ? 'true' : 'false');
+                        setActiveTab('settings');
+                      }}
+                      className="w-5 h-5 text-blue-600 rounded"
+                    />
+                  </label>
+                  <p className="text-xs text-blue-600">When enabled, child's questions are sent to Google Gemini AI for educational responses.</p>
+                  <label className="flex items-center justify-between">
+                    <span className="text-sm text-blue-800">Cloud Sync</span>
+                    <input
+                      type="checkbox"
+                      checked={localStorage.getItem('alayasoad_sync_enabled') === 'true'}
+                      onChange={(e) => {
+                        localStorage.setItem('alayasoad_sync_enabled', e.target.checked ? 'true' : 'false');
+                        setActiveTab('settings');
+                      }}
+                      className="w-5 h-5 text-blue-600 rounded"
+                    />
+                  </label>
+                  <p className="text-xs text-blue-600">When enabled, learning progress syncs to our server for backup.</p>
+                </div>
+              </div>
+
               {/* Share App */}
               <div className="bg-stone-50 rounded-xl p-4">
                 <h3 className="font-semibold text-stone-800 mb-2">Share with Friends</h3>
