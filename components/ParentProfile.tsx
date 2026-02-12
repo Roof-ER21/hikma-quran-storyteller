@@ -35,7 +35,7 @@ const BADGE_INFO: Record<string, { name: string; emoji: string }> = {
 };
 
 export default function ParentProfile({ isOpen, onClose, parentName, onLogout }: ParentProfileProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'report' | 'settings'>('overview');
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [profile, setProfile] = useState<{
@@ -137,6 +137,96 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
     return LEVELS.find(l => l.level === level) || LEVELS[0];
   };
 
+  // Helper function to calculate weekly stats
+  const getWeeklyStats = () => {
+    if (!profile) return { daysActive: 0, estimatedMinutes: 0, newBadges: 0 };
+
+    const now = new Date();
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - 7);
+
+    // Calculate days active based on streak (simplified)
+    const daysActive = profile.progress.currentStreak > 0
+      ? Math.min(profile.progress.currentStreak, 7)
+      : 0;
+
+    // Estimate time: stars × 2 minutes
+    const estimatedMinutes = profile.progress.totalStars * 2;
+
+    // Count recent badges (simplified - all badges for now)
+    const newBadges = profile.progress.badges?.length || 0;
+
+    return { daysActive, estimatedMinutes, newBadges };
+  };
+
+  // Helper function to get upcoming milestones
+  const getUpcomingMilestones = () => {
+    if (!profile) return [];
+
+    const milestones: string[] = [];
+
+    // Next level milestone
+    if (profile.progress.level < 10) {
+      const nextLevel = LEVELS[profile.progress.level];
+      const starsNeeded = nextLevel.starsRequired - profile.progress.totalStars;
+      if (starsNeeded > 0) {
+        milestones.push(`${starsNeeded} more star${starsNeeded !== 1 ? 's' : ''} to reach ${nextLevel.name} level ${nextLevel.emoji}`);
+      }
+    }
+
+    // Letters milestone
+    const lettersRemaining = 28 - profile.summary.lettersMastered;
+    if (lettersRemaining > 0) {
+      if (profile.summary.lettersMastered < 14) {
+        milestones.push(`${14 - profile.summary.lettersMastered} more letter${14 - profile.summary.lettersMastered !== 1 ? 's' : ''} to master half the alphabet`);
+      } else {
+        milestones.push(`${lettersRemaining} more letter${lettersRemaining !== 1 ? 's' : ''} to complete the alphabet`);
+      }
+    }
+
+    // Surahs milestone
+    if (profile.summary.surahsCompleted < 10) {
+      milestones.push(`${10 - profile.summary.surahsCompleted} more surah${10 - profile.summary.surahsCompleted !== 1 ? 's' : ''} to reach 10 surahs`);
+    } else if (profile.summary.surahsCompleted < 30) {
+      milestones.push(`${30 - profile.summary.surahsCompleted} more surah${30 - profile.summary.surahsCompleted !== 1 ? 's' : ''} to reach Juz Amma mastery`);
+    }
+
+    // Stories milestone
+    if (profile.summary.storiesCompleted < 12) {
+      milestones.push(`${12 - profile.summary.storiesCompleted} more stor${12 - profile.summary.storiesCompleted !== 1 ? 'ies' : 'y'} to reach half the collection`);
+    } else if (profile.summary.storiesCompleted < 24) {
+      milestones.push(`${24 - profile.summary.storiesCompleted} more stor${24 - profile.summary.storiesCompleted !== 1 ? 'ies' : 'y'} to complete all stories`);
+    }
+
+    return milestones.slice(0, 3); // Return top 3 milestones
+  };
+
+  // Helper function to generate shareable report
+  const generateShareableReport = () => {
+    if (!profile) return '';
+
+    const levelInfo = getLevelInfo(profile.progress.level);
+    const weeklyStats = getWeeklyStats();
+
+    return `📊 Weekly Learning Report - Hikma App
+
+🌟 Level: ${levelInfo.emoji} ${levelInfo.name} (Level ${profile.progress.level})
+⭐ Total Stars: ${profile.progress.totalStars}
+
+📅 This Week:
+• ${weeklyStats.daysActive} days active
+• ~${weeklyStats.estimatedMinutes} minutes of learning
+• ${weeklyStats.newBadges} badge${weeklyStats.newBadges !== 1 ? 's' : ''} earned
+
+📚 Progress:
+• Arabic Letters: ${profile.summary.lettersMastered}/28 (${Math.round((profile.summary.lettersMastered / 28) * 100)}%)
+• Quran Surahs: ${profile.summary.surahsCompleted}/114 (${Math.round((profile.summary.surahsCompleted / 114) * 100)}%)
+• Prophet Stories: ${profile.summary.storiesCompleted}/24 (${Math.round((profile.summary.storiesCompleted / 24) * 100)}%)
+
+${profile.progress.currentStreak > 0 ? `🔥 Current Streak: ${profile.progress.currentStreak} days!\n` : ''}
+Keep up the amazing work! 🌙✨`;
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -182,6 +272,17 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
           >
             <i className="fas fa-chart-line mr-2"></i>
             Progress
+          </button>
+          <button
+            onClick={() => setActiveTab('report')}
+            className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
+              activeTab === 'report'
+                ? 'text-rose-600 border-b-2 border-rose-600'
+                : 'text-stone-500 hover:text-stone-700'
+            }`}
+          >
+            <i className="fas fa-file-alt mr-2"></i>
+            Report
           </button>
           <button
             onClick={() => setActiveTab('settings')}
@@ -303,6 +404,189 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
                 <div className="text-center py-8 text-stone-500">
                   <i className="fas fa-exclamation-circle text-2xl mb-2"></i>
                   <p>Unable to load progress</p>
+                  <button
+                    onClick={loadProfile}
+                    className="mt-2 text-rose-600 hover:text-rose-700"
+                  >
+                    Try again
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'report' && (
+            <div className="space-y-6">
+              {loading ? (
+                <div className="flex items-center justify-center py-8">
+                  <i className="fas fa-spinner fa-spin text-2xl text-rose-600"></i>
+                </div>
+              ) : profile ? (
+                <>
+                  {/* This Week's Activity */}
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
+                    <h3 className="font-bold text-blue-900 mb-4 flex items-center gap-2">
+                      <i className="fas fa-calendar-week"></i>
+                      This Week's Activity
+                    </h3>
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="bg-white/60 rounded-lg p-3 text-center">
+                        <p className="text-2xl font-bold text-blue-900">{getWeeklyStats().daysActive}</p>
+                        <p className="text-xs text-blue-700">Days Active</p>
+                      </div>
+                      <div className="bg-white/60 rounded-lg p-3 text-center">
+                        <p className="text-2xl font-bold text-blue-900">~{getWeeklyStats().estimatedMinutes}</p>
+                        <p className="text-xs text-blue-700">Minutes</p>
+                      </div>
+                      <div className="bg-white/60 rounded-lg p-3 text-center">
+                        <p className="text-2xl font-bold text-blue-900">{getWeeklyStats().newBadges}</p>
+                        <p className="text-xs text-blue-700">Badges</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Learning Breakdown */}
+                  <div>
+                    <h3 className="font-semibold text-stone-800 mb-3 flex items-center gap-2">
+                      <i className="fas fa-chart-bar"></i>
+                      Learning Breakdown
+                    </h3>
+                    <div className="space-y-4">
+                      {/* Arabic Letters */}
+                      <div className="bg-stone-50 rounded-xl p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">🔤</span>
+                            <span className="text-sm font-medium text-stone-700">Arabic Letters</span>
+                          </div>
+                          <span className="text-sm font-bold text-stone-800">
+                            {profile.summary.lettersMastered}/28
+                          </span>
+                        </div>
+                        <div className="h-3 bg-stone-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full transition-all"
+                            style={{
+                              width: `${Math.round((profile.summary.lettersMastered / 28) * 100)}%`
+                            }}
+                          />
+                        </div>
+                        <p className="text-xs text-stone-500 mt-1 text-right">
+                          {Math.round((profile.summary.lettersMastered / 28) * 100)}%
+                        </p>
+                      </div>
+
+                      {/* Quran Surahs */}
+                      <div className="bg-stone-50 rounded-xl p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">📖</span>
+                            <span className="text-sm font-medium text-stone-700">Quran Surahs</span>
+                          </div>
+                          <span className="text-sm font-bold text-stone-800">
+                            {profile.summary.surahsCompleted}/114
+                          </span>
+                        </div>
+                        <div className="h-3 bg-stone-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-blue-400 to-blue-500 rounded-full transition-all"
+                            style={{
+                              width: `${Math.round((profile.summary.surahsCompleted / 114) * 100)}%`
+                            }}
+                          />
+                        </div>
+                        <p className="text-xs text-stone-500 mt-1 text-right">
+                          {Math.round((profile.summary.surahsCompleted / 114) * 100)}%
+                        </p>
+                      </div>
+
+                      {/* Prophet Stories */}
+                      <div className="bg-stone-50 rounded-xl p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">📚</span>
+                            <span className="text-sm font-medium text-stone-700">Prophet Stories</span>
+                          </div>
+                          <span className="text-sm font-bold text-stone-800">
+                            {profile.summary.storiesCompleted}/24
+                          </span>
+                        </div>
+                        <div className="h-3 bg-stone-200 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-purple-400 to-purple-500 rounded-full transition-all"
+                            style={{
+                              width: `${Math.round((profile.summary.storiesCompleted / 24) * 100)}%`
+                            }}
+                          />
+                        </div>
+                        <p className="text-xs text-stone-500 mt-1 text-right">
+                          {Math.round((profile.summary.storiesCompleted / 24) * 100)}%
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Milestones */}
+                  {getUpcomingMilestones().length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-stone-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-flag-checkered"></i>
+                        Upcoming Milestones
+                      </h3>
+                      <div className="space-y-2">
+                        {getUpcomingMilestones().map((milestone, index) => (
+                          <div
+                            key={index}
+                            className="bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl p-3 flex items-center gap-3"
+                          >
+                            <div className="w-8 h-8 bg-amber-200 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-sm font-bold text-amber-800">{index + 1}</span>
+                            </div>
+                            <p className="text-sm text-amber-900">{milestone}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Share Report Button */}
+                  <button
+                    onClick={async () => {
+                      const reportText = generateShareableReport();
+                      // Try Web Share API first (native share on mobile)
+                      if (navigator.share) {
+                        try {
+                          await navigator.share({
+                            title: 'Weekly Learning Report - Hikma App',
+                            text: reportText,
+                          });
+                        } catch (err) {
+                          // User cancelled or share failed, fall through to clipboard
+                          if ((err as Error).name !== 'AbortError') {
+                            await navigator.clipboard.writeText(reportText);
+                            alert('Report copied to clipboard!');
+                          }
+                        }
+                      } else {
+                        // Fallback to clipboard
+                        try {
+                          await navigator.clipboard.writeText(reportText);
+                          alert('Report copied to clipboard!');
+                        } catch (err) {
+                          console.error('Failed to copy:', err);
+                        }
+                      }
+                    }}
+                    className="w-full py-3 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2 shadow-lg"
+                  >
+                    <i className="fas fa-share-alt"></i>
+                    Share Report
+                  </button>
+                </>
+              ) : (
+                <div className="text-center py-8 text-stone-500">
+                  <i className="fas fa-exclamation-circle text-2xl mb-2"></i>
+                  <p>Unable to load report</p>
                   <button
                     onClick={loadProfile}
                     className="mt-2 text-rose-600 hover:text-rose-700"

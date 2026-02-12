@@ -28,6 +28,12 @@ const config: CapacitorConfig = {
     Keyboard: {
       resize: 'body',
       resizeOnFullScreen: true
+    },
+    // Local notifications configuration
+    LocalNotifications: {
+      smallIcon: 'ic_stat_icon_config_sample',
+      iconColor: '#881337',
+      sound: 'beep.wav'
     }
   }
 };

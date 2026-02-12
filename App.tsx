@@ -12,6 +12,7 @@ import ShareButton from './components/ShareButton';
 import { initProgressSync, cleanupProgressSync } from './services/progressSyncService';
 import { initSubscription } from './services/subscriptionService';
 import { isLanguageSelected, isArabic } from './src/i18n';
+import { initNotifications } from './services/notificationService';
 import { AISettingsWrapper } from './components/settings/AIProviderSettings';
 import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
 import { isOmnia } from './services/omniaSecretService';
@@ -154,6 +155,7 @@ function App() {
   useEffect(() => {
     initSubscription().catch(console.error);
     trackSessionStart();
+    initNotifications().catch(console.error);
   }, []);
 
   // Check for admin mode via URL query parameter and handle deep links

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Verse, RecitationResult } from '../types';
 import { checkRecitation } from '../services/geminiService';
+import { scoreRecitation, ScoringResult } from '../services/recitationScoringService';
 
 interface RecitationCheckerProps {
   verse: Verse;
@@ -20,6 +21,7 @@ export const RecitationChecker: React.FC<RecitationCheckerProps> = ({
   const [recordingState, setRecordingState] = useState<RecordingState>('idle');
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [result, setResult] = useState<RecitationResult | null>(null);
+  const [scoringResult, setScoringResult] = useState<ScoringResult | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -63,6 +65,16 @@ export const RecitationChecker: React.FC<RecitationCheckerProps> = ({
             verse.numberInSurah
           );
           setResult(recitationResult);
+
+          // Also run scoring service for enhanced validation
+          if (recitationResult.transcription) {
+            const scoring = scoreRecitation(
+              recitationResult.transcription,
+              verse.arabic
+            );
+            setScoringResult(scoring);
+          }
+
           setRecordingState('results');
           onComplete(recitationResult.accuracy);
         } catch (error) {
@@ -102,6 +114,7 @@ export const RecitationChecker: React.FC<RecitationCheckerProps> = ({
   const retry = () => {
     setRecordingState('idle');
     setResult(null);
+    setScoringResult(null);
     setAudioBlob(null);
     setRecordingDuration(0);
   };
@@ -217,43 +230,58 @@ export const RecitationChecker: React.FC<RecitationCheckerProps> = ({
         <div className="space-y-6 animate-in fade-in duration-500">
           {/* Accuracy Score with Circular Progress */}
           <div className="text-center">
-            <div className="relative inline-block">
-              <svg className="w-32 h-32 transform -rotate-90">
-                <circle
-                  cx="64"
-                  cy="64"
-                  r="56"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  fill="none"
-                  className="text-stone-200"
-                />
-                <circle
-                  cx="64"
-                  cy="64"
-                  r="56"
-                  stroke="url(#gradient)"
-                  strokeWidth="8"
-                  fill="none"
-                  strokeDasharray={`${2 * Math.PI * 56}`}
-                  strokeDashoffset={`${2 * Math.PI * 56 * (1 - result.accuracy / 100)}`}
-                  className="transition-all duration-1000 ease-out"
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" className={`stop-color-start ${getAccuracyColor(result.accuracy)}`} />
-                    <stop offset="100%" className={`stop-color-end ${getAccuracyColor(result.accuracy)}`} />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-bold text-stone-800">{result.accuracy}%</span>
-                <span className="text-sm text-stone-500">Accuracy</span>
+            <div className="flex justify-center items-center gap-6">
+              {/* Main Accuracy Circle */}
+              <div className="relative inline-block">
+                <svg className="w-32 h-32 transform -rotate-90">
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="currentColor"
+                    strokeWidth="8"
+                    fill="none"
+                    className="text-stone-200"
+                  />
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="url(#gradient)"
+                    strokeWidth="8"
+                    fill="none"
+                    strokeDasharray={`${2 * Math.PI * 56}`}
+                    strokeDashoffset={`${2 * Math.PI * 56 * (1 - result.accuracy / 100)}`}
+                    className="transition-all duration-1000 ease-out"
+                    strokeLinecap="round"
+                  />
+                  <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" className={`stop-color-start ${getAccuracyColor(result.accuracy)}`} />
+                      <stop offset="100%" className={`stop-color-end ${getAccuracyColor(result.accuracy)}`} />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-3xl font-bold text-stone-800">{result.accuracy}%</span>
+                  <span className="text-sm text-stone-500">Accuracy</span>
+                </div>
               </div>
+
+              {/* Tajweed Score Badge */}
+              {scoringResult && (
+                <div className="flex flex-col items-center">
+                  <div className="bg-gradient-to-br from-amber-500 to-orange-500 text-white rounded-2xl px-6 py-4 shadow-lg">
+                    <div className="text-3xl font-bold">{scoringResult.tajweedScore}%</div>
+                    <div className="text-xs mt-1 opacity-90">Tajweed Score</div>
+                  </div>
+                </div>
+              )}
             </div>
+
             <h3 className="text-xl font-semibold text-stone-800 mt-4">
-              {result.accuracy >= 90 ? 'Excellent!' : result.accuracy >= 75 ? 'Good Job!' : result.accuracy >= 60 ? 'Keep Practicing!' : 'Needs Work'}
+              {scoringResult ? scoringResult.encouragement :
+               (result.accuracy >= 90 ? 'Excellent!' : result.accuracy >= 75 ? 'Good Job!' : result.accuracy >= 60 ? 'Keep Practicing!' : 'Needs Work')}
             </h3>
           </div>
 
