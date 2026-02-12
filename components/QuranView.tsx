@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generateSurahStory, speakText, generateStoryImage } from '../services/geminiService';
-import { getSurahWithTranslation, getSurahTajweedText, TRANSLATIONS } from '../services/quranDataService';
+import { getSurahWithTranslation, getSurahTajweedText, TRANSLATIONS, MULTI_LANG_TRANSLATIONS, getMultiLangTranslation } from '../services/quranDataService';
 import { audioManager, RECITERS, DEFAULT_RECITER } from '../services/quranAudioService';
 import { getVerseWordBreakdown, getPosColor, getGrammarLabel, getUniqueRoots, getGrammarStats, VerseWordBreakdown, WordMorphology } from '../services/quranWordService';
 import { VerseDisplay } from './VerseDisplay';
@@ -251,6 +251,8 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
   const [surahData, setSurahData] = useState<SurahType | null>(null);
   const [loadingQuran, setLoadingQuran] = useState(false);
   const [selectedTranslation, setSelectedTranslation] = useState('en.sahih');
+  const [secondaryTranslation, setSecondaryTranslation] = useState<string | null>(null);
+  const [secondaryTranslationData, setSecondaryTranslationData] = useState<Map<number, string>>(new Map());
   const [selectedReciter, setSelectedReciter] = useState(DEFAULT_RECITER);
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large' | 'xlarge'>('medium');
   const [showTranslation, setShowTranslation] = useState(true);
@@ -330,6 +332,26 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
     }
     getSurahTajweedText(selectedSurah.number).then(setTajweedData);
   }, [showTajweed, selectedSurah]);
+
+  // Load secondary translation data when selected
+  useEffect(() => {
+    if (!secondaryTranslation || !selectedSurah) {
+      setSecondaryTranslationData(new Map());
+      return;
+    }
+
+    const loadSecondaryTranslation = async () => {
+      try {
+        const data = await getMultiLangTranslation(selectedSurah.number, secondaryTranslation);
+        setSecondaryTranslationData(data);
+      } catch (e) {
+        console.error('Failed to load secondary translation:', e);
+        setSecondaryTranslationData(new Map());
+      }
+    };
+
+    loadSecondaryTranslation();
+  }, [secondaryTranslation, selectedSurah]);
 
   // Handle deep link to specific verse
   useEffect(() => {
@@ -531,6 +553,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             fontSize={fontSize}
             onPlayClick={handlePlayVerse}
             tajweedHtml={showTajweed ? tajweedData.get(verse.numberInSurah) : undefined}
+            secondaryTranslation={secondaryTranslation ? secondaryTranslationData.get(verse.numberInSurah) : undefined}
           />
         ))}
       </div>
@@ -1217,6 +1240,23 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                           >
                             {Object.entries(TRANSLATIONS).map(([id, info]) => (
                               <option key={id} value={id}>{info.name} ({info.language})</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="text-sm text-stone-600 mb-2 block flex items-center gap-1.5">
+                            <i className="fas fa-plus-circle text-xs text-rose-500"></i>
+                            Additional Translation
+                          </label>
+                          <select
+                            value={secondaryTranslation || ''}
+                            onChange={(e) => setSecondaryTranslation(e.target.value || null)}
+                            className="w-full p-2 border rounded-lg text-sm"
+                          >
+                            <option value="">None</option>
+                            {MULTI_LANG_TRANSLATIONS.map((trans) => (
+                              <option key={trans.id} value={trans.id}>{trans.name}</option>
                             ))}
                           </select>
                         </div>

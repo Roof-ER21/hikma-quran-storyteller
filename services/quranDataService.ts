@@ -28,6 +28,26 @@ export const TRANSLATIONS: Record<string, { name: string; language: string }> = 
   'ta.tamil': { name: 'Tamil', language: 'Tamil' },
 };
 
+// Multi-language translations for secondary translation feature
+export const MULTI_LANG_TRANSLATIONS = [
+  { id: 'en.sahih', name: 'English (Sahih International)', lang: 'en', source: 'alquran' },
+  { id: 'en.yusufali', name: 'English (Yusuf Ali)', lang: 'en', source: 'alquran' },
+  { id: 'en.pickthall', name: 'English (Pickthall)', lang: 'en', source: 'alquran' },
+  { id: 'ur.jalandhry', name: 'Urdu (Jalandhry)', lang: 'ur', source: 'alquran' },
+  { id: 'fr.hamidullah', name: 'French (Hamidullah)', lang: 'fr', source: 'alquran' },
+  { id: 'tr.diyanet', name: 'Turkish (Diyanet)', lang: 'tr', source: 'alquran' },
+  { id: 'id.indonesian', name: 'Indonesian', lang: 'id', source: 'alquran' },
+  { id: 'bn.bengali', name: 'Bengali', lang: 'bn', source: 'alquran' },
+  { id: 'de.bubenheim', name: 'German (Bubenheim)', lang: 'de', source: 'alquran' },
+  { id: 'es.cortes', name: 'Spanish (Cortes)', lang: 'es', source: 'alquran' },
+  { id: 'ru.kuliev', name: 'Russian (Kuliev)', lang: 'ru', source: 'alquran' },
+  { id: 'ml.abdulhameed', name: 'Malayalam', lang: 'ml', source: 'alquran' },
+  { id: 'zh.majian', name: 'Chinese (Ma Jian)', lang: 'zh', source: 'alquran' },
+  { id: 'ja.japanese', name: 'Japanese', lang: 'ja', source: 'alquran' },
+  { id: 'ko.korean', name: 'Korean', lang: 'ko', source: 'alquran' },
+  { id: 'hi.hindi', name: 'Hindi', lang: 'hi', source: 'alquran' },
+];
+
 // Simple in-memory cache
 const cache: Map<string, { data: any; timestamp: number }> = new Map();
 const CACHE_DURATION = 1000 * 60 * 60; // 1 hour
@@ -403,6 +423,40 @@ export async function getSurahTajweedText(surahNumber: number): Promise<Map<numb
     return tajweedMap;
   } catch (error) {
     console.error('Error fetching tajweed text:', error);
+    return new Map();
+  }
+}
+
+/**
+ * Get a specific translation for a surah (for secondary translations)
+ * Returns a Map of verseNumberInSurah -> translation text
+ */
+export async function getMultiLangTranslation(
+  surahNumber: number,
+  translationId: string
+): Promise<Map<number, string>> {
+  const cacheKey = `translation-${surahNumber}-${translationId}`;
+  const cached = getCached<Map<number, string>>(cacheKey);
+  if (cached) return cached;
+
+  try {
+    const response = await fetch(`${BASE_URL}/surah/${surahNumber}/${translationId}`);
+    const result = await response.json();
+
+    if (result.code !== 200) {
+      console.error(`Failed to fetch translation ${translationId} for surah ${surahNumber}`);
+      return new Map();
+    }
+
+    const translationMap = new Map<number, string>();
+    for (const ayah of result.data.ayahs) {
+      translationMap.set(ayah.numberInSurah, ayah.text);
+    }
+
+    setCache(cacheKey, translationMap);
+    return translationMap;
+  } catch (error) {
+    console.error(`Error fetching translation ${translationId} for surah ${surahNumber}:`, error);
     return new Map();
   }
 }

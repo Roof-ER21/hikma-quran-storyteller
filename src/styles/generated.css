@@ -4116,6 +4116,12 @@ html.dark {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-blue-50\/50 {
+  --tw-gradient-from: rgb(239 246 255 / 0.5) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .from-blue-500 {
   --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(59 130 246 / 0) var(--tw-gradient-to-position);
@@ -4626,6 +4632,10 @@ html.dark {
 
 .to-indigo-50 {
   --tw-gradient-to: #eef2ff var(--tw-gradient-to-position);
+}
+
+.to-indigo-50\/50 {
+  --tw-gradient-to: rgb(238 242 255 / 0.5) var(--tw-gradient-to-position);
 }
 
 .to-indigo-700 {
@@ -5381,6 +5391,11 @@ html.dark {
 .text-green-800 {
   --tw-text-opacity: 1;
   color: rgb(22 101 52 / var(--tw-text-opacity));
+}
+
+.text-indigo-500 {
+  --tw-text-opacity: 1;
+  color: rgb(99 102 241 / var(--tw-text-opacity));
 }
 
 .text-indigo-600 {

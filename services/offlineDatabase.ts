@@ -147,6 +147,21 @@ export interface KidsStoryProgress {
 }
 
 // ============================================
+// FSRS (Spaced Repetition) Schema
+// ============================================
+
+export interface FSRSReviewCard {
+  id: string; // verseKey format: "{surahNumber}:{verseNumber}"
+  surahNumber: number;
+  verseNumber: number;
+  card: any; // Serialized FSRS card state
+  lastReview: number; // timestamp
+  nextReview: number; // timestamp of next scheduled review
+  totalReviews: number;
+  createdAt: number;
+}
+
+// ============================================
 // Dexie Database Class
 // ============================================
 
@@ -165,6 +180,8 @@ class HikmaDatabase extends Dexie {
   kidsLetterProgress!: Table<KidsLetterProgress, string>;
   kidsSurahProgress!: Table<KidsSurahProgress, string>;
   kidsStoryProgress!: Table<KidsStoryProgress, string>;
+  // FSRS tables
+  fsrsCards!: Table<FSRSReviewCard, string>;
 
   constructor() {
     super('HikmaQuranDB');
@@ -219,6 +236,24 @@ class HikmaDatabase extends Dexie {
       kidsLetterProgress: 'id, mastered, lastPracticed',
       kidsSurahProgress: 'id, surahNumber, completed',
       kidsStoryProgress: 'id, storyId, completed'
+    });
+
+    // Version 5: Add FSRS spaced repetition table
+    this.version(5).stores({
+      surahs: 'number, translationId, cachedAt',
+      audio: 'id, surahNumber, verseNumber, reciterId, cachedAt',
+      preferences: 'id',
+      downloads: 'id, type, status',
+      bookmarks: 'id, surahNumber, verseNumber, createdAt',
+      history: 'id, surahNumber, date, updatedAt',
+      stories: 'id, prophet, topic, language, cachedAt',
+      storyImages: 'id, storyId, sceneIndex, cachedAt',
+      storyReadingPositions: 'id, prophet, topic, language, lastReadAt',
+      kidsProgress: 'id',
+      kidsLetterProgress: 'id, mastered, lastPracticed',
+      kidsSurahProgress: 'id, surahNumber, completed',
+      kidsStoryProgress: 'id, storyId, completed',
+      fsrsCards: 'id, surahNumber, nextReview, lastReview'
     });
   }
 }
@@ -1311,6 +1346,61 @@ export async function checkAndUnlockBadges(stats: {
     return newlyUnlocked;
   } catch (error) {
     console.error('Error checking and unlocking badges:', error);
+    return [];
+  }
+}
+
+// ============================================
+// FSRS Review Card Operations
+// ============================================
+
+/**
+ * Save or update an FSRS card
+ */
+export async function saveFSRSCard(card: FSRSReviewCard): Promise<void> {
+  try {
+    await db.fsrsCards.put(card);
+  } catch (error) {
+    console.error('Error saving FSRS card:', error);
+  }
+}
+
+/**
+ * Get an FSRS card by verseKey
+ */
+export async function getFSRSCard(verseKey: string): Promise<FSRSReviewCard | undefined> {
+  try {
+    return await db.fsrsCards.get(verseKey);
+  } catch (error) {
+    console.error('Error getting FSRS card:', error);
+    return undefined;
+  }
+}
+
+/**
+ * Get all FSRS cards that are due for review (nextReview <= now)
+ */
+export async function getDueFSRSCards(): Promise<FSRSReviewCard[]> {
+  try {
+    const now = Date.now();
+    return await db.fsrsCards
+      .where('nextReview')
+      .belowOrEqual(now)
+      .toArray();
+  } catch (error) {
+    console.error('Error getting due FSRS cards:', error);
+    return [];
+  }
+}
+
+/**
+ * Get all FSRS cards
+ */
+export async function getAllFSRSCards(): Promise<FSRSReviewCard[]> {
+  try {
+    return await db.fsrsCards.toArray();
+  } catch (error) {
+    console.error('Error getting all FSRS cards:', error);
     return [];
   }
 }

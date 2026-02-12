@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Verse, RecitationResult } from '../types';
 import { checkRecitation } from '../services/geminiService';
+import {
+  createNewCard,
+  reviewCard,
+  getDueCards,
+  getReviewStats
+} from '../services/fsrsService';
 
 interface MemorizationModeProps {
   verses: Verse[];
@@ -32,6 +38,7 @@ export const MemorizationMode: React.FC<MemorizationModeProps> = ({
   const [result, setResult] = useState<RecitationResult | null>(null);
   const [progress, setProgress] = useState<Record<number, VerseProgress>>({});
   const [showResult, setShowResult] = useState(false);
+  const [dueReviewCount, setDueReviewCount] = useState(0);
 
   const currentVerse = verses[currentVerseIndex];
   const mediaRecorderRef = React.useRef<MediaRecorder | null>(null);
@@ -44,6 +51,15 @@ export const MemorizationMode: React.FC<MemorizationModeProps> = ({
         streamRef.current.getTracks().forEach(track => track.stop());
       }
     };
+  }, []);
+
+  // Load due review count on mount
+  useEffect(() => {
+    const loadDueCount = async () => {
+      const stats = await getReviewStats();
+      setDueReviewCount(stats.dueToday);
+    };
+    loadDueCount();
   }, []);
 
   useEffect(() => {
@@ -147,7 +163,7 @@ export const MemorizationMode: React.FC<MemorizationModeProps> = ({
     }
   };
 
-  const updateProgress = (verseNumber: number, accuracy: number) => {
+  const updateProgress = async (verseNumber: number, accuracy: number) => {
     setProgress(prev => {
       const existing = prev[verseNumber] || {
         verseNumber,
@@ -159,6 +175,16 @@ export const MemorizationMode: React.FC<MemorizationModeProps> = ({
 
       const newHistory = [...existing.accuracyHistory, accuracy].slice(-10);
       const newStreak = accuracy >= 85 ? existing.currentStreak + 1 : 0;
+      const newBestAccuracy = Math.max(existing.bestAccuracy, accuracy);
+
+      // Check if verse is ready for FSRS (best accuracy >= 90 and streak >= 3)
+      if (newBestAccuracy >= 90 && newStreak >= 3) {
+        // Create FSRS card for this verse
+        const verseKey = `${surahNumber}:${verseNumber}`;
+        createNewCard(verseKey).catch(err => {
+          console.error('Failed to create FSRS card:', err);
+        });
+      }
 
       return {
         ...prev,
@@ -166,11 +192,34 @@ export const MemorizationMode: React.FC<MemorizationModeProps> = ({
           verseNumber,
           accuracyHistory: newHistory,
           currentStreak: newStreak,
-          bestAccuracy: Math.max(existing.bestAccuracy, accuracy),
+          bestAccuracy: newBestAccuracy,
           attempts: existing.attempts + 1
         }
       };
     });
+
+    // Update FSRS review based on accuracy
+    const verseKey = `${surahNumber}:${verseNumber}`;
+    try {
+      let rating: 'again' | 'hard' | 'good' | 'easy';
+      if (accuracy >= 95) {
+        rating = 'easy';
+      } else if (accuracy >= 85) {
+        rating = 'good';
+      } else if (accuracy >= 70) {
+        rating = 'hard';
+      } else {
+        rating = 'again';
+      }
+
+      await reviewCard(verseKey, rating);
+
+      // Refresh due count
+      const stats = await getReviewStats();
+      setDueReviewCount(stats.dueToday);
+    } catch (err) {
+      console.error('Failed to update FSRS review:', err);
+    }
   };
 
   const advanceStage = () => {
@@ -225,6 +274,20 @@ export const MemorizationMode: React.FC<MemorizationModeProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+      {/* Due Review Banner */}
+      {dueReviewCount > 0 && (
+        <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl p-4 mb-4 shadow-lg flex items-center gap-3">
+          <i className="fas fa-clock text-2xl"></i>
+          <div className="flex-1">
+            <p className="font-semibold">
+              {dueReviewCount} {dueReviewCount === 1 ? 'verse' : 'verses'} due for review
+            </p>
+            <p className="text-xs text-amber-50">Keep practicing to strengthen your memorization</p>
+          </div>
+          <i className="fas fa-chevron-right"></i>
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-gradient-to-r from-rose-900 to-rose-700 text-white rounded-2xl p-6 mb-6 shadow-xl">
         <div className="flex items-center justify-between mb-4">

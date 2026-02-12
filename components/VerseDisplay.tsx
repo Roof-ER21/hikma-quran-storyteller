@@ -14,6 +14,7 @@ interface VerseDisplayProps {
   onBookmark?: (verseNumber: number) => void;
   isBookmarked?: boolean;
   tajweedHtml?: string;
+  secondaryTranslation?: string;
 }
 
 const FONT_SIZES = {
@@ -35,6 +36,7 @@ export const VerseDisplay: React.FC<VerseDisplayProps> = ({
   onBookmark,
   isBookmarked = false,
   tajweedHtml,
+  secondaryTranslation,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -158,6 +160,18 @@ export const VerseDisplay: React.FC<VerseDisplayProps> = ({
           <p className={`text-stone-600 leading-relaxed ${sizes.translation}`}>
             {verse.translation}
           </p>
+        </div>
+      )}
+
+      {/* Secondary Translation */}
+      {secondaryTranslation && (
+        <div className="mt-3 pt-3 border-t border-stone-100 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 -mx-4 px-4 py-3 rounded-lg">
+          <div className="flex items-start gap-2">
+            <i className="fas fa-language text-indigo-500 text-xs mt-1"></i>
+            <p className={`text-stone-500 leading-relaxed italic ${sizes.translation}`} style={{ fontSize: '0.9em' }}>
+              {secondaryTranslation}
+            </p>
+          </div>
         </div>
       )}
 

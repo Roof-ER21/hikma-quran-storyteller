@@ -4,6 +4,12 @@
  * Provides prayer times, Qibla direction, and Islamic date calculations
  */
 
+import {
+  PrayerTimes as AdhanPrayerTimes,
+  CalculationMethod,
+  Coordinates,
+} from 'adhan';
+
 export interface PrayerTimes {
   fajr: string;
   sunrise: string;
@@ -143,7 +149,110 @@ export function calculateQiblaDirection(lat: number, lng: number): QiblaDirectio
 }
 
 /**
- * Fetch prayer times from Aladhan API
+ * Calculate prayer times offline using the adhan package
+ */
+export function calculatePrayerTimesOffline(
+  lat: number,
+  lng: number,
+  method: number = 3, // Default: Muslim World League
+  date?: Date
+): PrayerTimes {
+  const targetDate = date || new Date();
+
+  // Create coordinates
+  const coordinates = new Coordinates(lat, lng);
+
+  // Map calculation method number to adhan's CalculationMethod
+  let calculationParams;
+  switch (method) {
+    case 2: // Islamic Society of North America
+      calculationParams = CalculationMethod.NorthAmerica();
+      break;
+    case 3: // Muslim World League
+      calculationParams = CalculationMethod.MuslimWorldLeague();
+      break;
+    case 4: // Umm Al-Qura University, Makkah
+      calculationParams = CalculationMethod.UmmAlQura();
+      break;
+    case 5: // Egyptian General Authority of Survey
+      calculationParams = CalculationMethod.Egyptian();
+      break;
+    case 1: // University of Islamic Sciences, Karachi
+      calculationParams = CalculationMethod.Karachi();
+      break;
+    case 8: // Gulf Region
+      calculationParams = CalculationMethod.Dubai();
+      break;
+    case 9: // Kuwait
+      calculationParams = CalculationMethod.Kuwait();
+      break;
+    case 10: // Qatar
+      calculationParams = CalculationMethod.Qatar();
+      break;
+    case 11: // Majlis Ugama Islam Singapura
+      calculationParams = CalculationMethod.Singapore();
+      break;
+    case 7: // Institute of Geophysics, University of Tehran
+      calculationParams = CalculationMethod.Tehran();
+      break;
+    case 13: // Diyanet İşleri Başkanlığı
+      calculationParams = CalculationMethod.Turkey();
+      break;
+    default: // Fallback to Muslim World League
+      calculationParams = CalculationMethod.MuslimWorldLeague();
+  }
+
+  // Calculate prayer times
+  const adhanPrayerTimes = new AdhanPrayerTimes(coordinates, targetDate, calculationParams);
+
+  // Helper function to format time as HH:MM
+  const formatTime = (dateTime: Date): string => {
+    const hours = dateTime.getHours().toString().padStart(2, '0');
+    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
+  // Calculate midnight (midpoint between sunset and next fajr)
+  const midnightDate = new Date(adhanPrayerTimes.maghrib);
+  midnightDate.setHours(midnightDate.getHours() + 6); // Approximate midnight as 6 hours after maghrib
+
+  // Get timezone info
+  const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const timezoneOffset = -targetDate.getTimezoneOffset() / 60;
+  const timezoneStr = `UTC${timezoneOffset >= 0 ? '+' : ''}${timezoneOffset}`;
+
+  // Format Gregorian date
+  const dateStr = targetDate.toLocaleDateString('en-US', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
+  // Calculate Hijri date using fallback method
+  const hijriDate = calculateHijriDateFallback(targetDate);
+  const hijriDateStr = `${hijriDate.day} ${hijriDate.monthName} ${hijriDate.year} ${hijriDate.designation}`;
+
+  // Get location from timezone
+  const location = getLocationFromTimezone(timezoneName);
+
+  return {
+    fajr: formatTime(adhanPrayerTimes.fajr),
+    sunrise: formatTime(adhanPrayerTimes.sunrise),
+    dhuhr: formatTime(adhanPrayerTimes.dhuhr),
+    asr: formatTime(adhanPrayerTimes.asr),
+    maghrib: formatTime(adhanPrayerTimes.maghrib),
+    isha: formatTime(adhanPrayerTimes.isha),
+    midnight: formatTime(midnightDate),
+    date: dateStr,
+    hijriDate: hijriDateStr,
+    timezone: `${timezoneName} (${timezoneStr})`,
+    location,
+  };
+}
+
+/**
+ * Fetch prayer times from Aladhan API (with offline fallback)
  */
 export async function getPrayerTimes(
   lat: number,
@@ -194,8 +303,9 @@ export async function getPrayerTimes(
 
     return prayerTimes;
   } catch (error) {
-    console.error('Error fetching prayer times:', error);
-    throw error;
+    console.error('Error fetching prayer times from API, falling back to offline calculation:', error);
+    // Fallback to offline calculation
+    return calculatePrayerTimesOffline(lat, lng, method, targetDate);
   }
 }
 
@@ -482,6 +592,19 @@ export function getTimeUntilPrayer(prayerTime: string): string {
     return `${diffHours}h ${diffMinutes}m`;
   }
   return `${diffMinutes}m`;
+}
+
+/**
+ * Get prayer times using only offline calculation (no API)
+ * Useful for users who prefer offline mode or have no internet connection
+ */
+export async function getPrayerTimesOffline(
+  lat: number,
+  lng: number,
+  method: number = 3, // Default: Muslim World League
+  date?: Date
+): Promise<PrayerTimes> {
+  return calculatePrayerTimesOffline(lat, lng, method, date);
 }
 
 /**
