@@ -16,7 +16,37 @@
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
 		A21PRIV022026020900000003 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A21PRIV012026020900000001 /* PrivacyInfo.xcprivacy */; };
+		A21WIDGET00000000000003 /* PrayerCountdownAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21WIDGET00000000000001 /* PrayerCountdownAttributes.swift */; };
+		A21WIDGET00000000000004 /* PrayerActivityPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21WIDGET00000000000002 /* PrayerActivityPlugin.swift */; };
+		A21WIDGET00000000000005 /* PrayerCountdownAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21WIDGET00000000000001 /* PrayerCountdownAttributes.swift */; };
+		A21WIDGET00000000000010 /* PrayerCountdownWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21WIDGET00000000000007 /* PrayerCountdownWidget.swift */; };
+		A21WIDGET00000000000011 /* PrayerCountdownWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21WIDGET00000000000008 /* PrayerCountdownWidgetBundle.swift */; };
+		A21WIDGET00000000000022 /* PrayerCountdownWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A21WIDGET00000000000006 /* PrayerCountdownWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A21WIDGET00000000000020 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A21WIDGET00000000000019;
+			remoteInfo = PrayerCountdownWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A21WIDGET00000000000023 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A21WIDGET00000000000022 /* PrayerCountdownWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
@@ -31,6 +61,12 @@
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		A21PRIV012026020900000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A21ENTL012026020900000002 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
+		A21WIDGET00000000000001 /* PrayerCountdownAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerCountdownAttributes.swift; sourceTree = "<group>"; };
+		A21WIDGET00000000000002 /* PrayerActivityPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerActivityPlugin.swift; sourceTree = "<group>"; };
+		A21WIDGET00000000000006 /* PrayerCountdownWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PrayerCountdownWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A21WIDGET00000000000007 /* PrayerCountdownWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerCountdownWidget.swift; sourceTree = "<group>"; };
+		A21WIDGET00000000000008 /* PrayerCountdownWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerCountdownWidgetBundle.swift; sourceTree = "<group>"; };
+		A21WIDGET00000000000009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +78,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A21WIDGET00000000000014 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -50,6 +93,7 @@
 			children = (
 				958DCC722DB07C7200EA8C5F /* debug.xcconfig */,
 				504EC3061FED79650016851F /* App */,
+				A21WIDGET00000000000012 /* PrayerCountdownWidget */,
 				504EC3051FED79650016851F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				504EC3041FED79650016851F /* App.app */,
+				A21WIDGET00000000000006 /* PrayerCountdownWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +112,8 @@
 			children = (
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
+				A21WIDGET00000000000001 /* PrayerCountdownAttributes.swift */,
+				A21WIDGET00000000000002 /* PrayerActivityPlugin.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -79,6 +126,17 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		A21WIDGET00000000000012 /* PrayerCountdownWidget */ = {
+			isa = PBXGroup;
+			children = (
+				A21WIDGET00000000000007 /* PrayerCountdownWidget.swift */,
+				A21WIDGET00000000000008 /* PrayerCountdownWidgetBundle.swift */,
+				A21WIDGET00000000000009 /* Info.plist */,
+			);
+			name = PrayerCountdownWidget;
+			path = ../../PrayerCountdownWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -89,10 +147,12 @@
 				504EC3001FED79650016851F /* Sources */,
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
+				A21WIDGET00000000000023 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A21WIDGET00000000000021 /* PBXTargetDependency */,
 			);
 			name = App;
 			packageProductDependencies = (
@@ -101,6 +161,23 @@
 			productName = App;
 			productReference = 504EC3041FED79650016851F /* App.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A21WIDGET00000000000019 /* PrayerCountdownWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A21WIDGET00000000000018 /* Build configuration list for PBXNativeTarget "PrayerCountdownWidgetExtension" */;
+			buildPhases = (
+				A21WIDGET00000000000013 /* Sources */,
+				A21WIDGET00000000000014 /* Frameworks */,
+				A21WIDGET00000000000015 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PrayerCountdownWidgetExtension;
+			productName = PrayerCountdownWidgetExtension;
+			productReference = A21WIDGET00000000000006 /* PrayerCountdownWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -114,6 +191,10 @@
 					504EC3031FED79650016851F = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1100;
+						ProvisioningStyle = Automatic;
+					};
+					A21WIDGET00000000000019 = {
+						CreatedOnToolsVersion = 15.0;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -135,6 +216,7 @@
 			projectRoot = "";
 			targets = (
 				504EC3031FED79650016851F /* App */,
+				A21WIDGET00000000000019 /* PrayerCountdownWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -154,6 +236,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A21WIDGET00000000000015 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -162,10 +251,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
+				A21WIDGET00000000000003 /* PrayerCountdownAttributes.swift in Sources */,
+				A21WIDGET00000000000004 /* PrayerActivityPlugin.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A21WIDGET00000000000013 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A21WIDGET00000000000010 /* PrayerCountdownWidget.swift in Sources */,
+				A21WIDGET00000000000011 /* PrayerCountdownWidgetBundle.swift in Sources */,
+				A21WIDGET00000000000005 /* PrayerCountdownAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A21WIDGET00000000000021 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A21WIDGET00000000000019 /* PrayerCountdownWidgetExtension */;
+			targetProxy = A21WIDGET00000000000020 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		504EC30B1FED79650016851F /* Main.storyboard */ = {
@@ -342,6 +451,58 @@
 			};
 			name = Release;
 		};
+		A21WIDGET00000000000016 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "../../PrayerCountdownWidget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Prayer Countdown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.roofer21.alayasoad.PrayerCountdownWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A21WIDGET00000000000017 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "../../PrayerCountdownWidget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Prayer Countdown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.roofer21.alayasoad.PrayerCountdownWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -359,6 +520,15 @@
 			buildConfigurations = (
 				504EC3171FED79650016851F /* Debug */,
 				504EC3181FED79650016851F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A21WIDGET00000000000018 /* Build configuration list for PBXNativeTarget "PrayerCountdownWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A21WIDGET00000000000016 /* Debug */,
+				A21WIDGET00000000000017 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

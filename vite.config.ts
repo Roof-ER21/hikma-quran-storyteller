@@ -2,9 +2,10 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 
 export default defineConfig(({ mode }) => {
-    // API keys are now handled server-side via proxy endpoints
+    const env = loadEnv(mode, process.cwd(), '');
     return {
       server: {
         port: 3000,
@@ -19,6 +20,12 @@ export default defineConfig(({ mode }) => {
       },
       plugins: [
         react(),
+        // Sentry source map upload (only in production builds with auth token)
+        ...(env.SENTRY_AUTH_TOKEN ? [sentryVitePlugin({
+          org: env.SENTRY_ORG || 'alaya-soad',
+          project: env.SENTRY_PROJECT || 'quran-tales',
+          authToken: env.SENTRY_AUTH_TOKEN,
+        })] : []),
         VitePWA({
           registerType: 'autoUpdate',
           // Avoid terser crashes during SW generation
@@ -200,6 +207,7 @@ export default defineConfig(({ mode }) => {
         }
       },
       build: {
+        sourcemap: !!env.SENTRY_AUTH_TOKEN,
         chunkSizeWarningLimit: 1200,
         minify: 'terser',
         terserOptions: {

@@ -9,19 +9,7 @@ import ActivityKit
 import WidgetKit
 import SwiftUI
 
-// MARK: - Activity Attributes
-
-struct PrayerCountdownAttributes: ActivityAttributes {
-    public struct ContentState: Codable, Hashable {
-        var prayerName: String
-        var prayerNameArabic: String
-        var prayerTime: Date
-        var nextPrayerName: String
-        var nextPrayerTime: Date
-    }
-
-    var startedAt: Date
-}
+// PrayerCountdownAttributes defined in shared PrayerCountdownAttributes.swift
 
 // MARK: - Live Activity Widget
 
