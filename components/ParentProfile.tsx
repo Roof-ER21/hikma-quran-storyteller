@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getParentProfile, changeParentPin, syncProgressToServer, loadAndMergeServerProgress } from '../services/progressSyncService';
+import { getParentProfile, changeParentPin, syncProgressToServer, loadAndMergeServerProgress, exportParentData, deleteParentAccount, getTutorLog } from '../services/progressSyncService';
 import ShareButton from './ShareButton';
 
 interface ParentProfileProps {
@@ -64,6 +64,16 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
 
   // Logout confirmation
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  // Data management
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deletePin, setDeletePin] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [tutorLog, setTutorLog] = useState<Array<{ question_summary: string; created_at: string }>>([]);
+  const [showTutorLog, setShowTutorLog] = useState(false);
+  const [loadingLog, setLoadingLog] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -130,6 +140,54 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
       }, 2000);
     } else {
       setPinError(result.error || 'Failed to change PIN');
+    }
+  };
+
+  const handleExportData = async () => {
+    setExporting(true);
+    try {
+      const blob = await exportParentData();
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `hikma-data-export-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Export failed:', error);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!deletePin || deletePin.length < 4) {
+      setDeleteError('Enter your PIN to confirm deletion');
+      return;
+    }
+    setDeleting(true);
+    setDeleteError('');
+    const result = await deleteParentAccount(deletePin);
+    setDeleting(false);
+    if (result.success) {
+      onLogout();
+      onClose();
+    } else {
+      setDeleteError(result.error || 'Failed to delete account');
+    }
+  };
+
+  const handleViewTutorLog = async () => {
+    setShowTutorLog(!showTutorLog);
+    if (!showTutorLog) {
+      setLoadingLog(true);
+      const logs = await getTutorLog();
+      setTutorLog(logs);
+      setLoadingLog(false);
     }
   };
 
@@ -714,6 +772,53 @@ Keep up the amazing work! 🌙✨`;
                 )}
               </div>
 
+              {/* AI Tutor Log (Parental Review) */}
+              <div className="bg-purple-50 rounded-xl p-4">
+                <h3 className="font-semibold text-purple-900 mb-2">
+                  <i className="fas fa-robot mr-2"></i>AI Tutor Activity
+                </h3>
+                <button
+                  onClick={handleViewTutorLog}
+                  className="text-purple-600 hover:text-purple-700 text-sm font-medium"
+                >
+                  {showTutorLog ? 'Hide' : 'View'} questions your child asked Soso
+                </button>
+                {showTutorLog && (
+                  <div className="mt-3 space-y-2 max-h-40 overflow-y-auto">
+                    {loadingLog ? (
+                      <p className="text-xs text-purple-500"><i className="fas fa-spinner fa-spin mr-1"></i>Loading...</p>
+                    ) : tutorLog.length > 0 ? (
+                      tutorLog.map((log, i) => (
+                        <div key={i} className="bg-white/60 rounded-lg p-2">
+                          <p className="text-xs text-purple-800">{log.question_summary}</p>
+                          <p className="text-xs text-purple-400 mt-1">{new Date(log.created_at).toLocaleDateString()}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-xs text-purple-500">No questions logged yet.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Data Management */}
+              <div className="bg-green-50 rounded-xl p-4">
+                <h3 className="font-semibold text-green-900 mb-2">
+                  <i className="fas fa-database mr-2"></i>Your Data
+                </h3>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleExportData}
+                    disabled={exporting}
+                    className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
+                  >
+                    <i className={`fas ${exporting ? 'fa-spinner fa-spin' : 'fa-download'}`}></i>
+                    {exporting ? 'Exporting...' : 'Export Data'}
+                  </button>
+                </div>
+                <p className="text-xs text-green-600 mt-2">Download all your child's learning data as a JSON file.</p>
+              </div>
+
               {/* Logout */}
               <div className="bg-red-50 rounded-xl p-4">
                 <h3 className="font-semibold text-red-800 mb-2">Logout</h3>
@@ -741,6 +846,57 @@ Keep up the amazing work! 🌙✨`;
                         className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition-colors"
                       >
                         Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Delete Account */}
+              <div className="bg-red-50 rounded-xl p-4 border border-red-200">
+                <h3 className="font-semibold text-red-800 mb-2">
+                  <i className="fas fa-exclamation-triangle mr-2"></i>Delete Account
+                </h3>
+                {!showDeleteConfirm ? (
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="text-red-600 hover:text-red-700 text-sm font-medium"
+                  >
+                    Permanently delete account and all data
+                  </button>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-sm text-red-700">
+                      This will permanently delete your account and ALL learning progress. This cannot be undone.
+                    </p>
+                    <input
+                      type="password"
+                      placeholder="Enter your PIN to confirm"
+                      value={deletePin}
+                      onChange={(e) => setDeletePin(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                      className="w-full px-3 py-2 bg-white border border-red-200 rounded-lg text-center text-lg tracking-widest"
+                      maxLength={8}
+                    />
+                    {deleteError && (
+                      <p className="text-red-600 text-sm">{deleteError}</p>
+                    )}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setShowDeleteConfirm(false);
+                          setDeletePin('');
+                          setDeleteError('');
+                        }}
+                        className="flex-1 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-lg text-sm transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleDeleteAccount}
+                        disabled={deleting}
+                        className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition-colors"
+                      >
+                        {deleting ? 'Deleting...' : 'Delete Everything'}
                       </button>
                     </div>
                   </div>

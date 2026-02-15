@@ -17,6 +17,7 @@ import {
   getTodayInteractionCount
 } from '../../services/kidsTutorService';
 import type { KidsTutorContext } from '../../services/ai/types';
+import { logTutorQuestion } from '../../services/progressSyncService';
 
 interface Message {
   id: string;
@@ -153,6 +154,9 @@ export const SosoTutor: React.FC<SosoTutorProps> = ({
     setIsThinking(true);
 
     try {
+      // Log question for parental review (COPPA audit trail)
+      logTutorQuestion(userMessage.text);
+
       // Get Soso's response
       const response = await askSoso(userMessage.text, { ...context, language });
 

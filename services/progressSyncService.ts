@@ -363,6 +363,113 @@ export function initProgressSync(): () => void {
 }
 
 /**
+ * Export all parent data as JSON (COPPA: parental right to review data)
+ */
+export async function exportParentData(): Promise<Blob | null> {
+  const token = getAuthToken();
+  if (!token) return null;
+
+  try {
+    const response = await fetch('/api/parent/data-export', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    return new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  } catch (error) {
+    console.error('Error exporting data:', error);
+    return null;
+  }
+}
+
+/**
+ * Delete parent account and all associated data (COPPA: parental right to delete)
+ */
+export async function deleteParentAccount(currentPin: string): Promise<{ success: boolean; error?: string }> {
+  const token = getAuthToken();
+  if (!token) return { success: false, error: 'Not logged in' };
+
+  try {
+    const response = await fetch('/api/parent/account', {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ currentPin })
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      return { success: false, error: data.error || 'Failed to delete account' };
+    }
+
+    // Clear all local data
+    localStorage.removeItem('alayasoad_parent_token');
+    localStorage.removeItem('alayasoad_parent_name');
+    localStorage.removeItem('alayasoad_coppa_consent');
+    localStorage.removeItem('alayasoad_ai_tutor_enabled');
+    localStorage.removeItem('alayasoad_sync_enabled');
+    localStorage.removeItem('alayasoad_kids_mode');
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    return { success: false, error: 'Network error' };
+  }
+}
+
+/**
+ * Log an AI tutor question for parental review (COPPA audit trail)
+ */
+export async function logTutorQuestion(questionSummary: string): Promise<void> {
+  const token = getAuthToken();
+  if (!token) return;
+
+  try {
+    await fetch('/api/parent/ai-tutor-log', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ questionSummary: questionSummary.slice(0, 200) })
+    });
+  } catch (error) {
+    // Non-critical, don't block the UI
+    console.error('Error logging tutor question:', error);
+  }
+}
+
+/**
+ * Get AI tutor question log for parental review
+ */
+export async function getTutorLog(): Promise<Array<{ question_summary: string; created_at: string }>> {
+  const token = getAuthToken();
+  if (!token) return [];
+
+  try {
+    const response = await fetch('/api/parent/ai-tutor-log', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    return data.logs || [];
+  } catch (error) {
+    console.error('Error fetching tutor log:', error);
+    return [];
+  }
+}
+
+/**
  * Cleanup progress sync listeners
  */
 export function cleanupProgressSync(): void {

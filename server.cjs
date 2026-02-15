@@ -120,6 +120,16 @@ async function initDb() {
       UNIQUE(parent_id, story_id)
     );
   `);
+
+  // AI tutor audit log
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS ai_tutor_log (
+      id SERIAL PRIMARY KEY,
+      parent_id INTEGER NOT NULL REFERENCES parents(id) ON DELETE CASCADE,
+      question_summary TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
+  `);
 }
 
 initDb().catch(err => console.error('DB init error:', err));
@@ -302,13 +312,13 @@ app.post('/api/parent/kids-progress/sync', authMiddleware, async (req, res) => {
     const parentId = req.user.id;
     const { progress, letters, surahs, stories } = req.body || {};
 
-    // Upsert main progress
+    // Upsert main progress (COPPA compliance: child_name stored as NULL on server)
     if (progress) {
       await pool.query(`
         INSERT INTO kids_progress (parent_id, child_name, total_stars, level, badges, current_streak, last_play_date, updated_at)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+        VALUES ($1, NULL, $2, $3, $4, $5, $6, NOW())
         ON CONFLICT (parent_id) DO UPDATE SET
-          child_name = COALESCE(EXCLUDED.child_name, kids_progress.child_name),
+          child_name = NULL,
           total_stars = GREATEST(EXCLUDED.total_stars, kids_progress.total_stars),
           level = GREATEST(EXCLUDED.level, kids_progress.level),
           badges = (
@@ -319,7 +329,6 @@ app.post('/api/parent/kids-progress/sync', authMiddleware, async (req, res) => {
           updated_at = NOW()
       `, [
         parentId,
-        progress.childName || null,
         progress.totalStars || 0,
         progress.level || 1,
         progress.badges || [],
@@ -403,6 +412,119 @@ app.post('/api/parent/kids-progress/sync', authMiddleware, async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'failed to sync progress' });
+  }
+});
+
+// Delete parent account and all associated data (COPPA compliance)
+app.delete('/api/parent/account', authRateLimit, authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const { currentPin } = req.body || {};
+    const parentId = req.user.id;
+
+    if (!currentPin) {
+      return res.status(400).json({ error: 'current pin required for account deletion' });
+    }
+
+    // Verify current PIN for safety
+    const result = await pool.query(`SELECT pin_hash FROM parents WHERE id = $1 LIMIT 1`, [parentId]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'parent not found' });
+
+    const ok = await bcrypt.compare(String(currentPin), result.rows[0].pin_hash);
+    if (!ok) return res.status(401).json({ error: 'invalid pin' });
+
+    // Delete parent (CASCADE will delete all associated progress data)
+    await pool.query(`DELETE FROM parents WHERE id = $1`, [parentId]);
+
+    res.json({ success: true, message: 'Account and all associated data permanently deleted' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to delete account' });
+  }
+});
+
+// Export all parent data (COPPA compliance)
+app.get('/api/parent/data-export', authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const parentId = req.user.id;
+
+    // Get parent info
+    const parentResult = await pool.query(
+      `SELECT id, name, created_at FROM parents WHERE id = $1 LIMIT 1`,
+      [parentId]
+    );
+
+    // Get all progress data
+    const [progress, letters, surahs, stories, aiLogs] = await Promise.all([
+      pool.query(`SELECT * FROM kids_progress WHERE parent_id = $1`, [parentId]),
+      pool.query(`SELECT * FROM kids_letter_progress WHERE parent_id = $1`, [parentId]),
+      pool.query(`SELECT * FROM kids_surah_progress WHERE parent_id = $1`, [parentId]),
+      pool.query(`SELECT * FROM kids_story_progress WHERE parent_id = $1`, [parentId]),
+      pool.query(`SELECT * FROM ai_tutor_log WHERE parent_id = $1 ORDER BY created_at DESC`, [parentId])
+    ]);
+
+    const exportData = {
+      parent: parentResult.rows[0] || null,
+      progress: progress.rows,
+      letters: letters.rows,
+      surahs: surahs.rows,
+      stories: stories.rows,
+      aiTutorLogs: aiLogs.rows,
+      exportedAt: new Date().toISOString()
+    };
+
+    // Set headers for downloadable JSON
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="hikma-data-export-${parentId}-${Date.now()}.json"`);
+    res.json(exportData);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to export data' });
+  }
+});
+
+// Log AI tutor interaction (COPPA compliance - audit trail)
+app.post('/api/parent/ai-tutor-log', authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const { questionSummary } = req.body || {};
+    const parentId = req.user.id;
+
+    if (!questionSummary || typeof questionSummary !== 'string') {
+      return res.status(400).json({ error: 'questionSummary required' });
+    }
+
+    // Limit summary to 200 chars
+    const summary = questionSummary.slice(0, 200);
+
+    await pool.query(
+      `INSERT INTO ai_tutor_log (parent_id, question_summary) VALUES ($1, $2)`,
+      [parentId, summary]
+    );
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to log ai tutor interaction' });
+  }
+});
+
+// Get AI tutor logs (COPPA compliance - parental oversight)
+app.get('/api/parent/ai-tutor-log', authMiddleware, async (req, res) => {
+  try {
+    if (!pool) return res.status(500).json({ error: 'database unavailable' });
+    const parentId = req.user.id;
+
+    const result = await pool.query(
+      `SELECT id, question_summary, created_at FROM ai_tutor_log WHERE parent_id = $1 ORDER BY created_at DESC LIMIT 50`,
+      [parentId]
+    );
+
+    res.json({ logs: result.rows });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'failed to get ai tutor logs' });
   }
 });
 
@@ -585,9 +707,17 @@ app.post('/api/gemini/tts', aiRateLimit, async (req, res) => {
 });
 
 // =============================================================================
-// Privacy Policy Route
+// Privacy Policy and Terms Routes
 app.get('/privacy-policy', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'privacy-policy.html'));
+});
+
+app.get('/privacy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacy-policy.html'));
+});
+
+app.get('/terms', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'terms-of-service.html'));
 });
 
 // =============================================================================

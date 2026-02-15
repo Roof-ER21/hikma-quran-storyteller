@@ -140,7 +140,7 @@
     <div class="container">
         <h1>Privacy Policy</h1>
         <p class="app-subtitle">Alaya & Soad's Gift: Stories from Jannah</p>
-        <p class="last-updated"><strong>Last Updated:</strong> February 4, 2026</p>
+        <p class="last-updated"><strong>Last Updated:</strong> February 11, 2026</p>
 
         <div class="highlight">
             <p><strong>Our Commitment:</strong> Your privacy and your child's safety are our top priorities. This app is designed to provide Islamic education and Quran learning in a safe, privacy-focused environment. We collect minimal data and do not share your information with third parties except as explicitly described below.</p>
@@ -226,17 +226,153 @@
         <h2>6. Children's Privacy (COPPA Compliance)</h2>
 
         <div class="important">
-            <p><strong>Important:</strong> This app is designed for families with children aged 4 and above. We comply with the Children's Online Privacy Protection Act (COPPA).</p>
+            <p><strong>Important for Parents:</strong> This app is designed for families with children aged 4 and above. We take children's privacy extremely seriously and fully comply with the Children's Online Privacy Protection Act (COPPA). This section explains how we protect your child's information and what rights you have as a parent.</p>
         </div>
 
+        <h3>6.1 Verifiable Parental Consent</h3>
+        <p>Before any child can access the Kids Mode learning environment, we require verifiable parental consent through our account creation process:</p>
         <ul>
-            <li><strong>Parental Control:</strong> All accounts require parent authentication via PIN</li>
-            <li><strong>Minimal Data Collection:</strong> We only collect optional child names and learning progress</li>
-            <li><strong>No Third-Party Sharing:</strong> Children's data is never shared with third parties for marketing or advertising</li>
-            <li><strong>No Advertising:</strong> This app contains no advertisements or tracking pixels</li>
-            <li><strong>No Social Features:</strong> No chat, messaging, or social networking features that could expose children to external contacts</li>
-            <li><strong>Parental Rights:</strong> Parents can request deletion of all child data at any time (see Section 8)</li>
+            <li><strong>Parent Account Required:</strong> Parents must create an account with their name and a secure 4-digit PIN before children can use the app</li>
+            <li><strong>PIN Authentication:</strong> The PIN is hashed using bcrypt encryption and serves as the consent mechanism and ongoing parental gate</li>
+            <li><strong>No Direct Child Registration:</strong> Children cannot create accounts or access learning features without prior parent setup</li>
+            <li><strong>Access Control:</strong> Parents must enter their PIN to access settings, manage data, or make changes to the child's experience</li>
         </ul>
+
+        <h3>6.2 What Information We Collect From Children</h3>
+        <p>We practice strict data minimization when it comes to children's information. Here's exactly what we collect and why:</p>
+
+        <div class="important">
+            <p><strong>We DO NOT collect:</strong> Email addresses, phone numbers, photos, videos, home addresses, school information, biometric data, or any government-issued identifiers from children.</p>
+        </div>
+
+        <p><strong>Optional Information (Parent-Provided):</strong></p>
+        <ul>
+            <li><strong>Child's First Name:</strong> Parents may optionally provide a child's first name for personalization (e.g., "Great job, Alaya!"). This field can be left blank or changed at any time.</li>
+        </ul>
+
+        <p><strong>Educational Progress Data (Automatically Collected During Learning):</strong></p>
+        <ul>
+            <li>Stars earned and levels completed in the Arabic alphabet learning system</li>
+            <li>Letters practiced and recitation attempts (skill tracking only, no audio stored)</li>
+            <li>Badges and achievements unlocked</li>
+            <li>Stories read and completed activities</li>
+            <li>Time spent in educational activities (for progress tracking, not behavioral profiling)</li>
+        </ul>
+
+        <p><strong>Why We Collect This Data:</strong> Educational progress data is collected solely to provide personalized learning experiences, track skill development, award achievements, and help parents monitor their child's Quran learning journey. We never use this data for advertising, profiling, or any purpose unrelated to education.</p>
+
+        <h3>6.3 AI Tutor and Third-Party Processing</h3>
+        <p>Our app includes an optional AI tutor feature powered by Google Gemini. Here's how it works and how parents maintain control:</p>
+
+        <div class="important">
+            <p><strong>Parental Control Over AI Tutor:</strong> The AI tutor is OPTIONAL and can be enabled or disabled at any time by parents in the app settings. When disabled, children can still access all educational content, but AI-generated responses and interactive tutoring will not be available.</p>
+        </div>
+
+        <p><strong>How the AI Tutor Works:</strong></p>
+        <ul>
+            <li><strong>Processing Method:</strong> When enabled, children's questions and voice input are sent to Google's Gemini AI API for real-time processing</li>
+            <li><strong>Content Scope:</strong> Only educational questions about the Quran, Islamic stories, Arabic letters, and prayer concepts are processed</li>
+            <li><strong>No Permanent Storage:</strong> Google Gemini processes requests in real-time and does not permanently store children's questions or voice data on Google's servers (per our service agreement)</li>
+            <li><strong>Service Provider Role:</strong> Google acts as a service provider on our behalf, not as an independent data controller. They are contractually prohibited from using children's data for their own purposes</li>
+            <li><strong>Voice Processing:</strong> When microphone access is granted for recitation practice, audio is processed in real-time for pronunciation feedback and is never stored on our servers or Google's servers</li>
+        </ul>
+
+        <p><strong>Google Gemini Privacy:</strong> Google's handling of data processed through the Gemini API is governed by their AI services terms, which prohibit use of customer data for training models or advertising. Full details: <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a></p>
+
+        <h3>6.4 Parental Controls and Settings</h3>
+        <p>Parents have comprehensive control over their child's experience and data through the PIN-protected settings panel:</p>
+
+        <ul>
+            <li><strong>AI Tutor Toggle:</strong> Enable or disable the AI tutor feature at any time via localStorage toggle (takes effect immediately)</li>
+            <li><strong>Cloud Sync Control:</strong> Parents must explicitly opt-in to cloud sync in settings. Progress sync to our servers is disabled by default and requires parent activation</li>
+            <li><strong>Microphone Permissions:</strong> Parents control whether the app can access the microphone for recitation practice through device settings</li>
+            <li><strong>Location Permissions:</strong> Parents control location access (used only for prayer time calculation, not stored) through device settings</li>
+            <li><strong>Review Progress:</strong> Parents can review all stars, levels, and achievements earned by their child at any time</li>
+            <li><strong>Delete Data:</strong> Parents can request complete deletion of all child data (see Section 6.7)</li>
+        </ul>
+
+        <h3>6.5 Data Security for Children's Information</h3>
+        <p>Children's data receives the same robust security protections as adult data, including:</p>
+        <ul>
+            <li><strong>Encrypted Transmission:</strong> All data sent to our servers uses HTTPS/TLS encryption</li>
+            <li><strong>Secure Database:</strong> PostgreSQL database with SSL connections hosted on Railway's secure infrastructure</li>
+            <li><strong>Access Controls:</strong> Only authenticated parent accounts can access associated child progress data</li>
+            <li><strong>No Cross-User Sharing:</strong> Children's data is never shared with other users or made public</li>
+            <li><strong>Crash Reporting Disabled:</strong> Sentry error tracking is automatically disabled in Kids Mode to prevent any child interaction data from being logged</li>
+        </ul>
+
+        <h3>6.6 What We Do NOT Do with Children's Information</h3>
+        <p>To ensure your child's safety and privacy, we explicitly DO NOT:</p>
+        <ul>
+            <li>❌ <strong>No Behavioral Advertising:</strong> We do not display any advertisements in the app, and we do not use children's data for advertising or marketing purposes</li>
+            <li>❌ <strong>No Profiling:</strong> We do not create behavioral profiles of children for any commercial purpose</li>
+            <li>❌ <strong>No Sale or Rental:</strong> We never sell, rent, or share children's personal information with third parties</li>
+            <li>❌ <strong>No Social Exposure:</strong> There are no chat features, social networking, or ways for children to communicate with strangers</li>
+            <li>❌ <strong>No Tracking Pixels:</strong> We do not use analytics trackers, cookies, or pixels to monitor children's behavior</li>
+            <li>❌ <strong>No Data Brokering:</strong> We do not share children's data with data brokers, advertisers, or marketing firms</li>
+            <li>❌ <strong>No Public Display:</strong> Children's names, progress, or any information is never displayed publicly or shared with other app users</li>
+        </ul>
+
+        <h3>6.7 Parental Rights Under COPPA</h3>
+        <p>As a parent or legal guardian, you have the following rights regarding your child's information:</p>
+
+        <div class="important">
+            <p><strong>You have the right to:</strong></p>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Review:</strong> Request and receive a description of the specific types of personal information collected from your child</li>
+                <li><strong>Access:</strong> Request a copy of all data we have collected about your child</li>
+                <li><strong>Delete:</strong> Request deletion of your child's personal information at any time</li>
+                <li><strong>Refuse Further Collection:</strong> Withdraw consent and refuse to allow further collection or use of your child's information</li>
+                <li><strong>Control AI Features:</strong> Enable or disable the AI tutor at any time without affecting other app functionality</li>
+                <li><strong>Control Cloud Sync:</strong> Enable or disable cloud synchronization of progress data</li>
+            </ul>
+        </div>
+
+        <p><strong>How to Exercise Your Rights:</strong></p>
+        <ul>
+            <li><strong>In-App:</strong> Use the PIN-protected settings panel to toggle AI tutor, cloud sync, and view progress data</li>
+            <li><strong>Email Request:</strong> Contact us at <a href="mailto:privacy@roofer21.com">privacy@roofer21.com</a> with subject "COPPA Parental Rights Request"</li>
+            <li><strong>Required Information:</strong> Include parent name, child's name (if provided), and account creation date to verify your identity</li>
+            <li><strong>Response Time:</strong> We will respond to all COPPA-related requests within 48 hours</li>
+        </ul>
+
+        <h3>6.8 Data Retention for Children</h3>
+        <ul>
+            <li><strong>Active Learning:</strong> Educational progress data is retained as long as the parent account remains active to provide continuous learning experiences</li>
+            <li><strong>Parent-Requested Deletion:</strong> Upon parent request, all child data (name, progress, achievements) is permanently deleted from our servers within 30 days</li>
+            <li><strong>Account Deletion:</strong> If a parent deletes their account, all associated child data is automatically deleted within 30 days</li>
+            <li><strong>No Indefinite Retention:</strong> We do not retain children's personal information longer than necessary to provide the educational services</li>
+        </ul>
+
+        <h3>6.9 Third-Party Service Provider Obligations</h3>
+        <p>We carefully vet all third-party services that may process children's information:</p>
+
+        <p><strong>Google Gemini AI (Service Provider):</strong></p>
+        <ul>
+            <li><strong>Role:</strong> Processes children's questions and voice input to provide AI tutoring features</li>
+            <li><strong>Data Ownership:</strong> Google does not own children's data; they process it solely on our behalf as a service provider</li>
+            <li><strong>Prohibited Uses:</strong> Google is contractually prohibited from using children's data for advertising, model training, or any purpose beyond providing the AI tutoring service</li>
+            <li><strong>Retention:</strong> Real-time processing only; no permanent storage of children's questions or voice data</li>
+            <li><strong>Parent Control:</strong> Parents can disable this feature entirely, and children can still use all other app features</li>
+        </ul>
+
+        <p><strong>Other Third Parties:</strong></p>
+        <ul>
+            <li><strong>AlQuran.cloud API:</strong> No personal data shared; only anonymous API requests for Quran text and translations</li>
+            <li><strong>Islamic Network CDN:</strong> No personal data shared; public access to Quran audio files</li>
+            <li><strong>Railway (Hosting):</strong> Infrastructure provider; does not access or process children's data</li>
+        </ul>
+
+        <h3>6.10 Contact Information for COPPA Inquiries</h3>
+        <p>If you have questions about how we collect, use, or protect your child's information, please contact:</p>
+        <p><strong>Email:</strong> <a href="mailto:privacy@roofer21.com">privacy@roofer21.com</a><br>
+        <strong>Subject Line:</strong> "COPPA Privacy Inquiry" or "Children's Privacy Question"<br>
+        <strong>Developer:</strong> Roof-ER21<br>
+        <strong>Response Time:</strong> We prioritize COPPA-related inquiries and respond within 48 hours</p>
+
+        <div class="important">
+            <p><strong>Our Commitment to Families:</strong> We built this app to help families learn the Quran together in a safe, privacy-respecting environment. Your child's safety and privacy are our highest priorities. We will never compromise on these principles for commercial gain.</p>
+        </div>
 
         <h2>7. What We Do NOT Do</h2>
         <p>To protect your privacy, we explicitly DO NOT:</p>

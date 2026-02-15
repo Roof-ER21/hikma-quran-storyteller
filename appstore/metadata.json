@@ -1,0 +1,38 @@
+{
+  "name": "Alaya & Soad's Gift",
+  "subtitle": "Quranic Stories & Learning for All Ages",
+  "description": "Alaya & Soad's Gift brings the beautiful stories of the Quran to life through AI-powered storytelling, interactive learning, and a dedicated kids mode.\n\nA LOVING TRIBUTE\nBuilt as a memorial, this app brings Quranic wisdom to families through engaging stories, beautiful recitations, and interactive learning.\n\nKEY FEATURES:\n\nPROPHET STORIES\nExplore the stories of 24 prophets from the Quran. Each story is thoughtfully narrated with AI, covering themes of patience, leadership, family, justice, and miracles.\n\nKIDS MODE\nA safe, age-appropriate environment for children to learn about prophets through interactive stories with illustrations and audio narration. Parents control access through a secure parent gate.\n\nQURAN READER & RECITATION\nRead the complete Quran with 20+ reciters. Listen to beautiful recitations while following along with Arabic text and translation.\n\nAI TUTOR\nAsk questions about Quranic stories, Islamic history, and faith. Your personal AI tutor provides thoughtful, accurate answers.\n\nOFFLINE FIRST\nDownload stories and recitations for offline access. Perfect for learning anywhere - on trips, at the mosque, or at home.\n\nMULTILINGUAL\nAvailable in Arabic, English, and more languages. Automatic language detection ensures the best experience.\n\nISLAMIC TOOLS\nPrayer times, Qibla direction, and other useful Islamic utilities built right in.\n\nPERFECT FOR:\n- Families wanting to teach children about the Quran\n- Muslims seeking to deepen their understanding\n- Students of Islamic studies\n- Anyone interested in the stories of the prophets\n\nFREE vs PREMIUM:\n\nFREE:\n- All prophet stories\n- Basic Quran reader\n- 3 AI tutor sessions per day\n- 5 kids lessons per day\n\nKIDS PREMIUM ($4.99/month or $39.99/year):\n- Unlimited kids content\n- All illustrations and audio\n- Progress tracking for children\n- Offline kids content\n\nSCHOLAR PREMIUM ($9.99/month or $79.99/year):\n- All Quran reciters unlocked\n- Unlimited AI tutor access\n- Advanced Islamic tools\n- Annotation and bookmarks\n- Full offline library\n\nSupport: ahmed.mahmoud@theroofdocs.com\nPrivacy Policy: https://hikma.up.railway.app/privacy\nTerms of Service: https://hikma.up.railway.app/terms\n\nSubscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.",
+  "keywords": [
+    "Quran",
+    "Islamic",
+    "prophet stories",
+    "kids Islam",
+    "Quran recitation",
+    "Islamic learning",
+    "Muslim kids",
+    "Arabic",
+    "faith",
+    "prayer"
+  ],
+  "keywordsString": "Quran,Islamic,prophet stories,kids Islam,Quran recitation,Islamic learning,Muslim kids,Arabic,faith",
+  "categories": {
+    "primary": "Education",
+    "secondary": "Books"
+  },
+  "supportUrl": "mailto:ahmed.mahmoud@theroofdocs.com",
+  "privacyPolicyUrl": "https://hikma.up.railway.app/privacy",
+  "termsOfServiceUrl": "https://hikma.up.railway.app/terms",
+  "ageRating": "4+",
+  "copyright": "2026 A21",
+  "promotionalText": "Bring the stories of the Quran to life for your family. AI-powered storytelling, kids mode with illustrations, and 20+ Quran reciters. Download free today!",
+  "version": "1.0.0",
+  "bundleId": "com.roofer21.alayasoad",
+  "releaseNotes": "Initial release with 24 prophet stories, kids mode, full Quran with 20+ reciters, AI tutor, and offline support.",
+  "pricing": {
+    "model": "Freemium",
+    "kidsPremium": "$4.99/month or $39.99/year",
+    "scholarPremium": "$9.99/month or $79.99/year",
+    "trial": "7 days"
+  },
+  "reviewerNotes": "Thank you for reviewing Alaya & Soad's Gift!\n\nTESTING:\n- No account required for most features\n- Kids mode requires parent gate (create any name + 4-digit PIN)\n- AI features require internet connection\n- Audio streaming from CDN\n\nKEY FEATURES TO TEST:\n1. Select a prophet and read their story\n2. Open Kids Mode (create a parent account first)\n3. Open the Quran reader and play a recitation\n4. Try the AI tutor with a question\n5. Check Islamic tools\n\nNOTE: This app is a memorial tribute and contains no objectionable content. All stories are from the Quran.\n\nQuestions? ahmed.mahmoud@theroofdocs.com"
+}

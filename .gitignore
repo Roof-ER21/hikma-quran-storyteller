@@ -26,3 +26,11 @@ dist-ssr
 # Offline cached Quran audio (downloaded dynamically)
 public/assets/quran/offline/
 .env
+
+# Leftover build/doc artifacts
+BUNDLE_SIZE_COMPARISON.md
+CODE_SPLITTING_SUMMARY.md
+PRIVACY_POLICY_INFO.md
+SECURITY_IMPLEMENTATION.md
+verify-security.sh
+ios-icon-1024.png
