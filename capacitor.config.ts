@@ -18,6 +18,10 @@ const config: CapacitorConfig = {
     allowsLinkPreview: true,
     scrollEnabled: true
   },
+  android: {
+    backgroundColor: '#1e293b',
+    allowMixedContent: false
+  },
   plugins: {
     // Status bar configuration
     StatusBar: {

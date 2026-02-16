@@ -529,11 +529,11 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
     // Active Session View
     return (
-        <div className={`h-full flex flex-col items-center justify-center p-6 bg-gradient-to-b ${colors.gradient} text-white rounded-lg relative overflow-hidden`} dir={isArabic ? 'rtl' : 'ltr'}>
+        <div className={`h-full flex flex-col p-4 sm:p-6 bg-gradient-to-b ${colors.gradient} text-white rounded-lg relative overflow-y-auto overflow-x-hidden`} dir={isArabic ? 'rtl' : 'ltr'}>
             {/* Visualizer Background Effect */}
             <div className={`absolute inset-0 opacity-20 pointer-events-none transition-all duration-500 ${aiSpeaking ? `${colors.bg} blur-3xl` : 'bg-transparent'}`}></div>
 
-            <div className="z-10 text-center space-y-6 max-w-md w-full">
+            <div className="z-10 text-center space-y-4 sm:space-y-6 max-w-md w-full py-4 my-auto">
                 {/* Mode Badge */}
                 <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${colors.bg}/20 ${colors.text} text-sm ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
                     <i className={`fas ${modeConfig.icon}`}></i>
@@ -569,7 +569,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
                 </div>
 
                 {/* Status Indicator */}
-                <div className="relative w-48 h-48 mx-auto flex items-center justify-center">
+                <div className="relative w-40 h-40 sm:w-48 sm:h-48 mx-auto flex items-center justify-center">
                     {/* Ripple rings */}
                     {connected && (
                         <>
@@ -580,7 +580,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
                     <button
                         onClick={connected ? stopSession : startSession}
-                        className={`w-32 h-32 rounded-full flex items-center justify-center text-4xl shadow-2xl transition-all duration-300 transform hover:scale-105 ${connected ? 'bg-red-500 hover:bg-red-600' : `${colors.bg} hover:opacity-90`}`}
+                        className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full flex items-center justify-center text-3xl sm:text-4xl shadow-2xl transition-all duration-300 transform hover:scale-105 ${connected ? 'bg-red-500 hover:bg-red-600' : `${colors.bg} hover:opacity-90`}`}
                     >
                         <i className={`fas ${connected ? 'fa-microphone-slash' : 'fa-microphone'}`}></i>
                     </button>

@@ -1,68 +1,90 @@
-# Hikma (Alaya & Soad's Gift) - App Store Submission Checklist
+# Hikma (Alaya & Soad's Gift) - Store Submission Checklist
 
-## Pre-Submission Requirements
+## Shared Release Readiness
 
-### Metadata & Text Content
-- [x] metadata.json complete
-- [x] App description written
-- [x] Keywords optimized (99 chars)
-- [x] Promotional text
-- [x] Reviewer notes prepared
+### Metadata & Content
+- [x] `appstore/metadata.json` complete for iOS baseline
+- [x] Description, keywords, promo copy drafted
+- [x] Google Play short description (80 chars) finalized (`appstore/google-play-listing.md`)
+- [x] Google Play full description (4000 chars) finalized (`appstore/google-play-listing.md`)
+- [x] Competitive deep-dive completed (`appstore/competitive-deep-dive-2026-02-15.md`)
+- [ ] Store listing screenshots for both platforms exported
 
-### Visual Assets (TO DO)
-- [ ] App icon (1024x1024px)
-- [ ] iPhone 6.7" screenshots (3-10)
-- [ ] iPhone 6.5" screenshots (3-10)
-- [ ] iPhone 5.5" screenshots (3-10)
-- [ ] iPad 12.9" screenshots (2-10)
-- [ ] iPad 11" screenshots (2-10)
+### Legal & Policy
+- [ ] Privacy policy URL publicly reachable
+- [ ] Terms of service URL publicly reachable
+- [ ] Support email monitored
+- [ ] COPPA / child-directed disclosures reviewed in both consoles
+- [ ] Subscription disclosures match in-app pricing and trial terms
 
-### Legal & Support
-- [ ] Privacy policy page deployed
-- [ ] Terms of service page deployed
-- [ ] Support email active
+### Functional QA
+- [x] TypeScript clean (`npx tsc --noEmit`)
+- [x] Production web build clean (`npm run build`)
+- [x] In-app issue reporting wired with diagnostics (`services/issueReportService.ts`)
+- [ ] iOS TestFlight smoke test complete
+- [ ] Android internal testing track smoke test complete
+- [ ] Offline mode verified on real device
+- [ ] Voice/search/microphone permission flow verified on device
+- [ ] Prayer notifications verified on device
 
-### App Store Connect Setup
-- [ ] Apple Developer Account active
-- [ ] App registered in App Store Connect
-- [ ] Bundle ID: com.roofer21.alayasoad
-- [ ] Version 1.0.0 created
-- [ ] Age rating: 4+
-- [ ] Categories: Education (primary), Books (secondary)
+## Apple App Store (iOS)
 
-### In-App Purchases (RevenueCat)
+### Connect Setup
+- [ ] Apple Developer account active
+- [ ] App created in App Store Connect
+- [x] Bundle ID: `com.roofer21.alayasoad`
+- [ ] Version + build numbers set for release
+- [ ] Categories and age rating finalized
+
+### Assets
+- [ ] 1024x1024 App Store icon
+- [ ] iPhone 6.7" screenshots
+- [ ] iPhone 6.5" screenshots
+- [ ] iPhone 5.5" screenshots
+- [ ] iPad 12.9" screenshots
+- [ ] iPad 11" screenshots
+
+### Build & Upload
+- [ ] `npm run ios:build`
+- [ ] Open Xcode, archive, and validate
+- [ ] Upload to App Store Connect
+- [ ] Submit for review
+
+## Google Play Store (Android)
+
+### Play Console Setup
+- [ ] Google Play Developer account active
+- [ ] App created in Play Console
+- [x] Application ID planned as `com.roofer21.alayasoad`
+- [ ] Data safety form completed
+- [ ] Content rating questionnaire completed
+- [ ] Target audience / Families policy reviewed
+
+### Android Build Pipeline
+- [x] Capacitor Android dependency added
+- [x] Android platform generated (`npx cap add android`)
+- [ ] Android signing config prepared
+- [x] Release AAB generated from Android Studio / Gradle (`./gradlew :app:bundleRelease`)
+- [ ] Internal testing track upload completed
+
+### Play Listing Assets
+- [ ] 512x512 app icon
+- [ ] Feature graphic 1024x500
+- [ ] Phone screenshots (minimum 2)
+- [ ] 7-inch tablet screenshots (recommended)
+- [ ] 10-inch tablet screenshots (recommended)
+
+## In-App Purchases / Subscriptions (RevenueCat)
 - [x] RevenueCat Capacitor plugin installed
-- [x] Subscription service created
-- [x] PremiumGate component created
-- [ ] RevenueCat account created & configured
-- [ ] Kids Premium: $4.99/month or $39.99/year
-- [ ] Scholar Premium: $9.99/month or $79.99/year
-- [ ] 7-day free trial configured
-- [ ] Entitlements: "premium", "kids_premium", "scholar"
+- [x] Subscription service and paywall flow wired
+- [ ] Products created in App Store Connect
+- [ ] Products created in Google Play Console
+- [ ] RevenueCat offerings mapped to both stores
+- [ ] End-to-end purchase + restore tested on both platforms
 
-### Build & Testing
-- [ ] Capacitor iOS build working
-- [ ] TestFlight beta testing
-- [ ] Prophet stories loading
-- [ ] Kids mode working
-- [ ] Quran recitations playing
-- [ ] AI tutor responding
-- [ ] RevenueCat paywall flow tested
-- [ ] Offline mode verified
-
-## Submission Steps
-1. Create app in App Store Connect
-2. Upload metadata from metadata.json
-3. Upload screenshots
-4. Configure IAP subscriptions
-5. Build: `npm run ios:build`
-6. Archive in Xcode and upload
-7. Submit for review
-
-## App Details Quick Reference
-- **Name:** Alaya & Soad's Gift
-- **Bundle ID:** com.roofer21.alayasoad
-- **Version:** 1.0.0
-- **Platform:** iOS (Capacitor 8)
-- **Pricing:** Free with IAP
-- **Age Rating:** 4+
+## Command Quick Reference
+- iOS build + sync: `npm run ios:build`
+- iOS open: `npm run ios:open`
+- Android build + sync: `npm run android:build`
+- Android open: `npm run android:open`
+- Android run on device/emulator: `npm run android:run`

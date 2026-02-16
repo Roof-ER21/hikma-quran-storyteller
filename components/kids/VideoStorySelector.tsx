@@ -46,7 +46,7 @@ const VideoStorySelector: React.FC<VideoStorySelectorProps> = ({ onBack, onEarnS
 
   // Show story selection grid
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: KIDS_COLORS.cream }}>
+    <div className="min-h-screen-safe flex flex-col" style={{ backgroundColor: KIDS_COLORS.cream }}>
       {/* Header */}
       <div className="p-4 flex items-center justify-between">
         <button

@@ -63,7 +63,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
     <>
       {/* Offline Banner */}
       {showOfflineBanner && (
-        <div role="alert" className={`fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 py-2 z-50 flex items-center justify-between shadow-lg ${isArabic ? 'flex-row-reverse' : ''}`}>
+        <div role="alert" className={`fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 px-safe py-2 pt-safe z-50 flex items-center justify-between shadow-lg ${isArabic ? 'flex-row-reverse' : ''}`}>
           <div className={`flex items-center gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <i className="fas fa-wifi-slash"></i>
             <span className="text-sm font-medium">{t('status.offline')}</span>
@@ -82,7 +82,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
 
       {/* Update Available Banner */}
       {showUpdateBanner && (
-        <div className={`fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-blue-600 text-white rounded-xl shadow-2xl p-4 z-50 animate-slide-up ${isArabic ? 'text-right' : ''}`}>
+        <div className={`fixed bottom-[calc(env(safe-area-inset-bottom,0px)+1rem)] left-4 right-4 md:left-auto md:right-4 md:w-80 bg-blue-600 text-white rounded-xl shadow-2xl p-4 z-50 animate-slide-up ${isArabic ? 'text-right' : ''}`}>
           <div className={`flex items-start gap-3 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <i className="fas fa-arrow-up"></i>
@@ -113,7 +113,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onDownloadCl
 
       {/* Online/Offline Status Indicator (subtle) */}
       <div
-        className={`fixed bottom-4 right-4 w-3 h-3 rounded-full transition-all duration-300 z-40 ${
+        className={`fixed bottom-[calc(env(safe-area-inset-bottom,0px)+1rem)] right-4 w-3 h-3 rounded-full transition-all duration-300 z-40 ${
           isOnline ? 'bg-green-500' : 'bg-amber-500 animate-pulse'
         }`}
         title={isOnline ? t('status.online') : t('status.offline')}
@@ -193,7 +193,7 @@ export const PWAInstallPrompt: React.FC<InstallPromptProps> = ({ onInstall }) =>
   if (isInstalled || !showPrompt) return null;
 
   return (
-    <div className={`fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-gradient-to-r from-rose-700 to-rose-800 text-white rounded-2xl shadow-2xl p-5 z-50 animate-slide-up ${isArabic ? 'text-right' : ''}`}>
+    <div className={`fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5rem)] left-4 right-4 md:left-auto md:right-4 md:w-96 bg-gradient-to-r from-rose-700 to-rose-800 text-white rounded-2xl shadow-2xl p-5 z-50 animate-slide-up ${isArabic ? 'text-right' : ''}`}>
       <button
         onClick={handleDismiss}
         className={`absolute top-3 ${isArabic ? 'left-3' : 'right-3'} text-white/60 hover:text-white`}

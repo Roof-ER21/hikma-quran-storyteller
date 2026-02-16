@@ -335,9 +335,9 @@ export const FloatingAudioPlayer: React.FC<{
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-stone-900 to-stone-800 text-white p-4 shadow-2xl z-50 animate-slide-up">
-      <div className="max-w-4xl mx-auto flex items-center justify-between">
-        <div className="flex items-center gap-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-stone-900 to-stone-800 text-white p-4 px-safe pb-safe shadow-2xl z-50 animate-slide-up">
+      <div className="max-w-4xl mx-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-4 min-w-0">
           <button
             onClick={handlePlay}
             className="w-12 h-12 bg-gradient-to-br from-rose-500 to-rose-600 text-white rounded-full flex items-center justify-center shadow-lg"
@@ -345,15 +345,15 @@ export const FloatingAudioPlayer: React.FC<{
           >
             <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'}`} aria-hidden="true"></i>
           </button>
-          <div>
-            <h4 className="font-semibold">{surahName}</h4>
-            <p className="text-sm text-stone-400">
+          <div className="min-w-0">
+            <h4 className="font-semibold truncate">{surahName}</h4>
+            <p className="text-sm text-stone-400 truncate">
               Verse {playingVerse} of {totalVerses}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 self-end sm:self-auto">
           <button
             onClick={() => playingVerse > 1 && audioManager.playVerse(surahNumber, playingVerse - 1)}
             disabled={playingVerse <= 1}

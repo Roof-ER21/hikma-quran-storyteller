@@ -78,7 +78,7 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300">
+    <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-300 px-safe pb-safe">
       <div className="bg-gradient-to-r from-rose-900 via-rose-800 to-amber-900 text-white shadow-2xl">
         {isLoading && (
           <div className="border-b border-amber-200/30 bg-amber-500/15 backdrop-blur-sm">
@@ -102,9 +102,9 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
         </div>
 
         <div className="max-w-7xl mx-auto px-4 py-3">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             {/* Prophet info */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 basis-full sm:basis-auto">
               <div className="flex items-center gap-2 mb-1">
                 <span className={`text-xs uppercase tracking-wider text-rose-200 ${isArabic ? 'font-arabic' : ''}`}>
                   {currentProphetName || t('narration.prophetStory')}
@@ -134,7 +134,7 @@ const ProphetAudioPlayer: React.FC<ProphetAudioPlayerProps> = ({
             </div>
 
             {/* Playback controls */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ml-auto sm:ml-0">
               {/* Skip back */}
               <button
                 onClick={onSkipBack}

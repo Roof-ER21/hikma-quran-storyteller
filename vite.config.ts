@@ -6,6 +6,8 @@ import { sentryVitePlugin } from '@sentry/vite-plugin';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
+    const appVersion = process.env.npm_package_version || '1.0.0';
+    const buildTime = new Date().toISOString();
     return {
       server: {
         port: 3000,
@@ -201,6 +203,10 @@ export default defineConfig(({ mode }) => {
         })
       ],
       // API keys removed - now handled server-side
+      define: {
+        __APP_VERSION__: JSON.stringify(appVersion),
+        __BUILD_TIME__: JSON.stringify(buildTime),
+      },
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
@@ -221,6 +227,10 @@ export default defineConfig(({ mode }) => {
             manualChunks: (id) => {
               if (id.includes('services/geminiService')) return 'ai-gemini';
               if (id.includes('services/audioUtils') || id.includes('services/quranAudioService')) return 'audio-core';
+              if (id.includes('node_modules/@sentry')) return 'vendor-sentry';
+              if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) return 'vendor-i18n';
+              if (id.includes('node_modules/@google/genai')) return 'vendor-ai';
+              if (id.includes('node_modules/dexie') || id.includes('node_modules/ts-fsrs') || id.includes('node_modules/adhan') || id.includes('node_modules/tajweed')) return 'vendor-learning';
               if (id.includes('node_modules')) return 'vendor';
               return undefined;
             }

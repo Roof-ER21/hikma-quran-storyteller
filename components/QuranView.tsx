@@ -277,6 +277,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
   const [immersiveMode, setImmersiveMode] = useState(false);
   const [showFloatingPlayer, setShowFloatingPlayer] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const floatingPlayerVisible = showFloatingPlayer && activeTab !== 'listen';
 
   // Phase 2: Voice Search & Practice state
   const [showVoiceSearch, setShowVoiceSearch] = useState(false);
@@ -1335,7 +1336,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
         </div>
 
         {/* Content */}
-        <div className={`flex-1 overflow-y-auto ${immersiveMode ? 'p-12 md:p-24' : 'p-4 md:p-6'} ${themeStyles.bodyBg} transition-colors duration-500 scroll-smooth`}>
+        <div className={`flex-1 overflow-y-auto ${immersiveMode ? 'p-12 md:p-24' : 'p-4 md:p-6'} ${floatingPlayerVisible ? 'pb-[calc(7rem+env(safe-area-inset-bottom,0px))]' : ''} ${themeStyles.bodyBg} transition-colors duration-500 scroll-smooth`}>
           {activeTab === 'read' && renderReadTab()}
           {activeTab === 'story' && renderStoryTab()}
           {activeTab === 'listen' && renderListenTab()}
@@ -1349,7 +1350,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
           surahName={isArabic ? selectedSurah.nameAr : selectedSurah.nameEn}
           totalVerses={selectedSurah.verses || 0}
           currentVerse={currentPlayingVerse || 1}
-          isVisible={showFloatingPlayer && activeTab !== 'listen'}
+          isVisible={floatingPlayerVisible}
           onClose={() => {
             setShowFloatingPlayer(false);
             audioManager.stop();
@@ -1361,7 +1362,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
         {/* Voice Search Modal */}
         {showVoiceSearch && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl">
+            <div className="bg-white rounded-2xl w-full max-w-lg max-h-screen-safe overflow-hidden shadow-2xl">
               <div className="flex items-center justify-between p-4 border-b border-stone-100">
                 <h3 className="text-lg font-semibold text-stone-800 flex items-center gap-2">
                   <i className="fas fa-search text-rose-600"></i>
@@ -1374,7 +1375,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                   <i className="fas fa-times text-stone-500"></i>
                 </button>
               </div>
-              <div className="p-4 overflow-y-auto max-h-[calc(90vh-60px)]">
+              <div className="p-4 overflow-y-auto max-h-[calc((var(--app-vh,1vh)*100)-120px)]">
                 <VoiceSearch
                   onNavigateToVerse={(surahNumber, verseNumber) => {
                     // Navigate to the surah and verse
@@ -1485,7 +1486,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
       {/* Voice Search Modal in List View */}
       {showVoiceSearch && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl">
+          <div className="bg-white rounded-2xl w-full max-w-lg max-h-screen-safe overflow-hidden shadow-2xl">
             <div className="flex items-center justify-between p-4 border-b border-stone-100">
               <h3 className="text-lg font-semibold text-stone-800 flex items-center gap-2">
                 <i className="fas fa-microphone text-rose-600"></i>
@@ -1498,7 +1499,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                 <i className="fas fa-times text-stone-500"></i>
               </button>
             </div>
-            <div className="p-4 overflow-y-auto max-h-[calc(90vh-60px)]">
+            <div className="p-4 overflow-y-auto max-h-[calc((var(--app-vh,1vh)*100)-120px)]">
               <VoiceSearch
                 onNavigateToVerse={(surahNumber, verseNumber) => {
                   // Navigate to the surah and verse

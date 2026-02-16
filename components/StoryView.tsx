@@ -1185,7 +1185,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
       {/* Mini Progress Bar for Immersive Mode */}
       {immersiveMode && isPlaying && (
-         <div className="fixed top-[72px] left-0 w-full h-1 bg-white/20 z-50">
+         <div className="fixed top-[calc(env(safe-area-inset-top,0px)+72px)] left-0 w-full h-1 bg-white/20 z-50">
              <div className="h-full bg-amber-500 transition-all duration-300 ease-linear" style={{width: `${progress}%`}}></div>
          </div>
       )}
@@ -1269,18 +1269,19 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
       {/* Continue Reading Floating Button */}
       {showContinueReading && savedPosition && !loading && (
-        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-40 animate-fade-in-up">
+        <div className="fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5rem)] left-1/2 transform -translate-x-1/2 z-40 animate-fade-in-up px-3 w-full max-w-sm">
           <button
             onClick={handleContinueReading}
-            className={`bg-rose-600 hover:bg-rose-700 text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-3 transition-all hover:scale-105 ${isArabic ? 'flex-row-reverse' : ''}`}
+            className={`w-full bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 rounded-full shadow-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.02] ${isArabic ? 'flex-row-reverse' : ''}`}
           >
             <i className="fas fa-bookmark"></i>
             <span className={`font-medium ${isArabic ? 'font-arabic' : ''}`}>{t('view.continueReading')}</span>
-            <span className="text-rose-200 text-sm">({Math.round(savedPosition.scrollPercent)}%)</span>
+            <span className="text-rose-200 text-xs sm:text-sm whitespace-nowrap">({Math.round(savedPosition.scrollPercent)}%)</span>
           </button>
           <button
             onClick={() => setShowContinueReading(false)}
-            className={`absolute -top-2 w-6 h-6 bg-stone-600 hover:bg-stone-700 text-white rounded-full text-xs flex items-center justify-center ${isArabic ? '-left-2' : '-right-2'}`}
+            aria-label="Dismiss continue reading"
+            className={`absolute -top-2 w-6 h-6 bg-stone-600 hover:bg-stone-700 text-white rounded-full text-xs flex items-center justify-center ${isArabic ? 'left-2' : 'right-2'}`}
           >
             <i className="fas fa-times"></i>
           </button>

@@ -7,6 +7,20 @@ import './src/styles/generated.css';
 import './src/styles/rtl.css';
 import './src/i18n'; // Initialize i18n
 
+const updateViewportVariables = () => {
+  const visualViewport = window.visualViewport;
+  const height = visualViewport?.height ?? window.innerHeight;
+  const width = visualViewport?.width ?? window.innerWidth;
+
+  document.documentElement.style.setProperty('--app-vh', `${height * 0.01}px`);
+  document.documentElement.style.setProperty('--app-vw', `${width * 0.01}px`);
+};
+
+updateViewportVariables();
+window.addEventListener('resize', updateViewportVariables, { passive: true });
+window.visualViewport?.addEventListener('resize', updateViewportVariables);
+window.visualViewport?.addEventListener('scroll', updateViewportVariables);
+
 // Initialize Sentry for crash reporting (disabled in kids mode for COPPA compliance)
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
 if (SENTRY_DSN) {

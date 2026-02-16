@@ -140,7 +140,7 @@ const MediaGenerator: React.FC = () => {
   const progress = currentTask === 'narrations' ? narrationProgress : illustrationProgress;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-amber-50 p-6">
+    <div className="min-h-screen-safe bg-gradient-to-br from-teal-50 to-amber-50 p-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">

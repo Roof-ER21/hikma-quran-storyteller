@@ -16,6 +16,8 @@ const STORAGE_KEY = 'hikma_subscription';
 const FREE_TUTOR_LIMIT = 3; // Free AI tutor sessions per day
 const FREE_KIDS_LIMIT = 5; // Free kids lessons per day
 const USAGE_KEY = 'hikma_usage';
+const APPLE_SUBSCRIPTIONS_URL = 'https://apps.apple.com/account/subscriptions';
+const GOOGLE_PLAY_SUBSCRIPTIONS_URL = 'https://play.google.com/store/account/subscriptions';
 
 // Platform detection
 const isNative = Capacitor.isNativePlatform();
@@ -179,6 +181,29 @@ export function recordKidsUse(): void {
 export function getKidsUsesRemaining(): number {
   const usage = getDailyUsage();
   return Math.max(0, FREE_KIDS_LIMIT - usage.kidsLessons);
+}
+
+// ============================================================
+// Billing management helpers
+// ============================================================
+
+export function getSubscriptionManagementUrl(): string {
+  const platform = Capacitor.getPlatform();
+  if (platform === 'ios') return APPLE_SUBSCRIPTIONS_URL;
+  if (platform === 'android') return GOOGLE_PLAY_SUBSCRIPTIONS_URL;
+  return GOOGLE_PLAY_SUBSCRIPTIONS_URL;
+}
+
+export function openSubscriptionManagement(): void {
+  const url = getSubscriptionManagementUrl();
+  try {
+    const opened = window.open(url, '_blank', 'noopener,noreferrer');
+    if (!opened) {
+      window.location.href = url;
+    }
+  } catch {
+    window.location.href = url;
+  }
 }
 
 // ============================================================

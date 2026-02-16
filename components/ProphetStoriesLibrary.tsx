@@ -529,7 +529,7 @@ const ProphetStoriesLibrary: React.FC = () => {
 
       {/* Bottom padding when player is visible */}
       {narrationState && (narrationState.isPlaying || narrationState.isPaused) && (
-        <div className="h-24"></div>
+        <div className="h-[calc(7rem+env(safe-area-inset-bottom,0px))]"></div>
       )}
 
       {/* Alaya AI Tutor - Always available for prophet stories */}

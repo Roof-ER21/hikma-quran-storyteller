@@ -7,7 +7,7 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 
 // Prayer activity state interface
-interface PrayerActivityState {
+export interface PrayerActivityState {
   prayerName: string;
   prayerNameArabic: string;
   prayerTime: string; // ISO 8601
@@ -28,9 +28,7 @@ const PrayerActivity = registerPlugin<PrayerActivityPlugin>('PrayerActivity');
 
 // Check if Live Activities are supported (iOS 16.1+)
 export function isLiveActivitySupported(): boolean {
-  // Live Activities only work on native iOS, not web
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  return isIOS && 'webkit' in window;
+  return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
 }
 
 // Start a prayer countdown Live Activity
@@ -99,42 +97,68 @@ export async function endAllPrayerActivities(): Promise<void> {
   }
 }
 
-// Helper: Schedule prayer activity from prayer times data
-export async function schedulePrayerActivity(prayers: {
+type DailyPrayerTimes = {
   fajr: string; dhuhr: string; asr: string; maghrib: string; isha: string;
-}): Promise<string | null> {
+};
+
+const PRAYER_LIST: Array<{ name: string; arabic: string; key: keyof DailyPrayerTimes }> = [
+  { name: 'Fajr', arabic: 'الفجر', key: 'fajr' },
+  { name: 'Dhuhr', arabic: 'الظهر', key: 'dhuhr' },
+  { name: 'Asr', arabic: 'العصر', key: 'asr' },
+  { name: 'Maghrib', arabic: 'المغرب', key: 'maghrib' },
+  { name: 'Isha', arabic: 'العشاء', key: 'isha' },
+];
+
+function getPrayerDate(base: Date, time: string, dayOffset = 0): Date {
+  const [hours, minutes] = time.split(':').map(Number);
+  const dt = new Date(base);
+  dt.setDate(dt.getDate() + dayOffset);
+  dt.setHours(hours, minutes, 0, 0);
+  return dt;
+}
+
+export function getUpcomingPrayerActivityState(prayers: DailyPrayerTimes): PrayerActivityState {
   const now = new Date();
-  const today = now.toISOString().split('T')[0];
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
 
-  const prayerList = [
-    { name: 'Fajr', arabic: 'الفجر', time: prayers.fajr },
-    { name: 'Dhuhr', arabic: 'الظهر', time: prayers.dhuhr },
-    { name: 'Asr', arabic: 'العصر', time: prayers.asr },
-    { name: 'Maghrib', arabic: 'المغرب', time: prayers.maghrib },
-    { name: 'Isha', arabic: 'العشاء', time: prayers.isha },
-  ];
+  const prayerSchedule = PRAYER_LIST.map((prayer) => ({
+    ...prayer,
+    time: prayers[prayer.key],
+    date: getPrayerDate(today, prayers[prayer.key], 0),
+  }));
 
-  // Find the next upcoming prayer
+  // Find next upcoming prayer for today
   let currentIdx = -1;
-  for (let i = 0; i < prayerList.length; i++) {
-    const prayerDate = new Date(`${today}T${prayerList[i].time}`);
-    if (prayerDate > now) {
+  for (let i = 0; i < prayerSchedule.length; i++) {
+    if (prayerSchedule[i].date > now) {
       currentIdx = i;
       break;
     }
   }
 
-  // If all prayers have passed today, show Fajr tomorrow
-  if (currentIdx === -1) return null;
+  // After Isha, roll to tomorrow's Fajr
+  const useTomorrow = currentIdx === -1;
+  if (useTomorrow) currentIdx = 0;
+  const nextIdx = (currentIdx + 1) % prayerSchedule.length;
 
-  const current = prayerList[currentIdx];
-  const next = prayerList[(currentIdx + 1) % prayerList.length];
+  const current = prayerSchedule[currentIdx];
+  const next = prayerSchedule[nextIdx];
+  const currentDate = getPrayerDate(today, current.time, useTomorrow ? 1 : 0);
+  const nextDayOffset = useTomorrow || nextIdx <= currentIdx ? 1 : 0;
+  const nextDate = getPrayerDate(today, next.time, nextDayOffset);
 
-  return startPrayerActivity({
+  return {
     prayerName: current.name,
     prayerNameArabic: current.arabic,
-    prayerTime: `${today}T${current.time}:00`,
+    prayerTime: currentDate.toISOString(),
     nextPrayerName: next.name,
-    nextPrayerTime: `${today}T${next.time}:00`,
-  });
+    nextPrayerTime: nextDate.toISOString(),
+  };
+}
+
+// Helper: Schedule prayer activity from prayer times data
+export async function schedulePrayerActivity(prayers: DailyPrayerTimes): Promise<string | null> {
+  const state = getUpcomingPrayerActivityState(prayers);
+  return startPrayerActivity(state);
 }

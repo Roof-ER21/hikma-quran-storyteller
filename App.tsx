@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, Suspense, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
 import StoryCard from './components/StoryCard';
@@ -13,10 +13,13 @@ import { initProgressSync, cleanupProgressSync } from './services/progressSyncSe
 import { initSubscription } from './services/subscriptionService';
 import { isLanguageSelected, isArabic } from './src/i18n';
 import { initNotifications } from './services/notificationService';
-import { AISettingsWrapper } from './components/settings/AIProviderSettings';
 import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
 import { isOmnia } from './services/omniaSecretService';
-import { trackSessionStart } from './services/inAppReviewService';
+import { openIssueReporter } from './services/issueReportService';
+import {
+  shouldShowExperiencePrompt,
+  trackSessionStart,
+} from './services/inAppReviewService';
 
 // Lazy load major view components for code splitting
 const StoryView = lazy(() => import('./components/StoryView'));
@@ -31,6 +34,12 @@ const IslamicTools = lazy(() => import('./components/IslamicTools'));
 const ParentProfile = lazy(() => import('./components/ParentProfile'));
 const OmniaLovePage = lazy(() => import('./components/OmniaLovePage'));
 const OmniaSecretModal = lazy(() => import('./components/OmniaSecretModal'));
+const ExperienceFeedbackPrompt = lazy(() => import('./components/ExperienceFeedbackPrompt'));
+const AISettingsWrapper = lazy(() =>
+  import('./components/settings/AIProviderSettings').then((m) => ({
+    default: m.AISettingsWrapper,
+  }))
+);
 
 // Loading Spinner Component for Suspense fallback
 function LoadingSpinner() {
@@ -112,6 +121,9 @@ function App() {
   const [showParentMenu, setShowParentMenu] = useState(false);
   const [showParentProfile, setShowParentProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuTop, setMobileMenuTop] = useState<number | null>(null);
+  const [showExperiencePrompt, setShowExperiencePrompt] = useState(false);
+  const navRef = useRef<HTMLElement | null>(null);
   // Omnia special page state
   const [showOmniaQuestion, setShowOmniaQuestion] = useState(false);
   const [showOmniaLovePage, setShowOmniaLovePage] = useState(false);
@@ -156,6 +168,16 @@ function App() {
     initSubscription().catch(console.error);
     trackSessionStart();
     initNotifications().catch(console.error);
+  }, []);
+
+  // Ratings-protection funnel: ask for experience feedback before requesting store review.
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (shouldShowExperiencePrompt()) {
+        setShowExperiencePrompt(true);
+      }
+    }, 2400);
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Check for admin mode via URL query parameter and handle deep links
@@ -236,6 +258,36 @@ function App() {
     }
   }, [view, selectedProphet]);
 
+  // Keep mobile menu panel aligned with the real nav height on all devices/orientations.
+  useLayoutEffect(() => {
+    const updateMobileMenuTop = () => {
+      if (!navRef.current) return;
+      const { bottom } = navRef.current.getBoundingClientRect();
+      setMobileMenuTop(Math.max(0, Math.round(bottom)));
+    };
+
+    updateMobileMenuTop();
+    window.addEventListener('resize', updateMobileMenuTop);
+    window.addEventListener('orientationchange', updateMobileMenuTop);
+    return () => {
+      window.removeEventListener('resize', updateMobileMenuTop);
+      window.removeEventListener('orientationchange', updateMobileMenuTop);
+    };
+  }, [i18n.language, view, mobileMenuOpen]);
+
+  // Prevent background scroll while the mobile nav sheet is open.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousTouchAction = document.body.style.touchAction;
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.style.touchAction = previousTouchAction;
+    };
+  }, [mobileMenuOpen]);
+
   const handleParentAuthed = (token: string, name: string, remember: boolean) => {
     if (remember) {
       localStorage.setItem('alayasoad_parent_token', token);
@@ -261,6 +313,15 @@ function App() {
     setMode('gate');
     setView('home');
     setShowParentMenu(false);
+  };
+
+  const handleReportIssue = () => {
+    setShowParentMenu(false);
+    setMobileMenuOpen(false);
+    openIssueReporter({
+      source: 'app_menu',
+      category: parentName ? 'parent_report' : 'general_report',
+    });
   };
 
   // Omnia secret question handlers
@@ -327,7 +388,7 @@ function App() {
   };
 
   const renderGate = () => (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 dark:from-dark-bg dark:via-dark-card dark:to-dark-surface flex flex-col items-center justify-center p-6 relative transition-colors duration-300">
+    <div className="min-h-screen-safe bg-gradient-to-br from-rose-50 via-amber-50 to-stone-50 dark:from-dark-bg dark:via-dark-card dark:to-dark-surface flex flex-col items-center justify-center p-6 relative transition-colors duration-300">
       {/* Theme Toggle on Gate */}
       <div className="absolute top-4 left-4">
         <ThemeToggle />
@@ -442,6 +503,12 @@ function App() {
           onLogout={handleLogout}
         />
       </Suspense>
+      <Suspense fallback={null}>
+        <ExperienceFeedbackPrompt
+          isOpen={showExperiencePrompt}
+          onClose={() => setShowExperiencePrompt(false)}
+        />
+      </Suspense>
 
       {/* Omnia Special Love Page */}
       {showOmniaLovePage && (
@@ -461,7 +528,10 @@ function App() {
       )}
 
       {/* Navbar - with safe area padding for notched phones */}
-      <nav className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-4 md:px-6 py-3 md:py-4 pt-safe flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300 relative sticky top-0 z-30">
+      <nav
+        ref={navRef}
+        className="bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border px-4 md:px-6 px-safe py-3 md:py-4 pt-safe flex justify-between items-center shadow-sm dark:shadow-dark-lg transition-colors duration-300 relative sticky top-0 z-30"
+      >
         <div className="flex items-center gap-2 md:gap-3">
           <button
             onClick={() => setView('dedication')}
@@ -556,7 +626,9 @@ function App() {
                 <i className="fas fa-download" aria-hidden="true"></i>
             </button>
             {/* AI Settings Button */}
-            <AISettingsWrapper />
+            <Suspense fallback={null}>
+              <AISettingsWrapper />
+            </Suspense>
         </div>
         {/* Parent Button with Dropdown - Outside overflow container */}
         <div className="relative ml-2">
@@ -590,6 +662,13 @@ function App() {
                   <i className="fas fa-user-circle w-4"></i>
                   Profile & Settings
                 </button>
+                <button
+                  onClick={handleReportIssue}
+                  className="w-full px-4 py-2 text-left text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated flex items-center gap-2"
+                >
+                  <i className="fas fa-bug w-4"></i>
+                  Report Issue
+                </button>
                 <ShareButton
                   type="app"
                   className="w-full px-4 py-2 text-left text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated flex items-center gap-2"
@@ -616,7 +695,10 @@ function App() {
               onClick={() => setMobileMenuOpen(false)}
             />
             {/* Dropdown Panel - scrollable for landscape mode */}
-            <div className="fixed top-[calc(env(safe-area-inset-top,0px)+56px)] left-0 right-0 bottom-0 bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border shadow-lg dark:shadow-dark-lg z-50 md:hidden animate-in slide-in-from-top-2 duration-200 overflow-y-auto overscroll-contain">
+            <div
+              className="fixed left-0 right-0 bottom-0 bg-white dark:bg-dark-card border-b border-stone-200 dark:border-dark-border shadow-lg dark:shadow-dark-lg z-50 md:hidden animate-in slide-in-from-top-2 duration-200 overflow-y-auto overscroll-contain"
+              style={{ top: mobileMenuTop ? `${mobileMenuTop}px` : 'calc(env(safe-area-inset-top, 0px) + 56px)' }}
+            >
               <div className="p-4 space-y-1 pb-safe">
                 {/* Navigation Items */}
                 <button
@@ -696,6 +778,16 @@ function App() {
                     <i className="fas fa-download" aria-hidden="true"></i>
                   </button>
                 </div>
+                <div className="flex items-center justify-between px-4 py-2">
+                  <span className="text-sm text-stone-500 dark:text-stone-400">Support</span>
+                  <button
+                    onClick={handleReportIssue}
+                    className="px-3 py-1.5 rounded-lg text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated transition-colors"
+                    aria-label="Report an issue"
+                  >
+                    <i className="fas fa-bug" aria-hidden="true"></i>
+                  </button>
+                </div>
 
                 {/* Parent Section */}
                 <hr className="my-3 border-stone-200 dark:border-dark-border" />
@@ -720,7 +812,7 @@ function App() {
       </nav>
 
       {/* Main Content - scrollable on mobile */}
-      <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-x-hidden pb-safe">
+      <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-x-hidden mobile-scroll pb-[calc(env(safe-area-inset-bottom,0px)+1.5rem)]">
         {view === 'home' && mode !== 'kid' && (
             <div className="grid md:grid-cols-2 gap-12 items-center h-full animate-in fade-in duration-500">
             <div className="space-y-8">
@@ -862,7 +954,7 @@ function App() {
 
         <AnimatePresence mode="wait">
         {view === 'story' && selectedProphet && (
-            <motion.div key="story" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="story" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <StoryView
                       prophet={selectedProphet}
@@ -877,7 +969,7 @@ function App() {
         )}
 
         {view === 'live' && (
-            <motion.div key="live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <LiveMode />
                 </Suspense>
@@ -885,7 +977,7 @@ function App() {
         )}
 
         {view === 'quran' && (
-            <motion.div key="quran" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="quran" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <QuranView
                     initialSurah={initialDeepLink?.type === 'verse' || initialDeepLink?.type === 'quran' ? initialDeepLink.data.surah : undefined}
@@ -896,7 +988,7 @@ function App() {
         )}
 
         {view === 'kids' && (
-            <motion.div key="kids" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="kids" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <KidsHome onBack={() => setView('home')} />
                 </Suspense>
@@ -904,7 +996,7 @@ function App() {
         )}
 
         {view === 'library' && (
-            <motion.div key="library" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)] overflow-auto">
+            <motion.div key="library" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)] overflow-auto">
                 <Suspense fallback={<LoadingSpinner />}>
                   <ProphetStoriesLibrary />
                 </Suspense>
@@ -920,7 +1012,7 @@ function App() {
         )}
 
         {view === 'tools' && (
-            <motion.div key="tools" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc(100vh-140px)]">
+            <motion.div key="tools" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
                 <Suspense fallback={<LoadingSpinner />}>
                   <IslamicTools onBack={() => setView('home')} />
                 </Suspense>
@@ -931,7 +1023,7 @@ function App() {
         {/* Admin: Media Generator (access via ?admin=media) */}
         {showMediaGenerator && (
             <div className="fixed inset-0 z-50 overflow-auto">
-                <div className="min-h-screen">
+                <div className="min-h-screen-safe">
                     <div className="absolute top-4 right-4 z-50">
                         <button
                             onClick={() => {

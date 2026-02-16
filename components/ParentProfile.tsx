@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getParentProfile, changeParentPin, syncProgressToServer, loadAndMergeServerProgress, exportParentData, deleteParentAccount, getTutorLog } from '../services/progressSyncService';
 import ShareButton from './ShareButton';
+import {
+  createLocalProgressBackup,
+  restoreLocalProgressBackup,
+  getLocalBackupMeta,
+  type ProgressBackupMeta,
+} from '../services/progressBackupService';
+import { openSubscriptionManagement } from '../services/subscriptionService';
+import { openIssueReporter } from '../services/issueReportService';
 
 interface ParentProfileProps {
   isOpen: boolean;
@@ -71,6 +79,11 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
   const [deleteError, setDeleteError] = useState('');
   const [deleting, setDeleting] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [backingUp, setBackingUp] = useState(false);
+  const [restoringBackup, setRestoringBackup] = useState(false);
+  const [backupStatus, setBackupStatus] = useState<string>('');
+  const [backupMeta, setBackupMeta] = useState<ProgressBackupMeta>({ exists: false, createdAt: null, sizeBytes: 0 });
+  const [lastSyncAt, setLastSyncAt] = useState<string | null>(null);
   const [tutorLog, setTutorLog] = useState<Array<{ question_summary: string; created_at: string }>>([]);
   const [showTutorLog, setShowTutorLog] = useState(false);
   const [loadingLog, setLoadingLog] = useState(false);
@@ -78,6 +91,8 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
   useEffect(() => {
     if (isOpen) {
       loadProfile();
+      setBackupMeta(getLocalBackupMeta());
+      setLastSyncAt(localStorage.getItem('alayasoad_last_sync_at'));
     }
   }, [isOpen]);
 
@@ -103,6 +118,7 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
     try {
       await syncProgressToServer();
       await loadAndMergeServerProgress();
+      setLastSyncAt(localStorage.getItem('alayasoad_last_sync_at'));
       await loadProfile();
     } catch (error) {
       console.error('Error syncing:', error);
@@ -188,6 +204,51 @@ export default function ParentProfile({ isOpen, onClose, parentName, onLogout }:
       const logs = await getTutorLog();
       setTutorLog(logs);
       setLoadingLog(false);
+    }
+  };
+
+  const handleCreateBackup = async () => {
+    setBackingUp(true);
+    setBackupStatus('');
+    try {
+      const backup = await createLocalProgressBackup();
+      setBackupMeta(getLocalBackupMeta());
+      setBackupStatus(`Backup saved on ${new Date(backup.createdAt).toLocaleString()}`);
+    } catch (error) {
+      console.error('Backup failed:', error);
+      setBackupStatus('Backup failed. Please try again.');
+    } finally {
+      setBackingUp(false);
+    }
+  };
+
+  const handleRestoreBackup = async () => {
+    if (!backupMeta.exists) {
+      setBackupStatus('No local backup found to restore.');
+      return;
+    }
+
+    const confirmed = window.confirm(
+      'Restore local backup now? This will overwrite current local progress on this device.'
+    );
+    if (!confirmed) return;
+
+    setRestoringBackup(true);
+    setBackupStatus('');
+    try {
+      const result = await restoreLocalProgressBackup();
+      if (!result.success) {
+        setBackupStatus(result.error || 'Restore failed.');
+        return;
+      }
+
+      await loadProfile();
+      setBackupStatus('Backup restored successfully.');
+    } catch (error) {
+      console.error('Restore failed:', error);
+      setBackupStatus('Restore failed. Please try again.');
+    } finally {
+      setRestoringBackup(false);
     }
   };
 
@@ -296,7 +357,7 @@ Keep up the amazing work! 🌙✨`;
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div className="relative bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-screen-safe overflow-hidden animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="bg-gradient-to-r from-rose-600 to-rose-700 text-white p-4 sm:p-6">
           <button
@@ -356,7 +417,7 @@ Keep up the amazing work! 🌙✨`;
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6 overflow-y-auto max-h-[60vh] sm:max-h-[50vh]">
+        <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc((var(--app-vh,1vh)*100)-220px)]">
           {activeTab === 'overview' && (
             <div className="space-y-6">
               {loading ? (
@@ -693,6 +754,71 @@ Keep up the amazing work! 🌙✨`;
                 </div>
               </div>
 
+              {/* Trust & Transparency */}
+              <div className="bg-indigo-50 rounded-xl p-4">
+                <h3 className="font-semibold text-indigo-900 mb-2">
+                  <i className="fas fa-user-shield mr-2"></i>Trust & Transparency
+                </h3>
+                <p className="text-xs text-indigo-700 mb-3">
+                  Child safety defaults are enabled. Parent controls decide AI tutor and cloud sync.
+                </p>
+                <div className="flex gap-2">
+                  <a
+                    href="/privacy"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 py-2 bg-white hover:bg-indigo-100 text-indigo-700 rounded-lg text-sm text-center border border-indigo-200 transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
+                  <a
+                    href="/terms"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 py-2 bg-white hover:bg-indigo-100 text-indigo-700 rounded-lg text-sm text-center border border-indigo-200 transition-colors"
+                  >
+                    Terms
+                  </a>
+                </div>
+              </div>
+
+              {/* Billing & Subscription */}
+              <div className="bg-amber-50 rounded-xl p-4">
+                <h3 className="font-semibold text-amber-900 mb-2">
+                  <i className="fas fa-credit-card mr-2"></i>Billing & Subscription
+                </h3>
+                <p className="text-xs text-amber-700 mb-3">
+                  Manage or cancel premium directly in your App Store or Google Play account.
+                </p>
+                <button
+                  onClick={openSubscriptionManagement}
+                  className="w-full py-2.5 bg-white hover:bg-amber-100 text-amber-800 rounded-lg text-sm border border-amber-200 transition-colors"
+                >
+                  Manage Subscription
+                </button>
+              </div>
+
+              {/* Support */}
+              <div className="bg-sky-50 rounded-xl p-4">
+                <h3 className="font-semibold text-sky-900 mb-2">
+                  <i className="fas fa-life-ring mr-2"></i>Support
+                </h3>
+                <p className="text-xs text-sky-700 mb-3">
+                  Send us an issue report with automatic app diagnostics attached.
+                </p>
+                <button
+                  onClick={() =>
+                    openIssueReporter({
+                      source: 'parent_profile',
+                      category: 'support_request',
+                    })
+                  }
+                  className="w-full py-2.5 bg-white hover:bg-sky-100 text-sky-800 rounded-lg text-sm border border-sky-200 transition-colors"
+                >
+                  Report Issue
+                </button>
+              </div>
+
               {/* Share App */}
               <div className="bg-stone-50 rounded-xl p-4">
                 <h3 className="font-semibold text-stone-800 mb-2">Share with Friends</h3>
@@ -806,17 +932,44 @@ Keep up the amazing work! 🌙✨`;
                 <h3 className="font-semibold text-green-900 mb-2">
                   <i className="fas fa-database mr-2"></i>Your Data
                 </h3>
-                <div className="flex gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
                     onClick={handleExportData}
                     disabled={exporting}
-                    className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
+                    className="py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
                   >
                     <i className={`fas ${exporting ? 'fa-spinner fa-spin' : 'fa-download'}`}></i>
                     {exporting ? 'Exporting...' : 'Export Data'}
                   </button>
+                  <button
+                    onClick={handleCreateBackup}
+                    disabled={backingUp}
+                    className="py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
+                  >
+                    <i className={`fas ${backingUp ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-down'}`}></i>
+                    {backingUp ? 'Saving...' : 'Save Backup'}
+                  </button>
+                  <button
+                    onClick={handleRestoreBackup}
+                    disabled={restoringBackup || !backupMeta.exists}
+                    className="py-2 bg-teal-600 hover:bg-teal-700 disabled:bg-teal-300 text-white rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
+                  >
+                    <i className={`fas ${restoringBackup ? 'fa-spinner fa-spin' : 'fa-rotate-left'}`}></i>
+                    {restoringBackup ? 'Restoring...' : 'Restore Backup'}
+                  </button>
                 </div>
                 <p className="text-xs text-green-600 mt-2">Download all your child's learning data as a JSON file.</p>
+                <p className="text-xs text-green-700 mt-1">
+                  {backupMeta.exists && backupMeta.createdAt
+                    ? `Local backup: ${new Date(backupMeta.createdAt).toLocaleString()}`
+                    : 'No local backup saved yet'}
+                </p>
+                <p className="text-xs text-green-700 mt-1">
+                  {lastSyncAt ? `Last cloud sync: ${new Date(lastSyncAt).toLocaleString()}` : 'Last cloud sync: not yet'}
+                </p>
+                {backupStatus && (
+                  <p className="text-xs text-green-800 mt-2">{backupStatus}</p>
+                )}
               </div>
 
               {/* Logout */}

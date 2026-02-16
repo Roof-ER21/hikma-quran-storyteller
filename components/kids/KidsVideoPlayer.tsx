@@ -372,7 +372,7 @@ const KidsVideoPlayer: React.FC<KidsVideoPlayerProps> = ({ storyId, onBack, onCo
 
   if (!story) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: KIDS_COLORS.cream }}>
+      <div className="min-h-screen-safe flex items-center justify-center" style={{ backgroundColor: KIDS_COLORS.cream }}>
         <div className="text-center">
           <div className="text-4xl mb-4">📖</div>
           <p className="text-xl text-stone-600">Loading story...</p>
@@ -382,7 +382,7 @@ const KidsVideoPlayer: React.FC<KidsVideoPlayerProps> = ({ storyId, onBack, onCo
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: KIDS_COLORS.cream }}>
+    <div className="min-h-screen-safe flex flex-col" style={{ backgroundColor: KIDS_COLORS.cream }}>
       {/* Header */}
       <div className="p-4 flex items-center justify-between">
         <button

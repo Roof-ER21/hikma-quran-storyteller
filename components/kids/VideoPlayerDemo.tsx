@@ -35,7 +35,7 @@ const VideoPlayerDemo: React.FC = () => {
 
   if (!showDemo) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
+      <div className="min-h-screen-safe flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
         <div className="text-center p-8 bg-white rounded-3xl shadow-xl max-w-md">
           <div className="text-6xl mb-4">🎬</div>
           <h1 className="text-3xl font-bold text-stone-800 mb-4">Video Player Demo</h1>

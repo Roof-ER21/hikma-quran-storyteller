@@ -131,7 +131,7 @@ export const AIProviderSettings: React.FC<AIProviderSettingsProps> = ({
       {/* Modal */}
       <div
         className={`
-          relative w-full max-w-2xl max-h-[90vh]
+          relative w-full max-w-2xl max-h-screen-safe
           bg-white rounded-2xl shadow-2xl
           flex flex-col overflow-hidden
           ${isRTL ? 'rtl' : 'ltr'}

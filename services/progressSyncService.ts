@@ -17,6 +17,7 @@ import {
   KidsSurahProgress,
   KidsStoryProgress
 } from './offlineDatabase';
+import { createLocalProgressBackup } from './progressBackupService';
 
 // Debounce timer for sync
 let syncDebounceTimer: NodeJS.Timeout | null = null;
@@ -88,6 +89,13 @@ export async function syncProgressToServer(): Promise<boolean> {
   isSyncing = true;
 
   try {
+    // Create a local safety snapshot before any remote sync operation.
+    try {
+      await createLocalProgressBackup();
+    } catch (backupError) {
+      console.warn('Pre-sync local backup failed:', backupError);
+    }
+
     // Get all local progress
     const [progress, letters, surahs, stories] = await Promise.all([
       getKidsProgress(),
@@ -142,6 +150,7 @@ export async function syncProgressToServer(): Promise<boolean> {
       return false;
     }
 
+    localStorage.setItem('alayasoad_last_sync_at', new Date().toISOString());
     console.log('Progress synced to server successfully');
     return true;
   } catch (error) {
@@ -224,6 +233,7 @@ export async function loadAndMergeServerProgress(): Promise<boolean> {
       }
     }
 
+    localStorage.setItem('alayasoad_last_sync_at', new Date().toISOString());
     console.log('Server progress merged with local data');
     return true;
   } catch (error) {

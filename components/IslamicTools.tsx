@@ -23,6 +23,10 @@ import {
   scheduleAllPrayerNotifications,
   clearPrayerNotifications,
 } from '../services/islamicToolsService';
+import {
+  schedulePrayerActivity,
+  endAllPrayerActivities,
+} from '../services/liveActivityService';
 
 type TabType = 'prayer' | 'qibla' | 'calendar';
 
@@ -187,6 +191,36 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
 
     return () => clearInterval(interval);
   }, [prayerTimes]);
+
+  // Keep iOS Live Activity in sync with current upcoming prayer (native iOS only).
+  useEffect(() => {
+    if (!prayerTimes || !nextPrayer) return;
+
+    let cancelled = false;
+
+    const syncLiveActivity = async () => {
+      try {
+        await endAllPrayerActivities();
+        if (cancelled) return;
+
+        await schedulePrayerActivity({
+          fajr: prayerTimes.fajr,
+          dhuhr: prayerTimes.dhuhr,
+          asr: prayerTimes.asr,
+          maghrib: prayerTimes.maghrib,
+          isha: prayerTimes.isha,
+        });
+      } catch (err) {
+        console.warn('Unable to sync prayer Live Activity:', err);
+      }
+    };
+
+    syncLiveActivity();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [prayerTimes, nextPrayer?.name, nextPrayer?.time]);
 
   // Watch compass heading for Qibla
   useEffect(() => {

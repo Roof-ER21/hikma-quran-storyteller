@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   checkPremiumStatus,
   getOfferings,
+  openSubscriptionManagement,
   purchasePackage,
   restorePurchases,
 } from '../services/subscriptionService';
@@ -39,13 +39,13 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
   children,
   onUpgraded,
 }) => {
-  const { t } = useTranslation('home');
   const [isPremium, setIsPremium] = useState<boolean | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [offerings, setOfferings] = useState<any>(null);
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const isNative = Capacitor.isNativePlatform();
   const info = FEATURE_INFO[feature];
@@ -60,6 +60,7 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
   const handleShowPaywall = async () => {
     setShowPaywall(true);
     setError(null);
+    setStatusMessage(null);
     if (isNative) {
       const off = await getOfferings();
       setOfferings(off);
@@ -69,9 +70,11 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
   const handlePurchase = async (pkg: any) => {
     setPurchasing(true);
     setError(null);
+    setStatusMessage(null);
     try {
       const success = await purchasePackage(pkg);
       if (success) {
+        setStatusMessage('Subscription activated successfully.');
         setIsPremium(true);
         setShowPaywall(false);
         onUpgraded?.();
@@ -84,11 +87,18 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
   };
 
   const handleRestore = async () => {
+    if (!isNative) {
+      setError('Restore is available in the iOS/Android app after signing in with the same store account.');
+      return;
+    }
+
     setRestoring(true);
     setError(null);
+    setStatusMessage(null);
     try {
       const success = await restorePurchases();
       if (success) {
+        setStatusMessage('Purchase restored successfully.');
         setIsPremium(true);
         setShowPaywall(false);
         onUpgraded?.();
@@ -100,6 +110,12 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
     } finally {
       setRestoring(false);
     }
+  };
+
+  const handleManageSubscription = () => {
+    setError(null);
+    setStatusMessage('Opening subscription management...');
+    openSubscriptionManagement();
   };
 
   // Inline upgrade prompt (shown in content area)
@@ -129,6 +145,12 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
             >
               {restoring ? 'Restoring...' : 'Restore Purchase'}
             </button>
+            <button
+              onClick={handleManageSubscription}
+              className="mt-2 block w-full text-sm text-stone-500 dark:text-stone-400 underline"
+            >
+              Manage Subscription
+            </button>
           </div>
         )}
       </div>
@@ -138,7 +160,7 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
   // Full paywall modal
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 max-h-screen-safe overflow-y-auto">
         <div className="text-center">
           <div className="text-5xl mb-3">{info.icon}</div>
           <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100">
@@ -154,6 +176,17 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
             {error}
           </div>
         )}
+        {statusMessage && (
+          <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-4 py-2 rounded-lg text-sm text-center">
+            {statusMessage}
+          </div>
+        )}
+
+        <div className="bg-stone-50 dark:bg-slate-700/40 rounded-xl p-3 text-xs text-stone-600 dark:text-stone-300 space-y-1">
+          <p><i className="fas fa-check-circle mr-1 text-emerald-600"></i>Cancel anytime in your App Store / Play subscriptions.</p>
+          <p><i className="fas fa-check-circle mr-1 text-emerald-600"></i>No hidden charges. Store pricing is shown before purchase.</p>
+          <p><i className="fas fa-check-circle mr-1 text-emerald-600"></i>Restore purchases any time on a new device.</p>
+        </div>
 
         {isNative && offerings?.current?.availablePackages ? (
           <div className="space-y-3">
@@ -170,6 +203,9 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
                 <div className="text-sm text-stone-600 dark:text-stone-300">
                   {pkg.product.priceString}
                 </div>
+                <div className="text-xs text-stone-500 dark:text-stone-400 mt-1">
+                  Auto-renewing subscription billed by {Capacitor.getPlatform() === 'ios' ? 'Apple' : 'Google'}.
+                </div>
               </button>
             ))}
           </div>
@@ -183,21 +219,30 @@ const PremiumGate: React.FC<PremiumGateProps> = ({
           </div>
         )}
 
-        <div className="flex gap-3 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
           <button
             onClick={handleRestore}
             disabled={restoring}
-            className="flex-1 py-2 text-sm text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-slate-700"
+            className="py-2 text-sm text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-slate-700"
           >
             {restoring ? 'Restoring...' : 'Restore Purchase'}
           </button>
           <button
+            onClick={handleManageSubscription}
+            className="py-2 text-sm text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-slate-700"
+          >
+            Manage
+          </button>
+          <button
             onClick={() => setShowPaywall(false)}
-            className="flex-1 py-2 text-sm text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-slate-700"
+            className="py-2 text-sm text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-600 rounded-lg hover:bg-stone-50 dark:hover:bg-slate-700"
           >
             Maybe Later
           </button>
         </div>
+        <p className="text-[11px] text-center text-stone-500 dark:text-stone-400">
+          Premium helps fund ad-free kids learning and continuous reliability improvements.
+        </p>
       </div>
     </div>
   );

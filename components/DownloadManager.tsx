@@ -359,7 +359,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
 
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden shadow-2xl">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-screen-safe overflow-hidden shadow-2xl">
         {/* Header */}
         <div className="bg-gradient-to-r from-rose-700 to-rose-800 text-white p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -383,7 +383,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
         </div>
 
         {/* Content */}
-        <div className="p-4 overflow-y-auto max-h-[calc(90vh-180px)]">
+        <div className="p-4 overflow-y-auto max-h-[calc((var(--app-vh,1vh)*100)-180px)]">
           {/* Storage Stats */}
           {stats && (
             <div className="bg-stone-50 rounded-xl p-4 mb-4">

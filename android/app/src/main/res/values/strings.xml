@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Alaya &amp; Soad\'s Gift</string>
+    <string name="title_activity_main">Alaya &amp; Soad\'s Gift</string>
+    <string name="package_name">com.roofer21.alayasoad</string>
+    <string name="custom_url_scheme">com.roofer21.alayasoad</string>
+</resources>
