@@ -4,7 +4,9 @@
   "loading": "Loading Prophet Stories Library...",
   "search": {
     "placeholder": "Search prophets, lessons, locations...",
-    "noResults": "No stories found"
+    "noResultsHeader": "No stories found",
+    "noResultsBody": "Try adjusting your search terms or browse all prophets",
+    "clear": "Clear Search"
   },
   "stats": {
     "count": "Prophets: {{count}}",
@@ -15,11 +17,6 @@
     "era": "Era",
     "location": "Location"
   },
-  "search": {
-    "noResultsHeader": "No stories found",
-    "noResultsBody": "Try adjusting your search terms or browse all prophets",
-    "clear": "Clear Search"
-  },
   "story": {
     "era": "Era",
     "period": "Period",
@@ -29,6 +26,11 @@
     "readFullStory": "Read Full Story",
     "backToLibrary": "Back to Library",
     "sections": "Sections",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
+    "quranReferences": "Quranic References",
+    "hadithReferences": "Hadith References",
+    "historicalContext": "Historical Context & Scholarly Notes",
     "relatedProphets": "Related Prophets",
     "historicalNotes": "Historical Notes"
   },

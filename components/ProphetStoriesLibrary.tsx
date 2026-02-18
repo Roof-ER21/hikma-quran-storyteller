@@ -9,7 +9,7 @@ import { AlayaTutorWrapper } from './AlayaTutor';
 
 const ProphetStoriesLibrary: React.FC = () => {
   const { t, i18n } = useTranslation('library');
-  const isArabic = i18n.language === 'ar-EG';
+  const isArabic = i18n.language.startsWith('ar');
   const [stories, setStories] = useState<AdultProphetStory[]>([]);
   const [filteredStories, setFilteredStories] = useState<AdultProphetStory[]>([]);
   const [selectedStory, setSelectedStory] = useState<AdultProphetStory | null>(null);
@@ -145,6 +145,18 @@ const ProphetStoriesLibrary: React.FC = () => {
   // Get unique locations for filtering
   const uniqueLocations = Array.from(new Set(stories.map(s => s.location)));
   const uniqueEras = Array.from(new Set(stories.map(s => s.era)));
+  const getLocalizedSummary = (story: AdultProphetStory) =>
+    isArabic && story.summaryArabic ? story.summaryArabic : story.summary;
+  const getLocalizedKeyLessons = (story: AdultProphetStory) =>
+    isArabic && story.keyLessonsArabic?.length ? story.keyLessonsArabic : story.keyLessons;
+  const getLocalizedLocation = (story: AdultProphetStory) =>
+    isArabic && story.locationArabic ? story.locationArabic : story.location;
+  const getLocalizedEra = (story: AdultProphetStory) =>
+    isArabic && story.eraArabic ? story.eraArabic : story.era;
+  const getLocalizedPeriod = (story: AdultProphetStory) =>
+    isArabic && story.periodArabic ? story.periodArabic : story.period;
+  const getLocalizedHistoricalNotes = (story: AdultProphetStory) =>
+    isArabic && story.historicalNotesArabic ? story.historicalNotesArabic : story.historicalNotes;
 
   if (loading) {
     return (
@@ -265,11 +277,11 @@ const ProphetStoriesLibrary: React.FC = () => {
                   <div className="flex flex-wrap gap-2 text-xs">
                     <span className="px-3 py-1 rounded-full bg-white text-stone-600 border border-stone-200">
                       <i className={`fas fa-map-marker-alt ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
-                      {story.location}
+                      {getLocalizedLocation(story)}
                     </span>
                     <span className="px-3 py-1 rounded-full bg-white text-stone-600 border border-stone-200">
                       <i className={`fas fa-clock ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
-                      {story.era}
+                      {getLocalizedEra(story)}
                     </span>
                   </div>
                 </div>
@@ -277,25 +289,25 @@ const ProphetStoriesLibrary: React.FC = () => {
                 {/* Card Body */}
                 <div className="p-6">
                   <p className={`text-stone-600 leading-relaxed line-clamp-3 mb-4 ${isArabic ? 'font-arabic text-right' : ''}`}>
-                    {isArabic && story.summaryArabic ? story.summaryArabic : story.summary}
+                    {getLocalizedSummary(story)}
                   </p>
 
                   {/* Key Lessons Preview */}
-                  {story.keyLessons.length > 0 && (
+                  {getLocalizedKeyLessons(story).length > 0 && (
                     <div className="space-y-2">
                       <p className={`text-xs uppercase tracking-wider text-stone-500 font-semibold ${isArabic ? 'font-arabic text-right' : ''}`}>
                         {t('story.keyLessons')}
                       </p>
                       <ul className="space-y-1">
-                        {(isArabic && story.keyLessonsArabic ? story.keyLessonsArabic : story.keyLessons).slice(0, 2).map((lesson, idx) => (
+                        {getLocalizedKeyLessons(story).slice(0, 2).map((lesson, idx) => (
                           <li key={idx} className="flex items-start gap-2 text-sm text-stone-600">
                             <i className="fas fa-check-circle text-amber-600 mt-1 flex-shrink-0"></i>
                             <span className="line-clamp-1">{lesson}</span>
                           </li>
                         ))}
-                        {(isArabic && story.keyLessonsArabic ? story.keyLessonsArabic.length : story.keyLessons.length) > 2 && (
+                        {getLocalizedKeyLessons(story).length > 2 && (
                           <li className="text-sm text-rose-700 font-medium">
-                            +{(isArabic && story.keyLessonsArabic ? story.keyLessonsArabic.length : story.keyLessons.length) - 2} {t('story.moreLessons', 'more lessons')}
+                            +{getLocalizedKeyLessons(story).length - 2} {t('story.moreLessons', 'more lessons')}
                           </li>
                         )}
                       </ul>
@@ -344,44 +356,46 @@ const ProphetStoriesLibrary: React.FC = () => {
                 <div className="flex items-start justify-between gap-6">
                   <div className="flex-1">
                     <h2 className="text-4xl font-serif font-bold mb-2">
-                      {selectedStory.prophetName}
+                      {isArabic ? selectedStory.arabicName : selectedStory.prophetName}
                     </h2>
-                    <p className="text-3xl font-arabic mb-4" dir="rtl">
-                      {selectedStory.arabicName}
-                    </p>
+                    {!isArabic && (
+                      <p className="text-3xl font-arabic mb-4" dir="rtl">
+                        {selectedStory.arabicName}
+                      </p>
+                    )}
 
                     <div className="flex flex-wrap gap-3 mb-4">
                       <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-                        <i className="fas fa-map-marker-alt mr-2"></i>
-                        {selectedStory.location}
+                        <i className={`fas fa-map-marker-alt ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+                        {getLocalizedLocation(selectedStory)}
                       </span>
                       <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-                        <i className="fas fa-clock mr-2"></i>
-                        {selectedStory.era}
+                        <i className={`fas fa-clock ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+                        {getLocalizedEra(selectedStory)}
                       </span>
                       <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-                        <i className="fas fa-calendar-alt mr-2"></i>
-                        {selectedStory.period}
+                        <i className={`fas fa-calendar-alt ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+                        {getLocalizedPeriod(selectedStory)}
                       </span>
                     </div>
 
-                    <p className="text-xl leading-relaxed text-rose-50">
-                      {selectedStory.summary}
+                    <p className={`text-xl leading-relaxed text-rose-50 ${isArabic ? 'font-arabic text-right' : ''}`}>
+                      {getLocalizedSummary(selectedStory)}
                     </p>
 
                     {/* Listen to Full Story Button */}
-                    <div className="mt-6 flex items-center gap-4">
+                    <div className={`mt-6 flex items-center gap-4 ${isArabic ? 'flex-row-reverse justify-end' : ''}`}>
                       <button
                         onClick={handlePlayFullStory}
-                        className="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl flex items-center gap-3 transition-colors border border-white/20"
+                        className={`px-6 py-3 bg-white/10 hover:bg-white/20 rounded-xl flex items-center gap-3 transition-colors border border-white/20 ${isArabic ? 'flex-row-reverse' : ''}`}
                       >
                         <i className={`fas ${narrationState?.isPlaying && narrationState?.currentStoryId === selectedStory.id ? 'fa-pause' : 'fa-headphones'}`}></i>
-                        <span>
+                        <span className={isArabic ? 'font-arabic' : ''}>
                           {narrationState?.isPlaying && narrationState?.currentStoryId === selectedStory.id
-                            ? 'Pause Narration'
+                            ? t('narration.pause')
                             : narrationState?.isPaused && narrationState?.currentStoryId === selectedStory.id
-                              ? 'Resume Narration'
-                              : 'Listen to Full Story'}
+                              ? t('narration.resume')
+                              : t('narration.playFullStory')}
                         </span>
                         <span className="text-sm text-rose-200">
                           ({getEstimatedDuration(selectedStory)})
@@ -397,22 +411,22 @@ const ProphetStoriesLibrary: React.FC = () => {
               </div>
 
               {/* Key Lessons */}
-              {selectedStory.keyLessons.length > 0 && (
+              {getLocalizedKeyLessons(selectedStory).length > 0 && (
                 <div className="p-8 bg-amber-50/50 border-b border-stone-200">
-                  <h3 className="text-lg font-serif font-bold text-rose-900 mb-4 flex items-center gap-2">
+                  <h3 className={`text-lg font-serif font-bold text-rose-900 mb-4 flex items-center gap-2 ${isArabic ? 'flex-row-reverse justify-start font-arabic' : ''}`}>
                     <i className="fas fa-lightbulb text-amber-600"></i>
-                    Key Lessons & Reflections
+                    {t('story.keyLessons')}
                   </h3>
                   <div className="grid md:grid-cols-2 gap-3">
-                    {selectedStory.keyLessons.map((lesson, idx) => (
+                    {getLocalizedKeyLessons(selectedStory).map((lesson, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-3 p-4 bg-white rounded-xl border border-amber-100"
+                        className={`flex items-start gap-3 p-4 bg-white rounded-xl border border-amber-100 ${isArabic ? 'flex-row-reverse text-right' : ''}`}
                       >
                         <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0 font-bold">
                           {idx + 1}
                         </div>
-                        <p className="text-stone-700 leading-relaxed">{lesson}</p>
+                        <p className={`text-stone-700 leading-relaxed ${isArabic ? 'font-arabic text-right' : ''}`}>{lesson}</p>
                       </div>
                     ))}
                   </div>
@@ -420,25 +434,25 @@ const ProphetStoriesLibrary: React.FC = () => {
               )}
 
               {/* Section Controls */}
-              <div className="p-6 bg-stone-50 border-b border-stone-200 flex items-center justify-between">
-                <div className="text-sm text-stone-600">
-                  <i className="fas fa-book mr-2"></i>
-                  {selectedStory.sections.length} sections
+              <div className={`p-6 bg-stone-50 border-b border-stone-200 flex items-center justify-between ${isArabic ? 'flex-row-reverse' : ''}`}>
+                <div className={`text-sm text-stone-600 ${isArabic ? 'font-arabic' : ''}`}>
+                  <i className={`fas fa-book ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+                  {selectedStory.sections.length} {t('story.sections')}
                 </div>
-                <div className="flex gap-2">
+                <div className={`flex gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
                   <button
                     onClick={expandAll}
-                    className="px-4 py-2 text-sm bg-white border border-stone-200 text-stone-700 rounded-lg hover:bg-stone-50 transition-colors"
+                    className={`px-4 py-2 text-sm bg-white border border-stone-200 text-stone-700 rounded-lg hover:bg-stone-50 transition-colors ${isArabic ? 'font-arabic' : ''}`}
                   >
-                    <i className="fas fa-expand-alt mr-2"></i>
-                    Expand All
+                    <i className={`fas fa-expand-alt ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+                    {t('story.expandAll', 'Expand All')}
                   </button>
                   <button
                     onClick={collapseAll}
-                    className="px-4 py-2 text-sm bg-white border border-stone-200 text-stone-700 rounded-lg hover:bg-stone-50 transition-colors"
+                    className={`px-4 py-2 text-sm bg-white border border-stone-200 text-stone-700 rounded-lg hover:bg-stone-50 transition-colors ${isArabic ? 'font-arabic' : ''}`}
                   >
-                    <i className="fas fa-compress-alt mr-2"></i>
-                    Collapse All
+                    <i className={`fas fa-compress-alt ${isArabic ? 'ml-2' : 'mr-2'}`}></i>
+                    {t('story.collapseAll', 'Collapse All')}
                   </button>
                 </div>
               </div>
@@ -457,20 +471,21 @@ const ProphetStoriesLibrary: React.FC = () => {
                   onPlaySection={() => handlePlaySection(section)}
                   onPauseSection={handlePauseNarration}
                   onResumeSection={handleResumeNarration}
+                  isArabic={isArabic}
                 />
               ))}
             </div>
 
             {/* Historical Notes */}
-            {selectedStory.historicalNotes && (
+            {getLocalizedHistoricalNotes(selectedStory) && (
               <div className="mt-6 bg-white rounded-2xl shadow-lg p-8">
-                <h3 className="text-2xl font-serif font-bold text-rose-900 mb-4 flex items-center gap-2">
+                <h3 className={`text-2xl font-serif font-bold text-rose-900 mb-4 flex items-center gap-2 ${isArabic ? 'flex-row-reverse justify-start font-arabic' : ''}`}>
                   <i className="fas fa-landmark text-amber-600"></i>
-                  Historical Context & Scholarly Notes
+                  {t('story.historicalContext', 'Historical Context & Scholarly Notes')}
                 </h3>
                 <div className="prose prose-lg max-w-none text-stone-700 leading-relaxed">
-                  {selectedStory.historicalNotes.split('\n').map((para, idx) => (
-                    <p key={idx} className="mb-4">
+                  {getLocalizedHistoricalNotes(selectedStory)?.split('\n').map((para, idx) => (
+                    <p key={idx} className={`mb-4 ${isArabic ? 'font-arabic text-right' : ''}`}>
                       {para}
                     </p>
                   ))}
@@ -481,11 +496,11 @@ const ProphetStoriesLibrary: React.FC = () => {
             {/* Related Prophets */}
             {selectedStory.relatedProphets && selectedStory.relatedProphets.length > 0 && (
               <div className="mt-6 bg-white rounded-2xl shadow-lg p-8">
-                <h3 className="text-2xl font-serif font-bold text-rose-900 mb-4 flex items-center gap-2">
+                <h3 className={`text-2xl font-serif font-bold text-rose-900 mb-4 flex items-center gap-2 ${isArabic ? 'flex-row-reverse justify-start font-arabic' : ''}`}>
                   <i className="fas fa-link text-amber-600"></i>
-                  Related Prophets
+                  {t('story.relatedProphets')}
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className={`flex flex-wrap gap-3 ${isArabic ? 'justify-end' : ''}`}>
                   {selectedStory.relatedProphets.map((relatedId) => {
                     const related = stories.find(s => s.id === relatedId);
                     if (!related) return null;
@@ -497,10 +512,10 @@ const ProphetStoriesLibrary: React.FC = () => {
                           setExpandedSections(new Set([related.sections[0]?.id]));
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-6 py-3 bg-rose-50 hover:bg-rose-100 text-rose-900 rounded-xl border border-rose-200 transition-colors flex items-center gap-2"
+                        className={`px-6 py-3 bg-rose-50 hover:bg-rose-100 text-rose-900 rounded-xl border border-rose-200 transition-colors flex items-center gap-2 ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
                       >
                         <i className="fas fa-user"></i>
-                        <span className="font-medium">{related.prophetName}</span>
+                        <span className="font-medium">{isArabic ? related.arabicName : related.prophetName}</span>
                       </button>
                     );
                   })}
@@ -554,6 +569,7 @@ interface StorySectionProps {
   onPlaySection: () => void;
   onPauseSection: () => void;
   onResumeSection: () => void;
+  isArabic: boolean;
 }
 
 const StorySectionComponent: React.FC<StorySectionProps> = ({
@@ -565,23 +581,28 @@ const StorySectionComponent: React.FC<StorySectionProps> = ({
   onPlaySection,
   onPauseSection,
   onResumeSection,
+  isArabic,
 }) => {
+  const { t } = useTranslation('library');
+  const sectionTitle = isArabic && section.titleArabic ? section.titleArabic : section.title;
+  const sectionContent = isArabic && section.contentArabic ? section.contentArabic : section.content;
+
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-stone-200 transition-all duration-300">
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-stone-200 transition-all duration-300" dir={isArabic ? 'rtl' : 'ltr'}>
       {/* Section Header */}
-      <div className="p-6 flex items-center justify-between hover:bg-stone-50 transition-colors">
+      <div className={`p-6 flex items-center justify-between hover:bg-stone-50 transition-colors ${isArabic ? 'flex-row-reverse' : ''}`}>
         <button
           onClick={onToggle}
-          className="flex items-center gap-4 flex-1 text-left"
+          className={`flex items-center gap-4 flex-1 ${isArabic ? 'text-right flex-row-reverse' : 'text-left'}`}
         >
           <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-lg">
             {index + 1}
           </div>
-          <h4 className="text-xl font-serif font-bold text-rose-900">
-            {section.title}
+          <h4 className={`text-xl font-serif font-bold text-rose-900 ${isArabic ? 'font-arabic' : ''}`}>
+            {sectionTitle}
           </h4>
         </button>
-        <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-3 ${isArabic ? 'flex-row-reverse' : ''}`}>
           <SectionNarrationButton
             sectionId={section.id}
             narrationState={narrationState}
@@ -601,8 +622,8 @@ const StorySectionComponent: React.FC<StorySectionProps> = ({
           <div className="border-t border-stone-200 pt-6">
             {/* Main Content */}
             <div className="prose prose-lg max-w-none mb-6">
-              {section.content.split('\n').map((para, idx) => (
-                <p key={idx} className="mb-4 text-stone-700 leading-relaxed">
+              {sectionContent.split('\n').map((para, idx) => (
+                <p key={idx} className={`mb-4 text-stone-700 leading-relaxed ${isArabic ? 'font-arabic text-right' : ''}`}>
                   {para}
                 </p>
               ))}
@@ -611,9 +632,9 @@ const StorySectionComponent: React.FC<StorySectionProps> = ({
             {/* Quranic Verses */}
             {section.verses && section.verses.length > 0 && (
               <div className="mb-6">
-                <h5 className="text-lg font-serif font-bold text-rose-900 mb-4 flex items-center gap-2">
+                <h5 className={`text-lg font-serif font-bold text-rose-900 mb-4 flex items-center gap-2 ${isArabic ? 'flex-row-reverse justify-start font-arabic' : ''}`}>
                   <i className="fas fa-quran text-amber-600"></i>
-                  Quranic References
+                  {t('story.quranReferences', 'Quranic References')}
                 </h5>
                 <div className="space-y-4">
                   {section.verses.map((verse, idx) => (
@@ -626,20 +647,24 @@ const StorySectionComponent: React.FC<StorySectionProps> = ({
                         {verse.arabic}
                       </p>
 
-                      {/* Transliteration */}
-                      <p className="text-sm italic text-stone-600 mb-3 bg-white/50 rounded-lg p-3">
-                        {verse.transliteration}
-                      </p>
+                      {!isArabic && (
+                        <>
+                          {/* Transliteration */}
+                          <p className="text-sm italic text-stone-600 mb-3 bg-white/50 rounded-lg p-3">
+                            {verse.transliteration}
+                          </p>
 
-                      {/* Translation */}
-                      <p className="text-base text-stone-700 leading-relaxed mb-3">
-                        {verse.translation}
-                      </p>
+                          {/* Translation */}
+                          <p className="text-base text-stone-700 leading-relaxed mb-3">
+                            {verse.translation}
+                          </p>
+                        </>
+                      )}
 
                       {/* Reference */}
-                      <div className="flex items-center gap-2 text-sm text-amber-700 font-medium">
+                      <div className={`flex items-center gap-2 text-sm text-amber-700 font-medium ${isArabic ? 'flex-row-reverse justify-end font-arabic' : ''}`}>
                         <i className="fas fa-bookmark"></i>
-                        <span>Surah {verse.surah}, Verse {verse.verse}</span>
+                        <span>{t('verses.surah')} {verse.surah}, {t('verses.verse')} {verse.verse}</span>
                       </div>
                     </div>
                   ))}
@@ -650,9 +675,9 @@ const StorySectionComponent: React.FC<StorySectionProps> = ({
             {/* Hadith References */}
             {section.hadiths && section.hadiths.length > 0 && (
               <div>
-                <h5 className="text-lg font-serif font-bold text-rose-900 mb-4 flex items-center gap-2">
+                <h5 className={`text-lg font-serif font-bold text-rose-900 mb-4 flex items-center gap-2 ${isArabic ? 'flex-row-reverse justify-start font-arabic' : ''}`}>
                   <i className="fas fa-book text-amber-600"></i>
-                  Hadith References
+                  {t('story.hadithReferences', 'Hadith References')}
                 </h5>
                 <div className="space-y-4">
                   {section.hadiths.map((hadith, idx) => (
@@ -661,22 +686,22 @@ const StorySectionComponent: React.FC<StorySectionProps> = ({
                       className="bg-stone-50 rounded-xl p-6 border border-stone-200"
                     >
                       {/* Hadith Text */}
-                      <p className="text-base text-stone-700 leading-relaxed mb-4 italic">
-                        "{hadith.text}"
+                      <p className={`text-base text-stone-700 leading-relaxed mb-4 italic ${isArabic ? 'font-arabic text-right' : ''}`}>
+                        "{isArabic && hadith.textArabic ? hadith.textArabic : hadith.text}"
                       </p>
 
                       {/* Source Information */}
-                      <div className="flex flex-wrap items-center gap-3 text-sm">
-                        <span className="px-3 py-1 bg-white rounded-full text-stone-700 border border-stone-200">
-                          <i className="fas fa-book-open mr-1"></i>
+                      <div className={`flex flex-wrap items-center gap-3 text-sm ${isArabic ? 'justify-end' : ''}`}>
+                        <span className={`px-3 py-1 bg-white rounded-full text-stone-700 border border-stone-200 ${isArabic ? 'font-arabic' : ''}`}>
+                          <i className={`fas fa-book-open ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
                           {hadith.source}
                         </span>
-                        <span className="px-3 py-1 bg-white rounded-full text-stone-700 border border-stone-200">
+                        <span className={`px-3 py-1 bg-white rounded-full text-stone-700 border border-stone-200 ${isArabic ? 'font-arabic' : ''}`}>
                           {hadith.book} {hadith.number}
                         </span>
                         {hadith.grade && (
-                          <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full border border-amber-200 font-medium">
-                            <i className="fas fa-check-circle mr-1"></i>
+                          <span className={`px-3 py-1 bg-amber-100 text-amber-800 rounded-full border border-amber-200 font-medium ${isArabic ? 'font-arabic' : ''}`}>
+                            <i className={`fas fa-check-circle ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
                             {hadith.grade}
                           </span>
                         )}

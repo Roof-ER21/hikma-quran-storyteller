@@ -211,12 +211,15 @@ export interface HadithReference {
   number: string;
   text: string;
   grade?: string;
+  textArabic?: string;
 }
 
 export interface StorySection {
   id: string;
   title: string;
   content: string;
+  titleArabic?: string;
+  contentArabic?: string;
   verses?: QuranVerse[];
   hadiths?: HadithReference[];
 }
@@ -229,10 +232,16 @@ export interface AdultProphetStory {
   period: string;
   location: string;
   summary: string;
+  eraArabic?: string;
+  periodArabic?: string;
+  locationArabic?: string;
+  summaryArabic?: string;
   keyLessons: string[];
+  keyLessonsArabic?: string[];
   sections: StorySection[];
   relatedProphets?: string[];
   historicalNotes?: string;
+  historicalNotesArabic?: string;
 }
 
 // ============================================

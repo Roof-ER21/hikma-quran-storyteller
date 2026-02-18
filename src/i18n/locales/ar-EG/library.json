@@ -4,7 +4,9 @@
   "loading": "جاري تحميل مكتبة قصص الأنبياء...",
   "search": {
     "placeholder": "ابحث عن أنبياء، دروس، أماكن...",
-    "noResults": "مفيش قصص"
+    "noResultsHeader": "لا توجد قصص",
+    "noResultsBody": "جرّب تعديل كلمات البحث أو تصفح كل الأنبياء",
+    "clear": "مسح البحث"
   },
   "stats": {
     "count": "عدد الأنبياء: {{count}}",
@@ -15,11 +17,6 @@
     "era": "العصر",
     "location": "المكان"
   },
-  "search": {
-    "noResultsHeader": "لا توجد قصص",
-    "noResultsBody": "جرّب تعديل كلمات البحث أو تصفح كل الأنبياء",
-    "clear": "مسح البحث"
-  },
   "story": {
     "era": "العصر",
     "period": "الفترة",
@@ -29,6 +26,11 @@
     "readFullStory": "اقرأ القصة كاملة",
     "backToLibrary": "العودة للمكتبة",
     "sections": "الأقسام",
+    "expandAll": "توسيع الكل",
+    "collapseAll": "طي الكل",
+    "quranReferences": "المراجع القرآنية",
+    "hadithReferences": "المراجع الحديثية",
+    "historicalContext": "السياق التاريخي والملاحظات العلمية",
     "relatedProphets": "أنبياء مرتبطين",
     "historicalNotes": "ملاحظات تاريخية"
   },

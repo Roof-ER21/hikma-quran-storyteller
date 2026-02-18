@@ -52,15 +52,25 @@ export async function searchProphetStories(query: string): Promise<AdultProphetS
 
     // Search in summary
     if (story.summary.toLowerCase().includes(lowerQuery)) return true;
+    if (story.summaryArabic?.includes(query)) return true;
 
     // Search in key lessons
     if (story.keyLessons.some(lesson => lesson.toLowerCase().includes(lowerQuery))) return true;
+    if (story.keyLessonsArabic?.some(lesson => lesson.includes(query))) return true;
 
     // Search in section titles and content
     if (story.sections.some(section =>
       section.title.toLowerCase().includes(lowerQuery) ||
       section.content.toLowerCase().includes(lowerQuery)
     )) return true;
+    if (story.sections.some(section =>
+      section.titleArabic?.includes(query) ||
+      section.contentArabic?.includes(query)
+    )) return true;
+
+    if (story.locationArabic?.includes(query)) return true;
+    if (story.eraArabic?.includes(query)) return true;
+    if (story.periodArabic?.includes(query)) return true;
 
     return false;
   });
@@ -72,7 +82,8 @@ export async function searchProphetStories(query: string): Promise<AdultProphetS
 export async function getProphetsByLocation(location: string): Promise<AdultProphetStory[]> {
   const stories = await loadProphetStories();
   return stories.filter(story =>
-    story.location.toLowerCase().includes(location.toLowerCase())
+    story.location.toLowerCase().includes(location.toLowerCase()) ||
+    story.locationArabic?.includes(location)
   );
 }
 
@@ -83,7 +94,9 @@ export async function getProphetsByEra(era: string): Promise<AdultProphetStory[]
   const stories = await loadProphetStories();
   return stories.filter(story =>
     story.era.toLowerCase().includes(era.toLowerCase()) ||
-    story.period.toLowerCase().includes(era.toLowerCase())
+    story.period.toLowerCase().includes(era.toLowerCase()) ||
+    story.eraArabic?.includes(era) ||
+    story.periodArabic?.includes(era)
   );
 }
 

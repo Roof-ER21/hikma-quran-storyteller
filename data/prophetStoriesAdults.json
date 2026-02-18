@@ -50,23 +50,28 @@
             "book": "The Book of Paradise",
             "number": "2996",
             "text": "Angels were created from light, jinns were created from a smokeless flame of fire, and Adam was created from what has been described to you.",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "خلقت الملائكة من نور، وخلق الجن من مارج من نار، وخلق آدم مما وصف لك."
           },
           {
             "source": "Jami at-Tirmidhi",
             "book": "Chapters on Tafsir",
             "number": "2955",
             "text": "Indeed Allah Most High created Adam from a handful that He took from all of the earth. So the children of Adam come in according with the earth, some of them come red, and white and black, and between that, and the thin, the thick, the filthy, and the clean.",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "إن الله تعالى خلق آدم من قبضته أخذها من الأرض كلها. فبني آدم يأتي بحسب الأرض، فمنهم من يأتي أحمر، وأبيض، وأسود، وبين ذلك والرقيق، والغليظ، والقذر، والنظيف."
           },
           {
             "source": "Sahih Bukhari",
             "book": "Prophets",
             "number": "3326",
             "text": "Allah created Adam, making him 60 cubits tall. And everyone who enters Paradise will be in the form of Adam. People have been decreasing in stature since Adam's creation.",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "خلق الله آدم فطوله 60 ذراعا. وكل من يدخل الجنة يكون على صورة آدم. لقد تناقصت قامت الناس منذ خلق آدم."
           }
-        ]
+        ],
+        "titleArabic": "خلق آدم",
+        "contentArabic": "وأخبر الله الملائكة قراره بجعل خليفة في الأرض. فتساءلت الملائكة عن ذلك، متسائلين عما إذا كان هذا الخلق يسبب الفساد وسفك الدماء. فأجاب الله أنه يعلم ما لا يعلمون. خُلق آدم من طين تم جمعه من مختلف أنحاء الأرض، مما يعكس الخصائص المتنوعة لنسله. وبقي جسده ميتا أربعين سنة قبل أن يحييه الله. عندما دخلت الحياة على آدم كان أول شيء فعله هو العطاس وقول الحمد لله."
       },
       {
         "id": "knowledge",
@@ -88,7 +93,9 @@
             "translation": "He said, 'O Adam! Inform them of their names.' And when he had informed them of their names, He said, 'Did I not tell you that I know the secrets of the heavens and the earth, and I know what you reveal and what you conceal?'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "آدم علم أسماء كل شيء",
+        "contentArabic": "وقد ميز الله آدم بأن علمه أسماء الأشياء كلها، وهو علم لم يعط للملائكة. وشمل ذلك أسماء الأشياء وخصائصها والقدرة على التواصل بالبلاغة. ثم عرض الله آدم على الملائكة وطلب منهم تسمية هذه الأشياء فلم يستطيعوا. وعندما تلا آدم الأسماء على الملائكة، دل ذلك على تفوق المعرفة البشرية والحكمة. أدى هذا إلى ترسيخ دور البشرية كمعلمين وحاملين للمعرفة على الأرض."
       },
       {
         "id": "iblis-refusal",
@@ -124,7 +131,9 @@
             "translation": "And [mention] when We said to the angels, 'Prostrate to Adam,' and they prostrated, except for Iblis. He was of the jinn and departed from the command of his Lord."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "إبليس يرفض السجود",
+        "contentArabic": "بعد أن نفخ الله الحياة في آدم، أمر الله جميع الملائكة بالسجود لآدم احتراما له. أطاعت الملائكة كلهم ​​إلا إبليس (الشيطان) الذي كان من الجن وله إرادة حرة. فرفض إبليس كبرياء وكبرياء، مدعيا أنه أفضل من آدم لأنه خلق من نار وآدم خلق من طين. أدى هذا العصيان إلى طرد إبليس من الجنة ولعنه. ومع ذلك، طلب إبليس مهلة حتى يوم القيامة، متعهدا بإضلال البشرية عن الصراط المستقيم. أدى هذا إلى ظهور العداوة الأبدية بين الشيطان والبشر."
       },
       {
         "id": "paradise",
@@ -153,7 +162,9 @@
             "translation": "So he made them fall, through deception. And when they tasted of the tree, their private parts became apparent to them, and they began to fasten together over themselves from the leaves of Paradise. And their Lord called to them, 'Did I not forbid you from that tree and tell you that Satan is to you a clear enemy?'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الحياة في الجنة والشجرة المحرمة",
+        "contentArabic": "لقد عاش آدم وحواء في الجنة بكامل الحرية في التمتع بكل بركاتها. إلا أن الله نهاهم عن الاقتراب من شجرة معينة. كان هذا الحظر الوحيد بمثابة اختبار لطاعتهم وإرادتهم الحرة. كان إبليس يسعى لإثبات ضعف البشر، وكان يهمس لهم يوميًا، مشيرًا إلى أن الشجرة ستمنحهم الخلود والملكوت الأبدي. وأقسم أن يكون ناصحهم الصادق وأقنعهم بأن الله لم يحرم الشجرة إلا ليمنعهم من أن يصبحوا ملائكة. في النهاية، استسلموا للإغراء وأكلوا من الشجرة المحرمة، وسرعان ما أدركوا عريتهم وامتلأوا بالخجل."
       },
       {
         "id": "repentance",
@@ -182,7 +193,9 @@
             "translation": "Then Adam received from his Lord [some] words, and He accepted his repentance. Indeed, it is He who is the Accepting of repentance, the Merciful."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "التوبة والهبوط إلى الأرض",
+        "contentArabic": "وبعد أن أدركا خطأهما، امتلأ آدم وحواء بالندم وتوجها على الفور إلى الله مستغفرين. واعترفوا بخطئهم وطلبوا رحمة الله. قبل الله توبتهم الصادقة، لكنه قضى لهم أن ينزلوا مع إبليس إلى الأرض. وأخبر الله أن البشر وإبليس عدوان في الأرض، وأن الأرض ستكون مسكنهم ومتاعهم إلى أجل مسمى. كان هذا النزول بمثابة بداية حياة الإنسان على الأرض واختبار الإيمان."
       },
       {
         "id": "children",
@@ -204,18 +217,40 @@
             "translation": "Then Allah sent a crow searching in the ground to show him how to hide the disgrace of his brother. He said, 'O woe to me! Have I failed to be like this crow and hide the body of my brother?' And he became of the regretful."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "القتل الأول: قابيل وهابيل",
+        "contentArabic": "ورزق آدم وحواء بأبناء على الأرض. وكان أول توأم لهما هما قابيل (قابيل) مع أخته، وهابيل (هابيل) مع أخته. أمر الله آدم أن يزوج كل ابن من أخت الآخر التوأم ليعمروا الأرض. وبينما قبل هابيل هذا الأمر بطاعة، رفض قابيل أنانيته، إذ وجد أخته التوأم أجمل منه. ولحل الخلاف أمر الله كل ابن أن يقدم أضحية. وقدم هابيل أفضل حمل عنده بإخلاص، وقدم قابيل أسوأ حصاده. فقبل ​​الله قربان هابيل ورفض قربان قابيل. قتل قابيل أخاه هابيل بسبب الغيرة والغضب، مما جعل هذه أول جريمة قتل وقتل في تاريخ البشرية. وبعد ذلك، لم يعرف قابيل ماذا يفعل بالجثة، فشاهد غرابًا يدفن غرابًا ميتًا آخر، فعلمه قابيل كيفية دفن أخيه."
       },
       {
         "id": "death",
         "title": "The Death of Prophet Adam",
         "content": "When Adam fell gravely ill, he expressed a desire to taste the fruits of Paradise. His children set out to fulfill his wish but encountered angels carrying Adam's shroud and burial materials. The angels instructed them to return home as their father was approaching his end. The angels took Adam's soul, prepared his body for burial, wrapped him in the shroud, dug his grave, and laid him to rest. They then taught Adam's children the proper funeral rites, establishing this as the tradition for humanity at the time of death. Following Adam's death, his son Seth (Sheeth) succeeded him as a prophet and guide for the people.",
         "verses": [],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "وفاة النبي آدم",
+        "contentArabic": "عندما مرض آدم بشدة، أعرب عن رغبته في تذوق ثمار الجنة. انطلق أطفاله لتحقيق رغبته ولكنهم واجهوا ملائكة يحملون كفن آدم ومواد دفنه. أمرهم الملائكة بالعودة إلى المنزل حيث كان والدهم يقترب من نهايته. أخذت الملائكة روح آدم، وأعدوا جسده للدفن، وكفنوه، وحفروا قبره، ووضعوه في مكانه. ثم قاموا بتعليم أبناء آدم طقوس الجنازة المناسبة، وجعلوا ذلك تقليدًا للبشرية وقت الموت. وبعد وفاة آدم، خلفه ابنه شيث (شيث) كنبي ومرشد للناس."
       }
     ],
-    "relatedProphets": ["Idris", "Nuh", "Sheeth"],
-    "historicalNotes": "Prophet Adam is believed to have lived for 930-960 years according to various narrations. The location of his grave is disputed, with some traditions suggesting Mecca and others suggesting India or Jerusalem. His legacy as the father of humanity and the first prophet establishes the foundation of Islamic belief in prophethood and human responsibility on Earth."
+    "relatedProphets": [
+      "Idris",
+      "Nuh",
+      "Sheeth"
+    ],
+    "historicalNotes": "Prophet Adam is believed to have lived for 930-960 years according to various narrations. The location of his grave is disputed, with some traditions suggesting Mecca and others suggesting India or Jerusalem. His legacy as the father of humanity and the first prophet establishes the foundation of Islamic belief in prophethood and human responsibility on Earth.",
+    "eraArabic": "ما قبل التاريخ",
+    "periodArabic": "بداية الإنسانية",
+    "locationArabic": "الجنة ثم الأرض",
+    "summaryArabic": "النبي آدم (ع) هو أول إنسان ونبي خلقه الله. خلق من الطين وأحيا بنفخة الله. وعلم آدم الأسماء كلها، وفضل على الملائكة في العلم، وأدخل الجنة مع زوجته حواء. بعد أن خدعهم إبليس وأكلوا من الشجرة المحرمة، تم إرسالهم إلى الأرض لتأسيس الإنسانية وعبادة الله.",
+    "historicalNotesArabic": "يُعتقد أن النبي آدم عاش ما بين 930 إلى 960 عامًا وفقًا لروايات مختلفة. موقع قبره محل خلاف، حيث تشير بعض التقاليد إلى مكة والبعض الآخر يشير إلى الهند أو القدس. إن إرثه كأب البشرية والنبي الأول يؤسس أساس العقيدة الإسلامية في النبوة ومسؤولية الإنسان على الأرض.",
+    "keyLessonsArabic": [
+      "المعرفة هبة إلهية تسمو بالإنسانية",
+      "الشيطان (إبليس) هو العدو الأبدي للبشرية",
+      "والتوبة الصادقة تؤدي إلى مغفرة الله",
+      "الكبرياء والغطرسة يؤديان إلى الدمار",
+      "البشر خلفاء في الأرض",
+      "أهمية الاستغفار مباشرة بعد الذنب",
+      "الغيرة والحسد قد يؤديان إلى عواقب وخيمة (قصة قابيل وهابيل)"
+    ]
   },
   {
     "id": "idris",
@@ -260,25 +295,47 @@
             "translation": "And [mention] Ishmael and Idris and Dhul-Kifl; all were of the patient."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "صفات النبي إدريس",
+        "contentArabic": "وقد وُصِف النبي إدريس بأنه رجل قوي البنية، قوي البنية، عريض الصدر، يتكلم بصوت منخفض. كان طويل القامة ووسيمًا ويظهر دائمًا الهدوء في سلوكه. وبعيدًا عن صفاته الجسدية، كان فضوليًا فكريًا ويتأمل في اتساع الكون - من السماء والأرض والقمر والنجوم والسحب. يصفه القرآن بأنه رجل صدق (صديق) ونبي رفع إلى مكانة عالية. ويُعرف إدريس بأنه أول من تعلم الكتابة بالقلم، وكان لديه معرفة واسعة بعلم التنجيم والرياضيات."
       },
       {
         "id": "prophethood",
         "title": "Birth and Prophethood",
         "content": "Idris was born during the lifetime of Prophet Adam and is believed to have been among the followers of Sheeth (Seth), Adam's son who succeeded him. After the death of Sheeth, Idris ruled over the progeny of Adam. He was a sincere servant of Allah, and for this, Allah chose him as a prophet and messenger and elected him as ruler over the children of Adam. During this time, the people of Qabil (Cain) had lost guidance, and sin and corruption began spreading rapidly. Idris could not bear to watch his people falling prey to the influence of Satan.",
         "verses": [],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "المولد والنبوة",
+        "contentArabic": "ولد إدريس في عهد النبي آدم ويعتقد أنه كان من أتباع شيث (شيث) ابن آدم الذي خلفه. وبعد وفاة شيث ملك إدريس على ذرية آدم. لقد كان عبداً صادقاً لله، ولهذا اختاره الله نبياً ورسولاً، وانتخبه حاكماً على بني آدم. وفي هذا الوقت فقد قوم قابيل (قابيل) الهداية، وبدأت الخطيئة والفساد ينتشران بسرعة. لم يتحمل إدريس أن يرى قومه يقعون فريسة لتأثير الشيطان."
       },
       {
         "id": "jihad",
         "title": "The First Jihad Against Corruption",
         "content": "Allah instructed Prophet Idris to call for jihad (holy struggle) against the corrupt followers of Qabil. This made Idris the first prophet and messenger in Islamic history to perform jihad against corruption and evil. As commanded by Allah, Idris gathered an army of righteous men and battled in the name of Allah against the transgressors. Through Allah's support, they emerged victorious, establishing justice and the worship of Allah alone. This demonstrates that sometimes peaceful dawah (invitation to Islam) must be supplemented with active struggle against oppression.",
         "verses": [],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الجهاد الأول ضد الفساد",
+        "contentArabic": "أمر الله النبي إدريس بالدعوة إلى الجهاد ضد أتباع قابيل الفاسدين. مما جعل إدريس أول نبي ورسول في التاريخ الإسلامي يجاهد ضد الفساد والشر. بأمر الله، جمع إدريس جيشا من الصالحين وقاتل في سبيل الله ضد المعتدين. وبتوفيق الله خرجوا منتصرين، وأقاموا العدل وعبادة الله وحده. وهذا يوضح أن الدعوة السلمية في بعض الأحيان (الدعوة إلى الإسلام) يجب أن تُستكمل بالنضال النشط ضد الظلم."
       }
     ],
-    "relatedProphets": ["Adam", "Sheeth", "Nuh"],
-    "historicalNotes": "The details of Prophet Idris's life come from older scriptures that have undergone changes over time. While Muslims can learn from his story, we must ensure the lessons do not contradict the Qur'an and Sunnah. Some scholars identify him as Enoch from the Bible. The exact nature of his 'raising to a lofty station' is subject to various interpretations - some believe he was raised to the heavens alive, while others interpret it as a spiritual elevation."
+    "relatedProphets": [
+      "Adam",
+      "Sheeth",
+      "Nuh"
+    ],
+    "historicalNotes": "The details of Prophet Idris's life come from older scriptures that have undergone changes over time. While Muslims can learn from his story, we must ensure the lessons do not contradict the Qur'an and Sunnah. Some scholars identify him as Enoch from the Bible. The exact nature of his 'raising to a lofty station' is subject to various interpretations - some believe he was raised to the heavens alive, while others interpret it as a spiritual elevation.",
+    "eraArabic": "ما قبل الطوفان",
+    "periodArabic": "بين آدم ونوح",
+    "locationArabic": "بابل (العراق الحالي) ومصر",
+    "summaryArabic": "النبي إدريس (ع)، المعروف باسم أخنوخ في الكتاب المقدس، كان إما النبي الثاني أو الثالث في التقليد الإسلامي. وهو جد النبي نوح، وكان معروفًا بعلمه العميق وصدقه وصبره. كان إدريس أول من خط بالقلم، وكان واسع المعرفة بعلم الفلك والرياضيات. وقد رفعه الله مقامًا ساميًا ودعا قومه إلى الجهاد ضد الفساد، ليصبح أول نبي يحارب الشر.",
+    "historicalNotesArabic": "تفاصيل حياة النبي إدريس تأتي من الكتب المقدسة القديمة التي خضعت لتغييرات مع مرور الوقت. وبينما يمكن للمسلمين أن يتعلموا من قصته، يجب علينا التأكد من أن الدروس لا تتعارض مع القرآن والسنة. يعرفه بعض العلماء على أنه أخنوخ من الكتاب المقدس. إن الطبيعة الدقيقة لـ \"رفعه إلى المقام الرفيع\" تخضع لتفسيرات مختلفة - يعتقد البعض أنه رُفع إلى السماء حيًا، بينما يفسره آخرون على أنه ارتفاع روحي.",
+    "keyLessonsArabic": [
+      "العلم والحكمة هدية من الله يستخدمها في الخير",
+      "محاربة الفساد واجب إلهي",
+      "الصبر والصدق من صفات الصالحين",
+      "الابتكار في التعلم والمعرفة يشجع في الإسلام",
+      "إن الوقوف ضد الشر قد يتطلب الشجاعة والعمل"
+    ]
   },
   {
     "id": "nuh",
@@ -317,7 +374,9 @@
             "translation": "He said, 'My Lord, indeed I invited my people [to truth] night and day.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "مهمة النبي نوح",
+        "contentArabic": "أرسل النبي نوح إلى قومه الذين تركوا التوحيد الخالص الذي كان عليه آباؤهم وبدؤوا بعبادة الأصنام. وهذه الأصنام - ود، وسوا، ويغوث، ويعوق، ونصر - كانت في الأصل أسماء لرجال صالحين عُظِّمت صورهم فيما بعد بعد وفاتهم. دعا نوح قومه ليلا ونهارا سرا ونهارا لمدة 950 سنة، فأستمر أكثرهم على الكفر. وقد رفض النخبة منهم رسالته، ووصفوه بأنه مجرد إنسان مثلهم، مشيرين إلى أنه لا يتبعه إلا الفقراء والضعفاء."
       },
       {
         "id": "nuh-rejection",
@@ -339,7 +398,9 @@
             "translation": "They said, 'If you do not desist, O Nuh, you will surely be of those who are stoned.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الرفض الشعبي",
+        "contentArabic": "وعلى الرغم من جهود نوح الحثيثة، إلا أن قومه رفضوا رسالته بعداء متزايد. فغطوا آذانهم، ولفوا ثيابهم، واستمروا في الاستكبار. وزعم الزعماء منهم أن نوحًا كان مجرد رجل مثلهم، وأن أتباعه كانوا مجرد أدنى أفراد المجتمع. وطالبوا بطرد فقراء المؤمنين إذا أراد أن تستمع النخبة. رفض نوح، مدركًا أن الإيمان لا يقاس بالمكانة الدنيوية. أصبح الناس عدائيين لدرجة أنهم هددوا برجمه إذا لم يتوقف عن الكرازة."
       },
       {
         "id": "nuh-dua",
@@ -361,7 +422,9 @@
             "translation": "And it was revealed to Nuh that, 'No one will believe from your people except those who have already believed, so do not be distressed by what they have been doing.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "صلاة نوح على قومه",
+        "contentArabic": "بعد قرون من الوعظ دون استجابة إيجابية، وبعد أن كشف الله أنه لن يؤمن المزيد من قومه، دعا نوح أخيرًا ضدهم. ولم يكن ذلك عن غضب أو نفاذ صبر، بل لأن الله أخبره أن الاستمرار في دعوتهم لا جدوى منه. لقد طلب نوح من الله ألا يترك على الأرض كافراً واحداً، لعلمه أنهم لن يؤديوا إلا إلى ضلال الأجيال القادمة. وقد استجابت هذه الصلاة من خلال الطوفان العظيم."
       },
       {
         "id": "nuh-ark",
@@ -383,7 +446,9 @@
             "translation": "And he constructed the ship, and whenever an assembly of the eminent of his people passed by him, they ridiculed him. He said, 'If you ridicule us, then we will ridicule you just as you ridicule.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "بناء الفلك",
+        "contentArabic": "أمر الله نوحًا أن يبني سفينة ضخمة، وهي مهمة لم يسبق لها مثيل في أرض بعيدة عن أي بحر. وبتوجيه إلهي، بدأ نوح في بناء السفينة. سخر منه شعبه بلا هوادة، وسألوه لماذا كان يبني سفينة في الصحراء. وفي كل مرة مروا به وسخروا منه، أجاب نوح أنه كما يسخرون منه الآن، فإن المؤمنين سيسخرون منهم في النهاية. وواصل عمله بصبر وإصرار، وهو يعلم أن وعد الله سيتحقق."
       },
       {
         "id": "nuh-flood",
@@ -405,7 +470,9 @@
             "translation": "[His son] said, 'I will take refuge on a mountain to protect me from the water.' [Nuh] said, 'There is no protector today from the decree of Allah, except for whom He gives mercy.' And the waves came between them, and he was among the drowned."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الطوفان العظيم",
+        "contentArabic": "فلما جاء الأمر، انفجر الماء من الأرض، وانهمر من السماء مقادير غير مسبوقة. لقد حمل نوح السفينة بأزواج من كل الأصناف والمؤمنين، وهم فئة قليلة مقارنة بالجماهير التي رفضته. ارتفعت الأمواج مثل الجبال، وغطت الأرض. حتى في هذه اللحظات الأخيرة، نادى نوح ابنه الذي اختار البقاء مع الكفار، لكن الابن اعتقد بغطرسة أنه يستطيع البقاء على قيد الحياة على الجبل. فحال بينهما موج فكان من الغرقى."
       },
       {
         "id": "nuh-landing",
@@ -433,13 +500,33 @@
             "book": "Prophets",
             "number": "3340",
             "text": "On the Day of Resurrection, the people will go to Nuh and say, 'O Nuh! You are the first of the Messengers to the people of the earth, and Allah named you a grateful servant.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "يأتي الناس يوم القيامة إلى نوح فيقولون: يا نوح! أنت أول الرسل إلى أهل الأرض، وقد سماك الله عبداً شكوراً»."
           }
-        ]
+        ],
+        "titleArabic": "الهبوط الآمن وبداية جديدة",
+        "contentArabic": "وبعد أن انحسرت مياه الطوفان، استقر الفلك على جبل جودي. فأمر الله الأرض أن تبلع ماءها والسماء صفو. ونزل نوح والمؤمنون لتبدأ البشرية من جديد على أرض مطهرة. وبارك الله على نوح ومن معه، ووعدهم أن من نسلهم ستأتي أمم. كان هذا بمثابة بداية جديدة للبشرية، حيث اعتبر نوح الأب الثاني للبشرية بعد آدم."
       }
     ],
-    "relatedProphets": ["Adam", "Idris", "Hud"],
-    "historicalNotes": "Nuh (AS) is one of the five Ulul 'Azm (Prophets of Strong Will) in Islam. His story is mentioned in 43 surahs of the Quran, with Surah Nuh (Chapter 71) dedicated entirely to his account. The exact location of Mount Judi is debated, with some scholars placing it in southeastern Turkey. Archaeological evidence of ancient flood narratives exists across many cultures, supporting the historical reality of a great deluge."
+    "relatedProphets": [
+      "Adam",
+      "Idris",
+      "Hud"
+    ],
+    "historicalNotes": "Nuh (AS) is one of the five Ulul 'Azm (Prophets of Strong Will) in Islam. His story is mentioned in 43 surahs of the Quran, with Surah Nuh (Chapter 71) dedicated entirely to his account. The exact location of Mount Judi is debated, with some scholars placing it in southeastern Turkey. Archaeological evidence of ancient flood narratives exists across many cultures, supporting the historical reality of a great deluge.",
+    "eraArabic": "عصر ما قبل الطوفان",
+    "periodArabic": "950 سنة من الدعوة",
+    "locationArabic": "بلاد ما بين النهرين (العراق الحالي)",
+    "summaryArabic": "أُرسل النبي نوح (ع)، المعروف في التوراة بنوح، إلى قومه الذين وقعوا في عبادة الأصنام. ووعظهم 950 سنة يدعوهم إلى عبادة الله وحده. ولما أصروا على رفض رسالته، أمره الله أن يبني فلكًا. أهلك الطوفان الكفار، ونجا نوح والمؤمنون، مما جعله الأب الثاني للبشرية بعد آدم.",
+    "historicalNotesArabic": "نوح (ع) هو أحد أولياء العزم الخمسة في الإسلام. وردت قصته في 43 سورة من القرآن، وخصصت سورة نوح (الفصل 71) بالكامل لروايته. الموقع الدقيق لجبل جودي محل نقاش، حيث وضعه بعض العلماء في جنوب شرق تركيا. توجد أدلة أثرية على قصص الفيضانات القديمة في العديد من الثقافات، مما يدعم الواقع التاريخي للطوفان العظيم.",
+    "keyLessonsArabic": [
+      "الصبر والمثابرة في الدعوة إلى الله",
+      "ثق بوعد الله حتى في مواجهة الاستهزاء",
+      "الإيمان يحل محل الروابط العائلية عندما يتعلق الأمر بالحقيقة",
+      "ويأتي عذاب الله بعد إنذار طويل",
+      "الحمد لله على الخلاص",
+      "أهمية اتباع الأوامر الإلهية بدقة"
+    ]
   },
   {
     "id": "hud",
@@ -477,7 +564,9 @@
             "translation": "And mention [Hud], the brother of 'Aad, when he warned his people in the [region of] sand dunes."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "قوم عاد الأقوياء",
+        "contentArabic": "وقوم عاد من ذرية عاد بن أوس بن إرم بن سام بن نوح. واستقروا في الأحقاف، وهي منطقة من الكثبان الرملية المنحنية في جنوب شبه الجزيرة العربية. لقد باركهم الله كثيرًا، فقد كانوا أقوياء جسديًا، وطويلي القامة، وأقوياء. وقاموا ببناء هياكل رائعة، بما في ذلك مدينة إرم الأسطورية بأعمدتها الشامخة التي لا مثيل لها في جميع البلاد. وكان لهم ماء وافر، وأرض خصبة، وذرية كثيرة. ولكن بدلاً من شكر الله استكبروا وعبدوا الأصنام."
       },
       {
         "id": "hud-message",
@@ -499,7 +588,9 @@
             "translation": "Do you construct on every elevation a sign, amusing yourselves? And take for yourselves palaces that you might abide eternally?"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "دعوة هود لقومه",
+        "contentArabic": "فبعث الله هودا منهم ليدعوهم إلى عبادة الله وحده. فذكرهم هود بنعم الله عليهم - قوتهم وبنيانهم ورخاءهم - وحثهم على الشكر. وحذرهم من مصير قوم نوح الذين هلكوا بكفرهم. لكن زعماء عاد اعتبروه كاذبًا أحمق، قائلين إنهم لم يروا أي دليل على ادعاءاته ولن يتخلوا عن آلهة آبائهم."
       },
       {
         "id": "hud-arrogance",
@@ -521,7 +612,9 @@
             "translation": "They said, 'O Hud, you have not brought us clear evidence, and we are not ones to leave our gods on your say-so. And we are not believers in you.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "ردهم المتعجرف",
+        "contentArabic": "وقد رد قوم عاد على هود بالاستكبار والاستهزاء. وكانوا يفتخرون بقوتهم ويقولون: من أقوى منا قوة؟ ونسوا أن الله الذي خلقهم هو أقوى. وتحدوا هودًا أن ينزل العقوبة التي حذرهم منها، واثقين أنه لن يضرهم شيء. لقد أعماهم كبرياءهم عن الحق، واستمروا في شرهم، وظلموا الضعفاء فيهم."
       },
       {
         "id": "hud-punishment",
@@ -543,11 +636,29 @@
             "translation": "Indeed, We sent upon them a screaming wind on a day of continuous misfortune."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الريح المدمرة",
+        "contentArabic": "ولما استمر قوم عاد على كفرهم وطغيانهم، بعث الله عليهم ريحا عاصفة عاتية، استمرت سبع ليال وثمانية أيام متتالية. وكانت الريح قوية لدرجة أنها تلتقط الإنسان وتطرحه على الأرض، وتتركه مثل جذوع النخل المجوفة. لقد تم تدمير كل ما بنوه. لقد تُرك عاد الجبار، الذي كان يتباهى بقوته، وكأنهم لم يكونوا موجودين من قبل. ولم ينج إلا هود والذين آمنوا معه."
       }
     ],
-    "relatedProphets": ["Nuh", "Saleh", "Ibrahim"],
-    "historicalNotes": "The people of 'Ad are considered among the ancient Arabian civilizations. Archaeological discoveries in southern Arabia, including the remains of the ancient city of Ubar (possibly identified as Iram), provide historical context for their existence. Surah Hud (Chapter 11) is named after this prophet, and his story serves as a powerful reminder that no amount of worldly power can protect from Allah's decree."
+    "relatedProphets": [
+      "Nuh",
+      "Saleh",
+      "Ibrahim"
+    ],
+    "historicalNotes": "The people of 'Ad are considered among the ancient Arabian civilizations. Archaeological discoveries in southern Arabia, including the remains of the ancient city of Ubar (possibly identified as Iram), provide historical context for their existence. Surah Hud (Chapter 11) is named after this prophet, and his story serves as a powerful reminder that no amount of worldly power can protect from Allah's decree.",
+    "eraArabic": "عصر ما بعد الطوفان",
+    "periodArabic": "بعد نوح وقبل إبراهيم",
+    "locationArabic": "الأحقاف (جنوب شبه الجزيرة العربية، اليمن/عُمان الحديثة)",
+    "summaryArabic": "أرسل النبي هود (ع) إلى قوم عاد من نسل نوح الذي أصبح من أعظم الحضارات في عصرهم. لقد بنوا هياكل وآثارًا رائعة، يتباهون بقوتهم وقوتهم. ورغم النعمة التي حظوا بها، فقد وقعوا في عبادة الأوثان والظلم. فدعاهم هود إلى الرجوع إلى الله، فرفضوه، فأهلكهم الله بريح شديدة شديدة استمرت سبع ليال وثمانية أيام.",
+    "historicalNotesArabic": "ويعتبر قوم عاد من الحضارات العربية القديمة. توفر الاكتشافات الأثرية في جنوب شبه الجزيرة العربية، بما في ذلك بقايا مدينة أوبار القديمة (التي يمكن تحديدها باسم إرم)، سياقًا تاريخيًا لوجودها. تم تسمية سورة هود (الفصل 11) على اسم هذا النبي، وقصته بمثابة تذكير قوي بأنه لا يمكن لأي قدر من القوة الدنيوية أن يحمي من أمر الله.",
+    "keyLessonsArabic": [
+      "القوة المادية والقوة لا يمكن أن تحمي من عقاب الله",
+      "إن الشكر على النعم أمر ضروري",
+      "فالاستكبار يؤدي إلى الهلاك",
+      "القوة الحقيقية تكمن في الإيمان، وليس القوة الجسدية",
+      "عقاب الله يأتي بأشكال مختلفة"
+    ]
   },
   {
     "id": "saleh",
@@ -585,7 +696,9 @@
             "translation": "Will you be left in what is here, secure [from death] - within gardens and springs, and fields of crops and palm trees with softened fruit?"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "قوم ثمود",
+        "contentArabic": "بعد هلاك عاد، برز قوم ثمود. وهم من ذرية ثمود بن أثير بن إرم بن سام بن نوح. وقد أنعم الله عليهم بالقدرة على نحت البيوت في الجبال بمهارة كبيرة. وكانت أرضهم خصبة، بها حدائق وينابيع ونخيل. وعاشوا في أمن ووفرة. ولكنهم مثل عاد من قبلهم نسوا نعمة الله واتجهوا إلى عبادة الأوثان مقتدين بسبل الذين هلكوا من قبلهم."
       },
       {
         "id": "saleh-mission",
@@ -607,7 +720,9 @@
             "translation": "They said, 'You are only of those affected by magic. You are but a man like ourselves, so bring a sign, if you should be of the truthful.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "رسالة صالح",
+        "contentArabic": "فبعث الله صالحا من أقربائهم الكرام ليهديهم إلى الحق. فذكرهم صالح بنعم الله وحذرهم من اتباع طريق عاد. ودعاهم إلى عبادة الله وحده، وترك الأصنام التي لا تنفعهم ولا تضرهم. رفضت النخبة منهم رسالته، بينما صدقها بعض الضعفاء في المجتمع. واتهم الكفار صالح بالسحر وطالبوه بأن يأتي بمعجزة إن كان حقا رسولا."
       },
       {
         "id": "saleh-camel",
@@ -629,7 +744,9 @@
             "translation": "Indeed, We are sending the she-camel as trial for them, so watch them and be patient."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الناقة المعجزة",
+        "contentArabic": "واستجابة لطلبهم، أخرج الله ناقة معجزة من صخرة صلبة. لم يكن هذا الجمل عاديًا، بل كان ضخمًا، وكان يشرب كل مياه بئرهم في يوم واحد، بينما يوفر لهم في المقابل الكثير من الحليب. وحذرهم صالح من أن الجمل آية من الله ولا يجوز إيذاءها. وأقر أن الماء قسمة: يوم للجمل، ويوم لهم. لبعض الوقت، احترموا هذا الترتيب."
       },
       {
         "id": "saleh-crime",
@@ -651,7 +768,9 @@
             "translation": "But they hamstrung her, so he said, 'Enjoy yourselves in your homes for three days. That is a promise not to be denied.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "جريمة قتل الجمل",
+        "contentArabic": "استاء زعماء ثمود من الجمل وتآمروا على قتله. وشجعوا رجلا منهم شقيا اسمه قيدار بن صليف على عقر البعير. ففعل ذلك فقُتل الجمل. فلما رأى صالح ذلك حذرهم من أن أمامهم ثلاثة أيام فقط قبل أن يأتي عذاب الله. فسخروا منه وتحدوه أن ينزل العقوبة. مرت تلك الأيام الثلاثة مع ظهور علامات الهلاك الوشيك، حيث تغير لون وجوههم كل يوم."
       },
       {
         "id": "saleh-destruction",
@@ -679,13 +798,32 @@
             "book": "Military Expeditions",
             "number": "4419",
             "text": "When the Prophet (ﷺ) passed by Al-Hijr [the land of Thamud], he said: 'Do not enter the dwellings of those who wronged themselves, unless you are weeping, lest what befell them should befall you.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "ولما مر النبي صلى الله عليه وسلم بالحجر قال: (لا تدخلوا مساكن الذين ظلموا أنفسهم إلا أن تكونوا باكين أن يصيبكم ما أصابهم)."
           }
-        ]
+        ],
+        "titleArabic": "هلاك ثمود",
+        "contentArabic": "وفي اليوم الرابع، أصابت قوم ثمود ريح عظيمة من السماء، صاحبها زلزلة مدمرة. نفس الأشخاص الذين بنوا بيوتهم في الجبال، معتقدين أنهم آمنون، تم تدميرهم في مساكنهم. لقد سقطوا في منازلهم وكأنهم لم يعيشوا فيها أبدًا. ولم ينج إلا صالح والذين آمنوا معه. وتبقى آثار حضارتهم عبرة لمن يمرون بها."
       }
     ],
-    "relatedProphets": ["Hud", "Nuh", "Lut"],
-    "historicalNotes": "The ruins of Madain Saleh (Al-Hijr) in northwestern Saudi Arabia are a UNESCO World Heritage Site and are believed to be the dwellings of Thamud. The Prophet Muhammad (ﷺ) passed by this area during the expedition to Tabuk and warned his companions about entering these ruins. The carved rock tombs and structures visible today serve as a powerful reminder of this Quranic narrative."
+    "relatedProphets": [
+      "Hud",
+      "Nuh",
+      "Lut"
+    ],
+    "historicalNotes": "The ruins of Madain Saleh (Al-Hijr) in northwestern Saudi Arabia are a UNESCO World Heritage Site and are believed to be the dwellings of Thamud. The Prophet Muhammad (ﷺ) passed by this area during the expedition to Tabuk and warned his companions about entering these ruins. The carved rock tombs and structures visible today serve as a powerful reminder of this Quranic narrative.",
+    "eraArabic": "عصر ما بعد الإعلان",
+    "periodArabic": "بعد هود قبل إبراهيم",
+    "locationArabic": "الحجر (مدائن صالح، شمال الجزيرة العربية)",
+    "summaryArabic": "وبعث النبي صالح (ع) إلى قوم ثمود خلفاء عاد الذين ورثوا الأرض من بعدهم. لقد نحتوا منازل رائعة في الجبال وعاشوا في رخاء. وعندما طلبوا معجزة، أرسل الله لهم ناقة معجزة كعلامة. وعلى الرغم من التحذيرات، فقد عرققوا الجمل وقتلوه، مما جلب على أنفسهم زلزالًا مدمرًا وانفجارًا مدويًا دمرهم جميعًا.",
+    "historicalNotesArabic": "تعد آثار مدائن صالح (الحجر) في شمال غرب المملكة العربية السعودية أحد مواقع التراث العالمي لليونسكو ويعتقد أنها مساكن ثمود. وقد مر النبي محمد (صلى الله عليه وسلم) بهذه المنطقة في غزوة تبوك وحذر أصحابه من دخول هذه الآثار. إن المقابر والهياكل الصخرية المنحوتة المرئية اليوم بمثابة تذكير قوي بهذه الرواية القرآنية.",
+    "keyLessonsArabic": [
+      "ويجب احترام العلامات الإلهية والإصغاء إليها",
+      "التعلم من مصير الأمم السابقة",
+      "فساد القلة يمكن أن يدمر الكثيرين",
+      "إن عذاب الله سريع لمن تحدى بآياته",
+      "الرخاء بدون شكر يؤدي إلى الهلاك"
+    ]
   },
   {
     "id": "ibrahim",
@@ -725,7 +863,9 @@
             "translation": "Indeed, I have turned my face toward He who created the heavens and the earth, inclining toward truth, and I am not of those who associate others with Allah."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "البحث عن الحقيقة",
+        "contentArabic": "ولد إبراهيم في زمان ومكان كانت عبادة الأوثان منتشرة فيه. وكان أبوه آزار صانع أصنام للملك نمرود. منذ صغره، دفعته فطرته النقية إلى التشكيك في عبادة الأصنام التي لا تسمع ولا تبصر. ولاحظ أن شعبه يعبدون الأجرام السماوية أيضًا. وعندما رأى النجم، ثم القمر، ثم الشمس، كل غروب ثم يختفي، اعتقد أن لا أحد من هؤلاء يمكن أن يكون الرب الحقيقي. ووجه وجهه إلى الذي خلق كل شيء، رب السماوات والأرض."
       },
       {
         "id": "ibrahim-father",
@@ -747,7 +887,9 @@
             "translation": "He said, 'Have you no desire for my gods, O Ibrahim? If you do not desist, I will surely stone you, so avoid me a prolonged time.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "مواجهة والده",
+        "contentArabic": "اقترب إبراهيم من أبيه آزر بلطف، ودعاه إلى ترك عبادة الأوثان. وسأل لماذا كان والده يعبد ما لا يسمع ولا يرى ولا ينفعه شيئا؟ وحذر والده من أن العلم قد جاءه من عند الله، وحثه على اتباعه إلى الصراط المستقيم. لكن عازار رفض دعوة ابنه وهدده برجمه وأمره بالرحيل. ففارقه إبراهيم بالسلام، ووعده بالاستغفار له من ربه."
       },
       {
         "id": "ibrahim-idols",
@@ -769,7 +911,9 @@
             "translation": "He said, 'Rather, this - the largest of them - did it, so ask them, if they should [be able to] speak.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "تدمير الأصنام",
+        "contentArabic": "ولما خرج قومه إلى عيد، تخلف إبراهيم عنهم، فذهب إلى معبدهم. فأخذ الفأس وحطم جميع الأصنام إلا أكبرها الذي علق الفأس على عنقه. وعندما عاد الناس ورأوا آلهتهم قد تحطمت، اشتبهوا في إبراهيم. وتحداهم أن يسألوا كبير الأصنام من فعل هذا، كاشفًا حماقة عبادة الأشياء التي لا تستطيع أن تتكلم أو تدافع عن نفسها. ومع أنهم عرفوا الحق، فإن كبريائهم منعهم من قبوله."
       },
       {
         "id": "ibrahim-fire",
@@ -797,9 +941,12 @@
             "book": "Prophets",
             "number": "3372",
             "text": "When Ibrahim was thrown into the fire, he said: 'Hasbunallah wa ni'mal wakeel (Allah is sufficient for us and He is the Best Disposer of affairs).' And the same was said by Muhammad (ﷺ) when it was said to him: 'The people have gathered against you.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "ولما ألقي إبراهيم في النار قال: حسبنا الله ونعم الوكيل. وكذا قال محمد صلى الله عليه وسلم حين قيل له: إن الناس قد جمعوا عليك."
           }
-        ]
+        ],
+        "titleArabic": "المحاكمة بالنار",
+        "contentArabic": "فقرر الشعب بقيادة الملك نمرود معاقبة إبراهيم بإلقائه في نار هائلة. لقد بنوا محرقة ضخمة، كبيرة جدًا لدرجة أنهم اضطروا إلى استخدام المنجنيق لإلقائه فيها لأنه لم يتمكن أحد من الاقتراب منها. وبينما كان إبراهيم يُلقى في النار، جاءه جبريل يعرض عليه المساعدة، فأجاب إبراهيم: حسبه الله. وفي تلك اللحظة أمر الله النار أن تكون بردا وسلاما على إبراهيم. وخرج سالمًا، وأقنعت هذه المعجزة بعض الناظرين بحقيقته."
       },
       {
         "id": "ibrahim-migration",
@@ -827,9 +974,12 @@
             "book": "Prophets",
             "number": "3364",
             "text": "Ibrahim brought Hajar and her son Ismail while she was suckling him, to a place near the Ka'bah under a tree above Zamzam. There was nobody in Makkah at that time, and there was no water either.",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "وأتى إبراهيم بهاجر وابنها إسماعيل وهي ترضعه إلى مكان قريب من الكعبة تحت شجرة فوق زمزم. ولم يكن بمكة يومئذ أحد، ولم يكن فيها ماء أيضًا."
           }
-        ]
+        ],
+        "titleArabic": "الهجرة والأسرة",
+        "contentArabic": "وبعد ابتلاءه بالنار، هاجر إبراهيم مع زوجته سارة وابن أخيه لوط إلى أرض الشام المباركة. ورزق الله إبراهيم ولدين في شيخوخته - إسماعيل من حجر وإسحاق من سارة. عندما أمر الله إبراهيم، أخذ هاجر والطفل إسماعيل إلى وادي مكة القاحل ولم يترك لهما هناك سوى التمر والماء، واثقًا بتدبير الله. وعندما نضب الماء، ركضت هاجر بين الصفا والمروة تطلب النجدة، حتى تدفقت عين زمزم بأعجوبة."
       },
       {
         "id": "ibrahim-sacrifice",
@@ -851,7 +1001,9 @@
             "translation": "And We ransomed him with a great sacrifice."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "التضحية القصوى",
+        "contentArabic": "ولما بلغ إسماعيل من العمر ما يكفي ليمشي مع أبيه، رأى إبراهيم في المنام أنه يذبح ابنه. الأحلام النبوية هي الوحي من الله. وأخبر إبراهيم إسماعيل بالحلم، فأجاب الابن المطيع: افعل كما أمرت يا أبت. ستجدني إن شاء الله من الصابرين. فلما وضع إبراهيم ابنه ووضع السكين في عنقه، ناداه الله بأن قد حققت الرؤيا. تم إرسال كبش عظيم فدية، وهذا الحدث أسس لممارسة التضحية خلال عيد الأضحى."
       },
       {
         "id": "ibrahim-kaaba",
@@ -879,13 +1031,36 @@
             "book": "Prophets",
             "number": "3366",
             "text": "The Prophet (ﷺ) said: 'The first food to be eaten by the people of Paradise will be the caudate lobe of fish-liver. As for the resemblance of the children to their parents: If a man approaches his wife and his discharge precedes hers, the child will resemble him; if her discharge precedes his, the child will resemble her.' Ibrahim said, 'I bear witness that you are the Messenger of Allah.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «أول طعام يأكله أهل الجنة زيادة كبد الحوت». وأما تشبيه الأبناء بوالديهم: فإن الرجل إذا اقترب من امرأته وسبق ماءه سيله يشبهه الولد؛ فإذا سبق سيلانها كان الولد يشبهها. فقال إبراهيم: أشهد أنك رسول الله."
           }
-        ]
+        ],
+        "titleArabic": "بناء الكعبة",
+        "contentArabic": "أمر الله إبراهيم وإسماعيل أن يقيما أساسات الكعبة، أول بيت وضع للناس. عمل الأب والابن معًا، حيث أحضر إسماعيل الحجارة وقام إبراهيم بوضعها. وأثناء بنائهم دعوا الله أن يتقبل عملهم، وأن يجعلهم وذريتهم أمة مسلمة. لقد دعوا أن يبعث من بين ذريتهم رسول - وهي صلاة استجابت بعد قرون مع النبي محمد (صلى الله عليه وسلم). الحجر الذي وقف عليه إبراهيم، مقام إبراهيم، لا يزال قائما بجانب الكعبة حتى يومنا هذا."
       }
     ],
-    "relatedProphets": ["Ismail", "Ishaq", "Lut", "Yaqub", "Yusuf"],
-    "historicalNotes": "Ibrahim (AS) is one of the five Ulul 'Azm (Prophets of Strong Will) and is mentioned in 25 surahs of the Quran. He is the patriarch of the three Abrahamic faiths. Surah Ibrahim (Chapter 14) is named after him. The rituals of Hajj commemorate events from his life, including the Tawaf, Sa'i between Safa and Marwa (commemorating Hajar's search for water), and the sacrifice. His legacy of pure monotheism (Hanifiyyah) is the foundation upon which Islam is built."
+    "relatedProphets": [
+      "Ismail",
+      "Ishaq",
+      "Lut",
+      "Yaqub",
+      "Yusuf"
+    ],
+    "historicalNotes": "Ibrahim (AS) is one of the five Ulul 'Azm (Prophets of Strong Will) and is mentioned in 25 surahs of the Quran. He is the patriarch of the three Abrahamic faiths. Surah Ibrahim (Chapter 14) is named after him. The rituals of Hajj commemorate events from his life, including the Tawaf, Sa'i between Safa and Marwa (commemorating Hajar's search for water), and the sacrifice. His legacy of pure monotheism (Hanifiyyah) is the foundation upon which Islam is built.",
+    "eraArabic": "حوالي 2000-1800 قبل الميلاد",
+    "periodArabic": "175 سنة",
+    "locationArabic": "أور (العراق)، حران، كنعان (فلسطين)، مصر، مكة المكرمة",
+    "summaryArabic": "يعد النبي إبراهيم (ع)، المعروف بخليل الله وأبي الأنبياء، أحد أعظم الأنبياء في التاريخ الإسلامي. لقد أظهر إيمانًا راسخًا من خلال تجارب عديدة: تحدي عبادة الأوثان، وإلقائه في النار، وترك عائلته في وادي مكة القاحل، وأمر بالتضحية بابنه. أعاد بناء الكعبة مع ابنه إسماعيل وهو بطريرك الأنساب النبوية العربية والإسرائيلية.",
+    "historicalNotesArabic": "وإبراهيم (ع) هو أحد أولي العزم الخمسة، وقد ورد ذكره في 25 سورة من القرآن. وهو بطريرك الديانات الإبراهيمية الثلاثة. سورة إبراهيم (الفصل 14) سميت باسمه. طقوس الحج تخلد ذكرى أحداث من حياته، بما في ذلك الطواف والسعي بين الصفا والمروة (ذكرى بحث هاجر عن الماء) والأضحية. إن تراثه من التوحيد الخالص (الحنفية) هو الأساس الذي بني عليه الإسلام.",
+    "keyLessonsArabic": [
+      "التوحيد الخالص قبل كل شيء",
+      "التسليم الكامل لإرادة الله (الإسلام)",
+      "توكل على الله حتى في المواقف المستحيلة",
+      "التضحية في سبيل الله",
+      "حسن الضيافة والكرم للضيوف",
+      "الابتعاد عن ضلال الأجداد",
+      "وحدة الأسرة في العبادة والطاعة"
+    ]
   },
   {
     "id": "lut",
@@ -916,7 +1091,9 @@
             "translation": "And to Lut We gave judgment and knowledge, and We saved him from the city that was committing wicked deeds. Indeed, they were a people of evil, defiantly disobedient."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "البعثة إلى سدوم",
+        "contentArabic": "رافق لوط (ع) عمه إبراهيم (ع) في الرحلة من بلاد ما بين النهرين واستقر في نهاية المطاف في منطقة سدوم بالقرب من البحر الميت. وقد بعثه الله نبيا إلى أهل هذه القرى الذين أدخلوا الذنوب التي لم يسبق لها مثيل في تاريخ البشرية. ولوط على الرغم من كونه بينهم، إلا أنه كان غريبا عن طرقهم، رجلا صالحا يأمر بالمعروف وينهى عن المنكر. وقد وصفه القرآن بأنه أوتي الحكمة والعلم، وكان من الصالحين."
       },
       {
         "id": "lut-warning",
@@ -938,7 +1115,9 @@
             "translation": "Do you approach males among the worlds?"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "التحذير من التجاوز",
+        "contentArabic": "وقد دعا لوط (ع) قومه إلى ترك ذنوبهم غير المسبوقة والعودة إلى الطريق الطبيعي الذي أمر به الله. وذكرهم بنعم الله التي لا تعد ولا تحصى، وحذرهم من عواقب تجاوزهم. ولجأ إلى عقلهم، مشيراً إلى أن أفعالهم تتعارض مع طبيعة الله التي خلقها. لكنهم سخروا منه وهددوه بطرده من مدينتهم إذا لم يكف عن تحذيراته."
       },
       {
         "id": "lut-angels",
@@ -960,7 +1139,9 @@
             "translation": "And his people came rushing towards him, and before [this] they had been doing evil deeds."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "وصول الملائكة",
+        "contentArabic": "أرسل الله ملائكة على هيئة شباب جميلين إلى مدينة لوط. كان إبراهيم قد استضاف هؤلاء الملائكة أولاً، وعندما غادروا نحو سدوم، شعر بضيق شديد عندما علم بما ينتظر المدينة. لوط، غير مدرك لطبيعتهم الحقيقية، انزعج بشدة عندما وصلوا، لعلمه بسلوك قومه. وسرعان ما حاصر رجال المدينة منزله مطالبين بالوصول إلى ضيوفه. وحاول لوط يائسًا أن يجادلهم ويعرض عليهم البديل ويرجوهم أن يتقوا الله، لكنهم رفضوا."
       },
       {
         "id": "lut-destruction",
@@ -995,9 +1176,12 @@
             "book": "Prophets",
             "number": "3372",
             "text": "The Prophet (ﷺ) said regarding the statement of Allah 'marked from your Lord': 'These stones are not far from the wrongdoers.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "وقال النبي صلى الله عليه وسلم في قوله: (موسوما من ربك): «ما هذه الحجارة من الظالمين ببعيد»."
           }
-        ]
+        ],
+        "titleArabic": "تدمير سدوم",
+        "contentArabic": "كشف الملائكة عن هويتهم الحقيقية للوط، وأكدوا له أن الناس لن يستطيعوا أن يؤذوه أو يؤذوا ضيوفه. فأمروه أن يخرج مع أهله ليلاً وألا يلتفت إلى الوراء. وفي الفجر نزل عذاب الله على المدن. وانقلبت الأرض، وسقطت عليهم حجارة من الطين المحروق. لقد اندثرت الحضارة بأكملها، تاركة وراءها أرضًا قاحلة قاحلة لا تزال حتى يومنا هذا بالقرب من البحر الميت عبرة لمن يتفكر."
       },
       {
         "id": "lut-wife",
@@ -1012,11 +1196,29 @@
             "translation": "Allah presents an example of those who disbelieved: the wife of Nuh and the wife of Lut. They were under two of Our righteous servants but betrayed them."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "مصير زوجة لوط",
+        "contentArabic": "وعلى الرغم من نجاة لوط وبناته المؤمنات، إلا أن زوجته كانت من بين الذين هلكوا. لقد كانت متعاطفة سراً مع الناس وأبلغتهم بوصول الضيوف. ورغم كونها زوجة نبي وتعيش في بيت مؤمن، إلا أن قلبها كان مع الكفار. وعندما فروا من المدينة، نظرت إلى الوراء متحدية الأمر، فضربها العقاب. وهذا بمثابة تذكير عميق بأن الإيمان هو مسألة فردية - فالقرب من البر لا يضمن الخلاص."
       }
     ],
-    "relatedProphets": ["Ibrahim", "Ismail", "Ishaq"],
-    "historicalNotes": "The cities of Sodom and Gomorrah are believed to have been located near the southern end of the Dead Sea. Archaeological evidence suggests catastrophic destruction in this region around 1900-1700 BCE. The Dead Sea, also known as the Sea of Lut in Arabic (Bahr Lut), remains one of the lowest and most inhospitable places on Earth - a lasting reminder of Allah's punishment. Surah 54 (Al-Qamar) states that the story of Lut has been made easy to remember as a warning for humanity."
+    "relatedProphets": [
+      "Ibrahim",
+      "Ismail",
+      "Ishaq"
+    ],
+    "historicalNotes": "The cities of Sodom and Gomorrah are believed to have been located near the southern end of the Dead Sea. Archaeological evidence suggests catastrophic destruction in this region around 1900-1700 BCE. The Dead Sea, also known as the Sea of Lut in Arabic (Bahr Lut), remains one of the lowest and most inhospitable places on Earth - a lasting reminder of Allah's punishment. Surah 54 (Al-Qamar) states that the story of Lut has been made easy to remember as a warning for humanity.",
+    "eraArabic": "عصر ابراهيم",
+    "periodArabic": "حوالي عام 2000 قبل الميلاد",
+    "locationArabic": "سدوم وعمورة (بالقرب من البحر الميت)",
+    "summaryArabic": "أرسل النبي لوط (ع) ابن أخي إبراهيم (ع) إلى أهل سدوم والمدن المجاورة فارتكبوا ذنوباً لم يسبق لها مثيل. ورغم تحذيراته المتواصلة من ممارساتهم الفاسدة، رفضه الشعب واستمروا في معصيتهم. لقد دمر الله المدن بعذاب كارثي، ولم ينقذ سوى لوط وأتباعه المؤمنين.",
+    "historicalNotesArabic": "ويعتقد أن مدينتي سدوم وعمورة تقعان بالقرب من الطرف الجنوبي للبحر الميت. تشير الأدلة الأثرية إلى حدوث دمار كارثي في ​​هذه المنطقة حوالي عام 1900-1700 قبل الميلاد. يظل البحر الميت، المعروف أيضًا باسم بحر لوط باللغة العربية، واحدًا من أدنى الأماكن وأكثرها وعورة على وجه الأرض - وهو تذكير دائم بعذاب الله. تنص سورة 54 (القمر) على أن قصة لوط أصبحت سهلة التذكر كتحذير للبشرية.",
+    "keyLessonsArabic": [
+      "خطورة الفجور الجنسي وعواقبه",
+      "واجب النبي أن يحذر حتى المجتمعات الأكثر فسادا",
+      "حفظ الله للمتقين في الدمار",
+      "أهمية اتباع الهدى الإلهي على الأعراف المجتمعية",
+      "الروابط العائلية لا تعفي الكفار من العقوبة"
+    ]
   },
   {
     "id": "ismail",
@@ -1053,9 +1255,12 @@
             "book": "Prophets",
             "number": "3364",
             "text": "Ibrahim brought her (Hajar) and her son Ismail while she was suckling him, to a place near the Ka'bah under a tree... There was nobody in Makkah, nor was there any water. So he made them sit over there and placed near them a leather bag containing some dates, and a small water-skin containing some water, and set out homeward.",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "فأتى بها إبراهيم (هاجر) وابنها إسماعيل وهي ترضعه إلى مكان قريب من الكعبة تحت شجرة... ولم يكن بمكة أحد ولا ماء. فأجلسهم هناك، ووضع بالقرب منهم كيسا من جلد فيه تمر، وقربة صغيرة فيها ماء، ثم انطلق إلى منزله."
           }
-        ]
+        ],
+        "titleArabic": "التسوية بمكة",
+        "contentArabic": "عندما كان إسماعيل لا يزال رضيعًا، أمر الله إبراهيم (ع) أن يأخذ هاجر وابنهما إلى وادٍ قاحل غير مأهول في الصحراء العربية - موقع مكة المستقبلي. ولم يتركهم إبراهيم عندهم إلا قربة وتمر. وعندما سألت هاجر إذا كان هذا أمر الله، وأكد إبراهيم ذلك، أعلنت بإيمان مطلق: \"إذن لن يتخلى عنا\". ولما نفذ مؤنهم وبكى إسماعيل من العطش، ركضت هاجر سبع مرات بين الصفا والمروة بحثًا عن الماء أو النجدة. ثم فجر الله عين زمزم عند قدمي إسماعيل."
       },
       {
         "id": "ismail-sacrifice",
@@ -1083,9 +1288,12 @@
             "book": "Tafsir",
             "number": "3101",
             "text": "The Prophet (ﷺ) said: 'I am the son of the two sacrificed ones (ibn adh-dhabihain).' referring to his ancestor Ismail and his father Abdullah (who was nearly sacrificed before the Prophet's birth).",
-            "grade": "Hasan"
+            "grade": "Hasan",
+            "textArabic": "فقال النبي صلى الله عليه وسلم: أنا ابن الذبيحين. في إشارة إلى جده إسماعيل وأبيه عبد الله (الذي كان على وشك التضحية قبل مولد النبي)."
           }
-        ]
+        ],
+        "titleArabic": "التضحية العليا",
+        "contentArabic": "ولما بلغ إسماعيل السن الذي يمكنه من العمل مع أبيه، رأى إبراهيم (ع) في المنام أنه يذبح ابنه. أحلام الأنبياء وحي من الله . فلما أخبر إبراهيم إسماعيل بهذه الرؤيا، أجاب الصبي بإيمان واستسلام عجيبين: يا أبت، افعل ما تؤمر. ستجدني إن شاء الله من الصابرين. لقد استسلم الأب والابن تمامًا لأمر الله. وعندما وضع إبراهيم ابنه ووضع السكين في حلقه لم يقطع، بل كان الله قد تدخل. اكتمل الاختبار، وأُرسل كبش عظيم من الجنة كذبيحة بديلة."
       },
       {
         "id": "ismail-kaaba",
@@ -1107,7 +1315,9 @@
             "translation": "Our Lord, and send among them a messenger from themselves who will recite to them Your verses and teach them the Book and wisdom and purify them. Indeed, You are the Exalted in Might, the Wise."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "بناء البيت الحرام",
+        "contentArabic": "بعد زيارات إبراهيم لمكة على مر السنين، أمره الله وإسماعيل ببناء الكعبة - أول بيت عبادة للبشرية. وقد عمل الأب والابن معًا في هذه المهمة النبيلة، حيث حمل إسماعيل الحجارة وإبراهيم يضعها. وكانوا وهم يبنون يدعون الله باستمرار أن يتقبل عملهم، وأن يجعلهم مسلمين، وأن يبعث من ذريتهم رسولا يعلم الكتاب والحكمة. وقد استجاب هذا الدعاء بمجيء النبي محمد (صلى الله عليه وسلم) من ولد إسماعيل."
       },
       {
         "id": "ismail-character",
@@ -1135,13 +1345,33 @@
             "book": "Prophets",
             "number": "3364",
             "text": "The first to speak eloquent Arabic was Ismail, and he was at the age of fourteen when he started speaking it.",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "وأول من تكلم العربية الفصيحة هو إسماعيل، وكان في الرابعة عشرة من عمره عندما بدأ يتكلمها."
           }
-        ]
+        ],
+        "titleArabic": "الصادق لوعده",
+        "contentArabic": "يوصف إسماعيل في القرآن بأنه صادق في وعده (صادق الوعد). يعكس هذا اللقب شخصيته النبيلة - الرجل الذي لم يحنث بوعده أبدًا. وبحسب المصادر الكلاسيكية، فقد وعد إسماعيل ذات يوم بلقاء رجل في مكان معين، ونسي الرجل أن يأتي. انتظره إسماعيل ثلاثة أيام ولم يخلف كلمته. وكان أيضًا صابرًا حليمًا، يعلم أهله إقامة الصلاة وإيتاء الزكاة. تزوج من قبيلة جرهم، وأصبح جد العرب، وخاصة العرب العدنانيين الذين نزل منهم النبي محمد (صلى الله عليه وسلم)."
       }
     ],
-    "relatedProphets": ["Ibrahim", "Ishaq", "Yaqub", "Muhammad"],
-    "historicalNotes": "Ismail (AS) is considered the progenitor of the Arab peoples, specifically the Adnani Arabs of Northern Arabia. He is mentioned 12 times in the Quran. The annual sacrifice during Eid al-Adha commemorates his and Ibrahim's submission to Allah's command. The Zamzam well, which sprang forth for him, continues to flow in Makkah to this day, having never dried up in nearly 4,000 years. The rituals of Sa'i (walking between Safa and Marwa) during Hajj and Umrah commemorate his mother Hajar's search for water."
+    "relatedProphets": [
+      "Ibrahim",
+      "Ishaq",
+      "Yaqub",
+      "Muhammad"
+    ],
+    "historicalNotes": "Ismail (AS) is considered the progenitor of the Arab peoples, specifically the Adnani Arabs of Northern Arabia. He is mentioned 12 times in the Quran. The annual sacrifice during Eid al-Adha commemorates his and Ibrahim's submission to Allah's command. The Zamzam well, which sprang forth for him, continues to flow in Makkah to this day, having never dried up in nearly 4,000 years. The rituals of Sa'i (walking between Safa and Marwa) during Hajj and Umrah commemorate his mother Hajar's search for water.",
+    "eraArabic": "عصر البطاركة",
+    "periodArabic": "حوالي عام 1900 قبل الميلاد",
+    "locationArabic": "مكة المكرمة، شبه الجزيرة العربية",
+    "summaryArabic": "النبي إسماعيل (ع)، الابن البكر لإبراهيم (ع) وهاجر، ترك وهو رضيع في وادي مكة القاحل. نشأ ليصبح أباً للشعوب العربية وساعد والده في بناء الكعبة. ويذكر بصبره وصدقه واستعداده للاستسلام لأمر الله عندما أمر والده بذبحه.",
+    "historicalNotesArabic": "ويعتبر إسماعيل (ع) جد الشعوب العربية، وتحديداً العرب العدنانيين في شمال الجزيرة العربية. وقد ورد ذكره في القرآن 12 مرة. الأضحية السنوية في عيد الأضحى هي ذكرى استسلامه وإبراهيم لأمر الله. ولا يزال بئر زمزم الذي انبثق له يتدفق في مكة إلى يومنا هذا، ولم يجف منذ نحو أربعة آلاف عام. طقوس السعي (المشي بين الصفا والمروة) أثناء الحج والعمرة تخليدًا لبحث والدته هاجر عن الماء.",
+    "keyLessonsArabic": [
+      "التسليم الكامل لإرادة الله، حتى في وجه الموت",
+      "أهمية الوفاء بالوعود",
+      "ثق في رزق الله حتى في أحلك الظروف",
+      "شرف خدمة بيت الله الحرام",
+      "الصبر والمثابرة في أوقات الشدائد"
+    ]
   },
   {
     "id": "ishaq",
@@ -1179,7 +1409,9 @@
             "translation": "She said, 'Woe to me! Shall I give birth while I am an old woman and this, my husband, is an old man? Indeed, this is an amazing thing!'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الولادة العجيبة",
+        "contentArabic": "عندما زارت الملائكة إبراهيم (ع) في طريقهم لتدمير قوم لوط، بشروه بولد من زوجته سارة. وكانت تقف خلف ستارة وتضحك في دهشة، فقد تجاوزت التسعين من عمرها وكانت طوال حياتها عاقرًا، وإبراهيم تجاوز المائة. وأكدت لهم الملائكة أن هذا أمر الله، فلا شيء على الله يعسر. وهكذا ولد إسحاق هدية من الله ودليلاً على قدرته على كل شيء. اسمه مشتق من الكلمة العربية التي تعني الضحك (ضاحك) تخليداً لرد فعل سارة على الأخبار."
       },
       {
         "id": "ishaq-blessed",
@@ -1201,7 +1433,9 @@
             "translation": "And We gave him good tidings of Ishaq, a prophet from among the righteous."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "نبي مبارك",
+        "contentArabic": "نما إسحاق ليصبح رجلاً صالحاً ونبياً في حد ذاته. ورزقه الله الحكمة والنبوة والذرية الصالحة. عاش في أرض كنعان (فلسطين حالياً)، وواصل رسالة التوحيد التي أسسها والده إبراهيم. وقد ذكره القرآن مع أبيه وأخيه من الصالحين والذين أنعم الله عليهم. وهو يُحسب بين المختارين والصالحين."
       },
       {
         "id": "ishaq-lineage",
@@ -1229,13 +1463,33 @@
             "book": "Prophets",
             "number": "3383",
             "text": "The Prophet (ﷺ) said: 'The noble son of a noble son of a noble son of a noble: Yusuf son of Yaqub son of Ishaq son of Ibrahim.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "فقال النبي صلى الله عليه وسلم: «الكريم ابن الكريم ابن الكريم: يوسف بن يعقوب بن إسحاق بن إبراهيم»."
           }
-        ]
+        ],
+        "titleArabic": "أبو الخط النبوي",
+        "contentArabic": "تزوج إسحاق من رفقة (رفقا) وأنجب منها ولدين توأم: عيسو (العيص) ويعقوب. ومن خلال يعقوب، سيظهر بني إسرائيل - الأمة التي سيأتي منها العديد من الأنبياء. وخرج من ذرية إسحاق أنبياء عظماء مثل يوسف وموسى وهارون وداود وسليمان وزكريا ويحيى وعيسى (عليهم السلام أجمعين). وهذا تحقيق لوعد الله لإبراهيم بأن تكون ذريته مباركة، وأن الهدى بهم سيعم الأمم كافة."
       }
     ],
-    "relatedProphets": ["Ibrahim", "Ismail", "Yaqub", "Yusuf"],
-    "historicalNotes": "Ishaq (AS) is mentioned 17 times in the Quran. He lived in the land of Canaan and is believed to be buried in the Cave of the Patriarchs (Al-Haram Al-Ibrahimi) in Hebron alongside his father Ibrahim. Through his son Yaqub, all the Israelite prophets descended. The Jewish and Christian traditions also revere him as a patriarch. His miraculous birth in old age demonstrates Allah's absolute power over creation."
+    "relatedProphets": [
+      "Ibrahim",
+      "Ismail",
+      "Yaqub",
+      "Yusuf"
+    ],
+    "historicalNotes": "Ishaq (AS) is mentioned 17 times in the Quran. He lived in the land of Canaan and is believed to be buried in the Cave of the Patriarchs (Al-Haram Al-Ibrahimi) in Hebron alongside his father Ibrahim. Through his son Yaqub, all the Israelite prophets descended. The Jewish and Christian traditions also revere him as a patriarch. His miraculous birth in old age demonstrates Allah's absolute power over creation.",
+    "eraArabic": "عصر البطاركة",
+    "periodArabic": "حوالي عام 1900 قبل الميلاد",
+    "locationArabic": "كنعان (فلسطين)",
+    "summaryArabic": "النبي إسحاق (ع) هو الابن الثاني لإبراهيم (ع)، ولد لسارة بأعجوبة في كبر سنها. وهو أبو يعقوب (إسرائيل) وجد الأسباط الاثني عشر. ومنه ظهر نسل الأنبياء من بني إسرائيل (بني إسرائيل)، ومنهم موسى وداود وسليمان وعيسى (ع).",
+    "historicalNotesArabic": "وقد ذكر إسحاق (ع) في القرآن 17 مرة. عاش في أرض كنعان ويعتقد أنه دفن في الحرم الإبراهيمي (الحرم الإبراهيمي) في الخليل إلى جانب أبيه إبراهيم. وبواسطة ابنه يعقوب نزل جميع أنبياء إسرائيل. كما تبجله التقاليد اليهودية والمسيحية كبطريرك. ولادته المعجزة في سن الشيخوخة تدل على قدرة الله المطلقة على الخلق.",
+    "keyLessonsArabic": [
+      "لا شيء مستحيل على الله، فهو يرزق الأطفال حتى في سن الشيخوخة",
+      "أهمية شكر نعم الله",
+      "المحافظة على الحق عبر الأجيال",
+      "الإيمان وحسن الخلق يورثان بالتربية وليس بالدم",
+      "وعود الله تتحقق دائما"
+    ]
   },
   {
     "id": "yaqub",
@@ -1266,7 +1520,9 @@
             "translation": "All food was lawful to the Children of Israel except what Israel [Yaqub] had made unlawful to himself before the Torah was revealed."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الحفيد المبارك",
+        "contentArabic": "ولد يعقوب كأحد أبناء توأم لإسحاق ورفقة. عرف منذ شبابه بالتقوى والصلاح والقرب من الله. لقد أُعطي لقب \"إسرائيل\" (يعني \"عبد الله\" أو \"القوي مع الله\"). وقد اختاره الله ليكون مكملاً لنبوة جده إبراهيم وأبوه إسحاق. تزوج وبارك أنجب اثني عشر ابنًا، الذين سيصبحون أسلاف أسباط إسرائيل الاثني عشر، وابنة واحدة على الأقل (دينا). ومن بين أبنائه، كان يوسف وأخيه بنيامين عزيزين عليه بشكل خاص."
       },
       {
         "id": "yaqub-yusuf",
@@ -1288,7 +1544,9 @@
             "translation": "When Yusuf said to his father, 'O my father, indeed I have seen eleven stars and the sun and the moon; I saw them prostrating to me.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "خسارة يوسف",
+        "contentArabic": "كان يعقوب يحب ابنه يوسف بشدة، الذي كان يتمتع بجمال وحكمة استثنائيين. أثار هذا الحب الغيرة في إخوة يوسف الأكبر منه. عندما أخبر الشاب يوسف والده عن حلم سجدت له الشمس والقمر وأحد عشر كوكبا، أدرك يعقوب أهميته وحذر يوسف من إخبار إخوته. وعلى الرغم من ذلك، تآمر الإخوة على يوسف، وألقوه في البئر، وأخبروا والدهم أن الذئب قد أكله. أدرك يعقوب الكذب، لكنه استجاب بصبر جميل، واثقًا بتدبير الله."
       },
       {
         "id": "yaqub-grief",
@@ -1316,9 +1574,12 @@
             "book": "Virtue",
             "number": "2575",
             "text": "The Prophet (ﷺ) said: 'Whenever a Muslim is afflicted with hardship, sickness, sadness, worry, harm, or depression - even a thorn that pricks him - Allah expiates his sins because of it.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «ما يصيب المسلم من نصب، أو مرض، أو حزن، أو هم، أو أذى، أو غم، حتى الشوكة يشاكها، كفر الله بها من خطاياه»."
           }
-        ]
+        ],
+        "titleArabic": "سنوات الحزن",
+        "contentArabic": "لسنوات عديدة، حزن يعقوب على يوسف. وكان حزنه عميقا لدرجة أنه بكى حتى أصبح أعمى. ومع ذلك، لم يكن حزنه يأسًا، بل كان مصحوبًا بالإيمان الكامل بالله والأمل في لم الشمل. وعندما سأله أبناؤه الآخرون عن سبب استمرار حزنه، أجاب بأنه لا يشكو حزنه إلا إلى الله. وحتى عندما خسر بنيامين لاحقًا أمام حاكم مصر (دون أن يعلم أنه يوسف)، حافظ على صبره الجميل ولم يفقد الأمل أبدًا في رحمة الله."
       },
       {
         "id": "yaqub-reunion",
@@ -1340,7 +1601,9 @@
             "translation": "And he raised his parents upon the throne, and they bowed to him in prostration. And he said, 'O my father, this is the interpretation of my dream before. My Lord has made it reality.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "لم الشمل البهيج",
+        "contentArabic": "وبعد عقود من الفراق جمع الله يعقوب بيوسف. ولما أرسل يوسف قميصه إلى مصر يأمر إخوته أن يضعوه على وجه أبيهم، عاد يعقوب بصره بإذن الله. ثم سافر إلى مصر حيث استقبل يوسف، وزير الأرض الآن، عائلته بأكملها بشرف. سجد يعقوب وزوجته وأبناؤه ليوسف شكرا لله - تحقيق حلم يوسف في طفولته. واستقرت الأسرة في مصر، وعاش يعقوب سنواته الأخيرة في فرح وسلام."
       },
       {
         "id": "yaqub-legacy",
@@ -1355,11 +1618,30 @@
             "translation": "Or were you witnesses when death approached Yaqub, when he said to his sons, 'What will you worship after me?' They said, 'We will worship your God and the God of your fathers, Ibrahim and Ismail and Ishaq - one God. And we are Muslims [in submission] to Him.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "العهد النهائي",
+        "contentArabic": "وقبل وفاته جمع يعقوب أبناءه وسألهم ماذا يعبدون من بعده. وكان هذا لضمان استمرار إرث التوحيد. فأجاب أبناؤه أنهم سيعبدون الإله الواحد – إله إبراهيم وإسماعيل وإسحاق – وأنهم سيكونون مسلمين (المسلمين لله). وتوفي يعقوب في مصر ودفن حسب رغبته في مغارة الآباء في الخليل مع أبويه إبراهيم وإسحاق."
       }
     ],
-    "relatedProphets": ["Ibrahim", "Ishaq", "Yusuf", "Musa"],
-    "historicalNotes": "Yaqub (AS), also known as Israel, is mentioned 16 times in the Quran. His twelve sons became the progenitors of the twelve tribes of Israel: Ruben, Simeon, Levi, Judah, Issachar, Zebulun, Dan, Naphtali, Gad, Asher, Joseph (Yusuf), and Benjamin (Binyamin). His story is primarily told in Surah Yusuf (Chapter 12), the only surah to tell a complete story from beginning to end. He is believed to be buried in the Cave of the Patriarchs in Hebron. His concept of 'Sabr Jameel' (beautiful patience) - grieving while maintaining hope in Allah - is a model for Muslims facing loss."
+    "relatedProphets": [
+      "Ibrahim",
+      "Ishaq",
+      "Yusuf",
+      "Musa"
+    ],
+    "historicalNotes": "Yaqub (AS), also known as Israel, is mentioned 16 times in the Quran. His twelve sons became the progenitors of the twelve tribes of Israel: Ruben, Simeon, Levi, Judah, Issachar, Zebulun, Dan, Naphtali, Gad, Asher, Joseph (Yusuf), and Benjamin (Binyamin). His story is primarily told in Surah Yusuf (Chapter 12), the only surah to tell a complete story from beginning to end. He is believed to be buried in the Cave of the Patriarchs in Hebron. His concept of 'Sabr Jameel' (beautiful patience) - grieving while maintaining hope in Allah - is a model for Muslims facing loss.",
+    "eraArabic": "عصر البطاركة",
+    "periodArabic": "حوالي عام 1850 قبل الميلاد",
+    "locationArabic": "كنعان ومصر",
+    "summaryArabic": "النبي يعقوب (ع)، المعروف أيضًا باسم إسرائيل (إسرائيل)، هو ابن إسحاق وأب لاثني عشر ابنًا تنحدر منهم أسباط إسرائيل الاثني عشر. تميزت حياته بالانفصال عن ابنه الحبيب يوسف، وسنوات من الحزن الصبر، ولم الشمل في نهاية المطاف. يُحتفل به لإيمانه الذي لا يتزعزع، وصبره في الشدائد، وحبه العميق لأبنائه.",
+    "historicalNotesArabic": "ورد ذكر يعقوب (ع)، المعروف أيضًا باسم إسرائيل، في القرآن 16 مرة. أصبح أبناؤه الاثني عشر أسلاف أسباط إسرائيل الاثني عشر: رأوبين، شمعون، لاوي، يهوذا، يساكر، زبولون، دان، نفتالي، جاد، أشير، يوسف (يوسف)، وبنيامين (بنيامين). يتم سرد قصته بشكل أساسي في سورة يوسف (الفصل 12)، وهي السورة الوحيدة التي تحكي قصة كاملة من البداية إلى النهاية. ويعتقد أنه دفن في الحرم الإبراهيمي في الخليل. إن مفهومه عن \"الصبر الجميل\" - أي الحزن مع الأمل في الله - هو نموذج للمسلمين الذين يواجهون الخسارة.",
+    "keyLessonsArabic": [
+      "الصبر الجميل (صبر جميل) في مواجهة الخسارة الشديدة",
+      "لا تفقد الأمل أبداً في رحمة الله",
+      "مخاطر الغيرة بين أفراد الأسرة",
+      "الإيمان الحقيقي يستمر خلال عقود من التجربة",
+      "خطط الله دائما أفضل من فهمنا"
+    ]
   },
   {
     "id": "yusuf",
@@ -1397,7 +1679,9 @@
             "translation": "We relate to you the best of stories in what We have revealed to you of this Quran."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الحلم النبوي",
+        "contentArabic": "رأى يوسف في صباه حلما عجيبا: أحد عشر كوكبا والشمس والقمر يسجدون له. وعندما أخبر أباه يعقوب (ع)، أدرك النبي الحكيم ذلك كعلامة على عظمة يوسف في المستقبل وحذره من مشاركة إخوته فيه، لئلا تقودهم غيرتهم إلى إيذائه. يقدم القرآن سورة يوسف على أنها تحتوي على \"أفضل القصص\" - وهي قصة كاملة تعلم دروسًا عميقة حول الإيمان والصبر والعناية الإلهية."
       },
       {
         "id": "yusuf-well",
@@ -1412,7 +1696,9 @@
             "translation": "So when they took him [out] and agreed to put him into the bottom of the well... And We inspired to him, 'You will surely inform them [someday] about this affair of theirs while they do not perceive.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "يلقي في البئر",
+        "contentArabic": "إخوة يوسف، الذين استحوذت عليهم الغيرة بسبب حب والدهم له، خططوا للتخلص منه. أقنعوا يعقوب بالسماح لهم بأخذ يوسف ليلعب ويرعى الغنم، ووعدوه بحمايته. وبمجرد أن أصبح بمفرده، ألقوا به في بئر عميق وعادوا إلى والدهم وقميصه ملطخ بدماء زائفة، زاعمين أن الذئب قد التهمه. دون علمهم، اكتشفت قافلة عابرة يوسف وباعته عبدًا في مصر، حيث اشتراه مسؤول كبير (العزيز)."
       },
       {
         "id": "yusuf-temptation",
@@ -1440,9 +1726,12 @@
             "book": "Riqaq",
             "number": "6479",
             "text": "The Prophet (ﷺ) said: 'Seven people will be shaded by Allah under His Shade on the day when there will be no shade except His... a man who is tempted by a beautiful woman of high status but says: I fear Allah.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «سبعة يظلهم الله تحت ظله يوم لا ظل إلا ظله.. رجل فتنته امرأة ذات منصب جميل فقال: إني أخاف الله»."
           }
-        ]
+        ],
+        "titleArabic": "اختبار الإغراء",
+        "contentArabic": "نشأ يوسف ليصبح شابًا فائق الجمال والحكمة في بيت العزيز. ففتنت به زوجة العزيز وحاولت إغوائه وأغلقت الأبواب وأمرته أن يأتي إليها. لجأ يوسف إلى الله، معلنا أنه لن يخون ثقة سيده أو يرتكب مثل هذه الذنب. هرب نحو الباب فمزقت قميصه من الخلف. وعندما حضر زوجها اتهمت يوسف، لكن أحد الشهود شهد أن تمزق قميصه أثبت براءته. وعلى الرغم من ذلك، تم سجن يوسف لتجنب الفضيحة."
       },
       {
         "id": "yusuf-prison",
@@ -1457,7 +1746,9 @@
             "translation": "O two companions of prison, as for one of you, he will give drink to his master of wine; but as for the other, he will be crucified, and the birds will eat from his head. The matter has been decreed about which you both inquire."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "أحلام في السجن",
+        "contentArabic": "في السجن، انضم إلى يوسف سجينان: ساقي الملك والخباز. كلاهما كان لديه أحلام مزعجة ولجأ إلى يوسف للتفسير. قبل أن يترجم، دعاهم يوسف إلى عبادة الله وحده، ثم كشف أن أحدهم سيشرب الخمر مرة أخرى بينما سيتم إعدام الآخر. كلا التنبؤين تحققا. طلب يوسف من الساقي أن يذكره للملك، لكن الرجل نسي لعدة سنوات - حتى رأى الملك نفسه حلمًا محيرًا لا يستطيع أحد تفسيره."
       },
       {
         "id": "yusuf-king-dream",
@@ -1479,7 +1770,9 @@
             "translation": "He said, 'What was your condition when you sought to seduce Yusuf?' They said, 'Perfect is Allah! We know about him no evil.' The wife of al-Aziz said, 'Now the truth has become evident.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "تفسير حلم الملك",
+        "contentArabic": "رأى ملك مصر سبع بقرات سمان يأكلهن سبع عجاف وسبع سنبلات خضر إلى سبع يابسات. ولم يتمكن أي من مستشاريه من تفسير ذلك. وأخيراً تذكر الساقي يوسف وأحضر له الحلم. وفسره يوسف: سبع سنين شبعا يتبعها سبع سنين مجاعة شديدة. ونصح بتخزين الحبوب خلال سنوات الخير. أعجب الملك، واستدعى يوسف، الذي طالب أولاً النساء اللاتي اتهموه بالشهادة على براءته. واعترفت زوجة العزيز: الآن ظهرت الحقيقة."
       },
       {
         "id": "yusuf-minister",
@@ -1507,9 +1800,12 @@
             "book": "Prophets",
             "number": "3382",
             "text": "The Prophet (ﷺ) said: 'The most noble among people is Yusuf son of Yaqub son of Ishaq son of Ibrahim - a prophet, son of a prophet, son of a prophet, son of a prophet.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «أكرم الناس يوسف بن يعقوب بن إسحاق بن إبراهيم، نبي، ابن نبي، ابن نبي، ابن نبي»."
           }
-        ]
+        ],
+        "titleArabic": "الصعود إلى السلطة",
+        "contentArabic": "وبعد أن تم تبرئته واعترافه بحكمته، عين الملك يوسف وزيرا لمصر، يشرف على الخزانة وتخزين الحبوب. لقد أدار سنوات الوفرة السبع بحكمة، وقام بتخزين كميات هائلة من الحبوب. عندما حدثت المجاعة، جاء الناس من جميع البلدان إلى مصر للحصول على المؤن - بما في ذلك إخوة يوسف، الذين لم يعرفوه. ومن خلال سلسلة من الأحداث، اختبرهم يوسف، وكشف في النهاية عن هويته وسامحهم تمامًا."
       },
       {
         "id": "yusuf-reunion",
@@ -1531,11 +1827,30 @@
             "translation": "My Lord, You have given me [something] of sovereignty and taught me the interpretation of dreams. Creator of the heavens and earth, You are my protector in this world and in the Hereafter. Cause me to die a Muslim and join me with the righteous."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الحلم تحقق",
+        "contentArabic": "وبعد أن كشف هويته لإخوته وعفا عنهم، أرسل يوسف قميصه ليوضع على عيني أبيه، فأعاد يعقوب بصره. ثم سافرت العائلة بأكملها إلى مصر، حيث استقبلهم يوسف بشرف. وسجد أمامه والداه وأحد عشر إخوة، تحقيقاً لحلم طفولته. حمد يوسف الله على نعمه التي لا تعد ولا تحصى: إطلاق سراحه من السجن، وإحضار عائلته من الصحراء، ومصالحته مع إخوته. ودعا أن يموت مسلما ويلحق بالصالحين."
       }
     ],
-    "relatedProphets": ["Yaqub", "Ibrahim", "Ishaq", "Musa"],
-    "historicalNotes": "The entire Surah Yusuf (Chapter 12) is dedicated to his story - the only surah in the Quran that tells a single, complete narrative from beginning to end. He is mentioned 27 times in the Quran. His story has been called 'the best of stories' by Allah Himself. Historical evidence suggests the events occurred during the Hyksos period of Egyptian history (1650-1550 BCE) when Semitic rulers governed Egypt. His grave is believed to be in Nablus, Palestine. The story teaches that trials are tests, and that patience and faith will always be rewarded."
+    "relatedProphets": [
+      "Yaqub",
+      "Ibrahim",
+      "Ishaq",
+      "Musa"
+    ],
+    "historicalNotes": "The entire Surah Yusuf (Chapter 12) is dedicated to his story - the only surah in the Quran that tells a single, complete narrative from beginning to end. He is mentioned 27 times in the Quran. His story has been called 'the best of stories' by Allah Himself. Historical evidence suggests the events occurred during the Hyksos period of Egyptian history (1650-1550 BCE) when Semitic rulers governed Egypt. His grave is believed to be in Nablus, Palestine. The story teaches that trials are tests, and that patience and faith will always be rewarded.",
+    "eraArabic": "عصر البطاركة",
+    "periodArabic": "حوالي 1700 قبل الميلاد",
+    "locationArabic": "كنعان ومصر",
+    "summaryArabic": "يُعرف النبي يوسف (ع) بجماله الاستثنائي، وحكمته في تفسير الأحلام، وإيمانه الراسخ خلال التجارب الشديدة. تم بيعه للعبودية من قبل إخوته الغيورين، وسُجن ظلماً، ثم ارتقى ليصبح وزيراً لمصر وفي النهاية عفا عن عائلته. قصته تسمى \"أحسن القصص\" في القرآن.",
+    "historicalNotesArabic": "سورة يوسف بأكملها (الفصل 12) مخصصة لقصته - السورة الوحيدة في القرآن التي تحكي قصة واحدة كاملة من البداية إلى النهاية. وقد ورد ذكره في القرآن 27 مرة. وقد وصف الله نفسه قصته بأنها \"أفضل القصص\". تشير الأدلة التاريخية إلى أن الأحداث وقعت خلال فترة الهكسوس من التاريخ المصري (1650-1550 قبل الميلاد) عندما كان الحكام الساميون يحكمون مصر. ويعتقد أن قبره يقع في مدينة نابلس بفلسطين. تعلمنا القصة أن التجارب هي اختبارات، وأن الصبر والإيمان سيكافأان دائمًا.",
+    "keyLessonsArabic": [
+      "المحافظة على العفة والنزاهة في ظل الإغراءات الشديدة",
+      "الصبر على السجن الظالم والتهم الباطلة",
+      "العفو حتى عن من أساء إليك بشدة",
+      "خطة الله تتكشف بطرق لا يمكننا التنبؤ بها",
+      "الجمال الحقيقي في الخلق والإيمان وليس المظهر"
+    ]
   },
   {
     "id": "ayyub",
@@ -1566,7 +1881,9 @@
             "translation": "And [mention] Ayyub, when he called to his Lord, 'Indeed, adversity has touched me, and you are the Most Merciful of the merciful.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "النبي المبارك",
+        "contentArabic": "وقد رزق أيوب (عليه السلام) مالاً كثيراً، وأولاداً كثيرين، وصحة جيدة، ومكانة عالية في قومه. وهو من نسل إبراهيم (ع) وسكن في أرض أوز. ورغم نجاحه ظل متواضعا شاكرا مخلصا لله. كان يستخدم ثروته في مساعدة الفقراء والأيتام، وكان معروفاً بصلاحه. لقد اختاره الله لاختبار عميق يوضح معنى الصبر الحقيقي لجميع الأجيال."
       },
       {
         "id": "ayyub-trials",
@@ -1587,9 +1904,12 @@
             "book": "Patients",
             "number": "5652",
             "text": "The Prophet (ﷺ) said: 'The example of a believer is like a fresh green plant, the wind turns it this way and that way. Similarly, a believer is afflicted with trials. But the example of a disbeliever is like a pine tree which remains firm until Allah uproots it all at once.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «مثل المؤمن مثل الزرع الأخضر، تثيره الريح هنا وهناك. وكذلك المؤمن يبتلي بالابتلاء. ومثل الكافر كمثل شجرة صنوبر لم تظل ثابتة حتى يقلعها الله كلها دفعة واحدة."
           }
-        ]
+        ],
+        "titleArabic": "المحاكمات الشديدة",
+        "contentArabic": "ابتلى الله أيوب بسلسلة من الخسائر الفادحة. أولاً، تم تدمير ثروته. ثم حلت المأساة بأبنائه. وأخيرًا، أصاب جسده مرض خطير، فبقي طريح الفراش لسنوات. لقد تخلى عنه الأشخاص الذين سعوا إلى صحبته ذات يوم، باستثناء زوجته المخلصة التي بقيت بجانبه، وتعمل على إعالتهم. وفي كل هذا لم يتذمر أيوب ولم يشكك في حكمة الله. وعلم أن كل شيء لله، وأن ما أخذ فله أخذ."
       },
       {
         "id": "ayyub-patience",
@@ -1604,7 +1924,9 @@
             "translation": "Indeed, We found him patient, an excellent servant. Indeed, he was one repeatedly turning back [to Allah]."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "نموذج الصبر",
+        "contentArabic": "لمدة ثمانية عشر عامًا (حسب بعض العلماء)، تحمل أيوب محنته دون شكوى. وكان الناس إذا مروا به يقولون لا بد أن هذا رجل ارتكب ذنبا عظيما. لكن أيوب كان يعلم أن معاناته كانت اختبارا من الله، وليس عقابا. وواصل الدعاء والحمد لله والتمسك بالأمل. ولم يكن صبره استقالة سلبية، بل استسلامًا فاعلًا مخلصًا لقضاء الله مع الاستمرار في العبادة والرجاء في رحمته."
       },
       {
         "id": "ayyub-relief",
@@ -1632,13 +1954,33 @@
             "book": "Medicine",
             "number": "2089",
             "text": "The Prophet (ﷺ) said: 'The supplication of my brother Ayyub: O Allah, verily distress has seized me, and You are the Most Merciful of the merciful.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «دعاء أخي أيوب: اللهم إني مسني الضر، وأنت أرحم الراحمين»."
           }
-        ]
+        ],
+        "titleArabic": "الإغاثة الإلهية والاستعادة",
+        "contentArabic": "وبعد سنوات من المعاناة والصبر، توجه أيوب إلى الله بدعاء بسيط صادق معترفًا بمصابه ورحمة الله. فأجاب الله على الفور، وأمره أن يضرب الأرض برجله. فانفجرت عين من الماء البارد، فشرب منها واغتسل فيها، فبرئ مرضه في الحال. ثم رد الله عليه ماله، ورد أهله (بعض العلماء يقول بالمواليد، والبعض يقول بالبعث)، وضاعف له البركات. وأصبحت قصته درسا خالدا في الصبر."
       }
     ],
-    "relatedProphets": ["Ibrahim", "Ishaq", "Yaqub", "Dhul-Kifl"],
-    "historicalNotes": "Ayyub (AS) is mentioned 4 times in the Quran. He is also known as Job in the Biblical tradition. The land of Uz where he lived is believed to be in the region of modern-day Syria or Jordan. His story is one of the most detailed accounts of trial and patience in religious literature. The spring that gushed forth for him is said to still exist in some traditions. His wife's loyalty throughout his ordeal is also celebrated as an example of faithful companionship."
+    "relatedProphets": [
+      "Ibrahim",
+      "Ishaq",
+      "Yaqub",
+      "Dhul-Kifl"
+    ],
+    "historicalNotes": "Ayyub (AS) is mentioned 4 times in the Quran. He is also known as Job in the Biblical tradition. The land of Uz where he lived is believed to be in the region of modern-day Syria or Jordan. His story is one of the most detailed accounts of trial and patience in religious literature. The spring that gushed forth for him is said to still exist in some traditions. His wife's loyalty throughout his ordeal is also celebrated as an example of faithful companionship.",
+    "eraArabic": "عصر البطاركة",
+    "periodArabic": "حوالي 1500 قبل الميلاد",
+    "locationArabic": "أرض أوز (منطقة سوريا/الأردن)",
+    "summaryArabic": "النبي أيوب (ع) هو مثال الصبر على البلاء. ابتلي بخسارة ماله وأولاده وصحته، ولم يشكو إلى أحد إلا الله. وأصبح صبره الذي لا يتزعزع خلال سنوات المعاناة معيارًا لجميع المؤمنين، وفي النهاية أعاد الله له بركاته المتعددة.",
+    "historicalNotesArabic": "ذكر أيوب (ع) في القرآن 4 مرات. وهو معروف أيضًا باسم أيوب في تقليد الكتاب المقدس. يُعتقد أن أرض عوز التي عاش فيها تقع في منطقة سوريا أو الأردن الحديثة. وتعد قصته واحدة من أكثر الروايات تفصيلاً عن التجربة والصبر في الأدب الديني. ويقال إن الربيع الذي تدفق له لا يزال موجودا في بعض التقاليد. يتم الاحتفال أيضًا بولاء زوجته طوال محنته كمثال على الرفقة المخلصة.",
+    "keyLessonsArabic": [
+      "الصبر (الصبر) يكافئه الله بلا حدود",
+      "يمكن أن تكون التجارب وسيلة للتطهير والارتقاء",
+      "الشكوى إلى الله تختلف عن الشكوى إلى الله",
+      "فالإيمان الحقيقي يثبت في أوقات الشدة وليس في اليسر",
+      "ويأتي فرج الله عندما ندعوه بإخلاص"
+    ]
   },
   {
     "id": "shuaib",
@@ -1669,7 +2011,9 @@
             "translation": "And to Midian [We sent] their brother Shu'aib. He said, 'O my people, worship Allah; you have no deity other than Him. There has come to you clear evidence from your Lord. So fulfill the measure and weight.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "النبي إلى مدين",
+        "contentArabic": "بعث شعيب (ع) إلى أهل مدين من ذرية النبي إبراهيم من زوجته قطورة. لقد كانوا مجتمعًا تجاريًا مزدهرًا يعيشون على طرق القوافل المهمة. وعلى الرغم من نجاحهم المادي، إلا أنهم وقعوا في الفساد: خداع العملاء، واحتكار البضائع لتضخيم الأسعار، وسرقة المسافرين. وقد كلف شعيب، الذي كان يتمتع ببلاغة رائعة، بدعوتهم إلى عبادة الله ومعاملات الصدق."
       },
       {
         "id": "shuaib-message",
@@ -1691,7 +2035,9 @@
             "translation": "And do not sit on every path, threatening and averting from the way of Allah those who believe in Him, seeking to make it [seem] deviant."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الدعوة إلى العدالة الاقتصادية",
+        "contentArabic": "وشددت رسالة شعيب على أن عبادة الله والعدالة الاقتصادية لا ينفصلان. وحذر شعبه من حرمان الآخرين حقوقهم، وعدم الإفساد في الأرض، وعدم الجلوس على كل طريق يهدد المسافرين. وذكرهم بأنهم كانوا قليلين فكثرهم الله، وهي نعمة تحتاج إلى شكر، وليس إلى استكبار. أكسبته خطبه البليغة لقب \"خطيب الأنبياء\"."
       },
       {
         "id": "shuaib-rejection",
@@ -1706,7 +2052,9 @@
             "translation": "They said, 'O Shu'aib, does your prayer command you that we should leave what our fathers worship or not do with our wealth what we please? Indeed, you are the forbearing, the right-minded!'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الرفض الشعبي",
+        "contentArabic": "وسخر أهل مدين من شعيب، زاعمين أن صلاته جعلته ضعيف العقل. فتحدوه بسخرية، وطلبوا منه أن ينزل عليه عذاب الله إن كان صادقا. وهددوا بطرده وأتباعه من المدينة ما لم يعودوا إلى طرقهم القديمة. فاستجاب شعيب بالصبر، محذرًا إياهم من تذكر مصائر قوم نوح وهود وصالح ولوط، لكنهم ظلوا متكبرين."
       },
       {
         "id": "shuaib-destruction",
@@ -1728,7 +2076,9 @@
             "translation": "So they denied him, and the punishment of the day of the black cloud seized them. Indeed, it was the punishment of a terrible day."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "تدمير مديان",
+        "contentArabic": "ولما أصر الناس على رفضهم وفسادهم، نالهم عذاب الله. لقد تعرضوا لزلزال عنيف ('الرجفة') تركهم ميتين في منازلهم. وفي رواية أخرى أنهم غطيهم ظل سحابة أمطرت منها النار. ونجا شعيب والمؤمنون، وانصرف عنهم حزينًا، بعد أن قام بواجبه في تبليغ الرسالة. إن آثار مدين هي بمثابة تذكير بعواقب الفساد الاقتصادي ورفض التوجيه الإلهي."
       },
       {
         "id": "shuaib-musa",
@@ -1743,11 +2093,30 @@
             "translation": "He said, 'Indeed, I wish to wed you one of these, my two daughters, on [the condition] that you serve me for eight years.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "اتصال بموسى",
+        "contentArabic": "لشعيب (ع) دور مهم في قصة النبي موسى (ع). عندما هرب موسى من مصر بعد أن قتل مصريًا بالخطأ، وصل إلى مدين وساعد بنات شعيب في سقي قطيعهن. ودعا شعيب موسى للبقاء، وتزوج موسى إحدى بناته وخدمته عدة سنوات. وهذا الارتباط يدل على استمرارية النبوة، وكيفية تواصل الله مع أنبيائه عبر الأجيال."
       }
     ],
-    "relatedProphets": ["Ibrahim", "Musa", "Lut", "Hud"],
-    "historicalNotes": "Shu'aib (AS) is mentioned 11 times in the Quran. He is sometimes identified with Jethro from the Biblical tradition, though this is debated by scholars. Midian was located in the northwestern Arabian Peninsula, on important trade routes. The ruins of the region serve as archaeological evidence of ancient civilizations. His emphasis on honest trade makes his message particularly relevant for commercial ethics today."
+    "relatedProphets": [
+      "Ibrahim",
+      "Musa",
+      "Lut",
+      "Hud"
+    ],
+    "historicalNotes": "Shu'aib (AS) is mentioned 11 times in the Quran. He is sometimes identified with Jethro from the Biblical tradition, though this is debated by scholars. Midian was located in the northwestern Arabian Peninsula, on important trade routes. The ruins of the region serve as archaeological evidence of ancient civilizations. His emphasis on honest trade makes his message particularly relevant for commercial ethics today.",
+    "eraArabic": "عصر الجزيرة العربية القديمة",
+    "periodArabic": "حوالي 1600 قبل الميلاد",
+    "locationArabic": "مدين (شمال غرب الجزيرة العربية)",
+    "summaryArabic": "أُرسل النبي شعيب (ع)، المعروف بخطيب الأنبياء لفصاحته، إلى أهل مدين الذين كانوا يقطعون الطرق والغش التجاري. ودعاهم إلى عبادة الله وحده، وإلى التجارة الشريفة. وعندما رفضوه، أهلكهم زلزال عظيم.",
+    "historicalNotesArabic": "ذكر شعيب (ع) في القرآن 11 مرة. يتم التعرف عليه أحيانًا مع جيثرو من تقليد الكتاب المقدس، على الرغم من أن هذا الأمر محل نقاش بين العلماء. تقع مدين في شمال غرب شبه الجزيرة العربية، على طرق تجارية مهمة. وتمثل آثار المنطقة شواهد أثرية على الحضارات القديمة. إن تركيزه على التجارة الصادقة يجعل رسالته ذات أهمية خاصة للأخلاقيات التجارية اليوم.",
+    "keyLessonsArabic": [
+      "الصدق في التعاملات التجارية واجب ديني",
+      "والغش في الميزان والمكيال خطيئة عظيمة",
+      "العدالة الاقتصادية مرتبطة بعبادة الله",
+      "وينبغي استخدام البلاغة في الدعوة إلى الحق",
+      "فالرخاء المادي لا يدل على النعمة الإلهية"
+    ]
   },
   {
     "id": "musa",
@@ -1791,9 +2160,12 @@
             "book": "Prophets",
             "number": "3394",
             "text": "The Prophet (ﷺ) said: 'On the night of Isra, I met Musa - he was a tall, curly-haired man as if he was from the men of Shanu'ah.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «لقيت موسى ليلة الإسراء، وهو رجل طويل جعد كأنه من رجال شنوءة»."
           }
-        ]
+        ],
+        "titleArabic": "الحفظ المعجزة",
+        "contentArabic": "وُلد موسى أثناء أمر فرعون بقتل جميع الأولاد الإسرائيليين حديثي الولادة. وأوحى الله إلى أمه أن تضعه في سلة وترميها في النيل. وطفت السلة إلى قصر فرعون، حيث اكتشفتها زوجة فرعون آسيا. وعلى الفور أحبت الطفل وأقنعت فرعون بتبنيه. وأبى موسى عن كل مرضعات حتى جيء بأمه، فرده الله إلى أمه، محققاً وعده، ومحولاً قصر العدو مرتعاً لمحرره."
       },
       {
         "id": "musa-midian",
@@ -1815,7 +2187,9 @@
             "translation": "So he left it, fearful and anticipating [apprehension]. He said, 'My Lord, save me from the wrongdoing people.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "رحلة إلى مديان",
+        "contentArabic": "نشأ موسى في القصر وشهد اضطهاد قومه. في أحد الأيام، عندما رأى موسى مصريًا يضرب إسرائيليًا، تدخل موسى وقتل المصري عن طريق الخطأ. ولما علم بذلك هرب موسى إلى مدين حيث التقى بالنبي شعيب (ع) وتزوج ابنته. لقد أمضى سنوات كراعٍ، يتعلم الصبر والتواضع استعدادًا لرسالته النبوية. وفي هذه الفترة كان الله يعده للمهمة البالغة الأهمية التي تنتظره."
       },
       {
         "id": "musa-calling",
@@ -1844,7 +2218,9 @@
             "translation": "And when he came to it, he was called from the right side of the valley in a blessed spot - from the tree, 'O Musa, indeed I am Allah, Lord of the worlds.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الدعوة الإلهية",
+        "contentArabic": "وبعد أن أتم خدمة شعيب، انطلق موسى مع عائلته نحو مصر. وفي الطريق رأى ناراً في جانب جبل الطور (سيناء). فلما اقترب سمع صوت الله يناديه. فأظهر الله وحدانيته وأمر موسى بعبادته. وأعطى موسى آيتين: أن تتحول عصاه إلى حية، وأن تخرج يده بيضاء مضيئة. ثم أمر الله موسى أن يذهب إلى فرعون ويدعوه ليطلق بني إسرائيل."
       },
       {
         "id": "musa-pharaoh",
@@ -1873,7 +2249,9 @@
             "translation": "They said, 'We have believed in the Lord of the worlds.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "مواجهة فرعون",
+        "contentArabic": "ذهب موسى، ومعه أخوه هارون (ع) كمتحدث باسمه، إلى فرعون برسالة لإطلاق سراح بني إسرائيل والاعتراف بالإله الواحد الحقيقي. فرعون الذي ادعى الألوهية نفسه رفض الرسالة باستكبار. وطلب الإشارة، فألقى موسى عصاه، فصارت ثعبانًا ضخمًا، وظهرت يده بيضاء لامعة. واستدعى فرعون سحرته لينافسوا موسى، فلما رأوا قدرة الله سجدوا وآمنوا برب موسى وهارون."
       },
       {
         "id": "musa-plagues",
@@ -1895,7 +2273,9 @@
             "translation": "And We had certainly given Musa nine evident signs."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "العلامات التسعة",
+        "contentArabic": "وعندما استمر فرعون في رفض الرسالة وقمع بني إسرائيل، أرسل الله سلسلة من تسع علامات على مصر: العصا، واليد المضيئة، والمجاعة الواسعة، وفقدان المحاصيل، والفيضانات، والجراد، والقمل، والضفادع، والدم. كلما وقع الطاعون، كان فرعون يعد بإطلاق سراح بني إسرائيل إذا دعا موسى بالفرج، ولكن عندما يرفع البلاء، يخلف وعده. أظهرت هذه العلامات قدرة الله وكانت بمثابة دليل ضد ادعاءات فرعون الكاذبة عن الألوهية."
       },
       {
         "id": "musa-exodus",
@@ -1923,9 +2303,12 @@
             "book": "Prophets",
             "number": "3397",
             "text": "When the Prophet (ﷺ) came to Medina, he found the Jews fasting on the day of Ashura. They said, 'This is the day Musa triumphed over Pharaoh.' The Prophet (ﷺ) said, 'We are closer to Musa than you, so fast on this day.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "لما قدم النبي صلى الله عليه وسلم المدينة وجد اليهود تصوم يوم عاشوراء. \"قالوا هذا يوم غلب موسى على فرعون\". فقال النبي صلى الله عليه وسلم: «نحن أقرب إلى موسى منكم، فصوموا هذا اليوم»."
           }
-        ]
+        ],
+        "titleArabic": "فراق البحر",
+        "contentArabic": "أمر الله موسى أن يخرج بني إسرائيل من مصر ليلا. ولما علم فرعون برحيلهم طاردهم بجيشه. وحاصر الإسرائيليون بين البحر والجيش الذي يقترب، فشعروا باليأس. وأعلن موسى توكله على الله: \"إن معي ربي. سوف يرشدني. فأمره الله أن يضرب بعصاه البحر. انفصلت المياه، وخلقت مسارات جافة عبر البحر. عبر الإسرائيليون بأمان، ولكن عندما تبعهم فرعون وجيشه، عادت المياه وأغرقتهم جميعًا."
       },
       {
         "id": "musa-sinai",
@@ -1953,13 +2336,34 @@
             "book": "Faith",
             "number": "165",
             "text": "The Prophet (ﷺ) said: 'Do not give me superiority over Musa, for on the Day of Resurrection, all people will be unconscious. I will be the first to regain consciousness and I will find Musa holding the side of the Throne.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «لا تفضلوني على موسى، فإن الناس كلهم ​​صعقون يوم القيامة». فأكون أول من يغمى عليه، فأجد موسى آخذا بجانب العرش."
           }
-        ]
+        ],
+        "titleArabic": "التوراة على جبل سيناء",
+        "contentArabic": "بعد الخروج، قاد موسى بني إسرائيل إلى جبل سيناء حيث تلقى التوراة من الله. وأمضى أربعين ليلة على الجبل يتحدث مع الله مباشرة، وهو شرف خاص به بين الأنبياء، مما أكسبه لقب \"كليم الله\" (الشخص مع الله). عاد ومعه ألواح الشريعة، ليجد أن شعبه قد صنعوا عجلًا ذهبيًا للعبادة. في حزن وغضب ألقى الأقراص. وبعد معاقبة الظالمين والمغفرة، حصل على ألواح جديدة بها توجيه شامل لقومه."
       }
     ],
-    "relatedProphets": ["Harun", "Shu'aib", "Ibrahim", "Isa", "Muhammad"],
-    "historicalNotes": "Musa (AS) is mentioned by name 136 times in the Quran - more than any other prophet. He is one of the five Ulul 'Azm (Prophets of Great Resolve) along with Nuh, Ibrahim, Isa, and Muhammad. The Exodus is commemorated on the day of Ashura. He received the Torah (Tawrat) and led the Israelites for forty years in the wilderness. His story spans multiple surahs and provides the most detailed prophetic narrative in the Quran. He is described as having spoken directly with Allah, earning him the title Kalimullah."
+    "relatedProphets": [
+      "Harun",
+      "Shu'aib",
+      "Ibrahim",
+      "Isa",
+      "Muhammad"
+    ],
+    "historicalNotes": "Musa (AS) is mentioned by name 136 times in the Quran - more than any other prophet. He is one of the five Ulul 'Azm (Prophets of Great Resolve) along with Nuh, Ibrahim, Isa, and Muhammad. The Exodus is commemorated on the day of Ashura. He received the Torah (Tawrat) and led the Israelites for forty years in the wilderness. His story spans multiple surahs and provides the most detailed prophetic narrative in the Quran. He is described as having spoken directly with Allah, earning him the title Kalimullah.",
+    "eraArabic": "عصر الخروج",
+    "periodArabic": "حوالي 1400-1300 قبل الميلاد",
+    "locationArabic": "مصر وشبه جزيرة سيناء",
+    "summaryArabic": "النبي موسى (ع) هو أكثر الأنبياء ذكرا في القرآن. لقد واجه فرعون المستبد، وأخرج بني إسرائيل من العبودية، وتسلم التوراة على جبل سيناء، وقام بالعديد من المعجزات. وهو أحد الأنبياء الخمسة الكبار (أولي العزم) وتحدث مباشرة مع الله.",
+    "historicalNotesArabic": "ذكر موسى (ع) بالاسم في القرآن 136 مرة - أكثر من أي نبي آخر. وهو أحد أولياء العزم الخمسة مع نوح وإبراهيم وعيسى ومحمد. يتم إحياء ذكرى الخروج في يوم عاشوراء. تلقى التوراة وقاد بني إسرائيل أربعين سنة في البرية. تمتد قصته على عدة سور وتقدم الرواية النبوية الأكثر تفصيلاً في القرآن. يوصف بأنه تحدث مباشرة مع الله، مما أكسبه لقب كلمة الله.",
+    "keyLessonsArabic": [
+      "الوقوف ضد الطغيان واجب نبوي",
+      "توكل على الله عندما تواجه احتمالات تبدو مستحيلة",
+      "القيادة تتطلب الصبر مع من تقودهم",
+      "خطة الله تتكشف من خلال وسائل غير متوقعة",
+      "يوفر القانون الإلهي التوجيه للمجتمع"
+    ]
   },
   {
     "id": "harun",
@@ -2011,7 +2415,9 @@
             "translation": "And We certainly gave Musa the Scripture and made with him his brother Harun as his minister."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "تعيينه نبيا",
+        "contentArabic": "عندما تلقى موسى (ع) رسالته النبوية في جبل سيناء، سأل الله أن يرزقه أخاه هارون معيناً. ورأى موسى أن هارون كان أفصح في الكلام وسيقويه في مهمته. واستجاب الله لهذا الدعاء فجعل هارون نبيا ورسولا في حقه. تم إرسال الإخوة معًا لمواجهة فرعون وتحرير بني إسرائيل."
       },
       {
         "id": "harun-mission",
@@ -2026,7 +2432,9 @@
             "translation": "And my brother Harun is more fluent than me in tongue, so send him with me as support, confirming me."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "قبل فرعون",
+        "contentArabic": "رافق هارون موسى إلى بلاط فرعون، وكان المتحدث باسمه بسبب بلاغته الفائقة. قدموا معًا رسالة التوحيد وطالبوا بإطلاق سراح بني إسرائيل. ولما تحدىهم فرعون بسحرته، ثبت الأخوين، وتغلبت آيات الله كيد السحرة. وظل هارون سندا ثابتا طوال المواجهة مع فرعون والخروج اللاحق."
       },
       {
         "id": "harun-calf",
@@ -2048,7 +2456,9 @@
             "translation": "He said, 'O son of my mother, do not seize me by my beard or by my head. Indeed, I feared that you would say, \"You caused division among the Children of Israel, and you did not observe my word.\"'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "محاكمة العجل الذهبي",
+        "contentArabic": "ولما ذهب موسى إلى جبل سيناء أربعين ليلة لتلقي التوراة، ترك هارون على بني إسرائيل. أثناء هذا الغياب، أقنع رجل اسمه السميري الناس بصنع عجل ذهبي للعبادة. حاول هارون أن يمنعهم لكن غلبته أعدادهم وتهديداتهم. لقد اختار ألا يتسبب في الفرقة بين المجتمع بالقوة، في انتظار عودة موسى. ولما رجع موسى ورأى عبادة الصنم غضب غضبا، لكن هارون أوضح حجته وبرئ."
       },
       {
         "id": "harun-death",
@@ -2069,13 +2479,33 @@
             "book": "Virtues of Companions",
             "number": "3706",
             "text": "The Prophet (ﷺ) said to Ali: 'You are to me in the position that Harun was to Musa, except that there will be no prophet after me.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "وقال النبي (ص) لعلي: أنت مني بمنزلة هارون من موسى، إلا أنه لا نبي بعدي."
           }
-        ]
+        ],
+        "titleArabic": "رحيل هارون",
+        "contentArabic": "وقد توفي هارون (ع) قبل موسى خلال أربعين سنة في البرية. وبحسب التقليد، رافقه موسى إلى مغارة في جبل هور حيث مات هارون بسلام. وكان هارون معروفًا بين بني إسرائيل بلطفه ودوره كصانع سلام. وقد حزن المجتمع بأكمله على وفاته لمدة ثلاثين يومًا. لقد ترك وراءه إرثًا كنبي صالح ومؤيد مخلص لرسالة أخيه."
       }
     ],
-    "relatedProphets": ["Musa", "Ibrahim", "Ishaq", "Yaqub"],
-    "historicalNotes": "Harun (AS) is mentioned 20 times in the Quran. He is revered as both a prophet and a righteous helper. His relationship with Musa exemplifies the importance of mutual support in carrying out sacred duties. The hadith comparing Ali to Harun demonstrates the elevated status of Harun in Islamic tradition. He is believed to be buried on Mount Hor (Jabal Harun) near Petra in modern-day Jordan."
+    "relatedProphets": [
+      "Musa",
+      "Ibrahim",
+      "Ishaq",
+      "Yaqub"
+    ],
+    "historicalNotes": "Harun (AS) is mentioned 20 times in the Quran. He is revered as both a prophet and a righteous helper. His relationship with Musa exemplifies the importance of mutual support in carrying out sacred duties. The hadith comparing Ali to Harun demonstrates the elevated status of Harun in Islamic tradition. He is believed to be buried on Mount Hor (Jabal Harun) near Petra in modern-day Jordan.",
+    "eraArabic": "عصر الخروج",
+    "periodArabic": "حوالي 1400-1300 قبل الميلاد",
+    "locationArabic": "مصر وشبه جزيرة سيناء",
+    "summaryArabic": "كان النبي هارون (ع) الأخ الأكبر لموسى (ع) وأقرب رفاقه في الرسالة النبوية. وعُرف بفصاحته ودماثة طبعه، وكان المتحدث باسم موسى أمام فرعون. وقد نال النبوة مع أخيه، وساعد في قيادة بني إسرائيل.",
+    "historicalNotesArabic": "ذكر هارون (ع) في القرآن 20 مرة. يتم تبجيله باعتباره نبيًا ومساعدًا صالحًا. تجسد علاقته بموسى أهمية الدعم المتبادل في القيام بالواجبات المقدسة. يوضح الحديث الذي يقارن علي بهارون المكانة الرفيعة لهارون في التقاليد الإسلامية. ويُعتقد أنه دُفن في جبل هور (جبل هارون) بالقرب من البتراء في الأردن حاليًا.",
+    "keyLessonsArabic": [
+      "دعم ومساعدة من يتحملون مسؤوليات جسيمة",
+      "قيمة البلاغة في نقل الحقيقة",
+      "الحفاظ على الوحدة حتى تحت الضغط الشديد",
+      "يمكن أن يكون اللطف صفة نبوية",
+      "القيادة تتطلب القوة والرحمة"
+    ]
   },
   {
     "id": "dhul-kifl",
@@ -2113,7 +2543,9 @@
             "translation": "And We admitted them into Our mercy. Indeed, they were of the righteous."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "بين المريض",
+        "contentArabic": "وقد ذكر ذو الكفل في القرآن مع إسماعيل وإدريس في الصابرين. وأثنى الله على الثلاثة باعتبارهم عبادًا صالحين ثابروا على الإيمان والعمل الصالح. هذا الذكر يضع ذو الكفل بين الأنبياء وعباد الله الكرام، على الرغم من أن القرآن يقدم تفاصيل محدودة عن قصته المحددة."
       },
       {
         "id": "dhul-kifl-identity",
@@ -2128,18 +2560,39 @@
             "translation": "And remember Ismail, Elisha and Dhul-Kifl, and all are among the outstanding."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "معنى اسمه",
+        "contentArabic": "واسم \"ذو الكفل\" يعني \"ذو النصيب\" أو \"الذي أدى حقه\". ويرى بعض العلماء أنه سمي بهذا الاسم لأنه تحمل أمراً معيناً وقام به على أكمل وجه. وقال آخرون: ضمن (الكفالة) شيئا واحتفظ بضمانه. ويعرّفه البعض بأنه حزقيال، وهو نبي من بني إسرائيل تلقى رؤى المجد الإلهي وتنبأ أثناء السبي البابلي."
       },
       {
         "id": "dhul-kifl-lesson",
         "title": "A Model of Reliability",
         "content": "Whether Dhul-Kifl was a prophet or a righteous man who reached prophetic status, his inclusion in the Quran teaches that fulfilling one's duties and remaining patient through trials leads to eternal honor. He represents the virtue of keeping one's word and shouldering responsibility - qualities essential for any person of faith. His mention alongside great prophets like Ismail and Idris elevates his status and makes his example worthy of emulation.",
         "verses": [],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "نموذج للموثوقية",
+        "contentArabic": "سواء كان ذو الكفل نبيا أو رجلا صالحا وصل إلى منزلة النبوة، فإن إدراجه في القرآن يعلم أن أداء الواجبات والصبر على التجارب يؤدي إلى الشرف الأبدي. إنه يمثل فضيلة حفظ الكلمة وتحمل المسؤولية، وهي صفات ضرورية لأي شخص مؤمن. فذكره مع الأنبياء العظام مثل إسماعيل وإدريس يرفع من شأنه ويجعل قدوته جديرة بالاقتداء."
       }
     ],
-    "relatedProphets": ["Ismail", "Idris", "Ayyub", "Al-Yasa"],
-    "historicalNotes": "Dhul-Kifl is mentioned only twice in the Quran (21:85 and 38:48). Scholars have differed on whether he was a prophet or simply a righteous man. Some commentators identify him with the Biblical Ezekiel, while others suggest he may have been a righteous king or judge among the Israelites. His name's meaning - related to fulfilling guarantees or portions - emphasizes the virtue of responsibility and trustworthiness. His grave is claimed to be in Iraq, near the city of Hillah."
+    "relatedProphets": [
+      "Ismail",
+      "Idris",
+      "Ayyub",
+      "Al-Yasa"
+    ],
+    "historicalNotes": "Dhul-Kifl is mentioned only twice in the Quran (21:85 and 38:48). Scholars have differed on whether he was a prophet or simply a righteous man. Some commentators identify him with the Biblical Ezekiel, while others suggest he may have been a righteous king or judge among the Israelites. His name's meaning - related to fulfilling guarantees or portions - emphasizes the virtue of responsibility and trustworthiness. His grave is claimed to be in Iraq, near the city of Hillah.",
+    "eraArabic": "عصر أنبياء بني إسرائيل",
+    "periodArabic": "حوالي 1400 قبل الميلاد",
+    "locationArabic": "منطقة بلاد ما بين النهرين أو فلسطين",
+    "summaryArabic": "ذكر النبي ذو الكفل (ع) في القرآن مرتين في الصالحين. ومعنى اسمه \"صاحب النصيب\" أو \"الذي أوفى بعهده\". واختلف العلماء في هويته، فمنهم من عرفه بحزقيال من الكتاب المقدس، والبعض الآخر اعتبره رجلاً صالحاً نال النبوة.",
+    "historicalNotesArabic": "تم ذكر ذو الكفل مرتين فقط في القرآن (21:85 و 38:48). وقد اختلف العلماء في كونه نبيا أم مجرد رجل صالح. يعرفه بعض المعلقين بأنه حزقيال الكتابي، بينما يقترح آخرون أنه ربما كان ملكًا صالحًا أو قاضيًا بين بني إسرائيل. ومعنى اسمه - المتعلق بالوفاء بالضمانات أو الحصص - يؤكد على فضيلة المسؤولية والأمانة. ويقال أن قبره في العراق بالقرب من مدينة الحلة.",
+    "keyLessonsArabic": [
+      "الوفاء بمسؤولياته وتعهداته",
+      "الصبر هو سمة الصالحين",
+      "إن اعتبارك من بين الصالحين يتطلب جهدًا متواصلًا",
+      "إن الوفاء بالعهود صفة نبوية",
+      "إن الأعمال الصالحة تؤدي إلى ذكرها بإكرام"
+    ]
   },
   {
     "id": "dawud",
@@ -2170,7 +2623,9 @@
             "translation": "So they defeated them by permission of Allah, and Dawud killed Jalut (Goliath), and Allah gave him the kingship and wisdom and taught him from that which He willed."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "النصر على جالوت",
+        "contentArabic": "قبل أن يصبح ملكًا، كان داود راعيًا شابًا في جيش طالوت (شاول). وعندما واجه بنو إسرائيل جيش الفلسطينيين بقيادة العملاق جالوت (جالوت)، أصيب المحاربون بالرعب. تقدم الشاب داود، مسلحًا بالإيمان والمقلاع، إلى الأمام لمواجهة العملاق. وبإذن الله ضرب جالوت بحجر فقتله. لقد أثبت هذا النصر أن القوة الحقيقية تأتي من الإيمان بالله، وليس القوة الجسدية وحدها."
       },
       {
         "id": "dawud-kingdom",
@@ -2192,7 +2647,9 @@
             "translation": "And We certainly gave Dawud from Us bounty. [We said], 'O mountains, repeat [Our] praises with him, and the birds [as well].' And We made pliable for him iron."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الملك العادل",
+        "contentArabic": "وبعد وفاة طالوت، أصبح داود ملكًا على مملكة إسرائيل الموحدة. وجعل القدس عاصمة له وحكم بالعدل والحكمة. وقد عزز الله ملكه وأنعم عليه بنعم كثيرة. وتشترك معه الجبال والطير في تسبيح الله. وعُرف بحكمه العادل وقدرته على تمييز الحق من الباطل. يُذكر عهده باعتباره العصر الذهبي لتاريخ بني إسرائيل."
       },
       {
         "id": "dawud-zabur",
@@ -2220,9 +2677,12 @@
             "book": "Fasting",
             "number": "1979",
             "text": "The Prophet (ﷺ) said: 'The most beloved fasting to Allah is the fasting of Dawud; he used to fast one day and break his fast the next day. And the most beloved prayer to Allah is the prayer of Dawud; he used to sleep half the night, pray for a third, and sleep for a sixth.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «أحب الصيام إلى الله صيام داود». كان يصوم يوما ويفطر يوما آخر. وأحب الصلاة إلى الله صلاة داود؛ وكان ينام نصف الليل، ويقوم ثلثه، وينام سدسه»."
           }
-        ]
+        ],
+        "titleArabic": "الزبور (المزامير)",
+        "contentArabic": "وأنزل الله على داود الزبور كتاب صلاة وتسبيح وحكمة. وكان داود يتمتع بصوت جميل لا مثيل له. وكان إذا قرأ الزبور اجتمعت الطيور لتستمع، وترددت الجبال تسبيحه. وكانت عبادته أسطورية، إذ كان يصوم يومًا ويصلي طوال الليل. وقد وصف النبي محمد (صلى الله عليه وسلم) ذلك بأنه أفضل الصيام والصلاة."
       },
       {
         "id": "dawud-iron",
@@ -2250,9 +2710,12 @@
             "book": "Sales",
             "number": "2073",
             "text": "The Prophet (ﷺ) said: 'No one ever eats better food than that which he earns from the work of his own hands. The Prophet of Allah, Dawud, used to eat from the earnings of his own hands.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «ما أكل أحد طعاما قط خيرا من عمل يده». وكان نبي الله داود يأكل من كسب يده."
           }
-        ]
+        ],
+        "titleArabic": "سيد الحديد",
+        "contentArabic": "ومن المعجزات الفريدة التي منحت لداود القدرة على تليين الحديد في يديه كأنه الطين أو العجين. يمكنه تشكيلها على شكل درع (معاطف من الدرع) بدون نار أو أدوات. جعلت هذه المهارة جيش مملكته هائلاً ووفرت له سبل العيش، حيث كان يبيع الدروع التي صنعها بدلاً من أخذها من الخزانة العامة. وكان يأكل فقط من كسب يده."
       },
       {
         "id": "dawud-trial",
@@ -2274,11 +2737,29 @@
             "translation": "So We forgave him that; and indeed, for him is nearness to Us and a good place of return."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الاختبار والتوبة",
+        "contentArabic": "لقد ابتلى داود داود عندما جاءه متخاصمان. لقد حكم على عجل قبل أن يسمع كلا الجانبين بالكامل. وكان هذا اختبارًا من الله لتذكيره بأن يبحث دائمًا عن المعلومات الكاملة قبل الحكم. ولما أدرك داود خطأه، خر ساجدا، واستغفر، وتاب توبة نصوحا. فغفر الله له، وكان هذا درساً في أهمية الصبر والدقة في القضاء."
       }
     ],
-    "relatedProphets": ["Sulaiman", "Musa", "Isa"],
-    "historicalNotes": "Dawud (AS) is mentioned 16 times in the Quran. He ruled the united Kingdom of Israel around 1000 BCE and established Jerusalem as his capital. He is venerated in Judaism as the greatest king of Israel, in Christianity as an ancestor of Jesus, and in Islam as a mighty prophet and king. The Zabur (Psalms) he received is one of the four major scriptures in Islam. Archaeological evidence suggests a significant kingdom in the region during this period. His son Sulaiman would inherit and expand his kingdom."
+    "relatedProphets": [
+      "Sulaiman",
+      "Musa",
+      "Isa"
+    ],
+    "historicalNotes": "Dawud (AS) is mentioned 16 times in the Quran. He ruled the united Kingdom of Israel around 1000 BCE and established Jerusalem as his capital. He is venerated in Judaism as the greatest king of Israel, in Christianity as an ancestor of Jesus, and in Islam as a mighty prophet and king. The Zabur (Psalms) he received is one of the four major scriptures in Islam. Archaeological evidence suggests a significant kingdom in the region during this period. His son Sulaiman would inherit and expand his kingdom.",
+    "eraArabic": "عصر المملكة الإسرائيلية",
+    "periodArabic": "حوالي 1000 قبل الميلاد",
+    "locationArabic": "فلسطين (مملكة إسرائيل)",
+    "summaryArabic": "كان النبي داود (ع) ملكًا ونبيًا عظيمًا وحد قبائل إسرائيل في مملكة قوية. لقد مُنح الزبور (المزامير)، وكان له صوت جميل لا يضاهى، وكان يمتلك القدرة على تليين الحديد بيديه العاريتين. يُذكر بعبادته وحكمه العادل وانتصاره على جالوت.",
+    "historicalNotesArabic": "ورد اسم داود (ع) في القرآن 16 مرة. حكم مملكة إسرائيل المتحدة حوالي عام 1000 قبل الميلاد وأسس القدس عاصمة له. يتم تبجيله في اليهودية باعتباره أعظم ملك لإسرائيل، وفي المسيحية باعتباره سلف يسوع، وفي الإسلام باعتباره نبيًا وملكًا عظيمًا. الزبور (المزامير) الذي تلقاه هو أحد الكتب الأربعة الرئيسية في الإسلام. تشير الأدلة الأثرية إلى وجود مملكة كبيرة في المنطقة خلال هذه الفترة. ويرث ابنه سليمان مملكته ويوسعها.",
+    "keyLessonsArabic": [
+      "القوة الحقيقية تجمع بين القوة الجسدية والتواضع أمام الله",
+      "العدالة في القيادة أمانة مقدسة",
+      "عبادة الله وحمده تبعث الطمأنينة في القلب",
+      "يمكن للشباب أن يحققوا أشياء عظيمة بالإيمان",
+      "وتقبل التوبة ممن أخلص لله"
+    ]
   },
   {
     "id": "sulaiman",
@@ -2316,7 +2797,9 @@
             "translation": "And gathered for Sulaiman were his soldiers of the jinn and men and birds, and they were [marching] in rows."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "مملكة لا مثيل لها",
+        "contentArabic": "وورث سليمان ملك أبيه داود، ودعا الله ملكا لا يملكه أحد من بعده. وقد أجاب الله صلاته، وسلطه على الريح، تسير بأمره، فيصبح مسيرة شهر، ويمشي شهرا. وكان له سلطان على الجن الذين يعملون معه في بناء الهياكل والغوص في اللؤلؤ. وكان جيشه يضم الإنس والجن والطير، كلهم ​​منظمون في صفوف."
       },
       {
         "id": "sulaiman-speech",
@@ -2345,7 +2828,9 @@
             "translation": "So he smiled, amused at her speech, and said, 'My Lord, enable me to be grateful for Your favor which You have bestowed upon me.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "فهم كلام المخلوقين",
+        "contentArabic": "وقد وهب الله سليمان القدرة على فهم لغة الطير والحيوانات. وبينما هو يسير بجيشه العظيم سمع نملة تحذر قومها أن يدخلوا مساكنهم لئلا يسحقهم سليمان وجنوده وهم لا يعلمون. فتبسم سليمان من كلام النملة وحمد الله على هذه النعمة. ودعا أن يكون دائما شاكرا وأن يعمل الصالحات التي ترضي الله."
       },
       {
         "id": "sulaiman-sheba",
@@ -2367,7 +2852,9 @@
             "translation": "She said, 'My Lord, indeed I have wronged myself, and I submit with Sulaiman to Allah, Lord of the worlds.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "ملكة سبأ",
+        "contentArabic": "وعندما لاحظ سليمان غياب طائر الهدهد من جيشه، عاد الطائر بخبر عن ملكة عظيمة في سبأ (اليمن) حكمت أمة غنية تعبد الشمس. وأرسل سليمان كتابًا يدعوها إلى التسليم لله. قررت ملكة سبأ المعروفة ببلقيس أن تزور سليمان بالهدايا. لقد نُقل عرشها بأعجوبة وتحول قبل وصولها. ولما رأت حكمة سليمان وملكه أعلنت استسلامها لله."
       },
       {
         "id": "sulaiman-jinn",
@@ -2395,9 +2882,12 @@
             "book": "Prophets",
             "number": "3423",
             "text": "The Prophet (ﷺ) said: 'A strong demon from among the jinn came to me last night to disrupt my prayer, but Allah enabled me to overcome him. I wanted to tie him to one of the pillars of the mosque so that you could see him in the morning, but then I remembered the prayer of my brother Sulaiman: \"Grant me a kingdom such as will not belong to anyone after me.\" So Allah sent him back disappointed.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «أتاني شيطان قوي من الجن الليلة ليقطع صلاتي، فغلبني الله عليه. فأردت أن أربطه إلى سارية من سواري المسجد حتى تصبح تراه، فتذكرت دعوة أخي سليمان: «هب لي ملكا لا يكون لأحد من بعدي». فأعاده الله خائبا."
           }
-        ]
+        ],
+        "titleArabic": "الأمر على الجن",
+        "contentArabic": "وأخضع الله الجن لأمر سليمان. وكانوا يقومون له بمهام مختلفة: تشييد المباني والقصور والتماثيل، وصنع المغاسل الكبيرة وأواني الطبخ الثقيلة. وكان البعض يغوص في أعماق البحر لاستعادة اللؤلؤ والكنوز. تم تقييد هؤلاء الجن الذين تمردوا. وهذا يدل على قدرة الله على إخضاع المخلوقات غير المرئية لخدمة نبي صالح."
       },
       {
         "id": "sulaiman-death",
@@ -2412,11 +2902,29 @@
             "translation": "And when We decreed for him death, nothing indicated to them his death except a creature of the earth eating his staff. But when he fell, it became clear to the jinn that if they had known the unseen, they would not have remained in humiliating punishment."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الحكمة في موته",
+        "contentArabic": "ومات سليمان وهو متكئ على عصاه يشرف على عمل الجن. واستمر الجن في عملهم، ولم يعلموا بوفاته، حتى أكل النمل الأبيض من خلال عصاه وسقط جسده. وهذا يدل على أن الجن لا يعلمون الغيب؛ ولو كانوا يعلمون، لما استمروا في عملهم المهين. وقد علمنا هذا الحدث درسا هاما عن محدودية كل الخلق أمام علم الله."
       }
     ],
-    "relatedProphets": ["Dawud", "Musa", "Isa"],
-    "historicalNotes": "Sulaiman (AS) is mentioned 17 times in the Quran. He built the First Temple in Jerusalem (Bayt al-Maqdis), which became the holiest site for the Israelites. His kingdom represented the zenith of Israelite power and prosperity. He is revered in Jewish tradition as King Solomon, renowned for his wisdom, and his temple remained the center of Jewish worship until its destruction. In Islamic tradition, his story demonstrates that worldly power is a test and that even great kings are servants of Allah."
+    "relatedProphets": [
+      "Dawud",
+      "Musa",
+      "Isa"
+    ],
+    "historicalNotes": "Sulaiman (AS) is mentioned 17 times in the Quran. He built the First Temple in Jerusalem (Bayt al-Maqdis), which became the holiest site for the Israelites. His kingdom represented the zenith of Israelite power and prosperity. He is revered in Jewish tradition as King Solomon, renowned for his wisdom, and his temple remained the center of Jewish worship until its destruction. In Islamic tradition, his story demonstrates that worldly power is a test and that even great kings are servants of Allah.",
+    "eraArabic": "عصر المملكة الإسرائيلية",
+    "periodArabic": "حوالي 970-930 قبل الميلاد",
+    "locationArabic": "فلسطين (مملكة إسرائيل)",
+    "summaryArabic": "لقد حظي النبي سليمان (ع) بن داود بمملكة لم يسبق لها مثيل في التاريخ. وكان يأمر الريح، ويفهم كلام الحيوانات، وله سلطان على الجن. قام ببناء معبد القدس الرائع وكان معروفًا بحكمته وثروته وإخلاصه لله.",
+    "historicalNotesArabic": "ذكر سليمان (ع) في القرآن 17 مرة. قام ببناء الهيكل الأول في القدس (بيت المقدس)، الذي أصبح أقدس موقع لبني إسرائيل. وكانت مملكته تمثل ذروة القوة والازدهار الإسرائيليين. ويُبجل في التقليد اليهودي باعتباره الملك سليمان، المشهور بحكمته، وظل هيكله مركز العبادة اليهودية حتى تدميره. في التقاليد الإسلامية، توضح قصته أن السلطة الدنيوية هي اختبار وأنه حتى الملوك العظماء هم عباد الله.",
+    "keyLessonsArabic": [
+      "القوة العظمى تتطلب قدرًا أكبر من المسؤولية والامتنان",
+      "الحكمة هي أكثر قيمة من الثروة",
+      "كل الخلق يسبحون الله بطريقتهم",
+      "القيادة الحقيقية تتضمن العدالة لجميع المخلوقات",
+      "النجاح النهائي هو الرجوع إلى الله بقلب سليم"
+    ]
   },
   {
     "id": "ilyas",
@@ -2461,7 +2969,9 @@
             "translation": "Do you call upon Ba'al and leave the best of creators?"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الدعوة للتخلي عن بعل",
+        "contentArabic": "أُرسل إلياس (ع) إلى شعب مملكة إسرائيل الشمالية في عهد الملك آخاب وزوجته إيزابل، اللذين روجا لعبادة الصنم الكنعاني بعل. لقد تخلى الإسرائيليون عن توحيد أسلافهم واعتمدوا ممارسات وثنية. وواجه إلياس هذا الفساد مباشرة، داعيا قومه إلى تقوى الله، ومحذرا إياهم من عواقب عبادتهم للأوثان."
       },
       {
         "id": "ilyas-rejection",
@@ -2483,7 +2993,9 @@
             "translation": "And they denied him, so indeed, they will be brought [for punishment]."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الرفض والاضطهاد",
+        "contentArabic": "وعلى الرغم من إنذاره الشديد والمعجزات التي منحه إياها الله، إلا أن معظم بني إسرائيل رفضوا إلياس. لقد اضطهده البلاط الملكي، وخاصة الملكة إيزابل، بشدة وسعوا إلى قتله. اضطر إلياس إلى الفرار والاختباء، لكنه لم يتخلى عن مهمته أبدًا. وظل ثابتاً على الدعوة إلى التوحيد، مذكّراً قومه بأن الله هو ربهم ورب آبائهم."
       },
       {
         "id": "ilyas-legacy",
@@ -2519,11 +3031,29 @@
             "translation": "And Zakariyya and Yahya and Isa and Ilyas - all were of the righteous."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الإرث الصالح",
+        "contentArabic": "وقد أكرم الله إلياس وحفظ اسمه الطيب للأجيال القادمة. وقد مدحه القرآن بأنه محسن وكان من المؤمنين. وأصبح جهاده ضد عبادة الأوثان قدوة لكل من يدعو إلى عبادة الله الواحد في زمن الفساد المنتشر. وبحسب بعض الروايات فإن إلياس رُفع حياً إلى السماء وسيعود قبل يوم القيامة."
       }
     ],
-    "relatedProphets": ["Al-Yasa", "Musa", "Harun"],
-    "historicalNotes": "Ilyas (AS) is mentioned 4 times in the Quran. He is identified with the Biblical prophet Elijah who lived during the reign of King Ahab (874-853 BCE). He is famous for his confrontation with the prophets of Ba'al on Mount Carmel. In Islamic tradition, he is sometimes associated with Al-Khidr, and some believe he was raised to the heavens like Isa. His successor was Al-Yasa (Elisha)."
+    "relatedProphets": [
+      "Al-Yasa",
+      "Musa",
+      "Harun"
+    ],
+    "historicalNotes": "Ilyas (AS) is mentioned 4 times in the Quran. He is identified with the Biblical prophet Elijah who lived during the reign of King Ahab (874-853 BCE). He is famous for his confrontation with the prophets of Ba'al on Mount Carmel. In Islamic tradition, he is sometimes associated with Al-Khidr, and some believe he was raised to the heavens like Isa. His successor was Al-Yasa (Elisha).",
+    "eraArabic": "عصر المملكة المقسمة",
+    "periodArabic": "حوالي 870-850 قبل الميلاد",
+    "locationArabic": "مملكة إسرائيل الشمالية",
+    "summaryArabic": "أُرسل النبي إلياس (ع)، المعروف بإيليا في تقليد الكتاب المقدس، إلى مملكة إسرائيل الشمالية خلال فترة عبادة الأوثان الشديدة. ودعا قومه إلى ترك عبادة البعل والرجوع إلى الله. وعلى الرغم من المعجزات والتحذيرات الجادة، رفضه معظمهم، وفي النهاية تم رفعه إلى السماء.",
+    "historicalNotesArabic": "ذكر إلياس (ع) في القرآن أربع مرات. تم التعرف عليه مع النبي الكتابي إيليا الذي عاش في عهد الملك آخاب (874-853 قبل الميلاد). واشتهر بمواجهته مع أنبياء البعل على جبل الكرمل. في التقاليد الإسلامية، يرتبط أحيانًا بالخضر، ويعتقد البعض أنه رفع إلى السماء مثل عيسى. وكان خليفته اليسع (إليشع).",
+    "keyLessonsArabic": [
+      "الدعوة إلى التوحيد ولو كانت محاطة بعبادة الأصنام",
+      "المثابرة على الدعوة رغم الرفض",
+      "الله يحمي أنبياءه من أعدائهم",
+      "النجاح الحقيقي يُحسب بين الصالحين",
+      "عبادة الآلهة الكاذبة تؤدي إلى الهلاك الروحي"
+    ]
   },
   {
     "id": "al-yasa",
@@ -2561,18 +3091,39 @@
             "translation": "And remember Ismail, Elisha and Dhul-Kifl, and all are among the outstanding."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "بين المنتخبين",
+        "contentArabic": "وقد ورد ذكر اليسع في القرآن باعتباره من اختاره الله وفضله على كثير من الآخرين. ويُصنف مع غيره من الأنبياء العظام في عداد المتميزين والصالحين. ووجوده بين هؤلاء الكرام يدل على مكانته العالية عند الله، مع أن القرآن لم يذكر قصته بعينها."
       },
       {
         "id": "al-yasa-mission",
         "title": "Successor to Ilyas",
         "content": "Al-Yasa was appointed as prophet after Ilyas to continue guiding the Israelites. He witnessed many of Ilyas's miracles and learned directly from him. When Ilyas was taken up, Al-Yasa carried on his mission with devotion. Though the Quran does not detail his specific actions, Biblical traditions mention numerous miracles he performed, including healing the sick and multiplying food - signs that parallel those of later prophets.",
         "verses": [],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "خليفة الياس",
+        "contentArabic": "تم تعيين اليسع نبيا بعد إلياس لمواصلة إرشاد بني إسرائيل. وقد شهد العديد من معجزات إلياس وتعلم منه مباشرة. ولما صعد إلياس واصل الياسا مهمته بإخلاص. على الرغم من أن القرآن لا يذكر بالتفصيل أفعاله المحددة، إلا أن تقاليد الكتاب المقدس تذكر العديد من المعجزات التي قام بها، بما في ذلك شفاء المرضى ومضاعفة الطعام - وهي علامات توازي تلك التي قام بها الأنبياء اللاحقون."
       }
     ],
-    "relatedProphets": ["Ilyas", "Ismail", "Yunus", "Dhul-Kifl"],
-    "historicalNotes": "Al-Yasa (AS) is mentioned twice in the Quran (6:86 and 38:48). He corresponds to the Biblical prophet Elisha, the disciple and successor of Elijah. According to Biblical accounts, he performed twice as many miracles as his predecessor, including raising the dead, healing leprosy, and multiplying food. He served as a prophet in the northern kingdom of Israel during a turbulent period of idol worship and foreign conflicts."
+    "relatedProphets": [
+      "Ilyas",
+      "Ismail",
+      "Yunus",
+      "Dhul-Kifl"
+    ],
+    "historicalNotes": "Al-Yasa (AS) is mentioned twice in the Quran (6:86 and 38:48). He corresponds to the Biblical prophet Elisha, the disciple and successor of Elijah. According to Biblical accounts, he performed twice as many miracles as his predecessor, including raising the dead, healing leprosy, and multiplying food. He served as a prophet in the northern kingdom of Israel during a turbulent period of idol worship and foreign conflicts.",
+    "eraArabic": "عصر المملكة المقسمة",
+    "periodArabic": "حوالي 850-800 قبل الميلاد",
+    "locationArabic": "مملكة إسرائيل الشمالية",
+    "summaryArabic": "النبي اليسع (ع)، المعروف باسم إليسع في تقليد الكتاب المقدس، كان خليفة وتلميذ إلياس (ع). واستمر في مهمة دعوة بني إسرائيل إلى التوحيد بعد رفع إلياس. وقد ذكره القرآن في الصفوة والصالحين، وأثنى عليه باعتباره مفضلاً على كثيرين.",
+    "historicalNotesArabic": "ورد ذكر اليسع (ع) في القرآن مرتين (6:86 و 38:48). وهو يتوافق مع نبي الكتاب المقدس إليشع، تلميذ إيليا وخليفته. ووفقاً لروايات الكتاب المقدس، فقد أجرى ضعف عدد المعجزات التي قام بها سلفه، بما في ذلك إقامة الموتى، وشفاء الجذام، ومضاعفة الطعام. لقد خدم كنبي في مملكة إسرائيل الشمالية خلال فترة مضطربة من عبادة الأوثان والصراعات الأجنبية.",
+    "keyLessonsArabic": [
+      "إن مواصلة عمل أسلافه هو شرف",
+      "إن الاختيار من قبل الله يتطلب البر",
+      "التلمذة والخلافة تضمن استمرارية الحقيقة",
+      "فالتفوق والتفضيل إنما يحصل بالإيمان والعمل",
+      "والذكر في الكتاب المقدس بحد ذاته نعمة عظيمة"
+    ]
   },
   {
     "id": "yunus",
@@ -2610,7 +3161,9 @@
             "translation": "When he ran away to the laden ship."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "البعثة إلى نينوى",
+        "contentArabic": "أُرسل يونس إلى مدينة نينوى العظيمة، عاصمة الإمبراطورية الآشورية. كان الناس منخرطين في عبادة الأوثان وخطايا مختلفة. وحذرهم يونس من العقاب الوشيك إذا لم يتوبوا ويلجأوا إلى الله. وعندما رفضوا رسالته في البداية، أصيب يونس بالإحباط وغادر المدينة غاضبًا، قبل أن يأذن الله له بالخروج."
       },
       {
         "id": "yunus-whale",
@@ -2638,9 +3191,12 @@
             "book": "Supplications",
             "number": "3505",
             "text": "The Prophet (ﷺ) said: 'The supplication of my brother Dhun-Nun (Yunus): \"There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers.\" No Muslim ever prays with it for anything except that Allah responds to him.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: دعاء أخي ذو النون: (لا إله إلا أنت سبحانك إني كنت من الظالمين). وما دعا بها مسلم في شيء قط إلا استجاب الله له»."
           }
-        ]
+        ],
+        "titleArabic": "في بطن الحوت",
+        "contentArabic": "ركب يونس سفينة، لكن عاصفة شديدة هددت بإغراقها. وألقى الطاقم قرعة لتحديد المتسبب في الكارثة، فوقعت القرعة على يونس. لقد تم إلقاؤه في البحر وابتلعته سمكة كبيرة (حوت). وفي أعماق الظلمات - ظلمة البحر، وظلمة بطن الحوت، وظلمة الليل - دعا يونس الله بدعاء اشتهر بقوته. فاعترف بخطئه وحمد الله."
       },
       {
         "id": "yunus-deliverance",
@@ -2676,11 +3232,29 @@
             "translation": "Then has there not been a [single] city that believed so its faith benefited it except the people of Yunus? When they believed, We removed from them the punishment of disgrace in worldly life and gave them enjoyment for a time."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الإنقاذ الإلهي",
+        "contentArabic": "استجاب الله لدعاء يونس وأمر الحوت أن يلقيه على الشاطئ. وكان مريضا ضعيفا، وأنبت الله عليه نباتا يستظل به ويتغذى. وبعد أن تعافى أُرسل إلى قومه. واللافت أن أهل نينوى تابوا بعد خروجه، وعندما عاد ثبتوا إيمانهم. لقد أصبحوا الأمة الوحيدة في التاريخ التي نجت من العقاب الموعود بسبب توبتهم الجماعية."
       }
     ],
-    "relatedProphets": ["Musa", "Ilyas", "Al-Yasa"],
-    "historicalNotes": "Yunus (AS) is mentioned 4 times in the Quran by name and once as 'Dhun-Nun' (the man of the fish) and once as 'Sahib al-Hut' (companion of the whale). Surah 10 is named after him (Surah Yunus). Nineveh was the capital of the Assyrian Empire, located near modern-day Mosul in Iraq. Archaeological evidence confirms it was one of the largest cities of the ancient world. His supplication (Dua Yunus) is considered one of the most powerful prayers in Islam."
+    "relatedProphets": [
+      "Musa",
+      "Ilyas",
+      "Al-Yasa"
+    ],
+    "historicalNotes": "Yunus (AS) is mentioned 4 times in the Quran by name and once as 'Dhun-Nun' (the man of the fish) and once as 'Sahib al-Hut' (companion of the whale). Surah 10 is named after him (Surah Yunus). Nineveh was the capital of the Assyrian Empire, located near modern-day Mosul in Iraq. Archaeological evidence confirms it was one of the largest cities of the ancient world. His supplication (Dua Yunus) is considered one of the most powerful prayers in Islam.",
+    "eraArabic": "عصر الإمبراطورية الآشورية",
+    "periodArabic": "حوالي 800 قبل الميلاد",
+    "locationArabic": "نينوى (العراق الحديث)",
+    "summaryArabic": "بعث النبي يونس (ع) الملقب بيونان إلى مدينة نينوى. ولما رفض قومه رسالته في البداية تركهم غاضبا قبل أن يأذن الله. لقد ابتلعته الحوت الكبير، وفي بطنها المظلم دعا دعاءه الشهير. وقد أنقذه الله، ومن اللافت للنظر أن أمته بأكملها التي يبلغ عددها 100 ألف أو أكثر قد آمنت.",
+    "historicalNotesArabic": "ذكر يونس (ع) في القرآن بالاسم أربع مرات، مرة واحدة باسم \"ذو النون\" (صاحب الحوت) ومرة ​​واحدة باسم \"صاحب الحوت\". سورة 10 سميت باسمه (سورة يونس). كانت نينوى عاصمة الإمبراطورية الآشورية، وتقع بالقرب من الموصل الحديثة في العراق. تؤكد الأدلة الأثرية أنها كانت واحدة من أكبر مدن العالم القديم. ويعتبر دعاءه (دعاء يونس) من أقوى الأدعية في الإسلام.",
+    "keyLessonsArabic": [
+      "لا تفقد الأمل في رحمة الله أبداً",
+      "وعلى الأنبياء أن ينتظروا أمر الله قبل أن يغادروا مهمتهم",
+      "والتوبة الصادقة مقبولة دائما",
+      "قوة الذكر والدعاء في أوقات الشدة",
+      "أمة بأكملها يمكن أن تهتدي إذا تابوا توبة صادقة"
+    ]
   },
   {
     "id": "zakariya",
@@ -2711,7 +3285,9 @@
             "translation": "So her Lord accepted her with good acceptance and caused her to grow in a good manner and put her in the care of Zakariya. Every time Zakariya entered upon her in the prayer chamber, he found with her provision. He said, 'O Maryam, from where is this [coming] to you?' She said, 'It is from Allah. Indeed, Allah provides for whom He wills without account.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "حارس مريم",
+        "contentArabic": "وكان زكريا كاهناً صالحاً يخدم في الهيكل. وأصبح ولياً لمريم أم عيسى بعد القرعة بين الكهنة. وكان كلما زارها في مصلاها وجدها تطعم طعاما. فلما سأل من أين جاء، أجابت أنه من عند الله الذي يرزق من يشاء بغير حساب. لقد ألهم هذا المنظر من التدبير الإلهي زكريا أن يقدم دعاءه الصادق."
       },
       {
         "id": "zakariya-prayer",
@@ -2740,7 +3316,9 @@
             "translation": "And indeed, I fear the successors after me, and my wife has been barren, so give me from Yourself an heir."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الدعاء الصادق",
+        "contentArabic": "وإذ رأى زكريا رزق الله لمريم يدعو ربه سرا. واعترف بكبر سنه وشعره الأبيض وعقم زوجته. وأعرب عن قلقه بشأن من يرث علمه ويستمر في مهمته من بعده. فسأل الله أن يرزقه وريثاً يرضيه. وهذا الدعاء الذي دعاه في خصوصية قلبه سمعه الله."
       },
       {
         "id": "zakariya-glad-tidings",
@@ -2775,13 +3353,32 @@
             "book": "Prophets",
             "number": "3427",
             "text": "The Prophet (ﷺ) said: 'Zakariya was a carpenter (who earned his livelihood through his own hands).'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «كان زكريا نجارًا»."
           }
-        ]
+        ],
+        "titleArabic": "الأخبار السارة المعجزة",
+        "contentArabic": "وبينما كان زكريا يصلي في المحراب نادته الملائكة بإخباره أن الله قد استجاب دعاءه. فيرزق ولداً اسمه يحيى، وهو اسم لم يُذكر من قبل. فتعجب زكريا، متسائلاً كيف يكون هذا وهو كبير في السن وزوجته عاقر؟ فقيل له هين على الله الذي خلقه من لا شيء قبله. وعلامة ذلك أنه لا يستطيع الكلام ثلاثة أيام، مع أنه لم يكن أبكماً، وكان يسبح الله ليلاً ونهاراً في هذا الوقت."
       }
     ],
-    "relatedProphets": ["Yahya", "Isa", "Maryam"],
-    "historicalNotes": "Zakariya (AS) is mentioned 7 times in the Quran. He lived during the period of Roman rule over Palestine, serving as a priest in the Second Temple in Jerusalem. He was the guardian of Maryam (Mary) and the father of Yahya (John the Baptist). According to some traditions, he was martyred by being sawed in two while hiding inside a tree. His story demonstrates that Allah answers prayers according to His wisdom, even when what is asked for seems impossible by worldly standards."
+    "relatedProphets": [
+      "Yahya",
+      "Isa",
+      "Maryam"
+    ],
+    "historicalNotes": "Zakariya (AS) is mentioned 7 times in the Quran. He lived during the period of Roman rule over Palestine, serving as a priest in the Second Temple in Jerusalem. He was the guardian of Maryam (Mary) and the father of Yahya (John the Baptist). According to some traditions, he was martyred by being sawed in two while hiding inside a tree. His story demonstrates that Allah answers prayers according to His wisdom, even when what is asked for seems impossible by worldly standards.",
+    "eraArabic": "عصر الحكم الروماني",
+    "periodArabic": "حوالي 100 قبل الميلاد - 1 م",
+    "locationArabic": "القدس، فلسطين",
+    "summaryArabic": "كان النبي زكريا (ع) كاهنًا مسنًا خدم في معبد القدس وكان حارس مريم (مريم). وعلى الرغم من أنه وزوجته لم ينجبوا أطفالًا طوال حياتهما الطويلة، إلا أن الله استجاب لدعاءه الصادق ورزقه ولدًا، يحيى (يوحنا)، في شيخوخته الشديدة - وهي معجزة أظهرت قدرة الله على كل شيء.",
+    "historicalNotesArabic": "ذكر زكريا (ع) في القرآن 7 مرات. عاش في فترة الحكم الروماني لفلسطين، وعمل كاهنًا في الهيكل الثاني بالقدس. وهو ولي مريم (مريم) وأبو يحيى (يوحنا المعمدان). وفي بعض الروايات أنه استشهد بالنشر إلى نصفين وهو مختبئ داخل شجرة. وتبين قصته أن الله يجيب الدعاء بحكمته، حتى عندما يبدو المطلوب مستحيلاً بالمعايير الدنيوية.",
+    "keyLessonsArabic": [
+      "لم يفت الأوان بعد لطلب ما يبدو مستحيلا من الله",
+      "فإن الله يجيب الدعاء الصادق لعباده",
+      "الشيخوخة لا تقلل من قيمة المرء عند الله",
+      "وينبغي التعبير عن الامتنان للنعم من خلال العبادة",
+      "المعجزات الإلهية تحدث بحكمة الله"
+    ]
   },
   {
     "id": "yahya",
@@ -2819,7 +3416,9 @@
             "translation": "So the angels called him while he was standing in prayer in the chamber, 'Indeed, Allah gives you good tidings of Yahya, confirming a word from Allah and [who will be] noble, chaste, and a prophet from among the righteous.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الولادة العجيبة",
+        "contentArabic": "وولد يحيى لزكريا وزوجته في شيخوختهما البالغة، وهي معجزة أظهرت قدرة الله. واسمه اختاره الله بنفسه، ولم يطلق عليه أحد قبله. وقد منح منذ سنواته الأولى حكمة وفهماً يفوق عمره. نشأ مخلصًا لله، وعاش حياة التقوى والبساطة."
       },
       {
         "id": "yahya-character",
@@ -2847,9 +3446,12 @@
             "book": "Prophets",
             "number": "3428",
             "text": "The Prophet (ﷺ) said: 'There is no one among the sons of Adam who has not sinned or was about to sin, except Yahya ibn Zakariya.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «ليس أحد من ابن آدم لم يذنب أو هم بذنب إلا يحيى بن زكريا»."
           }
-        ]
+        ],
+        "titleArabic": "الشخصية النبيلة والزهد",
+        "contentArabic": "عاش يحيى حياة شديدة التقوى والبساطة. كان يمتنع عن الملذات الدنيوية، ويلبس الملابس الخشنة، ويعيش على طعام بسيط. وكان معروفاً بالعفة (الحصور) - السيطرة على شهواته بالكامل. وكان حنوناً، حنوناً، باراً بوالديه. لم يظهر أبدًا غطرسة أو عصيانًا. وهذه الصفات جعلته محبوباً عند الله ومكرماً بين الناس."
       },
       {
         "id": "yahya-mission",
@@ -2864,7 +3466,9 @@
             "translation": "Indeed, Allah gives you good tidings of Yahya, confirming a word from Allah."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "تأكيد الكلمة",
+        "contentArabic": "وكانت مهمة يحيى دعوة الناس إلى التوبة وإعدادهم لمجيء عيسى (ع). يصفه القرآن بأنه \"مصدق بكلمة من الله\" - في إشارة إلى عيسى، الذي يُدعى كلمة من الله. وعرف يحيى نبوة عيسى وأكد رسالته. لقد عمد الناس كرمز للتطهير الروحي ودعاهم إلى الرجوع إلى الله بقلوب صادقة."
       },
       {
         "id": "yahya-martyrdom",
@@ -2885,13 +3489,32 @@
             "book": "Faith",
             "number": "162",
             "text": "The Prophet (ﷺ) said about his journey during the Isra (Night Journey): 'Then I was taken up to the second heaven, and there I found Yahya and Isa, who are cousins.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم في رحلته في الإسراء: «ثم عُرج بي إلى السماء الثانية، فوجدت هناك يحيى وعيسى وهما ابنا عم»."
           }
-        ]
+        ],
+        "titleArabic": "السلام على يحيى",
+        "contentArabic": "وقد سلَّم الله على يحيى في ثلاث مناسبات: يوم ولد، ويوم يموت، ويوم يبعث حياً. وبحسب الروايات التاريخية فإن يحيى استشهد على يد حاكم عصره. وعلى الرغم من نهايته المأساوية على يد الظالمين، إلا أنه يظل مكرمًا عند الله كأحد أصدق الأنبياء."
       }
     ],
-    "relatedProphets": ["Zakariya", "Isa", "Maryam"],
-    "historicalNotes": "Yahya (AS) is mentioned 5 times in the Quran. He is known as John the Baptist in Christian tradition. He lived during the reign of Herod Antipas and was executed for speaking out against the king's unlawful marriage. His emphasis on repentance and purification prepared the way for the mission of Isa (AS). He and Isa were cousins, as their mothers (Elizabeth and Maryam) were related. During the Prophet Muhammad's Night Journey, he met Yahya and Isa together in the second heaven."
+    "relatedProphets": [
+      "Zakariya",
+      "Isa",
+      "Maryam"
+    ],
+    "historicalNotes": "Yahya (AS) is mentioned 5 times in the Quran. He is known as John the Baptist in Christian tradition. He lived during the reign of Herod Antipas and was executed for speaking out against the king's unlawful marriage. His emphasis on repentance and purification prepared the way for the mission of Isa (AS). He and Isa were cousins, as their mothers (Elizabeth and Maryam) were related. During the Prophet Muhammad's Night Journey, he met Yahya and Isa together in the second heaven.",
+    "eraArabic": "عصر الحكم الروماني",
+    "periodArabic": "حوالي 1 قبل الميلاد - 30 م",
+    "locationArabic": "فلسطين",
+    "summaryArabic": "النبي يحيى (ع)، المعروف بيوحنا المعمدان، هو الابن المعجزة للشيخ زكريا. وقد أُعطي الحكمة وهو طفل، وعاش حياة النسك والتقوى، ودعا الناس إلى التوبة. وأكد مجيء عيسى (ع) ووصف في القرآن الكريم والعفيف والنبي من الصالحين.",
+    "historicalNotesArabic": "ذكر يحيى (ع) في القرآن خمس مرات. ويُعرف باسم يوحنا المعمدان في التقليد المسيحي. عاش في عهد هيرودس أنتيباس وتم إعدامه بسبب تحدثه ضد زواج الملك غير القانوني. إن تأكيده على التوبة والتطهير مهد الطريق لمهمة عيسى (ع). كان هو وعيسى أبناء عمومة، حيث كانت والداتهم (إليزابيث ومريم) من أقاربهم. أثناء أسري النبي محمد، التقى يحيى وعيسى معًا في السماء الثانية.",
+    "keyLessonsArabic": [
+      "إن طهارة القلب والعفة من الصفات النبيلة",
+      "الشباب ليس عائقا أمام الحكمة والنبوة",
+      "الدعوة إلى التوبة واجب نبوي",
+      "إن بر الوالدين مرتبط بالبر",
+      "إن العيش ببساطة والتركيز على الأبدية أمر يستحق الثناء"
+    ]
   },
   {
     "id": "isa",
@@ -2936,7 +3559,9 @@
             "translation": "Indeed, the example of Isa to Allah is like that of Adam. He created him from dust; then He said to him, 'Be,' and he was."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "المفهوم المعجزة",
+        "contentArabic": "مريم، وهي عذراء متعبدة، زارها الملاك جبريل الذي ظهر في صورة إنسان. وأعلن أن الله سيرزقها ولداً، آية للإنسانية. فتعجبت وسألت كيف يكون لها ولد ولم يمسسها رجل. وأوضح جبريل أن الخلق بدون وسائل عادية أمر سهل بالنسبة لله - فهو فقط يقول \"كن\" فيكون. وحملت بعيسى بأمر الله، وهي معجزة توازي خلق آدم من دون أبوين."
       },
       {
         "id": "isa-cradle",
@@ -2965,7 +3590,9 @@
             "translation": "When Allah will say, 'O Isa, Son of Maryam, remember My favor upon you and upon your mother when I supported you with the Pure Spirit [Jibril] and you spoke to the people in the cradle and in maturity.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الحديث في المهد",
+        "contentArabic": "ولما رجعت مريم إلى قومها بالطفل عيسى اتهموها بالفحشاء. فأمرها الله أن تصوم عن الكلام وتشير إلى الطفل. ثم بمعجزة الله تكلم الطفل عيسى من المهد قائلاً أنه عبد الله، نبي أوتي الكتاب، مبارك أينما كان. وأعلن وجوب الصلاة والصدقة ما بقي على قيد الحياة."
       },
       {
         "id": "isa-miracles",
@@ -2980,7 +3607,9 @@
             "translation": "And [make him] a messenger to the Children of Israel, [who will say], 'Indeed I have come to you with a sign from your Lord in that I design for you from clay [that which is] like the form of a bird, then I breathe into it and it becomes a bird by permission of Allah. And I cure the blind and the leper, and I give life to the dead - by permission of Allah.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "معجزات عيسى",
+        "contentArabic": "لقد منح الله عيسى معجزات خارقة تثبت نبوته. وأبرأ الأكمه والأبرص، وأحيا الموتى بإذن الله، وشكل من الطين طيراً يحي إذا نفخ فيه. وأخبر الناس بما أكلوا وادّخروا في بيوتهم. وكل هذه المعجزات كانت بإذن الله، مما يدل على أن القوة لله وحده، وليس لعيسى نفسه."
       },
       {
         "id": "isa-message",
@@ -3002,7 +3631,9 @@
             "translation": "And [beware the Day] when Allah will say, 'O Isa, Son of Maryam, did you say to the people, \"Take me and my mother as deities besides Allah?\"' He will say, 'Exalted are You! It was not for me to say that to which I have no right.'"
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "رسالة التوحيد",
+        "contentArabic": "وكانت رسالة عيسى هي التوحيد المحض – عبادة الله وحده لا شريك له. وجاء ليثبت ما بين يديه من التوراة، ويحل بعض المحرمات. لقد جاء بالإنجيل هدى ونور. لم يدعي الألوهية لنفسه قط؛ بل كان يشير باستمرار إلى الله ربه ورب الجميع. ودعا أتباعه إلى عبادة الله الإله الواحد الحق."
       },
       {
         "id": "isa-raising",
@@ -3037,9 +3668,12 @@
             "book": "Prophets",
             "number": "3448",
             "text": "The Prophet (ﷺ) said: 'By Him in Whose Hands my soul is, the son of Maryam (Isa) will soon descend amongst you as a just judge. He will break the cross, kill the pigs, and abolish the Jizyah (tax). Wealth will be in such abundance that nobody will accept it.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي (صلى الله عليه وسلم): والذي نفسي بيده ليوشكان أن ينزل فيكم ابن مريم حكما عدلا. فيكسر الصليب ويقتل الخنازير ويضع الجزية. ستكون الثروة وفيرة بحيث لن يقبلها أحد»."
           }
-        ]
+        ],
+        "titleArabic": "مرفوع إلى السماء",
+        "contentArabic": "ولما كيد أعداء عيسى لقتله، حفظه الله برفعه حيا إلى السماء. والقرآن صريح في أنهم لم يقتلوه ولم يصلبوه ولكن شبه لهم. رفع عيسى إلى الله، وبقي حيا في السماء. ويعتقد المسلمون أنه سيعود قبل يوم القيامة وينزل إلى الأرض ويكمل مهمته."
       },
       {
         "id": "isa-return",
@@ -3060,13 +3694,33 @@
             "book": "Tribulations",
             "number": "2937",
             "text": "The Prophet (ﷺ) said: 'Isa son of Maryam will descend at the white minaret on the eastern side of Damascus, wearing two garments lightly dyed with saffron, placing his hands on the wings of two angels.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «ينزل عيسى بن مريم عند المنارة البيضاء شرقي دمشق عليه ثوبان مصبوغان، واضعاً يديه على جناحي ملكين»."
           }
-        ]
+        ],
+        "titleArabic": "المجيء الثاني",
+        "contentArabic": "ويعتقد المسلمون أن عيسى سيعود قبل يوم القيامة. فينزل بدمشق فيصلي خلف أمير المسلمين، ويهزم المسيح الدجال، ويقيم العدل في الأرض. سيعيش متبعًا للقانون النهائي الذي جاء به محمد (صلى الله عليه وسلم)، ويتزوج، وينجب أطفالًا، ويموت في النهاية موتًا طبيعيًا. وعودته من علامات الساعة الكبرى."
       }
     ],
-    "relatedProphets": ["Maryam", "Yahya", "Zakariya", "Muhammad"],
-    "historicalNotes": "Isa (AS) is mentioned by name 25 times in the Quran and is referred to as 'the Messiah' (Al-Masih) 11 times. He is one of the five Ulul 'Azm (Prophets of Great Resolve). His mother Maryam is the only woman mentioned by name in the Quran, and Surah 19 is named after her. He is called 'a Word from Allah' and 'a Spirit from Him.' Muslims honor him as one of the greatest prophets while rejecting claims of his divinity. His virgin birth, miracles, and raising to the heavens are all affirmed in Islam."
+    "relatedProphets": [
+      "Maryam",
+      "Yahya",
+      "Zakariya",
+      "Muhammad"
+    ],
+    "historicalNotes": "Isa (AS) is mentioned by name 25 times in the Quran and is referred to as 'the Messiah' (Al-Masih) 11 times. He is one of the five Ulul 'Azm (Prophets of Great Resolve). His mother Maryam is the only woman mentioned by name in the Quran, and Surah 19 is named after her. He is called 'a Word from Allah' and 'a Spirit from Him.' Muslims honor him as one of the greatest prophets while rejecting claims of his divinity. His virgin birth, miracles, and raising to the heavens are all affirmed in Islam.",
+    "eraArabic": "عصر الحكم الروماني",
+    "periodArabic": "حوالي 1 م – 33 م",
+    "locationArabic": "فلسطين",
+    "summaryArabic": "ولد النبي عيسى (ع)، المعروف بعيسى، بأعجوبة من مريم العذراء بدون أب. وهو أحد الأنبياء الخمسة الأعظم، وقد أجرى بإذن الله معجزات خارقة، ورفع حياً إلى السماء. ويعتقد المسلمون أنه سيعود قبل يوم القيامة. يُدعى المسيح (المسيح) وهو كلمة من الله.",
+    "historicalNotesArabic": "ذكر عيسى (ع) بالاسم 25 مرة في القرآن، ويشار إليه بالمسيح 11 مرة. وهو أحد أولياء العزم الخمسة. والدته مريم هي المرأة الوحيدة التي ورد اسمها في القرآن، وسميت السورة 19 باسمها. يُدعى \"كلمة من الله\" و\"روح منه\". يكرّمه المسلمون باعتباره أحد أعظم الأنبياء بينما يرفضون ادعاءات ألوهيته. ولادته من عذراء، ومعجزاته، وارتفاعه إلى السماء كلها ثابتة في الإسلام.",
+    "keyLessonsArabic": [
+      "قدرة الله تتجاوز القوانين الطبيعية",
+      "الشرف الحقيقي هو أن تكون عبداً لله",
+      "المعجزات من عند الله وليست من النبي نفسه",
+      "التوحيد هو الرسالة الثابتة لجميع الأنبياء",
+      "هذا العالم مؤقت. والآخرة خالدة"
+    ]
   },
   {
     "id": "muhammad",
@@ -3111,7 +3765,9 @@
             "translation": "And raised high for you your repute."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الولادة والحياة المبكرة",
+        "contentArabic": "ولد محمد (صلى الله عليه وسلم) في مكة عام الفيل (570 م) في قبيلة قريش النبيلة. توفي والده عبد الله قبل ولادته، وتوفيت والدته آمنة وهو في السادسة من عمره. نشأ أولاً على يد جده عبد المطلب ثم على يد عمه أبو طالب. وكان يُعرف حتى قبل النبوة بالأمين والصادق لأخلاقه المعصومة."
       },
       {
         "id": "muhammad-revelation",
@@ -3146,9 +3802,12 @@
             "book": "Revelation",
             "number": "3",
             "text": "The Prophet (ﷺ) said: 'The angel caught me and pressed me so hard that I could not bear it any more. He then released me and said: \"Read!\" I replied: \"I do not know how to read.\" He pressed me three times until he said: \"Read in the name of your Lord who created...\"'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «أخذني الملك فضغط علي حتى لم أحتمل أكثر من ذلك». ثم أطلقني فقال: اقرأ! أجبته: \"لا أعرف القراءة\". فغرزني ثلاث مرات حتى قال: \"اقرأ باسم ربك الذي خلق...\""
           }
-        ]
+        ],
+        "titleArabic": "الوحي الأول",
+        "contentArabic": "في سن الأربعين، أثناء التأمل في غار حراء خلال شهر رمضان، تلقى محمد (صلى الله عليه وسلم) الوحي الأول من خلال الملاك جبريل. كان الأمر \"اقرأ\" (اقرأ / اقرأ). كان هذا بمثابة بداية النبوة ونزول القرآن تدريجيًا على مدار 23 عامًا. في البداية طغى النبي، لكن زوجته خديجة وابنة عمها ورقة أكدا أنه تم اختياره نبيا."
       },
       {
         "id": "muhammad-makkah",
@@ -3169,9 +3828,12 @@
             "book": "Faith",
             "number": "162",
             "text": "The Prophet (ﷺ) described his Night Journey: 'I was brought al-Buraq... I mounted it and came to Jerusalem. There I tied it to the ring used by the prophets. I entered the mosque, prayed two rak'ahs, and then I was taken up to heaven...'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "ووصف النبي صلى الله عليه وسلم أسراه قائلا: «أتيت بالبراق فركبته حتى أتيت القدس». وهناك ربطته بالخاتم الذي كان يستخدمه الأنبياء. فدخلت المسجد، فصليت ركعتين، ثم عرج بي إلى السماء...»."
           }
-        ]
+        ],
+        "titleArabic": "العصر المكي",
+        "contentArabic": "لمدة 13 عامًا في مكة، دعا النبي صلى الله عليه وسلم الناس إلى عبادة الله وحده. واجه اضطهادًا شديدًا وسخرية ومقاطعة من قريش. الصحابة الرئيسيون مثل أبو بكر، وخديجة، وعلي، وبلال قبلوا الإسلام في وقت مبكر. لقد فقد النبي زوجته الحبيبة خديجة وعمه أبو طالب في \"عام الحزن\". لقد شهد الإسراء والمعراج، حيث التقى بالأنبياء السابقين وتلقى الأمر بالصلوات الخمس."
       },
       {
         "id": "muhammad-madinah",
@@ -3193,7 +3855,9 @@
             "translation": "When the victory of Allah has come and the conquest."
           }
         ],
-        "hadiths": []
+        "hadiths": [],
+        "titleArabic": "الفترة المدنية",
+        "contentArabic": "هاجر النبي صلى الله عليه وسلم إلى المدينة المنورة عام 622 م (الهجرة)، وأنشأ أول دولة إسلامية. بنى المسجد النبوي، وجمع بين الأنصار والمهاجرين، ووضع دستور المدينة المنورة. واجه المسلمون معارك بدر وأحد والخندق. وتبع ذلك صلح الحديبية وفتح مكة. وفي سنواته الأخيرة، انتشر الإسلام في جميع أنحاء الجزيرة العربية، وأدى حجة الوداع."
       },
       {
         "id": "muhammad-character",
@@ -3228,9 +3892,12 @@
             "book": "Virtues",
             "number": "2328",
             "text": "When Aisha was asked about the character of the Prophet (ﷺ), she replied: 'His character was the Quran.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "ولما سئلت عائشة عن خلق النبي صلى الله عليه وسلم قالت: كان خلقه القرآن."
           }
-        ]
+        ],
+        "titleArabic": "المثال المثالي",
+        "contentArabic": "يوصف النبي (صلى الله عليه وسلم) في القرآن بأنه ذو خلق رفيع. وكان أكرم الناس، وأشجعهم، وأعدلهم، وأرحمهم. كان متواضعًا، متسامحًا، ومتاحًا دائمًا لرفاقه. كان يصلح ملابسه، ويساعد في الأعمال المنزلية، ويعامل جميع الناس بكرامة. وكانت شخصيته هي التجسيد الحي للقرآن، وقد أمر الله المؤمنين أن يقتدوا به."
       },
       {
         "id": "muhammad-seal",
@@ -3258,12 +3925,32 @@
             "book": "Virtues",
             "number": "3535",
             "text": "The Prophet (ﷺ) said: 'My similitude in comparison with the other prophets is that of a man who has built a house nicely and beautifully, except for a place of one brick in a corner. The people go about it and wonder at its beauty, but say: \"If only this brick be put in its place!\" So I am that brick, and I am the last of the Prophets.'",
-            "grade": "Sahih"
+            "grade": "Sahih",
+            "textArabic": "قال النبي صلى الله عليه وسلم: «مثلي في سائر الأنبياء كرجل بنى بيتا أحسنه وحسنه إلا موضع لبنة في الزاوية». فيذهب الناس إليه ويتعجبون من جماله، فيقولون: لو وضعت هذه اللبنة مكانها! فأنا تلك اللبنة، وأنا خاتم الأنبياء»."
           }
-        ]
+        ],
+        "titleArabic": "خاتم الأنبياء",
+        "contentArabic": "محمد (صلى الله عليه وسلم) هو خاتم الأنبياء والمرسلين، الذي لا نبي بعده. ورسالته عالمية، موجهة للبشرية جمعاء إلى يوم القيامة. والقرآن الذي نزل عليه محفوظ كما أنزل وسيبقى كذلك إلى الأبد. وقد ثبتت نبوته جميع الأنبياء السابقين مع استكمال الرسالة الإلهية وإتمامها. فالواجب على كل مسلم أن يؤمن به ويتبع هداه."
       }
     ],
-    "relatedProphets": ["Ibrahim", "Musa", "Isa", "Ismail"],
-    "historicalNotes": "Muhammad (ﷺ) is mentioned by name 4 times in the Quran and referred to as 'the Prophet' or 'the Messenger' in many other places. He is the most documented figure in human history, with his sayings (hadith), actions, and life events preserved in meticulous detail. He received the Quran, the only scripture to remain unchanged since its revelation. He united the Arabian Peninsula under Islam and laid the foundation for a civilization that would span three continents. His life of 63 years serves as the complete example (Uswah Hasanah) for all Muslims to follow. Sending blessings upon him (Salawat) is commanded in the Quran and is a practice beloved by all Muslims."
+    "relatedProphets": [
+      "Ibrahim",
+      "Musa",
+      "Isa",
+      "Ismail"
+    ],
+    "historicalNotes": "Muhammad (ﷺ) is mentioned by name 4 times in the Quran and referred to as 'the Prophet' or 'the Messenger' in many other places. He is the most documented figure in human history, with his sayings (hadith), actions, and life events preserved in meticulous detail. He received the Quran, the only scripture to remain unchanged since its revelation. He united the Arabian Peninsula under Islam and laid the foundation for a civilization that would span three continents. His life of 63 years serves as the complete example (Uswah Hasanah) for all Muslims to follow. Sending blessings upon him (Salawat) is commanded in the Quran and is a practice beloved by all Muslims.",
+    "eraArabic": "عصر الإسلام",
+    "periodArabic": "570 م – 632 م",
+    "locationArabic": "مكة المكرمة والمدينة المنورة، شبه الجزيرة العربية",
+    "summaryArabic": "النبي محمد (صلى الله عليه وسلم) هو خاتم رسول الله، بعث رحمة للعالمين. لقد تلقى القرآن على مدى 23 عامًا وأثبت الإسلام باعتباره منهج الحياة الكامل. إن حياته وشخصيته وتعاليمه هي بمثابة المثال المثالي للبشرية. وهو خاتم الأنبياء الذي لا يأتي بعده نبي.",
+    "historicalNotesArabic": "ذكر محمد (صلى الله عليه وسلم) بالاسم 4 مرات في القرآن، ويشار إليه باسم \"النبي\" أو \"الرسول\" في العديد من المواضع الأخرى. إنه الشخصية الأكثر توثيقًا في تاريخ البشرية، حيث تم حفظ أقواله (أحاديثه) وأفعاله وأحداث حياته بالتفصيل الدقيق. لقد تلقى القرآن، وهو الكتاب المقدس الوحيد الذي لم يتغير منذ نزوله. لقد وحد شبه الجزيرة العربية في ظل الإسلام ووضع الأساس لحضارة تمتد عبر ثلاث قارات. إن حياته التي دامت 63 عامًا هي بمثابة المثال الكامل (أسوة حسنة) الذي يجب على جميع المسلمين اتباعه. الصلاة عليه أمر في القرآن وهي ممارسة محبوبة لدى جميع المسلمين.",
+    "keyLessonsArabic": [
+      "الإسلام هو استكمال لجميع الوحي السابق",
+      "القرآن هو رسالة الله النهائية والمحفوظة للبشرية",
+      "إن شخصية الرسول (السنة) هي المرشد العملي للحياة",
+      "الرحمة والعدالة والرحمة هي أمور أساسية في الإسلام",
+      "الثبات على الإيمان يؤدي إلى النجاح النهائي"
+    ]
   }
 ]
