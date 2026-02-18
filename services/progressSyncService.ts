@@ -28,12 +28,41 @@ let isSyncing = false;
 
 // Online/offline event listeners
 let cleanupFn: (() => void) | null = null;
+const AUTH_EXPIRED_EVENT = 'alayasoad:parent-auth-expired';
 
 /**
  * Get the auth token from localStorage
  */
 function getAuthToken(): string | null {
-  return localStorage.getItem('alayasoad_parent_token');
+  const token = localStorage.getItem('alayasoad_parent_token');
+  if (!token) return null;
+
+  // Tokens are JWTs (header.payload.signature). Drop malformed values eagerly.
+  const parts = token.split('.');
+  if (parts.length !== 3 || parts.some((part) => part.length === 0)) {
+    localStorage.removeItem('alayasoad_parent_token');
+    localStorage.removeItem('alayasoad_parent_name');
+    return null;
+  }
+
+  return token;
+}
+
+/**
+ * Clear stale parent auth and notify app listeners
+ */
+function handleUnauthorizedResponse(endpoint: string, status: number): void {
+  if (status !== 401 && status !== 403) return;
+
+  const hadToken = !!getAuthToken();
+  localStorage.removeItem('alayasoad_parent_token');
+  localStorage.removeItem('alayasoad_parent_name');
+
+  if (hadToken) {
+    console.info(`Parent auth expired for ${endpoint}; signed out locally.`);
+  }
+
+  window.dispatchEvent(new CustomEvent(AUTH_EXPIRED_EVENT));
 }
 
 /**
@@ -63,6 +92,8 @@ export async function fetchServerProgress(): Promise<{
     });
 
     if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/kids-progress', response.status);
+      if (response.status === 401 || response.status === 403) return null;
       console.error('Failed to fetch server progress:', response.status);
       return null;
     }
@@ -146,6 +177,8 @@ export async function syncProgressToServer(): Promise<boolean> {
     });
 
     if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/kids-progress/sync', response.status);
+      if (response.status === 401 || response.status === 403) return false;
       console.error('Failed to sync progress to server:', response.status);
       return false;
     }
@@ -291,6 +324,8 @@ export async function getParentProfile(): Promise<{
     });
 
     if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/profile', response.status);
+      if (response.status === 401 || response.status === 403) return null;
       console.error('Failed to fetch parent profile:', response.status);
       return null;
     }
@@ -320,6 +355,10 @@ export async function changeParentPin(currentPin: string, newPin: string): Promi
     });
 
     if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/pin', response.status);
+      if (response.status === 401 || response.status === 403) {
+        return { success: false, error: 'Session expired. Please log in again.' };
+      }
       const data = await response.json();
       return { success: false, error: data.error || 'Failed to change PIN' };
     }
@@ -386,7 +425,10 @@ export async function exportParentData(): Promise<Blob | null> {
       }
     });
 
-    if (!response.ok) return null;
+    if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/data-export', response.status);
+      return null;
+    }
 
     const data = await response.json();
     return new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -414,6 +456,10 @@ export async function deleteParentAccount(currentPin: string): Promise<{ success
     });
 
     if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/account', response.status);
+      if (response.status === 401 || response.status === 403) {
+        return { success: false, error: 'Session expired. Please log in again.' };
+      }
       const data = await response.json();
       return { success: false, error: data.error || 'Failed to delete account' };
     }
@@ -441,7 +487,7 @@ export async function logTutorQuestion(questionSummary: string): Promise<void> {
   if (!token) return;
 
   try {
-    await fetch('/api/parent/ai-tutor-log', {
+    const response = await fetch('/api/parent/ai-tutor-log', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -449,6 +495,10 @@ export async function logTutorQuestion(questionSummary: string): Promise<void> {
       },
       body: JSON.stringify({ questionSummary: questionSummary.slice(0, 200) })
     });
+
+    if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/ai-tutor-log', response.status);
+    }
   } catch (error) {
     // Non-critical, don't block the UI
     console.error('Error logging tutor question:', error);
@@ -469,7 +519,10 @@ export async function getTutorLog(): Promise<Array<{ question_summary: string; c
       }
     });
 
-    if (!response.ok) return [];
+    if (!response.ok) {
+      handleUnauthorizedResponse('/api/parent/ai-tutor-log', response.status);
+      return [];
+    }
 
     const data = await response.json();
     return data.logs || [];

@@ -84,6 +84,13 @@ const PROPHETS = [
 const TOPICS = [
   "General Life", "Patience", "Trust in God", "Leadership", "Family", "Miracles", "Justice"
 ];
+const AUTH_EXPIRED_EVENT = 'alayasoad:parent-auth-expired';
+
+const isLikelyJwt = (token: string | null): token is string => {
+  if (!token) return false;
+  const parts = token.split('.');
+  return parts.length === 3 && parts.every((part) => part.length > 0);
+};
 
 const getTopicLabel = (topic: string, t: (key: string, options?: any) => string) => {
   return t(`home:topics.${topic}`, { defaultValue: topic });
@@ -213,10 +220,13 @@ function App() {
 
     const storedToken = localStorage.getItem('alayasoad_parent_token');
     const storedName = localStorage.getItem('alayasoad_parent_name');
-    if (storedToken && storedName) {
+    if (isLikelyJwt(storedToken) && storedName) {
       setParentName(storedName);
       setParentToken(storedToken);
       setMode('parent');
+    } else if (storedToken && !isLikelyJwt(storedToken)) {
+      localStorage.removeItem('alayasoad_parent_token');
+      localStorage.removeItem('alayasoad_parent_name');
     }
 
     // Handle deep links
@@ -326,6 +336,22 @@ function App() {
     setView('home');
     setShowParentMenu(false);
   };
+
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      localStorage.removeItem('alayasoad_parent_token');
+      localStorage.removeItem('alayasoad_parent_name');
+      setParentName(null);
+      setParentToken(null);
+      setMode('gate');
+      setView('home');
+      setShowParentMenu(false);
+      setShowParentProfile(false);
+    };
+
+    window.addEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+    return () => window.removeEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+  }, []);
 
   const handleReportIssue = () => {
     setShowParentMenu(false);
