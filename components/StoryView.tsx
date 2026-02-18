@@ -150,7 +150,8 @@ const AUDIO_CUE_KEYWORDS: Record<string, string[]> = {
 
 const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigateToLibrary }) => {
   const { t, i18n } = useTranslation('story');
-  const isArabic = i18n.language === 'ar-EG';
+  const isArabic = i18n.language.startsWith('ar');
+  const displayProphetName = i18n.t(`home:prophets.${prophet}`, { defaultValue: prophet });
 
   // Story mode: preloaded (instant), generating, or ai-generated
   const [storyMode, setStoryMode] = useState<StoryMode>('preloaded');
@@ -1014,7 +1015,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
           </div>
         </div>
         <p className={`text-2xl font-serif animate-pulse ${isArabic ? 'font-arabic' : ''}`}>{t('loading.consulting')}</p>
-        <p className={`text-sm text-stone-500 mt-2 animate-fade-in-up ${isArabic ? 'font-arabic' : ''}`}>{t('loading.weaving', { prophet })}</p>
+        <p className={`text-sm text-stone-500 mt-2 animate-fade-in-up ${isArabic ? 'font-arabic' : ''}`}>{t('loading.weaving', { prophet: displayProphetName })}</p>
 
         {/* Skeleton preview */}
         <div className="mt-8 w-full max-w-md px-8 space-y-3 opacity-30">
@@ -1037,7 +1038,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
                <i className={`fas ${immersiveMode ? 'fa-compress' : 'fa-arrow-left'}`}></i>
             </button>
             <div>
-                <h2 className="text-xl font-serif font-bold">{prophet}</h2>
+                <h2 className={`text-xl font-serif font-bold ${isArabic ? 'font-arabic' : ''}`}>{displayProphetName}</h2>
                 {!immersiveMode && <p className="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-widest">{topic}</p>}
             </div>
         </div>
@@ -1091,7 +1092,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
              <ShareButton
                type="story"
                storyId={prophet}
-               storyTitle={`Story of Prophet ${prophet}`}
+               storyTitle={isArabic ? `قصة النبي ${displayProphetName}` : `Story of Prophet ${displayProphetName}`}
                className={`p-2 rounded-full transition-colors hover:bg-stone-100 text-stone-400 hover:text-rose-600`}
                iconOnly
              />

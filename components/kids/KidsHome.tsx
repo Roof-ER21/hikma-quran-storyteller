@@ -1161,7 +1161,8 @@ const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 // ============================================
 
 const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
-  const { t } = useTranslation(['kids', 'common']);
+  const { t, i18n } = useTranslation(['kids', 'common']);
+  const isArabic = i18n.language.startsWith('ar');
   const [selectedStory, setSelectedStory] = useState<typeof kidsStories[0] | null>(null);
   const [currentScene, setCurrentScene] = useState(0);
   const [completedStories, setCompletedStories] = useState<Set<string>>(new Set());
@@ -1472,8 +1473,17 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
                   className="p-3 text-center"
                   style={{ backgroundColor: storyColor, color: storyTextColor }}
                 >
-                  <h3 className="text-lg font-bold" style={{ color: storyTextColor }}>{story.prophet}</h3>
-                  <p className="text-xl font-arabic" style={{ color: storyMutedTextColor }}>{story.prophetArabic}</p>
+                  <h3
+                    className={`text-lg font-bold ${isArabic ? 'font-arabic' : ''}`}
+                    style={{ color: storyTextColor }}
+                  >
+                    {isArabic ? story.prophetArabic : story.prophet}
+                  </h3>
+                  {!isArabic && (
+                    <p className="text-xl font-arabic" style={{ color: storyMutedTextColor }}>
+                      {story.prophetArabic}
+                    </p>
+                  )}
                 </div>
               </button>
             );

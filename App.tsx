@@ -96,6 +96,16 @@ const getTopicLabel = (topic: string, t: (key: string, options?: any) => string)
   return t(`home:topics.${topic}`, { defaultValue: topic });
 };
 
+const getProphetLabel = (
+  prophetName: string,
+  arabicName: string,
+  isArabicLang: boolean,
+  t: (key: string, options?: any) => string
+) => {
+  const localizedProphet = t(`home:prophets.${prophetName}`, { defaultValue: prophetName });
+  return isArabicLang ? arabicName : `${localizedProphet} (${arabicName})`;
+};
+
 // Theme Toggle Component
 function ThemeToggle() {
   const { theme, toggleTheme, themeIcon, getLabel } = useTheme();
@@ -865,7 +875,11 @@ function App() {
                         onChange={(e) => setSelectedProphet(e.target.value)}
                       >
                         <option value="">{t('home:stories.selectGuide')}</option>
-                        {PROPHETS.map(p => <option key={p.name} value={p.name}>{p.name} ({p.arabicName})</option>)}
+                        {PROPHETS.map((p) => (
+                          <option key={p.name} value={p.name}>
+                            {getProphetLabel(p.name, p.arabicName, isArabicLang, t)}
+                          </option>
+                        ))}
                       </select>
                       <i className="fas fa-chevron-down absolute right-4 top-5 text-stone-400 dark:text-stone-500 pointer-events-none"></i>
                   </div>

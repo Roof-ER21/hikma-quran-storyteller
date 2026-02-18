@@ -75,6 +75,9 @@ const StoryCard: React.FC<StoryCardProps> = ({
   const theme = PROPHET_THEMES[prophet] || { icon: "fa-user", color: "stone", gradient: "from-stone-500 to-gray-600" };
   const topicIcon = TOPIC_ICONS[topic] || "fa-book";
   const topicLabel = t(`home:topics.${topic}`, { defaultValue: topic });
+  const localizedProphetName = t(`home:prophets.${prophet}`, { defaultValue: prophet });
+  const primaryProphetName = isArabic && arabicName ? arabicName : localizedProphetName;
+  const secondaryProphetName = !isArabic && arabicName ? arabicName : null;
 
   // Check for saved reading position and cached status
   useEffect(() => {
@@ -154,11 +157,11 @@ const StoryCard: React.FC<StoryCardProps> = ({
         </div>
 
         {/* Prophet Name */}
-        <h3 className="text-lg font-serif font-bold mb-0.5 drop-shadow-sm leading-tight">
-          {prophet}
+        <h3 className={`text-lg font-serif font-bold mb-0.5 drop-shadow-sm leading-tight ${isArabic ? 'font-arabic text-right' : ''}`}>
+          {primaryProphetName}
         </h3>
-        {arabicName && (
-          <p className="text-sm font-arabic text-white/80 mb-1">{arabicName}</p>
+        {secondaryProphetName && (
+          <p className="text-sm font-arabic text-white/80 mb-1">{secondaryProphetName}</p>
         )}
 
         {/* Topic Badge */}
