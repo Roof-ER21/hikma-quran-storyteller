@@ -11,8 +11,8 @@
 - [ ] Store listing screenshots for both platforms exported
 
 ### Legal & Policy
-- [ ] Privacy policy URL publicly reachable
-- [ ] Terms of service URL publicly reachable
+- [x] Privacy policy URL publicly reachable
+- [x] Terms of service URL publicly reachable
 - [ ] Support email monitored
 - [ ] COPPA / child-directed disclosures reviewed in both consoles
 - [ ] Subscription disclosures match in-app pricing and trial terms
@@ -23,7 +23,7 @@
 - [x] In-app issue reporting wired with diagnostics (`services/issueReportService.ts`)
 - [x] Automated mobile smoke scripts added (`scripts/qa/mobile_qa_local.py`, `scripts/qa/mobile_qa_live.py`)
 - [ ] Real-device QA matrix completed (`appstore/DEVICE_QA_MATRIX.md`)
-- [ ] QA evidence sheet completed (`appstore/device-qa-template.csv`)
+- [x] QA evidence sheet completed (`appstore/device-qa-template.csv`)
 - [ ] iOS TestFlight smoke test complete
 - [ ] Android internal testing track smoke test complete
 - [ ] Offline mode verified on real device
@@ -48,7 +48,7 @@
 - [ ] iPad 11" screenshots
 
 ### Build & Upload
-- [ ] `npm run ios:build`
+- [x] `npm run ios:build`
 - [ ] Open Xcode, archive, and validate
 - [ ] Upload to App Store Connect
 - [ ] Submit for review

@@ -45,8 +45,8 @@ Premium includes:
 
 Support:
 - Email: ahmed.mahmoud@theroofdocs.com
-- Privacy Policy: https://hikma.up.railway.app/privacy
-- Terms: https://hikma.up.railway.app/terms
+- Privacy Policy: https://qurantales.up.railway.app/privacy-policy.html
+- Terms: https://qurantales.up.railway.app/terms-of-service.html
 
 Subscription note:
 Subscriptions auto-renew unless canceled at least 24 hours before the end of the current period.

@@ -764,7 +764,7 @@ Keep up the amazing work! 🌙✨`;
                 </p>
                 <div className="flex gap-2">
                   <a
-                    href="/privacy"
+                    href="https://qurantales.up.railway.app/privacy-policy.html"
                     target="_blank"
                     rel="noreferrer"
                     className="flex-1 py-2 bg-white hover:bg-indigo-100 text-indigo-700 rounded-lg text-sm text-center border border-indigo-200 transition-colors"
@@ -772,7 +772,7 @@ Keep up the amazing work! 🌙✨`;
                     Privacy Policy
                   </a>
                   <a
-                    href="/terms"
+                    href="https://qurantales.up.railway.app/terms-of-service.html"
                     target="_blank"
                     rel="noreferrer"
                     className="flex-1 py-2 bg-white hover:bg-indigo-100 text-indigo-700 rounded-lg text-sm text-center border border-indigo-200 transition-colors"

@@ -34,3 +34,7 @@ PRIVACY_POLICY_INFO.md
 SECURITY_IMPLEMENTATION.md
 verify-security.sh
 ios-icon-1024.png
+
+# QA automation artifacts
+scripts/qa/results/
+.venv-qa/
