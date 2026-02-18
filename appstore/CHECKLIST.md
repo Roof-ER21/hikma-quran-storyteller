@@ -21,6 +21,9 @@
 - [x] TypeScript clean (`npx tsc --noEmit`)
 - [x] Production web build clean (`npm run build`)
 - [x] In-app issue reporting wired with diagnostics (`services/issueReportService.ts`)
+- [x] Automated mobile smoke scripts added (`scripts/qa/mobile_qa_local.py`, `scripts/qa/mobile_qa_live.py`)
+- [ ] Real-device QA matrix completed (`appstore/DEVICE_QA_MATRIX.md`)
+- [ ] QA evidence sheet completed (`appstore/device-qa-template.csv`)
 - [ ] iOS TestFlight smoke test complete
 - [ ] Android internal testing track smoke test complete
 - [ ] Offline mode verified on real device

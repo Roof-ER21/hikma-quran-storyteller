@@ -1,0 +1,3 @@
+run_date,tester,build,platform,device,os_version,locale,orientation,scenario_id,area,status,severity,expected,actual,evidence_path,issue_id,notes
+YYYY-MM-DD,Name,build-id,iOS,iPhone SE 3,iOS xx.x,en,portrait,NAV-01,Navigation,pass,,All tabs open to correct views,All tabs correct,,, 
+YYYY-MM-DD,Name,build-id,Android,Pixel 8,Android xx,ar-EG,portrait,L10N-02,Localization,fail,major,No English in Arabic core UI,Found untranslated button text,screenshots/ar-live-button.png,APP-123,
