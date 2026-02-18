@@ -38,3 +38,17 @@ ios-icon-1024.png
 # QA automation artifacts
 scripts/qa/results/
 .venv-qa/
+
+# Mobile signing / release secrets
+android/keystore.properties
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+
+# Fastlane artifacts
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output
+.bundle/
+vendor/bundle/

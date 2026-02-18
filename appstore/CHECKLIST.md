@@ -66,7 +66,7 @@
 ### Android Build Pipeline
 - [x] Capacitor Android dependency added
 - [x] Android platform generated (`npx cap add android`)
-- [ ] Android signing config prepared
+- [x] Android signing config prepared
 - [x] Release AAB generated from Android Studio / Gradle (`./gradlew :app:bundleRelease`)
 - [ ] Internal testing track upload completed
 

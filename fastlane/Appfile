@@ -1,0 +1,6 @@
+app_identifier(ENV.fetch("IOS_APP_IDENTIFIER", "com.roofer21.alayasoad"))
+package_name(ENV.fetch("ANDROID_PACKAGE_NAME", "com.roofer21.alayasoad"))
+
+apple_id(ENV["APPLE_ID"]) if ENV["APPLE_ID"] && !ENV["APPLE_ID"].empty?
+itc_team_id(ENV["APP_STORE_CONNECT_TEAM_ID"]) if ENV["APP_STORE_CONNECT_TEAM_ID"] && !ENV["APP_STORE_CONNECT_TEAM_ID"].empty?
+team_id(ENV["IOS_TEAM_ID"]) if ENV["IOS_TEAM_ID"] && !ENV["IOS_TEAM_ID"].empty?

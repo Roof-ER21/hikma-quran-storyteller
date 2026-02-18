@@ -1,0 +1,120 @@
+require "shellwords"
+
+default_platform(:ios)
+
+def repo_root
+  File.expand_path("..", __dir__)
+end
+
+def repo_path(*parts)
+  File.expand_path(File.join(*parts), repo_root)
+end
+
+def required_env!(keys)
+  missing = keys.select { |key| ENV[key].nil? || ENV[key].strip.empty? }
+  return if missing.empty?
+
+  UI.user_error!("Missing required environment variable(s): #{missing.join(', ')}")
+end
+
+def app_store_connect_api_key_from_env
+  required_env!(%w[ASC_KEY_ID ASC_ISSUER_ID])
+
+  key_filepath = ENV["ASC_KEY_FILEPATH"]
+  key_content_base64 = ENV["ASC_KEY_CONTENT_BASE64"]
+
+  if (key_filepath.nil? || key_filepath.strip.empty?) && (key_content_base64.nil? || key_content_base64.strip.empty?)
+    UI.user_error!("Set ASC_KEY_FILEPATH or ASC_KEY_CONTENT_BASE64 for App Store Connect API auth")
+  end
+
+  options = {
+    key_id: ENV["ASC_KEY_ID"],
+    issuer_id: ENV["ASC_ISSUER_ID"],
+    duration: 1200
+  }
+
+  if key_content_base64 && !key_content_base64.strip.empty?
+    options[:key_content] = key_content_base64
+    options[:is_key_content_base64] = true
+  else
+    options[:key_filepath] = key_filepath
+  end
+
+  app_store_connect_api_key(**options)
+end
+
+platform :ios do
+  desc "Build iOS release IPA only"
+  lane :build do
+    required_env!(%w[IOS_TEAM_ID])
+    sh("cd #{repo_root.shellescape} && npm run ios:build")
+
+    build_options = {
+      project: repo_path("ios", "App", "App.xcodeproj"),
+      scheme: "App",
+      configuration: "Release",
+      export_method: "app-store",
+      clean: true,
+      output_directory: repo_path("build", "ios"),
+      output_name: "alaya-soad-gift.ipa"
+    }
+
+    team_id = ENV["IOS_TEAM_ID"]
+    build_options[:export_team_id] = team_id
+    build_options[:xcargs] = "DEVELOPMENT_TEAM=#{team_id}"
+
+    build_app(**build_options)
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    build
+    api_key = app_store_connect_api_key_from_env
+    changelog = ENV["RELEASE_NOTES"] || "Performance, reliability, and UX improvements."
+    groups = (ENV["TESTFLIGHT_GROUPS"] || "").split(",").map(&:strip).reject(&:empty?)
+    ipa_path = repo_path("build", "ios", "alaya-soad-gift.ipa")
+
+    upload_options = {
+      api_key: api_key,
+      ipa: ipa_path,
+      changelog: changelog,
+      skip_waiting_for_build_processing: true
+    }
+
+    unless groups.empty?
+      upload_options[:distribute_external] = true
+      upload_options[:groups] = groups
+    end
+
+    upload_to_testflight(**upload_options)
+  end
+end
+
+platform :android do
+  desc "Build Android release AAB only"
+  lane :build do
+    sh("cd #{repo_root.shellescape} && npm run android:bundle:release")
+    aab_path = repo_path("android", "app", "build", "outputs", "bundle", "release", "app-release.aab")
+    UI.user_error!("AAB not found at #{aab_path}") unless File.exist?(aab_path)
+  end
+
+  desc "Build and upload AAB to Google Play internal track"
+  lane :internal do
+    required_env!(%w[PLAY_SERVICE_ACCOUNT_JSON])
+    build
+
+    aab_path = repo_path("android", "app", "build", "outputs", "bundle", "release", "app-release.aab")
+
+    upload_to_play_store(
+      json_key: ENV["PLAY_SERVICE_ACCOUNT_JSON"],
+      package_name: ENV.fetch("ANDROID_PACKAGE_NAME", "com.roofer21.alayasoad"),
+      track: ENV.fetch("PLAY_TRACK", "internal"),
+      release_status: ENV.fetch("PLAY_RELEASE_STATUS", "draft"),
+      aab: aab_path,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: ENV.fetch("PLAY_UPLOAD_CHANGELOGS", "false") != "true"
+    )
+  end
+end

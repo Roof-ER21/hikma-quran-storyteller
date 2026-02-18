@@ -25,7 +25,11 @@
     "android:open": "npx cap open android",
     "android:run": "npx cap run android",
     "android:sync": "npx cap sync android",
-    "android:bundle:release": "npm run android:build && cd android && export JAVA_HOME=\"${JAVA_HOME:-$(/usr/libexec/java_home -v 21 2>/dev/null || echo /opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home)}\" && export PATH=\"$JAVA_HOME/bin:$PATH\" && ./gradlew :app:bundleRelease"
+    "android:bundle:release": "npm run android:build && cd android && export JAVA_HOME=\"${JAVA_HOME:-$(/usr/libexec/java_home -v 21 2>/dev/null || echo /opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home)}\" && export PATH=\"$JAVA_HOME/bin:$PATH\" && ./gradlew :app:bundleRelease",
+    "release:ios:build": "bundle exec fastlane ios build",
+    "release:ios:testflight": "bundle exec fastlane ios beta",
+    "release:android:build": "bundle exec fastlane android build",
+    "release:android:internal": "bundle exec fastlane android internal"
   },
   "dependencies": {
     "@capacitor/android": "^8.1.0",
