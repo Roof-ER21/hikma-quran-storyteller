@@ -25,6 +25,8 @@
   "settings": {
     "title": "إعدادات القراءة",
     "translation": "الترجمة",
+    "additionalTranslation": "ترجمة إضافية",
+    "none": "بدون",
     "reciter": "القارئ",
     "fontSize": "حجم الخط",
     "showTransliteration": "إظهار النطق",

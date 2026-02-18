@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { NarrationState } from '../types';
 
 interface SectionNarrationButtonProps {
@@ -18,18 +19,19 @@ const SectionNarrationButton: React.FC<SectionNarrationButtonProps> = ({
   onResume,
   compact = false,
 }) => {
+  const { t } = useTranslation('library');
   const isThisSection = narrationState?.currentSectionId === sectionId;
   const isPlaying = isThisSection && narrationState?.isPlaying;
   const isPaused = isThisSection && narrationState?.isPaused;
   const isLoading = isThisSection && narrationState?.isLoading;
   const progress = isThisSection ? narrationState?.progress || 0 : 0;
   const tooltip = isLoading
-    ? 'Preparing narration...'
+    ? t('narration.preparing')
     : isPlaying
-      ? 'Pause narration'
+      ? t('narration.pause')
       : isPaused
-        ? 'Resume narration'
-        : 'Listen to this section';
+        ? t('narration.resume')
+        : t('narration.playSection');
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent section expand/collapse

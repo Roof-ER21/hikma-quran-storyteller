@@ -54,6 +54,16 @@
     "changeMode": "تغيير الوضع",
     "changeTutor": "تغيير المعلّم"
   },
+  "system": {
+    "initializingAudio": "جاري تهيئة الصوت...",
+    "connectingGemini": "جاري الاتصال بالذكاء الاصطناعي...",
+    "connected": "تم الاتصال!",
+    "interrupted": "تم الإيقاف",
+    "sessionClosed": "انتهت الجلسة",
+    "connectionError": "مشكلة في الاتصال",
+    "authFailedPrompt": "فشل التحقق. جاري طلب المفتاح...",
+    "connectionFailedPermissions": "فشل الاتصال. تأكد من السماح بالأذونات."
+  },
   "suggestions": {
     "tryAsking": "جرّب تسأل:",
     "conversation": {

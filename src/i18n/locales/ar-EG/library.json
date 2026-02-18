@@ -35,6 +35,7 @@
   "narration": {
     "playFullStory": "شغّل القصة كاملة",
     "playSection": "شغّل القسم",
+    "resume": "استكمال",
     "pause": "وقّف",
     "stop": "أوقف",
     "selectReciter": "اختار القارئ",

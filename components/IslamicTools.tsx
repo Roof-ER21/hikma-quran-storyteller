@@ -99,7 +99,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
         setLocation(loc);
       } catch (err) {
         console.error('Error getting location:', err);
-        setError('Unable to get your location. Please enable location services and try again.');
+        setError(t('error.locationUnavailable'));
         setLoading(false);
         return;
       }
@@ -645,11 +645,11 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
                   <div>
                     <p className="text-xs text-stone-400">{month.num}</p>
                     <p className={`font-medium ${month.num === islamicDate.month ? 'text-purple-700' : 'text-stone-700'}`}>
-                      {month.en}
+                      {isArabic ? month.ar : month.en}
                     </p>
                   </div>
                   <p className={`font-arabic ${month.num === islamicDate.month ? 'text-purple-600' : 'text-stone-500'}`}>
-                    {month.ar}
+                    {isArabic ? month.en : month.ar}
                   </p>
                 </div>
               </div>
@@ -690,7 +690,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full min-h-0 flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-stone-200 px-4 py-3 flex items-center gap-4">
         {onBack && (
@@ -750,7 +750,7 @@ export default function IslamicTools({ onBack }: IslamicToolsProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto p-4 bg-stone-50">
+      <div className="flex-1 min-h-0 overflow-auto p-4 bg-stone-50">
         <div className="max-w-lg mx-auto pb-6">
           {activeTab === 'prayer' && renderPrayerTimes()}
           {activeTab === 'qibla' && renderQibla()}

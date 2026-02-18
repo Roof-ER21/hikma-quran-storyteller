@@ -1,7 +1,8 @@
 {
   "loading": {
     "consulting": "Consulting the archives...",
-    "weaving": "Weaving the tale of {{prophet}}"
+    "weaving": "Weaving the tale of {{prophet}}",
+    "generic": "Loading..."
   },
   "actions": {
     "generateNew": "Generate New Story",
@@ -21,6 +22,7 @@
     "paragraphs": "{{count}} paragraphs",
     "scenes": "{{count}} scenes",
     "continueReading": "Continue Reading",
+    "dismissContinue": "Dismiss continue reading",
     "error": "Error loading story. Please try again."
   },
   "tabs": {
@@ -45,13 +47,15 @@
   "narration": {
     "play": "Play Narration",
     "pause": "Pause Narration",
-    "stop": "Stop Narration"
+    "stop": "Stop Narration",
+    "preparing": "Preparing narration..."
   },
   "images": {
     "generating": "Painting...",
     "generate": "Generate New Scene",
     "storyScenes": "Story Scenes",
-    "scene": "Scene {{number}}"
+    "scene": "Scene {{number}}",
+    "cinematicScene": "Cinematic scene"
   },
   "immersive": {
     "enter": "Cinematic Mode",

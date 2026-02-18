@@ -209,7 +209,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
         try {
             setError(null);
             setShowModeSelector(false);
-            addLog("Initializing Audio...");
+            addLog(t('system.initializingAudio'));
 
             // Setup Audio Contexts
             const inputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({sampleRate: 16000});
@@ -224,7 +224,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             streamRef.current = stream;
 
-            addLog("Connecting to Gemini...");
+            addLog(t('system.connectingGemini'));
 
             const connectToGemini = async () => {
                 const apiKey = await getGeminiApiKey();
@@ -237,7 +237,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
                     model: 'gemini-2.5-flash-native-audio-preview-12-2025',
                     callbacks: {
                         onopen: () => {
-                            addLog("Connected!");
+                            addLog(t('system.connected'));
                             setConnected(true);
 
                             // Start Processing Mic Input
@@ -294,7 +294,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
                             }
 
                             if (serverContent?.interrupted) {
-                                addLog("Interrupted");
+                                addLog(t('system.interrupted'));
                                 sourcesRef.current.forEach(s => s.stop());
                                 sourcesRef.current.clear();
                                 nextStartTimeRef.current = 0;
@@ -302,12 +302,12 @@ Be ready to discuss any verse from this Surah and its themes.`;
                             }
                         },
                         onclose: () => {
-                            addLog("Session Closed");
+                            addLog(t('system.sessionClosed'));
                             setConnected(false);
                         },
                         onerror: (e) => {
                             console.error(e);
-                            setError("Connection error");
+                            setError(t('system.connectionError'));
                             setConnected(false);
                         }
                     },
@@ -327,7 +327,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
             } catch (e: any) {
                 const msg = e.toString().toLowerCase();
                 if (window.aistudio && (msg.includes("404") || msg.includes("not found") || msg.includes("403") || msg.includes("permission denied"))) {
-                    addLog("Auth failed. Prompting for key...");
+                    addLog(t('system.authFailedPrompt'));
                     await window.aistudio.openSelectKey();
                     const session = await connectToGemini();
                     sessionPromiseRef.current = Promise.resolve(session);
@@ -338,7 +338,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
         } catch (err) {
             console.error("Failed to start session", err);
-            setError("Connection failed. Please check permissions.");
+            setError(t('system.connectionFailedPermissions'));
             setConnected(false);
             setShowModeSelector(true);
         }
@@ -391,7 +391,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
     // Mode Selector View
     if (showModeSelector && !connected) {
         return (
-            <div className={`h-full flex flex-col p-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white rounded-lg overflow-y-auto ${isArabic ? 'text-right' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
+            <div className={`h-full min-h-0 flex flex-col p-6 bg-gradient-to-b from-slate-900 to-slate-800 text-white rounded-lg overflow-y-auto ${isArabic ? 'text-right' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
                 {/* Tutor Badge Header */}
                 <div className={`flex items-center justify-between mb-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
                     <TutorBadge
@@ -403,7 +403,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
                         className="text-slate-400 hover:text-white text-sm flex items-center gap-1"
                     >
                         <i className="fas fa-exchange-alt"></i>
-                        <span className={isArabic ? 'font-arabic' : ''}>{isArabic ? 'تغيير المعلّم' : 'Change Tutor'}</span>
+                        <span className={isArabic ? 'font-arabic' : ''}>{t('actions.changeTutor')}</span>
                     </button>
                 </div>
 
@@ -529,7 +529,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
 
     // Active Session View
     return (
-        <div className={`h-full flex flex-col p-4 sm:p-6 bg-gradient-to-b ${colors.gradient} text-white rounded-lg relative overflow-y-auto overflow-x-hidden`} dir={isArabic ? 'rtl' : 'ltr'}>
+        <div className={`h-full min-h-0 flex flex-col p-4 sm:p-6 bg-gradient-to-b ${colors.gradient} text-white rounded-lg relative overflow-y-auto overflow-x-hidden`} dir={isArabic ? 'rtl' : 'ltr'}>
             {/* Visualizer Background Effect */}
             <div className={`absolute inset-0 opacity-20 pointer-events-none transition-all duration-500 ${aiSpeaking ? `${colors.bg} blur-3xl` : 'bg-transparent'}`}></div>
 
@@ -635,7 +635,7 @@ Be ready to discuss any verse from this Surah and its themes.`;
                             className={`px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm flex items-center gap-2 transition-colors ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}
                         >
                             <i className="fas fa-user-graduate"></i>
-                            <span className={isArabic ? 'font-arabic' : ''}>{isArabic ? 'تغيير المعلّم' : 'Change Tutor'}</span>
+                            <span className={isArabic ? 'font-arabic' : ''}>{t('actions.changeTutor')}</span>
                         </button>
                     </div>
                 )}

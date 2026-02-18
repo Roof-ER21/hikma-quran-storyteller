@@ -10,9 +10,34 @@
     "kids": "Kids",
     "library": "Library",
     "tools": "Tools",
+    "hi": "Hi, {{name}}",
     "parent": "Parent",
     "downloads": "Offline Downloads",
     "inLovingMemory": "In Loving Memory"
+  },
+  "menu": {
+    "toggleMenu": "Toggle menu",
+    "parentAccount": "Parent Account",
+    "profileSettings": "Profile & Settings",
+    "reportIssue": "Report Issue",
+    "logout": "Logout",
+    "theme": "Theme",
+    "language": "Language",
+    "downloads": "Downloads",
+    "support": "Support",
+    "parentLogin": "Parent Login",
+    "switchToEnglish": "Switch to English",
+    "switchToArabic": "Switch to Arabic"
+  },
+  "feedback": {
+    "experienceTitle": "How is Alaya & Soad's Gift working for your family?",
+    "experienceSubtitle": "Your feedback helps us improve reliability and learning quality.",
+    "thanksGrow": "Thank you for helping us grow.",
+    "thanksListening": "Thanks for the feedback. We are listening.",
+    "submitting": "Submitting...",
+    "loveIt": "Love it",
+    "needsWork": "Needs work",
+    "notNow": "Not now"
   },
   "buttons": {
     "back": "Back",
@@ -23,7 +48,9 @@
     "close": "Close",
     "save": "Save",
     "cancel": "Cancel",
-    "search": "Search"
+    "search": "Search",
+    "refreshPage": "Refresh Page",
+    "closeGenerator": "Close Generator"
   },
   "language": {
     "select": "Select Language",
@@ -36,6 +63,10 @@
     "error": "Something went wrong",
     "offline": "You're offline",
     "online": "Online"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "subtitle": "Please refresh the page to try again."
   },
   "storyCard": {
     "availableOffline": "Available offline",

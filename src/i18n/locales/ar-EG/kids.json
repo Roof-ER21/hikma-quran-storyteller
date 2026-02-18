@@ -74,7 +74,11 @@
     "newStory": "قصة جديدة",
     "playNarration": "شغّل الحكي",
     "playingNarration": "بيتشغّل...",
-    "lesson": "الدرس:"
+    "lesson": "الدرس:",
+    "checkingAudio": "جاري فحص الصوت…",
+    "preRecorded": "مسجّل مسبقًا",
+    "liveNarration": "سرد مباشر",
+    "completeStory": "إكمال القصة"
   },
   "rewards": {
     "title": "نجومي",

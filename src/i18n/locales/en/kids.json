@@ -74,7 +74,11 @@
     "newStory": "New Story",
     "playNarration": "Play narration",
     "playingNarration": "Playing...",
-    "lesson": "Lesson:"
+    "lesson": "Lesson:",
+    "checkingAudio": "Checking audio…",
+    "preRecorded": "Pre-recorded",
+    "liveNarration": "Live narration",
+    "completeStory": "Complete story"
   },
   "rewards": {
     "title": "My Stars",

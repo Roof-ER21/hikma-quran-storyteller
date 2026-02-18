@@ -10,9 +10,34 @@
     "kids": "الأطفال",
     "library": "المكتبة",
     "tools": "أدوات",
+    "hi": "أهلًا، {{name}}",
     "parent": "الوالدين",
     "downloads": "التحميلات",
     "inLovingMemory": "في ذكرى"
+  },
+  "menu": {
+    "toggleMenu": "فتح القائمة",
+    "parentAccount": "حساب ولي الأمر",
+    "profileSettings": "الملف والإعدادات",
+    "reportIssue": "الإبلاغ عن مشكلة",
+    "logout": "تسجيل الخروج",
+    "theme": "المظهر",
+    "language": "اللغة",
+    "downloads": "التحميلات",
+    "support": "الدعم",
+    "parentLogin": "دخول ولي الأمر",
+    "switchToEnglish": "التبديل للإنجليزية",
+    "switchToArabic": "التبديل للعربية"
+  },
+  "feedback": {
+    "experienceTitle": "كيف شغال تطبيق هدية علية وسعاد مع عيلتك؟",
+    "experienceSubtitle": "رأيك بيساعدنا نحسن الاستقرار وجودة التعلم.",
+    "thanksGrow": "شكرًا لمساعدتك في تطوير التطبيق.",
+    "thanksListening": "شكرًا على الملاحظة، وإحنا بنسمع لك.",
+    "submitting": "جاري الإرسال...",
+    "loveIt": "ممتاز",
+    "needsWork": "يحتاج تحسين",
+    "notNow": "ليس الآن"
   },
   "buttons": {
     "back": "رجوع",
@@ -23,7 +48,9 @@
     "close": "اقفل",
     "save": "احفظ",
     "cancel": "الغِ",
-    "search": "ابحث"
+    "search": "ابحث",
+    "refreshPage": "إعادة تحميل الصفحة",
+    "closeGenerator": "إغلاق المُولّد"
   },
   "language": {
     "select": "اختر لغتك",
@@ -36,6 +63,10 @@
     "error": "حصل حاجة غلط",
     "offline": "مفيش نت",
     "online": "متصل"
+  },
+  "errorBoundary": {
+    "title": "حصلت مشكلة",
+    "subtitle": "من فضلك أعد تحميل الصفحة وحاول مرة تانية."
   },
   "storyCard": {
     "availableOffline": "متاح بدون نت",

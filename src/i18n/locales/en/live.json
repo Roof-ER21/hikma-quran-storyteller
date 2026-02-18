@@ -54,6 +54,16 @@
     "changeMode": "Change Mode",
     "changeTutor": "Change Tutor"
   },
+  "system": {
+    "initializingAudio": "Initializing audio...",
+    "connectingGemini": "Connecting to AI...",
+    "connected": "Connected!",
+    "interrupted": "Interrupted",
+    "sessionClosed": "Session closed",
+    "connectionError": "Connection error",
+    "authFailedPrompt": "Auth failed. Prompting for key...",
+    "connectionFailedPermissions": "Connection failed. Please check permissions."
+  },
   "suggestions": {
     "tryAsking": "Try asking:",
     "conversation": {

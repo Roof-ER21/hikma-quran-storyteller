@@ -43,11 +43,12 @@ const AISettingsWrapper = lazy(() =>
 
 // Loading Spinner Component for Suspense fallback
 function LoadingSpinner() {
+  const { t } = useTranslation('common');
   return (
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center space-y-4">
         <div className="inline-block w-12 h-12 border-4 border-rose-200 dark:border-amber-900/30 border-t-rose-600 dark:border-t-accent-gold rounded-full animate-spin"></div>
-        <p className="text-stone-600 dark:text-stone-300 text-sm">Loading...</p>
+        <p className="text-stone-600 dark:text-stone-300 text-sm">{t('status.loading')}</p>
       </div>
     </div>
   );
@@ -85,7 +86,7 @@ const TOPICS = [
 ];
 
 const getTopicLabel = (topic: string, t: (key: string, options?: any) => string) => {
-  return t(`topics.${topic}`, { defaultValue: topic });
+  return t(`home:topics.${topic}`, { defaultValue: topic });
 };
 
 // Theme Toggle Component
@@ -108,6 +109,7 @@ function ThemeToggle() {
 
 function App() {
   const { t, i18n } = useTranslation(['common', 'home']);
+  const isArabicLang = i18n.language === 'ar-EG';
   const [view, setView] = useState<'home' | 'story' | 'live' | 'quran' | 'kids' | 'library' | 'dedication' | 'tools'>('home');
   const [mode, setMode] = useState<'gate' | 'kid' | 'parent'>('gate');
   const [selectedProphet, setSelectedProphet] = useState<string>("");
@@ -131,6 +133,16 @@ function App() {
   const [parentToken, setParentToken] = useState<string | null>(null);
   // Deep link state
   const [initialDeepLink, setInitialDeepLink] = useState<{ type: string; data: any } | null>(null);
+  const nextLang = isArabicLang ? 'en' : 'ar-EG';
+  const nextLangLabel = isArabicLang ? t('common:language.english') : t('common:language.arabic');
+  const switchLanguageLabel = isArabicLang ? t('common:menu.switchToEnglish') : t('common:menu.switchToArabic');
+  const viewFrameClass = 'min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-155px)] md:min-h-[420px]';
+  const mainClassName = 'flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-x-hidden overflow-y-auto mobile-scroll pb-[calc(env(safe-area-inset-bottom,0px)+1.5rem)]';
+
+  const toggleLanguage = () => {
+    i18n.changeLanguage(nextLang);
+    localStorage.setItem('alayasoad_language', nextLang);
+  };
 
   // Parse deep links from URL hash
   const parseDeepLink = () => {
@@ -395,16 +407,13 @@ function App() {
       </div>
       {/* Language Toggle on Gate */}
       <button
-        onClick={() => {
-          const newLang = i18n.language === 'ar-EG' ? 'en' : 'ar-EG';
-          i18n.changeLanguage(newLang);
-          localStorage.setItem('alayasoad_language', newLang);
-        }}
-        className="absolute top-4 right-4 px-4 py-2 rounded-full bg-white/80 dark:bg-dark-card/80 backdrop-blur-sm text-stone-600 dark:text-stone-300 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-white dark:hover:bg-dark-elevated transition-colors shadow-sm dark:shadow-dark-lg border border-stone-200 dark:border-dark-border flex items-center gap-2"
-        title={i18n.language === 'ar-EG' ? 'Switch to English' : 'التبديل للعربية'}
+        onClick={toggleLanguage}
+        className="absolute top-4 right-4 px-4 py-2.5 rounded-full bg-white/90 dark:bg-dark-card/90 backdrop-blur-sm text-stone-700 dark:text-stone-200 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-white dark:hover:bg-dark-elevated transition-colors shadow-sm dark:shadow-dark-lg border border-stone-200 dark:border-dark-border flex items-center gap-2"
+        title={switchLanguageLabel}
+        aria-label={switchLanguageLabel}
       >
         <i className="fas fa-globe"></i>
-        <span className="text-sm font-medium">{i18n.language === 'ar-EG' ? 'English' : 'العربية'}</span>
+        <span className="text-sm font-semibold">{nextLangLabel}</span>
       </button>
 
       <div className="max-w-4xl w-full text-center space-y-10">
@@ -548,7 +557,7 @@ function App() {
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden w-10 h-10 flex items-center justify-center text-stone-600 dark:text-stone-300 hover:text-rose-700 dark:hover:text-accent-gold transition-colors"
-          aria-label="Toggle menu"
+          aria-label={t('common:menu.toggleMenu')}
         >
           <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`} aria-hidden="true"></i>
         </button>
@@ -561,14 +570,14 @@ function App() {
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'home' || view === 'story' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isLocked('home') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-book-open md:mr-2"></i>
-                <span className="hidden md:inline">Stories</span>
+                <span className="hidden md:inline">{t('common:nav.stories')}</span>
             </button>
             <button
                 onClick={() => setView('quran')}
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'quran' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'}`}
             >
                 <i className="fas fa-quran md:mr-2"></i>
-                <span className="hidden md:inline">The Quran</span>
+                <span className="hidden md:inline">{t('common:nav.quran')}</span>
             </button>
             <button
                 onClick={() => !isLocked('live') && setView('live')}
@@ -576,14 +585,14 @@ function App() {
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'live' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold'} ${isLocked('live') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-user-graduate md:mr-2"></i>
-                <span className="hidden md:inline">{isArabic() ? 'المعلّم الشخصي' : 'Personal Tutor'}</span>
+                <span className="hidden md:inline">{t('common:nav.live')}</span>
             </button>
             <button
                 onClick={() => setView('kids')}
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'kids' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300' : 'text-stone-500 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400'}`}
             >
                 <i className="fas fa-child md:mr-2"></i>
-                <span className="hidden md:inline">Kids</span>
+                <span className="hidden md:inline">{t('common:nav.kids')}</span>
             </button>
             <button
                 onClick={() => !isLocked('library') && setView('library')}
@@ -591,37 +600,33 @@ function App() {
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'library' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300' : 'text-stone-500 dark:text-stone-400 hover:text-emerald-600 dark:hover:text-emerald-400'} ${isLocked('library') ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
                 <i className="fas fa-book-reader md:mr-2"></i>
-                <span className="hidden md:inline">Library</span>
+                <span className="hidden md:inline">{t('common:nav.library')}</span>
             </button>
             <button
                 onClick={() => setView('tools')}
                 className={`px-3 md:px-4 py-2 rounded-full transition-colors whitespace-nowrap ${view === 'tools' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300' : 'text-stone-500 dark:text-stone-400 hover:text-purple-600 dark:hover:text-purple-400'}`}
             >
                 <i className="fas fa-compass md:mr-2"></i>
-                <span className="hidden md:inline">Tools</span>
+                <span className="hidden md:inline">{t('common:nav.tools')}</span>
             </button>
             {/* Theme Toggle Button */}
             <ThemeToggle />
             {/* Language Toggle Button */}
             <button
-                onClick={() => {
-                  const newLang = i18n.language === 'ar-EG' ? 'en' : 'ar-EG';
-                  i18n.changeLanguage(newLang);
-                  localStorage.setItem('alayasoad_language', newLang);
-                }}
-                className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors"
-                title={i18n.language === 'ar-EG' ? 'Switch to English' : 'التبديل للعربية'}
-                aria-label={i18n.language === 'ar-EG' ? 'Switch to English' : 'Switch to Arabic'}
+                onClick={toggleLanguage}
+                className="px-3 py-2 rounded-full text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-dark-border hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors flex items-center gap-1"
+                title={switchLanguageLabel}
+                aria-label={switchLanguageLabel}
             >
                 <i className="fas fa-globe" aria-hidden="true"></i>
-                <span className="hidden sm:inline ml-1 text-xs">{i18n.language === 'ar-EG' ? 'EN' : 'ع'}</span>
+                <span className="hidden sm:inline text-xs font-semibold">{nextLangLabel}</span>
             </button>
             {/* Download Manager Button */}
             <button
                 onClick={() => setShowDownloadManager(true)}
                 className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors"
-                title="Offline Downloads"
-                aria-label="Offline Downloads"
+                title={t('common:nav.downloads')}
+                aria-label={t('common:nav.downloads')}
             >
                 <i className="fas fa-download" aria-hidden="true"></i>
             </button>
@@ -637,7 +642,7 @@ function App() {
             className="px-3 py-2 rounded-full text-stone-500 dark:text-stone-400 hover:text-rose-700 dark:hover:text-accent-gold hover:bg-rose-50 dark:hover:bg-dark-elevated transition-colors flex items-center gap-2 text-sm font-medium"
           >
             <i className="fas fa-user-shield"></i>
-            <span className="hidden md:inline">{parentName ? `Hi, ${parentName}` : 'Parent'}</span>
+            <span className="hidden md:inline">{parentName ? t('common:nav.hi', { name: parentName }) : t('common:nav.parent')}</span>
             {parentName && <i className={`fas fa-chevron-${showParentMenu ? 'up' : 'down'} text-xs`}></i>}
           </button>
           {/* Parent Dropdown Menu */}
@@ -650,7 +655,7 @@ function App() {
               <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-xl shadow-lg dark:shadow-dark-lg border border-stone-200 dark:border-dark-border py-2 z-50">
                 <div className="px-4 py-2 border-b border-stone-100 dark:border-dark-border">
                   <p className="text-sm font-medium text-stone-800 dark:text-stone-100">{parentName}</p>
-                  <p className="text-xs text-stone-500 dark:text-stone-400">Parent Account</p>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">{t('common:menu.parentAccount')}</p>
                 </div>
                 <button
                   onClick={() => {
@@ -660,14 +665,14 @@ function App() {
                   className="w-full px-4 py-2 text-left text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated flex items-center gap-2"
                 >
                   <i className="fas fa-user-circle w-4"></i>
-                  Profile & Settings
+                  {t('common:menu.profileSettings')}
                 </button>
                 <button
                   onClick={handleReportIssue}
                   className="w-full px-4 py-2 text-left text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated flex items-center gap-2"
                 >
                   <i className="fas fa-bug w-4"></i>
-                  Report Issue
+                  {t('common:menu.reportIssue')}
                 </button>
                 <ShareButton
                   type="app"
@@ -679,7 +684,7 @@ function App() {
                   className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
                 >
                   <i className="fas fa-sign-out-alt w-4"></i>
-                  Logout
+                  {t('common:menu.logout')}
                 </button>
               </div>
             </>
@@ -707,14 +712,14 @@ function App() {
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'home' || view === 'story' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'} ${isLocked('home') ? 'opacity-40' : ''}`}
                 >
                   <i className="fas fa-book-open w-5"></i>
-                  <span>Stories</span>
+                  <span>{t('common:nav.stories')}</span>
                 </button>
                 <button
                   onClick={() => { setView('quran'); setMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'quran' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'}`}
                 >
                   <i className="fas fa-quran w-5"></i>
-                  <span>The Quran</span>
+                  <span>{t('common:nav.quran')}</span>
                 </button>
                 <button
                   onClick={() => { !isLocked('live') && setView('live'); setMobileMenuOpen(false); }}
@@ -722,14 +727,14 @@ function App() {
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'live' ? 'bg-rose-50 dark:bg-amber-900/30 text-rose-800 dark:text-accent-gold' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'} ${isLocked('live') ? 'opacity-40' : ''}`}
                 >
                   <i className="fas fa-user-graduate w-5"></i>
-                  <span>{isArabic() ? 'المعلّم الشخصي' : 'Personal Tutor'}</span>
+                  <span>{t('common:nav.live')}</span>
                 </button>
                 <button
                   onClick={() => { setView('kids'); setMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'kids' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'}`}
                 >
                   <i className="fas fa-child w-5"></i>
-                  <span>Kids Mode</span>
+                  <span>{t('common:nav.kids')}</span>
                 </button>
                 <button
                   onClick={() => { !isLocked('library') && setView('library'); setMobileMenuOpen(false); }}
@@ -737,14 +742,14 @@ function App() {
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'library' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'} ${isLocked('library') ? 'opacity-40' : ''}`}
                 >
                   <i className="fas fa-book-reader w-5"></i>
-                  <span>Library</span>
+                  <span>{t('common:nav.library')}</span>
                 </button>
                 <button
                   onClick={() => { setView('tools'); setMobileMenuOpen(false); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${view === 'tools' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300' : 'text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated'}`}
                 >
                   <i className="fas fa-compass w-5"></i>
-                  <span>Tools</span>
+                  <span>{t('common:nav.tools')}</span>
                 </button>
 
                 {/* Divider */}
@@ -752,38 +757,34 @@ function App() {
 
                 {/* Settings Row */}
                 <div className="flex items-center justify-between px-4 py-2">
-                  <span className="text-sm text-stone-500 dark:text-stone-400">Theme</span>
+                  <span className="text-sm text-stone-500 dark:text-stone-400">{t('common:menu.theme')}</span>
                   <ThemeToggle />
                 </div>
                 <div className="flex items-center justify-between px-4 py-2">
-                  <span className="text-sm text-stone-500 dark:text-stone-400">Language</span>
+                  <span className="text-sm text-stone-500 dark:text-stone-400">{t('common:menu.language')}</span>
                   <button
-                    onClick={() => {
-                      const newLang = i18n.language === 'ar-EG' ? 'en' : 'ar-EG';
-                      i18n.changeLanguage(newLang);
-                      localStorage.setItem('alayasoad_language', newLang);
-                    }}
+                    onClick={toggleLanguage}
                     className="px-3 py-1.5 rounded-lg text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated transition-colors"
                   >
-                    {i18n.language === 'ar-EG' ? 'English' : 'العربية'}
+                    {nextLangLabel}
                   </button>
                 </div>
                 <div className="flex items-center justify-between px-4 py-2">
-                  <span className="text-sm text-stone-500 dark:text-stone-400">Downloads</span>
+                  <span className="text-sm text-stone-500 dark:text-stone-400">{t('common:menu.downloads')}</span>
                   <button
                     onClick={() => { setShowDownloadManager(true); setMobileMenuOpen(false); }}
                     className="px-3 py-1.5 rounded-lg text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated transition-colors"
-                    aria-label="Open download manager"
+                    aria-label={t('common:nav.downloads')}
                   >
                     <i className="fas fa-download" aria-hidden="true"></i>
                   </button>
                 </div>
                 <div className="flex items-center justify-between px-4 py-2">
-                  <span className="text-sm text-stone-500 dark:text-stone-400">Support</span>
+                  <span className="text-sm text-stone-500 dark:text-stone-400">{t('common:menu.support')}</span>
                   <button
                     onClick={handleReportIssue}
                     className="px-3 py-1.5 rounded-lg text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-dark-elevated transition-colors"
-                    aria-label="Report an issue"
+                    aria-label={t('common:menu.reportIssue')}
                   >
                     <i className="fas fa-bug" aria-hidden="true"></i>
                   </button>
@@ -803,7 +804,7 @@ function App() {
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-dark-elevated transition-colors"
                 >
                   <i className="fas fa-user-shield w-5"></i>
-                  <span>{parentName ? `Hi, ${parentName}` : 'Parent Login'}</span>
+                  <span>{parentName ? t('common:nav.hi', { name: parentName }) : t('common:menu.parentLogin')}</span>
                 </button>
               </div>
             </div>
@@ -812,35 +813,24 @@ function App() {
       </nav>
 
       {/* Main Content - scrollable on mobile */}
-      <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-x-hidden mobile-scroll pb-[calc(env(safe-area-inset-bottom,0px)+1.5rem)]">
+      <main className={mainClassName}>
         {view === 'home' && mode !== 'kid' && (
             <div className="grid md:grid-cols-2 gap-12 items-center h-full animate-in fade-in duration-500">
             <div className="space-y-8">
               <div className={`space-y-4 ${isArabic() ? 'text-right font-arabic' : ''}`}>
                 <h2 className="text-4xl md:text-5xl font-serif text-rose-950 dark:text-stone-100 leading-tight">
-                  {isArabic() ? (
-                    <>
-                      اكتشف روائع <br />
-                      <span className="text-rose-600 dark:text-accent-gold">قصص الأنبياء</span>
-                    </>
-                  ) : (
-                    <>
-                      Explore the timeless <br />
-                      <span className="text-rose-600 dark:text-accent-gold">stories of the Prophets.</span>
-                    </>
-                  )}
+                  {t('home:stories.title')} <br />
+                  <span className="text-rose-600 dark:text-accent-gold">{t('home:stories.highlight')}</span>
                 </h2>
                 <p className="text-lg text-stone-600 dark:text-stone-300 max-w-md">
-                  {isArabic()
-                    ? 'عش حكايات القرآن عبر سرد تفاعلي، بصري، وتاريخي.'
-                    : "Experience the Quran's narratives through interactive storytelling, visualizations, and historical insights."}
+                  {t('home:stories.subtitle')}
                 </p>
               </div>
 
               <div className="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-lg dark:shadow-dark-lg border border-stone-100 dark:border-dark-border space-y-6 transition-colors duration-300">
                 <div>
                   <label className={`block text-sm font-medium text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
-                    {isArabic() ? 'اختر نبيًّا' : 'Choose a Prophet'}
+                    {t('home:stories.chooseProphet')}
                   </label>
                   <div className="relative">
                       <select
@@ -848,7 +838,7 @@ function App() {
                         value={selectedProphet}
                         onChange={(e) => setSelectedProphet(e.target.value)}
                       >
-                        <option value="">{isArabic() ? 'اختر دليلك...' : 'Select a guide...'}</option>
+                        <option value="">{t('home:stories.selectGuide')}</option>
                         {PROPHETS.map(p => <option key={p.name} value={p.name}>{p.name} ({p.arabicName})</option>)}
                       </select>
                       <i className="fas fa-chevron-down absolute right-4 top-5 text-stone-400 dark:text-stone-500 pointer-events-none"></i>
@@ -857,14 +847,14 @@ function App() {
 
                 <div>
                    <label className={`block text-sm font-medium text-stone-500 dark:text-stone-400 mb-2 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
-                    {isArabic() ? 'أو اسأل بالصوت' : 'Or Ask via Audio'}
+                    {t('home:stories.askViaAudio')}
                    </label>
                    <div className="flex gap-2">
                        <input
                             type="text"
                             value={searchQuery}
                             readOnly
-                            placeholder={isArabic() ? 'اضغط على الميكروفون لذكر الاسم...' : 'Tap mic to say a name...'}
+                            placeholder={t('home:stories.tapMic')}
                             className="flex-1 p-3 bg-stone-50 dark:bg-dark-surface border border-stone-200 dark:border-dark-border rounded-xl text-stone-800 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500"
                        />
                        <button
@@ -879,7 +869,7 @@ function App() {
 
                 <div>
                    <label className={`block text-sm font-medium text-stone-500 dark:text-stone-400 mb-3 uppercase tracking-wider ${isArabic() ? 'text-right font-arabic' : ''}`}>
-                    {isArabic() ? 'الموضوع المراد' : 'Focus Theme'}
+                    {t('home:stories.focusTheme')}
                    </label>
                    <div className="flex flex-wrap gap-2">
                       {TOPICS.map(topic => (
@@ -899,7 +889,7 @@ function App() {
                   disabled={!selectedProphet}
                   className="w-full py-4 bg-rose-900 dark:bg-accent-gold text-white dark:text-dark-bg rounded-xl font-medium text-lg hover:bg-rose-800 dark:hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-rose-900/20 dark:shadow-dark-glow"
                 >
-                  {isArabic() ? 'ابدأ الرحلة' : 'Begin Journey'}
+                  {t('home:stories.beginJourney')}
                 </button>
               </div>
 
@@ -907,9 +897,9 @@ function App() {
               <div className="mt-8">
                 <h3 className={`text-lg font-serif text-stone-600 dark:text-stone-300 mb-4 flex items-center gap-2 ${isArabic() ? 'flex-row-reverse text-right font-arabic' : ''}`}>
                   <i className="fas fa-star text-amber-500 dark:text-accent-gold"></i>
-                  {isArabic() ? 'اختيار سريع' : 'Quick Pick'}
+                  {t('home:stories.quickPick')}
                   <span className="text-sm text-stone-400 dark:text-stone-500 font-sans">
-                    ({PROPHETS.length} {isArabic() ? 'نبيًّا' : 'Prophets'})
+                    ({PROPHETS.length} {t('home:stories.prophets')})
                   </span>
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[420px] overflow-y-auto pr-2 pb-2 scrollbar-thin scrollbar-thumb-stone-300 dark:scrollbar-thumb-dark-elevated scrollbar-track-stone-100 dark:scrollbar-track-dark-surface">
@@ -939,14 +929,14 @@ function App() {
                <div className="absolute inset-0 bg-rose-500/5 dark:bg-accent-gold/5 rounded-full blur-3xl transform scale-90"></div>
                <img
                  src="https://images.unsplash.com/photo-1519817914152-22d216bb9170?q=80&w=1600&auto=format&fit=crop"
-                 alt="Abstract Islamic Art"
+                 alt={t('home:stories.heroArtAlt')}
                  loading="lazy"
                  className="rounded-t-[200px] rounded-b-[50px] shadow-2xl dark:shadow-dark-lg w-3/4 object-cover h-[600px] z-10"
                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                />
                <div className="absolute -bottom-10 -right-10 bg-white dark:bg-dark-card p-6 rounded-2xl shadow-xl dark:shadow-dark-lg border border-transparent dark:border-dark-border z-20 max-w-xs transition-colors duration-300">
-                   <p className="font-serif italic text-rose-900 dark:text-accent-gold">"We relate to you, [O Muhammad], the best of stories in what We have revealed to you of this Qur'an..."</p>
-                   <p className="text-right text-xs text-stone-500 dark:text-stone-400 mt-2 font-bold">Surah Yusuf 12:3</p>
+                   <p className="font-serif italic text-rose-900 dark:text-accent-gold">"{t('home:quranQuote.text')}"</p>
+                   <p className="text-right text-xs text-stone-500 dark:text-stone-400 mt-2 font-bold">{t('home:quranQuote.reference')}</p>
                </div>
             </div>
           </div>
@@ -954,7 +944,7 @@ function App() {
 
         <AnimatePresence mode="wait">
         {view === 'story' && selectedProphet && (
-            <motion.div key="story" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
+            <motion.div key="story" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className={viewFrameClass}>
                 <Suspense fallback={<LoadingSpinner />}>
                   <StoryView
                       prophet={selectedProphet}
@@ -969,7 +959,7 @@ function App() {
         )}
 
         {view === 'live' && (
-            <motion.div key="live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
+            <motion.div key="live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className={viewFrameClass}>
                 <Suspense fallback={<LoadingSpinner />}>
                   <LiveMode />
                 </Suspense>
@@ -977,7 +967,7 @@ function App() {
         )}
 
         {view === 'quran' && (
-            <motion.div key="quran" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
+            <motion.div key="quran" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className={viewFrameClass}>
                 <Suspense fallback={<LoadingSpinner />}>
                   <QuranView
                     initialSurah={initialDeepLink?.type === 'verse' || initialDeepLink?.type === 'quran' ? initialDeepLink.data.surah : undefined}
@@ -988,7 +978,7 @@ function App() {
         )}
 
         {view === 'kids' && (
-            <motion.div key="kids" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
+            <motion.div key="kids" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className={viewFrameClass}>
                 <Suspense fallback={<LoadingSpinner />}>
                   <KidsHome onBack={() => setView('home')} />
                 </Suspense>
@@ -996,7 +986,7 @@ function App() {
         )}
 
         {view === 'library' && (
-            <motion.div key="library" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)] overflow-auto">
+            <motion.div key="library" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className={`${viewFrameClass} overflow-y-auto`}>
                 <Suspense fallback={<LoadingSpinner />}>
                   <ProphetStoriesLibrary />
                 </Suspense>
@@ -1012,7 +1002,7 @@ function App() {
         )}
 
         {view === 'tools' && (
-            <motion.div key="tools" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="min-h-[50vh] md:h-[calc((var(--app-vh,1vh)*100)-140px)]">
+            <motion.div key="tools" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className={viewFrameClass}>
                 <Suspense fallback={<LoadingSpinner />}>
                   <IslamicTools onBack={() => setView('home')} />
                 </Suspense>
@@ -1032,7 +1022,7 @@ function App() {
                             }}
                             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 shadow-lg"
                         >
-                            Close Generator
+                            {t('common:buttons.closeGenerator')}
                         </button>
                     </div>
                     <Suspense fallback={<LoadingSpinner />}>

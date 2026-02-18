@@ -99,7 +99,7 @@ const ACTIVITIES = [
 ];
 
 const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
-  const { t, i18n } = useTranslation('kids');
+  const { t, i18n } = useTranslation(['kids', 'common']);
   const isArabic = i18n.language === 'ar-EG';
 
   const [activity, setActivity] = useState<KidsActivity>('home');
@@ -218,7 +218,7 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
               onBack();
             }}
             className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-            aria-label="Go back"
+            aria-label={t('common:buttons.back')}
           >
             <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
           </button>
@@ -227,7 +227,7 @@ const KidsHome: React.FC<KidsHomeProps> = ({ onBack }) => {
           <div className="flex items-center gap-3 bg-white rounded-full px-4 py-2 shadow-lg">
             <span className="text-3xl">{currentLevel.emoji}</span>
             <div className="text-left">
-              <div className="text-xs text-stone-500">{currentLevel.name}</div>
+              <div className="text-xs text-stone-500">{t(`levels.${currentLevel.name.toLowerCase()}`)}</div>
               <div className="flex items-center gap-1 text-amber-500 font-bold">
                 <i className="fas fa-star text-sm"></i>
                 <span>{totalStars}</span>
@@ -445,6 +445,7 @@ const ARABIC_LETTERS = [
 ];
 
 const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
+  const { t } = useTranslation(['kids', 'common']);
   const [selectedLetter, setSelectedLetter] = useState<typeof ARABIC_LETTERS[0] | null>(null);
   const [playedLetters, setPlayedLetters] = useState<Set<string>>(new Set());
   const [tracedLetters, setTracedLetters] = useState<Set<string>>(new Set());
@@ -676,7 +677,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
       }, 2000);
     } else {
       // Encourage to try more
-      speakWithWebSpeech("Keep going! Draw more!", 'en-US');
+      speakWithWebSpeech(t('letters.keepGoing'), 'en-US');
     }
   };
 
@@ -698,11 +699,11 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
                 setStrokeLength(0);
               }}
               className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-              aria-label="Go back"
+              aria-label={t('common:buttons.back')}
             >
               <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
             </button>
-            <h2 className="text-2xl font-bold text-stone-700">Trace the Letter!</h2>
+            <h2 className="text-2xl font-bold text-stone-700">{t('letters.trace')}</h2>
             <div className="w-14"></div>
           </div>
 
@@ -727,8 +728,8 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
                 <div className="absolute inset-0 flex items-center justify-center bg-white/90 rounded-3xl">
                   <div className="text-center animate-bounce">
                     <div className="text-8xl mb-4">⭐</div>
-                    <p className="text-3xl font-bold text-stone-700">Amazing!</p>
-                    <p className="text-xl text-stone-500">You did it!</p>
+                    <p className="text-3xl font-bold text-stone-700">{t('progress.amazing')}</p>
+                    <p className="text-xl text-stone-500">{t('progress.youDidIt')}</p>
                   </div>
                 </div>
               )}
@@ -736,7 +737,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 
             {/* Instruction */}
             <p className="mt-4 text-lg text-stone-600 text-center max-w-sm">
-              Use your finger to trace the letter <span className="text-3xl font-arabic">{selectedLetter.letter}</span>
+              {t('letters.traceInstruction')} <span className="text-3xl font-arabic">{selectedLetter.letter}</span>
             </p>
           </div>
 
@@ -745,19 +746,19 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             <button
               onClick={clearCanvas}
               className="px-8 py-4 rounded-2xl bg-white shadow-lg text-stone-600 font-bold text-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
-              aria-label="Clear tracing"
+              aria-label={t('letters.clear')}
             >
               <i className="fas fa-redo" aria-hidden="true"></i>
-              Clear
+              {t('letters.clear')}
             </button>
             <button
               onClick={submitTracing}
               className="px-8 py-4 rounded-2xl shadow-lg text-white font-bold text-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
               style={{ backgroundColor: KIDS_COLORS.green }}
-              aria-label="Submit tracing"
+              aria-label={t('letters.done')}
             >
               <i className="fas fa-check" aria-hidden="true"></i>
-              Done!
+              {t('letters.done')}
             </button>
           </div>
         </div>
@@ -775,7 +776,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           <button
             onClick={() => setSelectedLetter(null)}
             className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-            aria-label="Go back to letter list"
+            aria-label={t('common:buttons.back')}
           >
             <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
           </button>
@@ -797,7 +798,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             {isLoadingAudio ? (
               <div className="flex flex-col items-center gap-2">
                 <i className="fas fa-spinner fa-spin text-5xl text-white"></i>
-                <span className="text-sm text-white">Loading...</span>
+                <span className="text-sm text-white">{t('letters.loading')}</span>
               </div>
             ) : isPlaying ? (
               <div className="flex gap-1">
@@ -823,7 +824,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           <div className="mt-6 flex items-center gap-2 text-stone-500">
             <i className={`fas ${isLoadingAudio ? 'fa-spinner fa-spin' : isPlaying ? 'fa-volume-up' : 'fa-hand-pointer animate-bounce'}`}></i>
             <span>
-              {isLoadingAudio ? 'Loading audio...' : isPlaying ? 'Playing...' : 'Tap the letter to hear it!'}
+              {isLoadingAudio ? t('letters.loadingAudio') : isPlaying ? t('letters.playing') : t('letters.tapToHear')}
             </span>
           </div>
 
@@ -835,7 +836,7 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
           >
             {tracedLetters.has(selectedLetter.id) && <span className="text-2xl">⭐</span>}
             <i className="fas fa-pencil-alt"></i>
-            <span>Trace the Letter!</span>
+            <span>{t('letters.trace')}</span>
           </button>
         </div>
       </div>
@@ -853,11 +854,11 @@ const AlphabetActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-          aria-label="Go back"
+          aria-label={t('common:buttons.back')}
         >
           <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
-        <h1 className="text-2xl font-bold text-stone-700">Arabic Letters</h1>
+        <h1 className="text-2xl font-bold text-stone-700">{t('letters.title')}</h1>
         <div className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center">
           <span className="text-amber-500 font-bold">{playedLetters.size}/28</span>
         </div>
@@ -907,6 +908,7 @@ const KIDS_SURAHS = [
 ];
 
 const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
+  const { t } = useTranslation(['kids', 'common']);
   const [selectedSurah, setSelectedSurah] = useState<typeof KIDS_SURAHS[0] | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentVerse, setCurrentVerse] = useState(0);
@@ -1090,7 +1092,7 @@ const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               onClick={handlePlayAll}
               className={`w-16 h-16 rounded-full shadow-xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95`}
               style={{ backgroundColor: isPlaying ? KIDS_COLORS.orange : KIDS_COLORS.green }}
-              aria-label={isPlaying ? "Pause recitation" : "Play all verses"}
+              aria-label={isPlaying ? t('common:buttons.pause') : t('common:buttons.play')}
             >
               <i className={`fas ${isPlaying ? 'fa-pause' : 'fa-play'} text-2xl text-white`} aria-hidden="true"></i>
             </button>
@@ -1115,11 +1117,11 @@ const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-          aria-label="Go back"
+          aria-label={t('common:buttons.back')}
         >
           <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
-        <h1 className="text-2xl font-bold text-stone-700">Short Surahs</h1>
+        <h1 className="text-2xl font-bold text-stone-700">{t('surahs.title')}</h1>
         <div className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center">
           <span className="text-amber-500 font-bold">{listenedSurahs.size}/4</span>
         </div>
@@ -1159,6 +1161,7 @@ const SurahActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
 // ============================================
 
 const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
+  const { t } = useTranslation(['kids', 'common']);
   const [selectedStory, setSelectedStory] = useState<typeof kidsStories[0] | null>(null);
   const [currentScene, setCurrentScene] = useState(0);
   const [completedStories, setCompletedStories] = useState<Set<string>>(new Set());
@@ -1295,7 +1298,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.25)',
               color: storyTextColor
             }}
-            aria-label="Close story"
+            aria-label={t('common:buttons.close')}
           >
             <i className="fas fa-times text-xl" aria-hidden="true"></i>
           </button>
@@ -1322,7 +1325,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
                 color: storyTextColor
               }}
             >
-              {checkingAudio ? 'Checking audio…' : prebakedAudioReady ? 'Pre-recorded' : 'Live narration'}
+              {checkingAudio ? t('stories.checkingAudio') : prebakedAudioReady ? t('stories.preRecorded') : t('stories.liveNarration')}
             </div>
           </div>
         </div>
@@ -1350,7 +1353,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             className="mt-4 px-4 py-2 rounded-full bg-white text-stone-700 shadow-lg hover:scale-105 active:scale-95 transition-transform flex items-center gap-2"
           >
             <i className={`fas ${isNarrating ? 'fa-stop' : 'fa-play'} text-sm`}></i>
-            <span>{isNarrating ? 'Playing...' : 'Play narration'}</span>
+            <span>{isNarrating ? t('stories.playingNarration') : t('stories.playNarration')}</span>
           </button>
 
           {isLastScene && (
@@ -1358,10 +1361,10 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
               className="mt-8 rounded-2xl p-4"
               style={{ backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.15)' }}
             >
-              <p className="text-lg" style={{ color: storyMutedTextColor }}>Lesson:</p>
+              <p className="text-lg" style={{ color: storyMutedTextColor }}>{t('stories.lesson')}</p>
               <p className="text-xl font-bold" style={{ color: storyTextColor }}>{selectedStory.lesson}</p>
               {completedStories.has(selectedStory.id) && (
-                <div className="mt-2 text-2xl" style={{ color: storyTextColor }}>⭐ You earned a star!</div>
+                <div className="mt-2 text-2xl" style={{ color: storyTextColor }}>⭐ {t('progress.earnedStar')}</div>
               )}
             </div>
           )}
@@ -1388,7 +1391,7 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
             style={{
               backgroundColor: isColorLight(storyColor) ? 'rgba(0,0,0,0.06)' : '#ffffff'
             }}
-            aria-label={isLastScene ? "Complete story" : "Next scene"}
+            aria-label={isLastScene ? t('stories.completeStory') : t('letters.next')}
           >
             <i className={`fas ${isLastScene ? 'fa-check' : 'fa-arrow-right'} text-2xl`} style={{ color: storyColor }} aria-hidden="true"></i>
           </button>
@@ -1408,11 +1411,11 @@ const StoriesActivity: React.FC<ActivityProps> = ({ onBack, onEarnStar }) => {
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-          aria-label="Go back"
+          aria-label={t('common:buttons.back')}
         >
           <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
-        <h1 className="text-2xl font-bold text-stone-700">Prophet Stories</h1>
+        <h1 className="text-2xl font-bold text-stone-700">{t('stories.title')}</h1>
         <div className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center">
           <span className="text-amber-500 font-bold">{completedStories.size}/{totalStories}</span>
         </div>
@@ -1492,6 +1495,7 @@ interface RewardsProps {
 }
 
 const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) => {
+  const { t } = useTranslation(['kids', 'common']);
   const [earnedBadges, setEarnedBadges] = useState<string[]>([]);
   const [selectedBadge, setSelectedBadge] = useState<typeof BADGES[0] | null>(null);
 
@@ -1540,11 +1544,11 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
           <button
             onClick={() => setSelectedBadge(null)}
             className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-            aria-label="Go back to rewards"
+            aria-label={t('common:buttons.back')}
           >
             <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
           </button>
-          <h1 className="text-xl font-bold text-stone-700">Badge Details</h1>
+          <h1 className="text-xl font-bold text-stone-700">{t('rewards.badgeDetails')}</h1>
           <div className="w-14"></div>
         </div>
 
@@ -1563,12 +1567,12 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
           {isUnlocked ? (
             <div className="bg-green-100 text-green-700 px-6 py-3 rounded-full shadow-md flex items-center gap-2">
               <i className="fas fa-check-circle"></i>
-              <span className="font-bold">Unlocked!</span>
+              <span className="font-bold">{t('rewards.unlocked')}</span>
             </div>
           ) : (
             <div className="bg-stone-100 text-stone-500 px-6 py-3 rounded-full shadow-md flex items-center gap-2">
               <i className="fas fa-lock"></i>
-              <span className="font-bold">Keep playing to unlock!</span>
+              <span className="font-bold">{t('rewards.keepPlaying')}</span>
             </div>
           )}
         </div>
@@ -1585,11 +1589,11 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
         <button
           onClick={onBack}
           className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-stone-600 hover:scale-105 active:scale-95 transition-transform"
-          aria-label="Go back"
+          aria-label={t('common:buttons.back')}
         >
           <i className="fas fa-arrow-left text-xl" aria-hidden="true"></i>
         </button>
-        <h1 className="text-2xl font-bold text-stone-700">My Stars</h1>
+        <h1 className="text-2xl font-bold text-stone-700">{t('rewards.title')}</h1>
         <div className="w-14"></div>
       </div>
 
@@ -1597,8 +1601,8 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
         {/* Current Level */}
         <div className="bg-white rounded-3xl p-6 shadow-lg text-center mb-6">
           <div className="text-7xl mb-2">{currentLevel.emoji}</div>
-          <h2 className="text-2xl font-bold text-stone-700">{currentLevel.name}</h2>
-          <p className="text-lg text-stone-500">Level {level}</p>
+          <h2 className="text-2xl font-bold text-stone-700">{t(`levels.${currentLevel.name.toLowerCase()}`)}</h2>
+          <p className="text-lg text-stone-500">{t('progress.level')} {level}</p>
           <div className="mt-4 flex items-center justify-center gap-2">
             <span className="text-4xl">⭐</span>
             <span className="text-3xl font-bold text-amber-500">{totalStars}</span>
@@ -1607,7 +1611,7 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
 
         {/* Level Progress */}
         <div className="mb-6">
-          <h3 className="text-lg font-bold text-stone-600 mb-3">Level Progress</h3>
+          <h3 className="text-lg font-bold text-stone-600 mb-3">{t('progress.levelProgress')}</h3>
           <div className="flex gap-2 flex-wrap justify-center">
             {LEVELS.map((lvl) => (
               <div
@@ -1626,7 +1630,7 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
 
         {/* Badges */}
         <div>
-          <h3 className="text-lg font-bold text-stone-600 mb-3">My Badges</h3>
+          <h3 className="text-lg font-bold text-stone-600 mb-3">{t('rewards.myBadges')}</h3>
           <div className="grid grid-cols-3 gap-3">
             {badgesWithStatus.map((badge) => (
               <button
@@ -1654,7 +1658,7 @@ const RewardsActivity: React.FC<RewardsProps> = ({ onBack, totalStars, level }) 
           {/* Badge Stats */}
           <div className="mt-4 text-center">
             <p className="text-sm text-stone-500">
-              <span className="font-bold text-amber-500">{earnedBadges.length}</span> of <span className="font-bold">{BADGES.length}</span> badges unlocked
+              {t('progress.badgesUnlocked', { earned: earnedBadges.length, total: BADGES.length })}
             </p>
           </div>
         </div>

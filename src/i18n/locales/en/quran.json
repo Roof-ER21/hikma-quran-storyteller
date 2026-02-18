@@ -25,6 +25,8 @@
   "settings": {
     "title": "Reading Settings",
     "translation": "Translation",
+    "additionalTranslation": "Additional Translation",
+    "none": "None",
     "reciter": "Reciter",
     "fontSize": "Font Size",
     "showTransliteration": "Show Transliteration",

@@ -1,7 +1,8 @@
 {
   "loading": {
     "consulting": "بنستشير الأرشيف...",
-    "weaving": "بننسج حكاية {{prophet}}"
+    "weaving": "بننسج حكاية {{prophet}}",
+    "generic": "جاري التحميل..."
   },
   "actions": {
     "generateNew": "اعمل قصة جديدة",
@@ -21,6 +22,7 @@
     "paragraphs": "{{count}} فقرة",
     "scenes": "{{count}} مشهد",
     "continueReading": "كمّل القراءة",
+    "dismissContinue": "إخفاء زر متابعة القراءة",
     "error": "حصل خطأ في تحميل القصة. جرّب تاني."
   },
   "tabs": {
@@ -45,13 +47,15 @@
   "narration": {
     "play": "شغّل الحكي",
     "pause": "وقّف الحكي",
-    "stop": "أوقف الحكي"
+    "stop": "أوقف الحكي",
+    "preparing": "جاري تجهيز السرد..."
   },
   "images": {
     "generating": "بنرسم...",
     "generate": "اعمل مشهد جديد",
     "storyScenes": "مشاهد القصة",
-    "scene": "مشهد {{number}}"
+    "scene": "مشهد {{number}}",
+    "cinematicScene": "مشهد سينمائي"
   },
   "immersive": {
     "enter": "الوضع السينمائي",

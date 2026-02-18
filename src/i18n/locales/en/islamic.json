@@ -9,7 +9,8 @@
   },
   "error": {
     "title": "Location Required",
-    "retry": "Try Again"
+    "retry": "Try Again",
+    "locationUnavailable": "Unable to get your location. Please enable location services and try again."
   },
   "tabs": {
     "prayer": "Prayer Times",

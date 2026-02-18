@@ -320,9 +320,9 @@ const ProphetStoriesLibrary: React.FC = () => {
               <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl flex items-start gap-3">
                 <span className="w-3 h-3 rounded-full bg-amber-500 animate-ping mt-1"></span>
                 <div className="leading-tight">
-                  <p className="font-semibold">Preparing narration...</p>
+                  <p className="font-semibold">{t('narration.preparing')}</p>
                   <p className="text-sm text-amber-800/80">
-                    Loading the next section audio and Quran recitation. This may take a few seconds.
+                    {t('narration.preparingHint')}
                   </p>
                 </div>
               </div>

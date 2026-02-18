@@ -35,6 +35,7 @@
   "narration": {
     "playFullStory": "Play Full Story",
     "playSection": "Play Section",
+    "resume": "Resume",
     "pause": "Pause",
     "stop": "Stop",
     "selectReciter": "Select Reciter",

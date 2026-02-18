@@ -516,7 +516,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
       return (
         <div className={`flex flex-col items-center justify-center h-64 ${themeStyles.loadingIcon} animate-pulse`}>
           <i className="fas fa-quran text-4xl mb-4"></i>
-          <p className="text-xl font-serif">Loading verses...</p>
+          <p className={`text-xl font-serif ${isArabic ? 'font-arabic' : ''}`}>{t('loading.verses')}</p>
         </div>
       );
     }
@@ -525,7 +525,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
       return (
         <div className="text-center text-stone-500 py-12">
           <i className="fas fa-exclamation-circle text-4xl mb-4"></i>
-          <p>Failed to load Quran data. Please try again.</p>
+          <p className={isArabic ? 'font-arabic' : ''}>{t('error.loadFailed')}</p>
         </div>
       );
     }
@@ -538,7 +538,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
             <p className="text-3xl font-amiri text-rose-900" dir="rtl">
               بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
             </p>
-            <p className="text-sm text-stone-500 mt-2">In the name of Allah, the Most Gracious, the Most Merciful</p>
+            <p className={`text-sm text-stone-500 mt-2 ${isArabic ? 'font-arabic' : ''}`}>{t('bismillah')}</p>
           </div>
         )}
 
@@ -1156,7 +1156,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
   // Surah detail view
   if (selectedSurah) {
     return (
-      <div className={`flex flex-col h-full bg-white transition-all duration-700 ${immersiveMode ? 'fixed inset-0 z-50' : 'rounded-lg shadow-xl overflow-hidden animate-in fade-in'}`}>
+      <div className={`flex flex-col h-full min-h-0 bg-white transition-all duration-700 ${immersiveMode ? 'fixed inset-0 z-50' : 'rounded-lg shadow-xl overflow-hidden animate-in fade-in'}`}>
         {/* Header */}
         <div className={`${themeStyles.headerBg} ${themeStyles.headerText} ${immersiveMode ? 'p-4 backdrop-blur-md bg-opacity-90' : 'p-4'} flex flex-col sticky top-0 z-10 shadow-md transition-colors duration-500`}>
           {/* Top Row */}
@@ -1248,14 +1248,14 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
                         <div>
                           <label className="text-sm text-stone-600 mb-2 block flex items-center gap-1.5">
                             <i className="fas fa-plus-circle text-xs text-rose-500"></i>
-                            Additional Translation
+                            {t('settings.additionalTranslation')}
                           </label>
                           <select
                             value={secondaryTranslation || ''}
                             onChange={(e) => setSecondaryTranslation(e.target.value || null)}
                             className="w-full p-2 border rounded-lg text-sm"
                           >
-                            <option value="">None</option>
+                            <option value="">{t('settings.none')}</option>
                             {MULTI_LANG_TRANSLATIONS.map((trans) => (
                               <option key={trans.id} value={trans.id}>{trans.name}</option>
                             ))}
@@ -1336,7 +1336,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
         </div>
 
         {/* Content */}
-        <div className={`flex-1 overflow-y-auto ${immersiveMode ? 'p-12 md:p-24' : 'p-4 md:p-6'} ${floatingPlayerVisible ? 'pb-[calc(7rem+env(safe-area-inset-bottom,0px))]' : ''} ${themeStyles.bodyBg} transition-colors duration-500 scroll-smooth`}>
+        <div className={`flex-1 min-h-0 overflow-y-auto ${immersiveMode ? 'p-12 md:p-24' : 'p-4 md:p-6'} ${floatingPlayerVisible ? 'pb-[calc(7rem+env(safe-area-inset-bottom,0px))]' : ''} ${themeStyles.bodyBg} transition-colors duration-500 scroll-smooth`}>
           {activeTab === 'read' && renderReadTab()}
           {activeTab === 'story' && renderStoryTab()}
           {activeTab === 'listen' && renderListenTab()}
@@ -1407,7 +1407,7 @@ const QuranView: React.FC<QuranViewProps> = ({ initialSurah, initialVerse }) => 
 
   // Surah list view
   return (
-    <div className="h-full overflow-y-auto" dir={isArabic ? 'rtl' : 'ltr'}>
+    <div className="h-full min-h-0 overflow-y-auto" dir={isArabic ? 'rtl' : 'ltr'}>
       <div className={`mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 ${isArabic ? 'md:flex-row-reverse' : ''}`}>
         <div>
           <h2 className={`text-3xl font-serif text-rose-900 mb-2 ${isArabic ? 'font-arabic' : ''}`}>{t('title')}</h2>

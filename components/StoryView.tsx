@@ -1028,7 +1028,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
   }
 
   return (
-    <div className={`flex flex-col h-full bg-stone-50 dark:bg-dark-bg transition-all duration-700 ${immersiveMode ? 'fixed inset-0 z-50' : 'rounded-lg shadow-xl dark:shadow-dark-lg overflow-hidden'}`}>
+    <div className={`flex flex-col h-full min-h-0 bg-stone-50 dark:bg-dark-bg transition-all duration-700 ${immersiveMode ? 'fixed inset-0 z-50' : 'rounded-lg shadow-xl dark:shadow-dark-lg overflow-hidden'}`}>
       
       {/* Immersive Header / Controls - Smart hide on scroll */}
       <div className={`${immersiveMode ? 'bg-black/80 text-white backdrop-blur-md fixed top-0 w-full z-50' : 'bg-white dark:bg-dark-card text-stone-800 dark:text-stone-100 border-b border-stone-200 dark:border-dark-border'} p-3 md:p-4 flex items-center justify-between transition-all duration-300 ${!immersiveMode && !headerVisible ? 'transform -translate-y-full absolute top-0 left-0 right-0 z-20' : ''}`}>
@@ -1049,17 +1049,17 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
                     <button
                         onClick={() => { setManualLanguageChoice(true); setLanguage('english'); }}
                         className={`text-xs px-2 py-1 rounded transition-colors ${language === 'english' ? 'bg-white dark:bg-dark-elevated shadow text-rose-900 dark:text-accent-gold font-medium' : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300'}`}
-                        title="English"
+                        title={t('language.english')}
                     >{LANGUAGE_LABELS.english}</button>
                     <button
                         onClick={() => { setManualLanguageChoice(true); setLanguage('arabic'); }}
                         className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic' ? 'bg-white dark:bg-dark-elevated shadow text-rose-900 dark:text-accent-gold font-medium' : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300'}`}
-                        title="Arabic (Fusha)"
+                        title={t('language.arabic')}
                     >{LANGUAGE_LABELS.arabic}</button>
                     <button
                         onClick={() => { setManualLanguageChoice(true); setLanguage('arabic_egyptian'); }}
                         className={`text-xs px-2 py-1 rounded transition-colors ${language === 'arabic_egyptian' ? 'bg-white dark:bg-dark-elevated shadow text-rose-900 dark:text-accent-gold font-medium' : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300'}`}
-                        title="Egyptian Arabic (مصري)"
+                        title={t('language.egyptian')}
                     >{LANGUAGE_LABELS.arabic_egyptian}</button>
                 </div>
             )}
@@ -1108,13 +1108,19 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
                        ? 'bg-amber-600 text-white ring-4 ring-amber-200'
                        : 'bg-rose-900 text-white hover:bg-rose-800'
                  }`}
-                 title={isNarrationLoading ? 'Preparing narration...' : isPlaying ? 'Stop' : 'Play narration'}
+                 title={
+                   isNarrationLoading
+                     ? t('narration.preparing')
+                     : isPlaying
+                       ? t('narration.stop')
+                       : t('narration.play')
+                 }
                >
                  <i className={`fas ${isNarrationLoading ? 'fa-spinner fa-spin' : isPlaying ? 'fa-stop' : 'fa-play'}`}></i>
                </button>
                {isNarrationLoading && (
                  <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-amber-700 whitespace-nowrap font-medium animate-pulse">
-                   Loading...
+                   {t('loading.generic')}
                  </span>
                )}
                {isPlaying && (
@@ -1280,7 +1286,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
           </button>
           <button
             onClick={() => setShowContinueReading(false)}
-            aria-label="Dismiss continue reading"
+            aria-label={t('view.dismissContinue')}
             className={`absolute -top-2 w-6 h-6 bg-stone-600 hover:bg-stone-700 text-white rounded-full text-xs flex items-center justify-center ${isArabic ? 'left-2' : 'right-2'}`}
           >
             <i className="fas fa-times"></i>
@@ -1291,7 +1297,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
       {/* Content */}
       <div
         ref={contentRef}
-        className={`flex-1 overflow-y-auto overflow-x-hidden ${immersiveMode ? 'bg-stone-900 p-8 md:p-20 pt-24' : 'p-6 md:p-10'} scroll-smooth`}
+        className={`flex-1 min-h-0 overflow-y-auto overflow-x-hidden ${immersiveMode ? 'bg-stone-900 p-8 md:p-20 pt-24' : 'p-6 md:p-10'} scroll-smooth`}
         style={storyBackgroundStyle}
       >
         {activeTab === 'read' && (
@@ -1299,7 +1305,7 @@ const StoryView: React.FC<StoryViewProps> = ({ prophet, topic, onBack, onNavigat
 
                 {immersiveMode && images.length > 0 && (
                      <div className="mb-12 rounded-2xl overflow-hidden shadow-2xl border border-stone-800 animate-fade-in-up">
-                        <img src={images[0]} className="w-full object-cover opacity-80" alt="Cinematic Scene" />
+                        <img src={images[0]} className="w-full object-cover opacity-80" alt={t('images.cinematicScene')} />
                      </div>
                 )}
 
