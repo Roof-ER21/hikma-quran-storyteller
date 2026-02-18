@@ -85,6 +85,10 @@
     "pleaseWait": "Please wait...",
     "manageSettings": "Parents can manage settings, unlock all features, and track progress.",
     "error": "Something went wrong. Please try again.",
-    "missingFields": "Name and PIN are required."
+    "missingFields": "Name and PIN are required.",
+    "invalidCredentials": "Invalid name or PIN.",
+    "consentRequired": "Parent consent is required to create an account.",
+    "coppaConsentText": "I am the parent/guardian (18+) and consent to my child using this app. Learning progress is saved locally and can be synced if enabled.",
+    "aiTutorConsentText": "Enable AI Tutor (optional). Child questions are sent to Google Gemini for educational responses. Data is not permanently stored."
   }
 }

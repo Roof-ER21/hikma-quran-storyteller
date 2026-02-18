@@ -30,7 +30,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
       return;
     }
     if (mode === 'signup' && !coppaConsent) {
-      setError('You must consent as a parent/guardian to create an account.');
+      setError(t('parentGate.consentRequired'));
       return;
     }
     setLoading(true);
@@ -56,7 +56,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
         e.message?.includes('Failed') || e.message?.includes('error')
           ? t('parentGate.error')
           : e.message?.includes('Invalid') || e.message?.includes('incorrect')
-            ? t('parentGate.invalidCredentials', 'Invalid name or PIN')
+            ? t('parentGate.invalidCredentials')
             : t('parentGate.error');
       setError(userFriendlyError);
     } finally {
@@ -66,7 +66,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className={`bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4 ${isArabic ? 'text-right' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
+      <div className={`bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4 max-h-[calc((var(--app-vh,1vh)*100)-2rem)] overflow-y-auto mobile-scroll ${isArabic ? 'text-right' : ''}`} dir={isArabic ? 'rtl' : 'ltr'}>
         <div className="flex justify-between items-center">
           <h2 className={`text-2xl font-bold text-rose-900 ${isArabic ? 'font-arabic' : ''}`}>
             {mode === 'login' ? t('parentGate.parentLogin') : t('parentGate.createPIN')}
@@ -127,8 +127,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
                 className="w-4 h-4 mt-0.5 text-rose-600 rounded border-stone-300 flex-shrink-0"
               />
               <span>
-                I am the parent/guardian (18+) and consent to my child using this app.
-                Learning progress will be saved locally and optionally synced.
+                {t('parentGate.coppaConsentText')}
               </span>
             </label>
             <label className={`flex items-start gap-2 text-xs text-stone-600 ${isArabic ? 'flex-row-reverse font-arabic' : ''}`}>
@@ -139,7 +138,7 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
                 className="w-4 h-4 mt-0.5 text-rose-600 rounded border-stone-300 flex-shrink-0"
               />
               <span>
-                Enable AI Tutor (optional). Child's questions are sent to Google Gemini for educational responses. No data is permanently stored.
+                {t('parentGate.aiTutorConsentText')}
               </span>
             </label>
           </div>

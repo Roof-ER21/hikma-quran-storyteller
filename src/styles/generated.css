@@ -2509,6 +2509,10 @@ html.dark {
   max-height: calc((var(--app-vh,1vh) * 100) - 220px);
 }
 
+.max-h-\[calc\(\(var\(--app-vh\2c 1vh\)\*100\)-2rem\)\] {
+  max-height: calc((var(--app-vh,1vh) * 100) - 2rem);
+}
+
 .max-h-full {
   max-height: 100%;
 }

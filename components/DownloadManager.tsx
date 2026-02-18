@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { offlineAssetManifest } from '../data/offlineAssets';
 import {
   db,
@@ -69,6 +70,10 @@ const JUZS = [
 ];
 
 const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) => {
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === 'ar-EG';
+  const tr = (en: string, ar: string) => (isArabic ? ar : en);
+
   const [stats, setStats] = useState<StorageStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [downloadType, setDownloadType] = useState<DownloadType>('all-text');
@@ -109,7 +114,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
   };
 
   const downloadOfflinePack = async () => {
-    setOfflinePackProgress({ current: 0, total: offlineAssetManifest.length, status: 'Caching assets...' });
+    setOfflinePackProgress({ current: 0, total: offlineAssetManifest.length, status: tr('Caching assets...', 'جارٍ حفظ الملفات...') });
     try {
       const cache = await caches.open('hikma-offline');
       let done = 0;
@@ -123,20 +128,20 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
         setOfflinePackProgress({
           current: done,
           total: offlineAssetManifest.length,
-          status: `Cached ${done}/${offlineAssetManifest.length}`
+          status: tr(`Cached ${done}/${offlineAssetManifest.length}`, `تم حفظ ${done}/${offlineAssetManifest.length}`)
         });
       }
-      setOfflinePackProgress({ current: offlineAssetManifest.length, total: offlineAssetManifest.length, status: 'Offline pack ready' });
+      setOfflinePackProgress({ current: offlineAssetManifest.length, total: offlineAssetManifest.length, status: tr('Offline pack ready', 'حزمة الأوفلاين جاهزة') });
       setTimeout(() => setOfflinePackProgress(null), 1500);
     } catch {
-      setOfflinePackProgress({ current: 0, total: offlineAssetManifest.length, status: 'Failed to cache offline pack' });
+      setOfflinePackProgress({ current: 0, total: offlineAssetManifest.length, status: tr('Failed to cache offline pack', 'فشل حفظ حزمة الأوفلاين') });
     }
   };
 
   // Download all stories (24 prophets × 7 topics × 2 languages = 336 stories)
   const downloadAllStories = async () => {
     if (!isOnline) {
-      alert('You need to be online to download stories.');
+      alert(tr('You need to be online to download stories.', 'لازم تكون متصل بالإنترنت لتحميل القصص.'));
       return;
     }
 
@@ -147,7 +152,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
     setDownloadProgress({
       current: 0,
       total: totalStories,
-      status: 'Generating stories...'
+      status: tr('Generating stories...', 'جارٍ إنشاء القصص...')
     });
 
     try {
@@ -194,11 +199,11 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
       }
 
       await loadStats();
-      setDownloadProgress({ current: totalStories, total: totalStories, status: 'Stories downloaded!' });
+      setDownloadProgress({ current: totalStories, total: totalStories, status: tr('Stories downloaded!', 'تم تحميل القصص!') });
       setTimeout(() => setDownloadProgress(null), 2000);
     } catch (error) {
       console.error('Story download failed:', error);
-      setDownloadProgress({ current: downloaded, total: totalStories, status: 'Download failed.' });
+      setDownloadProgress({ current: downloaded, total: totalStories, status: tr('Download failed.', 'فشل التحميل.') });
     } finally {
       setLoading(false);
     }
@@ -206,12 +211,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
 
   const downloadAllText = async () => {
     if (!isOnline) {
-      alert('You need to be online to download content.');
+      alert(tr('You need to be online to download content.', 'لازم تكون متصل بالإنترنت لتحميل المحتوى.'));
       return;
     }
 
     setLoading(true);
-    setDownloadProgress({ current: 0, total: 114, status: 'Downloading Quran text...' });
+    setDownloadProgress({ current: 0, total: 114, status: tr('Downloading Quran text...', 'جارٍ تحميل نص القرآن...') });
 
     try {
       for (let i = 1; i <= 114; i++) {
@@ -221,16 +226,16 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
           const surah = await getSurahWithTranslation(i, 'en.sahih');
           await cacheSurah(surah, 'en.sahih');
         }
-        setDownloadProgress({ current: i, total: 114, status: `Downloaded Surah ${i}/114` });
+        setDownloadProgress({ current: i, total: 114, status: tr(`Downloaded Surah ${i}/114`, `تم تحميل سورة ${i}/114`) });
       }
 
       await loadStats();
-      setDownloadProgress({ current: 114, total: 114, status: 'Download complete!' });
+      setDownloadProgress({ current: 114, total: 114, status: tr('Download complete!', 'اكتمل التحميل!') });
 
       setTimeout(() => setDownloadProgress(null), 2000);
     } catch (error) {
       console.error('Download failed:', error);
-      setDownloadProgress({ current: 0, total: 114, status: 'Download failed. Please try again.' });
+      setDownloadProgress({ current: 0, total: 114, status: tr('Download failed. Please try again.', 'فشل التحميل. حاول مرة تانية.') });
     } finally {
       setLoading(false);
     }
@@ -238,7 +243,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
 
   const downloadJuzAudio = async (juzNumber: number) => {
     if (!isOnline) {
-      alert('You need to be online to download content.');
+      alert(tr('You need to be online to download content.', 'لازم تكون متصل بالإنترنت لتحميل المحتوى.'));
       return;
     }
 
@@ -255,7 +260,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
       total += surah.numberOfAyahs;
     }
 
-    setDownloadProgress({ current: 0, total, status: `Downloading Juz ${juzNumber} audio...` });
+    setDownloadProgress({ current: 0, total, status: tr(`Downloading Juz ${juzNumber} audio...`, `جارٍ تحميل صوت الجزء ${juzNumber}...`) });
 
     try {
       for (const surahNum of juz.surahs) {
@@ -276,17 +281,17 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
           setDownloadProgress({
             current: downloaded,
             total,
-            status: `Downloaded ${downloaded}/${total} verses`
+            status: tr(`Downloaded ${downloaded}/${total} verses`, `تم تحميل ${downloaded}/${total} آية`)
           });
         }
       }
 
       await loadStats();
-      setDownloadProgress({ current: total, total, status: 'Download complete!' });
+      setDownloadProgress({ current: total, total, status: tr('Download complete!', 'اكتمل التحميل!') });
       setTimeout(() => setDownloadProgress(null), 2000);
     } catch (error) {
       console.error('Audio download failed:', error);
-      setDownloadProgress({ current: downloaded, total, status: 'Download failed.' });
+      setDownloadProgress({ current: downloaded, total, status: tr('Download failed.', 'فشل التحميل.') });
     } finally {
       setLoading(false);
     }
@@ -294,7 +299,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
 
   const downloadSurahAudio = async (surahNumber: number) => {
     if (!isOnline) {
-      alert('You need to be online to download content.');
+      alert(tr('You need to be online to download content.', 'لازم تكون متصل بالإنترنت لتحميل المحتوى.'));
       return;
     }
 
@@ -304,7 +309,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
       const surah = await getSurahWithTranslation(surahNumber, 'en.sahih');
       const total = surah.numberOfAyahs;
 
-      setDownloadProgress({ current: 0, total, status: `Downloading ${surah.englishName}...` });
+      setDownloadProgress({ current: 0, total, status: tr(`Downloading ${surah.englishName}...`, `جارٍ تحميل سورة ${surah.number}...`) });
 
       for (let verse = 1; verse <= total; verse++) {
         const audioUrl = getVerseAudioUrl(surahNumber, verse, DEFAULT_RECITER);
@@ -320,12 +325,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
         setDownloadProgress({
           current: verse,
           total,
-          status: `Downloaded ${verse}/${total} verses`
+          status: tr(`Downloaded ${verse}/${total} verses`, `تم تحميل ${verse}/${total} آية`)
         });
       }
 
       await loadStats();
-      setDownloadProgress({ current: total, total, status: 'Download complete!' });
+      setDownloadProgress({ current: total, total, status: tr('Download complete!', 'اكتمل التحميل!') });
       setTimeout(() => setDownloadProgress(null), 2000);
     } catch (error) {
       console.error('Audio download failed:', error);
@@ -336,9 +341,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
 
   const handleClearData = async (type: 'all' | 'audio' | 'stories') => {
     const messages: Record<string, string> = {
-      all: 'This will delete all offline data including bookmarks and reading history. Continue?',
-      audio: 'This will delete all cached audio files. Continue?',
-      stories: 'This will delete all cached stories. Continue?'
+      all: tr(
+        'This will delete all offline data including bookmarks and reading history. Continue?',
+        'ده هيحذف كل بيانات الأوفلاين بما فيها العلامات وتاريخ القراءة. نكمل؟'
+      ),
+      audio: tr('This will delete all cached audio files. Continue?', 'ده هيحذف كل ملفات الصوت المحفوظة. نكمل؟'),
+      stories: tr('This will delete all cached stories. Continue?', 'ده هيحذف كل القصص المحفوظة. نكمل؟')
     };
 
     const confirm = window.confirm(messages[type]);
@@ -359,24 +367,24 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
 
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg max-h-screen-safe overflow-hidden shadow-2xl">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-screen-safe overflow-hidden shadow-2xl" dir={isArabic ? 'rtl' : 'ltr'}>
         {/* Header */}
-        <div className="bg-gradient-to-r from-rose-700 to-rose-800 text-white p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className={`bg-gradient-to-r from-rose-700 to-rose-800 text-white p-4 flex items-center justify-between ${isArabic ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center gap-3 ${isArabic ? 'flex-row-reverse text-right' : ''}`}>
             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
               <i className="fas fa-download"></i>
             </div>
             <div>
-              <h2 className="font-semibold text-lg">Offline Downloads</h2>
+              <h2 className="font-semibold text-lg">{tr('Offline Downloads', 'التحميلات بدون إنترنت')}</h2>
               <p className="text-rose-200 text-xs">
-                {isOnline ? 'Connected' : 'Offline Mode'}
+                {isOnline ? tr('Connected', 'متصل') : tr('Offline Mode', 'وضع بدون إنترنت')}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="p-2 hover:bg-white/10 rounded-full transition-colors"
-            aria-label="Close download manager"
+            aria-label={tr('Close download manager', 'إغلاق مدير التحميلات')}
           >
             <i className="fas fa-times" aria-hidden="true"></i>
           </button>
@@ -389,32 +397,32 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
             <div className="bg-stone-50 rounded-xl p-4 mb-4">
               <h3 className="font-medium text-stone-700 mb-3 flex items-center gap-2">
                 <i className="fas fa-database text-rose-600"></i>
-                Storage Usage
+                {tr('Storage Usage', 'استهلاك التخزين')}
               </h3>
               <div className="grid grid-cols-3 gap-2">
                 <div className="bg-white rounded-lg p-2 text-center">
                   <p className="text-xl font-bold text-rose-700">{stats.surahCount}</p>
-                  <p className="text-xs text-stone-500">Surahs</p>
+                  <p className="text-xs text-stone-500">{tr('Surahs', 'السور')}</p>
                 </div>
                 <div className="bg-white rounded-lg p-2 text-center">
                   <p className="text-xl font-bold text-rose-700">{stats.audioCount}</p>
-                  <p className="text-xs text-stone-500">Audio</p>
+                  <p className="text-xs text-stone-500">{tr('Audio', 'الصوت')}</p>
                 </div>
                 <div className="bg-white rounded-lg p-2 text-center">
                   <p className="text-xl font-bold text-amber-600">{stats.storyCount || 0}</p>
-                  <p className="text-xs text-stone-500">Stories</p>
+                  <p className="text-xs text-stone-500">{tr('Stories', 'القصص')}</p>
                 </div>
                 <div className="bg-white rounded-lg p-2 text-center">
                   <p className="text-xl font-bold text-rose-700">{stats.audioSizeMB}</p>
-                  <p className="text-xs text-stone-500">MB Audio</p>
+                  <p className="text-xs text-stone-500">{tr('MB Audio', 'ميجابايت صوت')}</p>
                 </div>
                 <div className="bg-white rounded-lg p-2 text-center">
                   <p className="text-xl font-bold text-rose-700">{stats.bookmarkCount}</p>
-                  <p className="text-xs text-stone-500">Bookmarks</p>
+                  <p className="text-xs text-stone-500">{tr('Bookmarks', 'العلامات')}</p>
                 </div>
                 <div className="bg-white rounded-lg p-2 text-center">
                   <p className="text-xl font-bold text-stone-600">{stats.estimatedTotalMB}</p>
-                  <p className="text-xs text-stone-500">Total MB</p>
+                  <p className="text-xs text-stone-500">{tr('Total MB', 'إجمالي ميجابايت')}</p>
                 </div>
               </div>
               <div className="mt-3 flex items-center justify-end gap-2 text-xs">
@@ -422,35 +430,37 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                   onClick={() => handleClearData('stories')}
                   className="text-amber-600 hover:text-amber-700"
                 >
-                  Clear Stories
+                  {tr('Clear Stories', 'حذف القصص')}
                 </button>
                 <button
                   onClick={() => handleClearData('audio')}
                   className="text-rose-600 hover:text-rose-700"
                 >
-                  Clear Audio
+                  {tr('Clear Audio', 'حذف الصوت')}
                 </button>
                 <button
                   onClick={() => handleClearData('all')}
                   className="text-red-600 hover:text-red-700"
                 >
-                  Clear All
+                  {tr('Clear All', 'حذف الكل')}
                 </button>
               </div>
             </div>
           )}
 
           <div className="bg-amber-50 rounded-xl p-4 mb-4 border border-amber-100">
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center justify-between gap-3 ${isArabic ? 'flex-row-reverse' : ''}`}>
               <div>
-                <p className="text-amber-800 font-semibold">Offline Pack</p>
-                <p className="text-sm text-amber-700">Kids narrations + short surahs (multiple reciters) + Seerah audio.</p>
+                <p className="text-amber-800 font-semibold">{tr('Offline Pack', 'حزمة الأوفلاين')}</p>
+                <p className="text-sm text-amber-700">
+                  {tr('Kids narrations + short surahs (multiple reciters) + Seerah audio.', 'روايات للأطفال + سور قصيرة (بعدة مقرئين) + صوتيات السيرة.')}
+                </p>
               </div>
               <button
                 onClick={downloadOfflinePack}
                 className="px-3 py-2 rounded-xl bg-amber-600 text-white text-sm shadow hover:bg-amber-700"
               >
-                Download
+                {tr('Download', 'تحميل')}
               </button>
             </div>
             {offlinePackProgress && (
@@ -497,8 +507,8 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                     : 'text-stone-500 hover:text-stone-700'
                 }`}
               >
-                <i className="fas fa-book-open mr-1"></i>
-                Stories
+                <i className={`fas fa-book-open ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
+                {tr('Stories', 'قصص')}
               </button>
               <button
                 onClick={() => setDownloadType('all-text')}
@@ -508,8 +518,8 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                     : 'text-stone-500 hover:text-stone-700'
                 }`}
               >
-                <i className="fas fa-book mr-1"></i>
-                Quran
+                <i className={`fas fa-book ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
+                {tr('Quran', 'القرآن')}
               </button>
               <button
                 onClick={() => setDownloadType('juz')}
@@ -519,7 +529,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                     : 'text-stone-500 hover:text-stone-700'
                 }`}
               >
-                <i className="fas fa-layer-group mr-1"></i>
+                <i className={`fas fa-layer-group ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
                 Juz
               </button>
               <button
@@ -530,8 +540,8 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                     : 'text-stone-500 hover:text-stone-700'
                 }`}
               >
-                <i className="fas fa-file-alt mr-1"></i>
-                Surah
+                <i className={`fas fa-file-alt ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
+                {tr('Surah', 'سورة')}
               </button>
             </div>
 
@@ -543,17 +553,17 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                     <i className="fas fa-book-open text-white text-xl"></i>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-amber-900">Prophet Stories</h4>
+                    <h4 className="font-semibold text-amber-900">{tr('Prophet Stories', 'قصص الأنبياء')}</h4>
                     <p className="text-sm text-amber-700 mb-2">
-                      Download 336 stories (24 prophets × 7 topics × 2 languages)
+                      {tr('Download 336 stories (24 prophets × 7 topics × 2 languages)', 'تحميل 336 قصة (24 نبي × 7 مواضيع × لغتين)')}
                     </p>
                     <div className="flex flex-wrap gap-1 mb-3">
-                      <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">English</span>
+                      <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">{tr('English', 'إنجليزي')}</span>
                       <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">مصري</span>
                     </div>
                     <p className="text-xs text-amber-600 mb-3">
-                      <i className="fas fa-info-circle mr-1"></i>
-                      Stories are AI-generated and cached. Images load on-demand.
+                      <i className={`fas fa-info-circle ${isArabic ? 'ml-1' : 'mr-1'}`}></i>
+                      {tr('Stories are AI-generated and cached. Images load on-demand.', 'القصص تتولد بالذكاء الاصطناعي وتتخزن محليًا، والصور تتحمل عند الطلب.')}
                     </p>
                     <button
                       onClick={downloadAllStories}
@@ -563,12 +573,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                       {loading ? (
                         <>
                           <i className="fas fa-spinner fa-spin"></i>
-                          Generating Stories...
+                          {tr('Generating Stories...', 'جارٍ إنشاء القصص...')}
                         </>
                       ) : (
                         <>
                           <i className="fas fa-download"></i>
-                          Download All Stories
+                          {tr('Download All Stories', 'تحميل كل القصص')}
                         </>
                       )}
                     </button>
@@ -585,9 +595,9 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                     <i className="fas fa-book-quran text-rose-600 text-xl"></i>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-stone-800">Complete Quran Text</h4>
+                    <h4 className="font-semibold text-stone-800">{tr('Complete Quran Text', 'نص القرآن كامل')}</h4>
                     <p className="text-sm text-stone-500 mb-3">
-                      Download all 114 Surahs with English translation (~2 MB)
+                      {tr('Download all 114 Surahs with English translation (~2 MB)', 'تحميل 114 سورة كاملة مع ترجمة إنجليزية (~2MB)')}
                     </p>
                     <button
                       onClick={downloadAllText}
@@ -597,12 +607,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                       {loading ? (
                         <>
                           <i className="fas fa-spinner fa-spin"></i>
-                          Downloading...
+                          {tr('Downloading...', 'جارٍ التحميل...')}
                         </>
                       ) : (
                         <>
                           <i className="fas fa-download"></i>
-                          Download All Text
+                          {tr('Download All Text', 'تحميل النص كاملًا')}
                         </>
                       )}
                     </button>
@@ -614,7 +624,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
             {/* Download Juz Audio */}
             {downloadType === 'juz' && (
               <div className="bg-white border border-stone-200 rounded-xl p-4">
-                <h4 className="font-semibold text-stone-800 mb-3">Download Juz Audio</h4>
+                <h4 className="font-semibold text-stone-800 mb-3">{tr('Download Juz Audio', 'تحميل صوت الجزء')}</h4>
                 <div className="space-y-2 mb-4 max-h-48 overflow-y-auto">
                   {JUZS.map(juz => (
                     <button
@@ -625,14 +635,14 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                           ? 'bg-rose-100 border-2 border-rose-500'
                           : 'bg-stone-50 hover:bg-stone-100 border-2 border-transparent'
                       }`}
-                    >
-                      <div>
-                        <span className="font-medium">Juz {juz.number}</span>
-                        <span className="text-stone-500 ml-2 text-sm">{juz.name}</span>
+                      >
+                        <div>
+                        <span className="font-medium">{tr(`Juz ${juz.number}`, `الجزء ${juz.number}`)}</span>
+                        <span className={`text-stone-500 text-sm ${isArabic ? 'mr-2' : 'ml-2'}`}>{juz.name}</span>
                       </div>
                       {juz.number === 30 && (
                         <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">
-                          Popular
+                          {tr('Popular', 'الأكثر استخدامًا')}
                         </span>
                       )}
                     </button>
@@ -646,12 +656,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                   {loading ? (
                     <>
                       <i className="fas fa-spinner fa-spin"></i>
-                      Downloading...
+                      {tr('Downloading...', 'جارٍ التحميل...')}
                     </>
                   ) : (
                     <>
                       <i className="fas fa-volume-up"></i>
-                      Download Juz {selectedJuz} Audio
+                      {tr(`Download Juz ${selectedJuz} Audio`, `تحميل صوت الجزء ${selectedJuz}`)}
                     </>
                   )}
                 </button>
@@ -661,7 +671,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
             {/* Download Single Surah */}
             {downloadType === 'surah' && (
               <div className="bg-white border border-stone-200 rounded-xl p-4">
-                <h4 className="font-semibold text-stone-800 mb-3">Download Surah Audio</h4>
+                <h4 className="font-semibold text-stone-800 mb-3">{tr('Download Surah Audio', 'تحميل صوت السورة')}</h4>
                 <select
                   value={selectedSurah}
                   onChange={(e) => setSelectedSurah(Number(e.target.value))}
@@ -669,7 +679,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                 >
                   {Array.from({ length: 114 }, (_, i) => i + 1).map(num => (
                     <option key={num} value={num}>
-                      {num}. {getSurahName(num)}
+                      {num}. {getSurahName(num, isArabic)}
                     </option>
                   ))}
                 </select>
@@ -681,12 +691,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
                   {loading ? (
                     <>
                       <i className="fas fa-spinner fa-spin"></i>
-                      Downloading...
+                      {tr('Downloading...', 'جارٍ التحميل...')}
                     </>
                   ) : (
                     <>
                       <i className="fas fa-volume-up"></i>
-                      Download Audio
+                      {tr('Download Audio', 'تحميل الصوت')}
                     </>
                   )}
                 </button>
@@ -699,12 +709,12 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
             <div className="flex items-start gap-3">
               <i className="fas fa-info-circle text-blue-600 mt-0.5"></i>
               <div className="text-sm text-blue-800">
-                <p className="font-medium mb-1">How Offline Mode Works</p>
+                <p className="font-medium mb-1">{tr('How Offline Mode Works', 'كيف يعمل وضع الأوفلاين')}</p>
                 <ul className="text-blue-700 space-y-1 text-xs">
-                  <li>• Downloaded content is available without internet</li>
-                  <li>• Text and audio are stored locally on your device</li>
-                  <li>• AI features require internet connection</li>
-                  <li>• Reading history syncs when back online</li>
+                  <li>{tr('• Downloaded content is available without internet', '• المحتوى المحمّل متاح بدون إنترنت')}</li>
+                  <li>{tr('• Text and audio are stored locally on your device', '• النص والصوت بيتخزنوا محليًا على جهازك')}</li>
+                  <li>{tr('• AI features require internet connection', '• ميزات الذكاء الاصطناعي تحتاج اتصال إنترنت')}</li>
+                  <li>{tr('• Reading history syncs when back online', '• سجل القراءة يتزامن عند رجوع الاتصال')}</li>
                 </ul>
               </div>
             </div>
@@ -716,7 +726,7 @@ const DownloadManager: React.FC<DownloadManagerProps> = ({ isOpen, onClose }) =>
 };
 
 // Helper function for surah names
-function getSurahName(num: number): string {
+function getSurahName(num: number, isArabic = false): string {
   const names: Record<number, string> = {
     1: "Al-Fatihah", 2: "Al-Baqarah", 3: "Ali 'Imran", 4: "An-Nisa", 5: "Al-Ma'idah",
     6: "Al-An'am", 7: "Al-A'raf", 8: "Al-Anfal", 9: "At-Tawbah", 10: "Yunus",
@@ -725,7 +735,7 @@ function getSurahName(num: number): string {
     // Add more as needed, or fetch dynamically
     112: "Al-Ikhlas", 113: "Al-Falaq", 114: "An-Nas"
   };
-  return names[num] || `Surah ${num}`;
+  return names[num] || (isArabic ? `سورة ${num}` : `Surah ${num}`);
 }
 
 export default DownloadManager;

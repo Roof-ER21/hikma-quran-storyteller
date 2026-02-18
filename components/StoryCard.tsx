@@ -66,7 +66,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
   onSelect,
   isSelected = false
 }) => {
-  const { t, i18n } = useTranslation('common');
+  const { t, i18n } = useTranslation(['common', 'home']);
   const isArabic = i18n.language === 'ar-EG';
   const [readingPosition, setReadingPosition] = useState<StoryReadingPosition | null>(null);
   const [isCached, setIsCached] = useState(false);
@@ -74,6 +74,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
 
   const theme = PROPHET_THEMES[prophet] || { icon: "fa-user", color: "stone", gradient: "from-stone-500 to-gray-600" };
   const topicIcon = TOPIC_ICONS[topic] || "fa-book";
+  const topicLabel = t(`home:topics.${topic}`, { defaultValue: topic });
 
   // Check for saved reading position and cached status
   useEffect(() => {
@@ -164,7 +165,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
         <div className="flex items-center gap-2 mb-3">
           <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5">
             <i className={`fas ${topicIcon} text-[10px]`}></i>
-            <span>{topic}</span>
+            <span>{topicLabel}</span>
           </div>
         </div>
 
