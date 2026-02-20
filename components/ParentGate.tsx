@@ -9,6 +9,43 @@ interface ParentGateProps {
   onAuthed: (token: string, parentName: string, remember: boolean) => void;
 }
 
+interface LocalParentAuthRecord {
+  name: string;
+  pinHash: string;
+  createdAt: string;
+}
+
+const LOCAL_PARENT_AUTH_KEY = 'alayasoad_local_parent_auth_v1';
+
+const readLocalParentAuth = (): LocalParentAuthRecord | null => {
+  try {
+    const raw = localStorage.getItem(LOCAL_PARENT_AUTH_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as LocalParentAuthRecord;
+  } catch {
+    return null;
+  }
+};
+
+const writeLocalParentAuth = (record: LocalParentAuthRecord): void => {
+  localStorage.setItem(LOCAL_PARENT_AUTH_KEY, JSON.stringify(record));
+};
+
+const hashPin = async (pinValue: string): Promise<string> => {
+  try {
+    if (window.crypto?.subtle) {
+      const input = new TextEncoder().encode(`alayasoad:${pinValue}`);
+      const digest = await window.crypto.subtle.digest('SHA-256', input);
+      return Array.from(new Uint8Array(digest))
+        .map((byte) => byte.toString(16).padStart(2, '0'))
+        .join('');
+    }
+  } catch {
+    // Fall back to a deterministic string hash if subtle crypto is unavailable.
+  }
+  return btoa(`alayasoad:${pinValue}`);
+};
+
 const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) => {
   const { t, i18n } = useTranslation('home');
   const isArabic = i18n.language === 'ar-EG';
@@ -51,13 +88,42 @@ const ParentGate: React.FC<ParentGateProps> = ({ isOpen, onClose, onAuthed }) =>
       onAuthed(data.token, data.parent?.name || name, remember);
       onClose();
     } catch (e: any) {
-      // Sanitize error messages - don't expose technical details
+      // Native/embedded builds may not have backend auth endpoints available.
+      // Fall back to local-only parent auth so Kids mode remains usable.
+      try {
+        const normalizedName = name.trim();
+        const pinHash = await hashPin(pin.trim());
+        const stored = readLocalParentAuth();
+
+        if (mode === 'signup') {
+          writeLocalParentAuth({
+            name: normalizedName,
+            pinHash,
+            createdAt: new Date().toISOString(),
+          });
+          localStorage.setItem('alayasoad_coppa_consent', 'true');
+          localStorage.setItem('alayasoad_ai_tutor_enabled', aiTutorConsent ? 'true' : 'false');
+          localStorage.setItem('alayasoad_sync_enabled', 'true');
+          onAuthed(`local-${Date.now()}`, normalizedName, remember);
+          onClose();
+          return;
+        }
+
+        const sameName = !!stored && stored.name.toLowerCase() === normalizedName.toLowerCase();
+        const samePin = !!stored && stored.pinHash === pinHash;
+        if (sameName && samePin) {
+          onAuthed(`local-${Date.now()}`, stored.name, remember);
+          onClose();
+          return;
+        }
+      } catch {
+        // Continue to user-facing error handling below.
+      }
+
       const userFriendlyError =
-        e.message?.includes('Failed') || e.message?.includes('error')
-          ? t('parentGate.error')
-          : e.message?.includes('Invalid') || e.message?.includes('incorrect')
-            ? t('parentGate.invalidCredentials')
-            : t('parentGate.error');
+        e.message?.includes('Invalid') || e.message?.includes('incorrect')
+          ? t('parentGate.invalidCredentials')
+          : t('parentGate.error');
       setError(userFriendlyError);
     } finally {
       setLoading(false);

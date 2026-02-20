@@ -26,5 +26,11 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "exclude": [
+    "dist",
+    "ios/DerivedData",
+    "ios/App/DerivedData",
+    "ios/App/build"
+  ]
 }
