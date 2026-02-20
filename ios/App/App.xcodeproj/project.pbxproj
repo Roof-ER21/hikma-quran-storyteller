@@ -59,8 +59,8 @@
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
-		A21PRIV012026020900000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A21ENTL012026020900000002 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
+		A21PRIV012026020900000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A21WIDGET00000000000001 /* PrayerCountdownAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerCountdownAttributes.swift; sourceTree = "<group>"; };
 		A21WIDGET00000000000002 /* PrayerActivityPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerActivityPlugin.swift; sourceTree = "<group>"; };
 		A21WIDGET00000000000006 /* PrayerCountdownWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PrayerCountdownWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,7 +134,7 @@
 				A21WIDGET00000000000009 /* Info.plist */,
 			);
 			name = PrayerCountdownWidget;
-			path = ../../PrayerCountdownWidget;
+			path = ../PrayerCountdownWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -413,7 +413,9 @@
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HXDJR9V44Y;
 				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -436,7 +438,9 @@
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HXDJR9V44Y;
 				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -456,8 +460,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HXDJR9V44Y;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "../../PrayerCountdownWidget/Info.plist";
+				INFOPLIST_FILE = ../PrayerCountdownWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Prayer Countdown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -482,8 +487,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HXDJR9V44Y;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "../../PrayerCountdownWidget/Info.plist";
+				INFOPLIST_FILE = ../PrayerCountdownWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Prayer Countdown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
